@@ -20,7 +20,6 @@ import java.io.IOException;
  */
 @WebServlet("/user.do/*")
 public class UserController extends HttpServlet {
-    private final UserService userService = new UserServiceImpl();
     private final AccountService accountService = new AccountServiceImpl();
 
     @Override
