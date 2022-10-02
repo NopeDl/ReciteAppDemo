@@ -1,9 +1,8 @@
 package utils;
 
 import com.alibaba.fastjson.JSONObject;
+import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ResponseUtil {

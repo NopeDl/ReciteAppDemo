@@ -16,7 +16,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account checkAccount(String number, String password) {
+    public Account selectAccount(String number, String password) {
         Account src = new Account();
         src.setPassword(password);
         src.setNumber(number);

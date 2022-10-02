@@ -10,6 +10,6 @@ public interface AccountDao {
      * @param password 密码
      * @return 验证成功返回账号对象（对象中包含用户id），否则返回null
      */
-    Account checkAccount(String number,String password);
+    Account selectAccount(String number,String password);
 
 }
