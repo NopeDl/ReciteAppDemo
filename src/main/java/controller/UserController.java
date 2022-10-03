@@ -54,21 +54,9 @@ public class UserController extends HttpServlet {
             ResponseUtil.send(response, createUserMessage);
         } else if (requestURI.contains("UserMsg")) {
             //用户个人信息获取
-            Message<?> message;
-            int userId;
-            //查找userId
-            Cookie[] cookies = request.getCookies();
-            for (Cookie c : cookies) {
-                if ("userId".equals(c.getName())) {
-                    userId = Integer.parseInt(c.getValue());
-                    User user = userService.getMsgById(userId);
-                    message = new Message<>();
-                    //将查找的对象放进request中
-                    request.setAttribute("userMsg", user);
-                    ResponseUtil.send(response, message);
-                    break;
-                }
-            }
+            Message<?> message = userService.selectUserMsg(request);
+            ResponseUtil.send(response,message);
+
         }
 
     }

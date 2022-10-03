@@ -5,15 +5,6 @@ import pojo.po.User;
 import pojo.vo.Message;
 
 public interface UserService {
-    /**
-     * 通过userId查找用户
-     *
-     * 根据用户的id号查找该用户的个人资料
-     * @param userId
-     * @return 找得到返回User, 否则返回fasle
-     * @return 返回user
-     */
-    User selectUserById(int userId);
 
 
     /**
@@ -24,7 +15,18 @@ public interface UserService {
     Message<?> createUser(HttpServletRequest request);
 
 
-    User getMsgById(int userId);
+    /***
+     * 根据用户id查找UserMsg
+     * @param request
+     * @return
+     */
+    Message selectUserMsg(HttpServletRequest request);
 
-
+    /**
+     * 通过传进去的在cookieName遍历cookie,寻找对应value的值
+     * @param request
+     * @param cookieName
+     * @return 找到返回该值，
+     */
+    String getCookie(HttpServletRequest request,String cookieName);
 }

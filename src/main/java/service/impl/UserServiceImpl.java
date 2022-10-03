@@ -3,6 +3,7 @@ package service.impl;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.User;
 import pojo.vo.Message;
@@ -12,13 +13,13 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao = new UserDaoImpl();
 
-
-    @Override
-    public User selectUserById(int userId) {
-        User user = userDao.selectUserById(userId);
-        return user;
-
-    }
+//
+//    @Override
+//    public User selectUserById(int userId) {
+//        User user = userDao.selectUserById(userId);
+//        return user;
+//
+//    }
 
     /**
      * 注册用户
@@ -43,9 +44,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     //通过userId来查找用户资料
-    public User getMsgById(int userId) {
-        User user = userDao.selectUserById(userId);
-        return user;
+    public Message selectUserMsg(HttpServletRequest request) {
 
+        Message<?> message;
+        int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
+        User user = userDao.selectUserById(userId);
+        //将用户资料存储在request里
+        request.setAttribute("userMsg",user);
+        //能传到这里说明user肯定不是null
+        message=new Message<>();
+        return message;
+    }
+
+    @Override
+    public String  getCookie(HttpServletRequest request,String cookieName){
+        Cookie[] cookies = request.getCookies();
+        for (Cookie c:cookies) {
+            if(cookieName.equals(c.getName())){
+                return c.getValue();
+            }
+        }
+        return null;
     }
 }
