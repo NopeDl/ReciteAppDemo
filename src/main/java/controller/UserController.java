@@ -1,17 +1,11 @@
 package controller;
 
 
-import com.mysql.cj.Session;
-import com.mysql.cj.protocol.x.Notice;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.omg.CORBA.INTERNAL;
-import org.omg.PortableInterceptor.INACTIVE;
-import pojo.po.User;
 import pojo.vo.Message;
 import service.AccountService;
 import service.UserService;
@@ -55,7 +49,7 @@ public class UserController extends HttpServlet {
         } else if (requestURI.contains("UserMsg")) {
             //用户个人信息获取
             Message<?> message = userService.selectUserMsg(request);
-            ResponseUtil.send(response,message);
+            ResponseUtil.send(response, message);
 
         }
 
