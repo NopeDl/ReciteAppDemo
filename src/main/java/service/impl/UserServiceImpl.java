@@ -12,10 +12,12 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao = new UserDaoImpl();
 
+
     @Override
     public User selectUserById(int userId) {
         User user = userDao.selectUserById(userId);
         return user;
+
     }
 
     /**
@@ -37,5 +39,13 @@ public class UserServiceImpl implements UserService {
             message = new Message<>("用户创建失败");
         }
         return message;
+    }
+
+    @Override
+    //通过userId来查找用户资料
+    public User getMsgById(int userId) {
+        User user = userDao.selectUserById(userId);
+        return user;
+
     }
 }

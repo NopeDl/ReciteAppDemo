@@ -1,11 +1,17 @@
 package controller;
 
 
+import com.mysql.cj.Session;
+import com.mysql.cj.protocol.x.Notice;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.omg.CORBA.INTERNAL;
+import org.omg.PortableInterceptor.INACTIVE;
+import pojo.po.User;
 import pojo.vo.Message;
 import service.AccountService;
 import service.UserService;
@@ -21,7 +27,7 @@ import java.io.IOException;
 @WebServlet("/user.do/*")
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
-    private final UserService userService = new UserServiceImpl();
+    private final UserService userService=new UserServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -47,6 +53,25 @@ public class UserController extends HttpServlet {
             Message<?> createUserMessage = userService.createUser(request);
             ResponseUtil.send(response, createUserMessage);
         }
+
+
+        else if(requestURI.contains("UserMsg")){//用户个人信息获取
+            Message<?> message;
+            int userId;
+            //查找userId
+            Cookie[] cookies = request.getCookies();
+            for (Cookie c:cookies) {
+                if ("userId".equals(c.getName())) {
+                    userId = Integer.parseInt(c.getValue());
+                    User user = userService.getMsgById(userId);
+                    message=new Message<>();
+                    //将查找的对象放进request中
+                    request.setAttribute("userMsg",user);
+                    ResponseUtil.send(response, message);
+                    break;
+                }
+            }
+            }
 
     }
 }
