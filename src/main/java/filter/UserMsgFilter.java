@@ -5,16 +5,13 @@ import service.impl.UserServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 //拦截用户获取信息
-@WebFilter("/UserMsg")
+@WebFilter("/User.do/UserMsg")
 public class UserMsgFilter implements Filter {
     public void destroy() {
     }
-
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         //调用查找cookie是否有userId
         UserService userService=new UserServiceImpl();

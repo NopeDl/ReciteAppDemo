@@ -49,10 +49,9 @@ public class UserServiceImpl implements UserService {
         Message<?> message;
         int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
         User user = userDao.selectUserById(userId);
-        //将用户资料存储在request里
-        request.setAttribute("userMsg",user);
-        //能传到这里说明user肯定不是null
-        message=new Message<>();
+
+        //将响应的数据封装到message里
+        message=new Message<User>(MsgInf.OK,user);
         return message;
     }
 
