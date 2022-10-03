@@ -27,7 +27,7 @@ import java.io.IOException;
 @WebServlet("/user.do/*")
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
-    private final UserService userService=new UserServiceImpl();
+    private final UserService userService = new UserServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +42,7 @@ public class UserController extends HttpServlet {
             Message<?> loginMessage;
             if (password != null && phone != null) {
                 //两个参数不为空
-                loginMessage = accountService.checkAccount(request,response);
+                loginMessage = accountService.checkAccount(request, response);
             } else {
                 //有一个参数为空
                 loginMessage = new Message<>("phone或者password参数不能为空");
@@ -52,26 +52,24 @@ public class UserController extends HttpServlet {
             //注册
             Message<?> createUserMessage = userService.createUser(request);
             ResponseUtil.send(response, createUserMessage);
-        }
-
-
-        else if(requestURI.contains("UserMsg")){//用户个人信息获取
+        } else if (requestURI.contains("UserMsg")) {
+            //用户个人信息获取
             Message<?> message;
             int userId;
             //查找userId
             Cookie[] cookies = request.getCookies();
-            for (Cookie c:cookies) {
+            for (Cookie c : cookies) {
                 if ("userId".equals(c.getName())) {
                     userId = Integer.parseInt(c.getValue());
                     User user = userService.getMsgById(userId);
-                    message=new Message<>();
+                    message = new Message<>();
                     //将查找的对象放进request中
-                    request.setAttribute("userMsg",user);
+                    request.setAttribute("userMsg", user);
                     ResponseUtil.send(response, message);
                     break;
                 }
             }
-            }
+        }
 
     }
 }
