@@ -58,9 +58,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public String  getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
-        for (Cookie c:cookies) {
-            if(cookieName.equals(c.getName())){
-                return c.getValue();
+        //如果cookie为空，直接返回null;
+        if(cookies.length!=0) {
+            for (Cookie c : cookies) {
+                if (cookieName.equals(c.getName())) {
+                    return c.getValue();
+                }
             }
         }
         return null;
