@@ -2,16 +2,40 @@ package service.impl;
 
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
+import enums.MsgInf;
+import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.User;
+import pojo.vo.Message;
 import service.UserService;
 
 public class UserServiceImpl implements UserService {
 
-    private UserDao UserDao = new UserDaoImpl();
+    private UserDao userDao = new UserDaoImpl();
 
     @Override
     public User selectUserById(int userId) {
-        User user = UserDao.selectUserById(userId);
+        User user = userDao.selectUserById(userId);
         return user;
+    }
+
+    /**
+     * 注册用户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Message<?> createUser(HttpServletRequest request) {
+        String number = request.getParameter("phone");
+        String password = request.getParameter("password");
+        String nickName = request.getParameter("username");
+        int ret = userDao.createUserByNumber(number, password, nickName);
+        Message<?> message;
+        if (ret == 1) {
+            message = new Message<>(MsgInf.OK);
+        } else {
+            message = new Message<>("用户创建失败");
+        }
+        return message;
     }
 }
