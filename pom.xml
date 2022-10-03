@@ -36,16 +36,23 @@
         <dependency>
             <groupId>com.zz</groupId>
             <artifactId>easyDao</artifactId>
-            <version>2.3</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- servlet -->
+<!--        <dependency>-->
+<!--            <groupId>servlet</groupId>-->
+<!--            <artifactId>servelt</artifactId>-->
+<!--            <version>5.0.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-            <scope>provided</scope>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
         </dependency>
+
 
         <!--json解析-->
         <dependency>
