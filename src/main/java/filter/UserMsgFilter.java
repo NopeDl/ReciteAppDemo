@@ -1,13 +1,14 @@
 package filter;
 
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import service.UserService;
+import service.impl.UserServiceImpl;
 
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 //拦截用户获取信息
 @WebFilter("/UserMsg")
 public class UserMsgFilter implements Filter {
@@ -15,21 +16,15 @@ public class UserMsgFilter implements Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        Cookie[] cookies = request.getCookies();
-        String userId = null;
-        for (Cookie c : cookies) {
-            //查看是否能找到userId
-            if ("userId".equals(c.getName())) {
-                userId = c.getValue();
-                break;
-            }
-        }
-        if (userId == null) {
+        //调用查找cookie是否有userId
+        UserService userService=new UserServiceImpl();
+        String userId=userService.getCookie((jakarta.servlet.http.HttpServletRequest) req,"userId");
+
+        if(userId==null){
             //此时没有userId,说明用户没有进行登录，跳转到登录页面
-            HttpServletResponse response = (HttpServletResponse) resp;
+            HttpServletResponse response= (HttpServletResponse) resp;
             response.sendRedirect("Login");
-        } else {
+        }else{
             //否则放行
             chain.doFilter(req, resp);
         }
