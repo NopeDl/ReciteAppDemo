@@ -3,4 +3,7 @@
     <select id="checkAccount" resultType="pojo.po.Account">
         select * from account where number = #{number} and password = #{password}
     </select>
+    <insert id="insertAccount">
+        insert into account (number,password,userId) values(#{number},#{password},#{userId})
+    </insert>
 </mapper>
