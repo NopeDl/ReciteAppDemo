@@ -4,16 +4,15 @@ import com.zz.core.SqlSessionFactory;
 import com.zz.core.SqlSessionFactoryBuilder;
 import com.zz.utils.Resources;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class DaoUtil {
     private static final SqlSessionFactoryBuilder sqlSessionFactoryBuilder;
 
-    private static final InputStream configInputStream;
-
     static {
         sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
-        configInputStream = Resources.getResourceAsStream("easydao-config.xml");
+
     }
 
     /**
@@ -22,6 +21,13 @@ public class DaoUtil {
      * @return SqlSessionFactory对象
      */
     public static SqlSessionFactory getSqlSessionFactory() {
-        return sqlSessionFactoryBuilder.build(configInputStream);
+        InputStream input = Resources.getResourceAsStream("easydao-config.xml");
+        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(input);
+        try {
+            input.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sqlSessionFactory;
     }
 }
