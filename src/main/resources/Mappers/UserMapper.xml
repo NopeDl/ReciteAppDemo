@@ -3,4 +3,12 @@
     <select id="selectUserById" resultType="pojo.po.User">
         select * from user where userId = #{userId}
     </select>
+
+    <select id="selectUserByNickName" resultType="pojo.po.User">
+        select * from user where nickName = #{nickName}
+    </select>
+
+    <insert id="insertUserByNickName">
+        insert into user (nickName) values(#{nickName})
+    </insert>
 </mapper>
