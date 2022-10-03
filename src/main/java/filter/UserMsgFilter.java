@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 //拦截用户获取信息
-@WebFilter("/User.do/UserMsg")
+@WebFilter("/user.do/UserMsg")
 public class UserMsgFilter implements Filter {
     public void destroy() {
     }

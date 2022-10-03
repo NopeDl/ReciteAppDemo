@@ -7,6 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ReciteAppDemo" />
+        <module name="ReciteMemory" />
+        <module name="easyDao" />
       </profile>
     </annotationProcessing>
   </component>
