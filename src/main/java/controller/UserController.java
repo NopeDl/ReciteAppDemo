@@ -21,6 +21,7 @@ import java.io.IOException;
 @WebServlet("/user.do/*")
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
+    private final UserService userService = new UserServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -29,20 +30,22 @@ public class UserController extends HttpServlet {
         String requestURI = request.getRequestURI();
         //根据URI类型执行对应方法
         if (requestURI.contains("Login")) {
-            //
+            //登录
             String phone = request.getParameter("phone");
             String password = request.getParameter("password");
-            Message<?> message;
+            Message<?> loginMessage;
             if (password != null && phone != null) {
                 //两个参数不为空
-                message = accountService.checkAccount(phone, password);
+                loginMessage = accountService.checkAccount(request,response);
             } else {
                 //有一个参数为空
-                message = new Message<>("phone或者password参数不能为空");
+                loginMessage = new Message<>("phone或者password参数不能为空");
             }
-            ResponseUtil.send(response, message);
+            ResponseUtil.send(response, loginMessage);
         } else if (requestURI.contains("Reg")) {
-
+            //注册
+            Message<?> createUserMessage = userService.createUser(request);
+            ResponseUtil.send(response, createUserMessage);
         }
 
     }
