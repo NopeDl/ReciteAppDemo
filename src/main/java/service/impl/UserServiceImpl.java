@@ -11,15 +11,7 @@ import service.UserService;
 
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao = new UserDaoImpl();
-
-//
-//    @Override
-//    public User selectUserById(int userId) {
-//        User user = userDao.selectUserById(userId);
-//        return user;
-//
-//    }
+    private final UserDao userDao = new UserDaoImpl();
 
     /**
      * 注册用户
@@ -51,15 +43,15 @@ public class UserServiceImpl implements UserService {
         User user = userDao.selectUserById(userId);
 
         //将响应的数据封装到message里
-        message=new Message<User>(MsgInf.OK,user);
+        message = new Message<User>(MsgInf.OK, user);
         return message;
     }
 
     @Override
-    public String  getCookie(HttpServletRequest request,String cookieName){
+    public String getCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         //如果cookies为空，直接返回null;
-        if(cookies!=null) {
+        if (cookies != null) {
             for (Cookie c : cookies) {
                 if (cookieName.equals(c.getName())) {
                     return c.getValue();
