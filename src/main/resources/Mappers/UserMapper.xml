@@ -8,7 +8,15 @@
         select * from user where nickName = #{nickName}
     </select>
 
-    <insert id="insertUserByNickName">
+    <insert id="insertUserByNickName" >
         insert into user (nickName) values(#{nickName})
     </insert>
+
+
+    <!--通过userId修改个人资料-->
+    <update id="reMessageById" parameterType="pojo.po.User">
+        update user set nickName=#{nickName},sex=#{sex},birthday=#{birthday},imagePath=#{imagePath},cityId=#{cityId},
+        schoolId=#{school} where userId=#{userId}
+    </update>
+
 </mapper>
