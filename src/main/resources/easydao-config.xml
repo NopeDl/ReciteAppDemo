@@ -6,7 +6,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="UNPOOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://8.134.104.234:3306/recitedb"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/recitedb"/>
                 <property name="username" value="root"/>
                 <property name="password" value="root"/>
             </dataSource>
