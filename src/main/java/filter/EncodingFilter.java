@@ -17,6 +17,9 @@ public class EncodingFilter extends HttpFilter {
         //统一设置编码
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        chain.doFilter(request,response);
+        //解决跨域访问
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "*");
+        chain.doFilter(request, response);
     }
 }
