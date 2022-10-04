@@ -1,6 +1,7 @@
 package dao;
 
 import pojo.po.Account;
+import pojo.po.User;
 
 public interface AccountDao {
 
@@ -21,5 +22,14 @@ public interface AccountDao {
      * @return 成功执行返回1
      */
     int changePasswordByUserId(int userId, String newPassword);
+
+    /**
+     * 根据用户的手机来查找userId
+     * @param number
+     * @return
+     */
+    Integer selectIdByNumber(String number);
+
+
 
 }

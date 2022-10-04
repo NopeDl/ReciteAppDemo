@@ -4,6 +4,7 @@ import com.zz.core.SqlSession;
 import com.zz.core.SqlSessionFactory;
 import dao.AccountDao;
 import pojo.po.Account;
+import pojo.po.User;
 import utils.DaoUtil;
 
 import java.util.List;
@@ -40,5 +41,19 @@ public class AccountDaoImpl implements AccountDao {
         }
         sqlSession.close();
         return update;
+    }
+
+
+    @Override
+    //根据手机号查找id,返回id
+    public Integer selectIdByNumber(String  number) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> selectIdByNumber = sqlSession.selectList("selectIdByNumber", number);
+        if(selectIdByNumber.size()==0){
+            return null;
+        }else{
+            return (Integer)selectIdByNumber.get(0);
+        }
+
     }
 }

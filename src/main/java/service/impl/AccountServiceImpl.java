@@ -1,17 +1,25 @@
 package service.impl;
 
+import com.mysql.cj.Session;
 import dao.AccountDao;
+import dao.UserDao;
 import dao.impl.AccountDaoImpl;
+import dao.impl.UserDaoImpl;
 import enums.MsgInf;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import pojo.po.Account;
+import pojo.po.User;
 import pojo.vo.Message;
 import service.AccountService;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = new AccountDaoImpl();
+    private final UserDao userDao = new UserDaoImpl();
 
     /**
      * 根据手机号和密码验证账户
@@ -56,5 +64,12 @@ public class AccountServiceImpl implements AccountService {
             message = new Message<>("密码修改失败", "false");
         }
         return message;
+    }
+
+
+    @Override
+    public Integer getIdByNumber( String number) {
+        Integer userId = accountDao.selectIdByNumber(number);
+        return userId;
     }
 }
