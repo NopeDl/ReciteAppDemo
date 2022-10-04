@@ -22,6 +22,23 @@ public class AccountDaoImpl implements AccountDao {
         src.setNumber(number);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objectList = sqlSession.selectList("AccountMapper.checkAccount", src);
+        sqlSession.close();
         return objectList.size() == 0 ? null : (Account) objectList.get(0);
+    }
+
+    @Override
+    public int changePasswordByUserId(int userId, String newPassword) {
+        Account account = new Account();
+        account.setUserId(userId);
+        account.setPassword(newPassword);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("AccountMapper.changePassword", account);
+        if (update > 0) {
+            sqlSession.commit();
+        } else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
     }
 }

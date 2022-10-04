@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
     public Message selectUserMsg(HttpServletRequest request) {
 
         Message<?> message;
-        int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
+//        int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
+        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
         User user = userDao.selectUserById(userId);
 
         //将响应的数据封装到message里

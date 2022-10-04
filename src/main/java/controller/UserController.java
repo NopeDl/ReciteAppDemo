@@ -2,6 +2,7 @@ package controller;
 
 
 import com.zz.utils.StringParser;
+import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,29 +32,23 @@ public class UserController extends HttpServlet {
         //获取URI
         String requestURI = StringUtil.parseURI(request.getRequestURI());
         //根据URI类型执行对应方法
+        Message<?> msg = null;
         if ("Login".equals(requestURI)) {
             //登录
-            String phone = request.getParameter("phone");
-            String password = request.getParameter("password");
-            Message<?> loginMessage;
-            if (password != null && phone != null) {
-                //两个参数不为空
-                loginMessage = accountService.checkAccount(request, response);
-            } else {
-                //有一个参数为空
-                loginMessage = new Message<>("phone或者password参数不能为空");
-            }
-            ResponseUtil.send(response, loginMessage);
+            msg = accountService.checkAccount(request, response);
         } else if ("Reg".equals(requestURI)) {
             //注册
-            Message<?> createUserMessage = userService.createUser(request);
-            ResponseUtil.send(response, createUserMessage);
+            msg = userService.createUser(request);
         } else if ("UserMsg".equals(requestURI)) {
             //用户个人信息获取
-            Message<?> message = userService.selectUserMsg(request);
-            ResponseUtil.send(response, message);
-
+            msg = userService.selectUserMsg(request);
+        } else if ("ChangePswd".equals(requestURI)) {
+            //修改密码
+            msg = accountService.changePassword(request);
+        } else {
+            msg = new Message<>(MsgInf.NOT_FOUND);
         }
-
+        //发送响应消息体
+        ResponseUtil.send(response, msg);
     }
 }

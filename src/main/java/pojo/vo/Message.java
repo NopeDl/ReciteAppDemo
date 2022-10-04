@@ -36,6 +36,13 @@ public class Message<T> {
         this.content = content;
     }
 
+    public Message(String content, T data) {
+        this.code = 200;
+        this.content = content;
+        this.data = data;
+    }
+
+
     public Message(MsgInf msgInf, T data) {
         this.code = msgInf.getCode();
         this.content = msgInf.getContent();
