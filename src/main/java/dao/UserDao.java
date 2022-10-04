@@ -1,6 +1,7 @@
 package dao;
 
 import pojo.po.User;
+import pojo.vo.Message;
 
 public interface UserDao {
     /**
@@ -29,4 +30,11 @@ public interface UserDao {
      */
     int createUserByNumber(String number, String password, String nickName);
 
+
+    /**
+     * 用户通过自己的userId来修改个人资料
+     * @param user
+     * @return
+     */
+    int reMessageById(User user);
 }

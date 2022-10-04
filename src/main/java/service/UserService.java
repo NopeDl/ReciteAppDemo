@@ -29,4 +29,12 @@ public interface UserService {
      * @return 找到返回该值，
      */
     String getCookie(HttpServletRequest request,String cookieName);
+
+
+    /**
+     * 根据用户的id修改资料
+     * @param user
+     * @return
+     */
+    Message ReMsgById(User user);
 }

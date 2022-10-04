@@ -61,4 +61,17 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public Message ReMsgById(User user) {
+        Message<?> message;
+        int result = userDao.reMessageById(user);
+        if(result>0){
+            //把修改后的资料带走
+            message=new Message<>(MsgInf.OK, user);
+        }else{
+            message=new Message<>("该修改违法！");
+        }
+        return message;
+    }
 }

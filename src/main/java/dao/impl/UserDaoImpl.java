@@ -5,6 +5,7 @@ import com.zz.core.SqlSessionFactory;
 import dao.UserDao;
 import pojo.po.Account;
 import pojo.po.User;
+import pojo.vo.Message;
 import utils.DaoUtil;
 
 import java.util.List;
@@ -87,4 +88,28 @@ public class UserDaoImpl implements UserDao {
         sqlSession.close();
         return insert;
     }
+
+
+    /**
+     * 修改用户的个人资料
+     * @param user
+     * @return
+     */
+    @Override
+    public int reMessageById(User user) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("reMessageById", user);
+        if(update>0){
+            //说明修改成功
+            sqlSession.commit();
+        }else{
+            //否则回滚
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+
+    }
+
+
 }
