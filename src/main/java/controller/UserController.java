@@ -1,7 +1,7 @@
 package controller;
 
 
-import com.zz.utils.StringParser;
+
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -51,7 +51,7 @@ public class UserController extends HttpServlet {
         } else if ("ChangePswd".equals(requestURI)) {
             //修改密码
             msg = accountService.changePassword(request);
-        } else if("reMessage".equals(requestURI)){
+        } else if("ReMessage".equals(requestURI)){
             //用户修改个人资料
             //获取用户修改后的内容
             String phone = request.getParameter("phone");
