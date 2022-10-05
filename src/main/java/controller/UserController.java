@@ -52,32 +52,10 @@ public class UserController extends HttpServlet {
             //修改密码
             msg = accountService.changePassword(request);
         } else if("ReMessage".equals(requestURI)){
-            //用户修改个人资料
-            //获取用户修改后的内容
-            String phone = request.getParameter("phone");
-            String nickName = request.getParameter("nickName");
-            String sex = request.getParameter("sex");
-            String time =request.getParameter("birthday");
-            //将生日转化为data
-            DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
-            Date birthday = null;
-            try {
-                birthday = fmt.parse(time);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Integer userId = accountService.getIdByNumber(request);
+            msg = userService.ReMsgById(userId, request);
+            request.getRequestDispatcher("/upload/image").forward(request,response);
 
-            Integer points = Integer.parseInt(request.getParameter("points"));
-            String imagePath = request.getParameter("imagePath");
-            Integer cityId = Integer.parseInt(request.getParameter("cityId"));
-            String schoolId = request.getParameter("schoolId");
-
-            //获取userId
-            Integer userId = accountService.getIdByNumber(phone);
-            //封装用户修改后的资料
-            User user=new User(userId,nickName,sex,birthday,points,imagePath,cityId,schoolId);
-            //更改修改后的数据
-            msg = userService.ReMsgById(user);
         }else {
             msg = new Message<>(MsgInf.NOT_FOUND);
         }

@@ -33,8 +33,9 @@ public interface UserService {
 
     /**
      * 根据用户的id修改资料
-     * @param user
+     * @param userId
+     * @param request
      * @return
      */
-    Message ReMsgById(User user);
+    Message ReMsgById(int userId,HttpServletRequest request);
 }

@@ -68,7 +68,8 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public Integer getIdByNumber( String number) {
+    public Integer getIdByNumber(HttpServletRequest request) {
+        String number = request.getParameter("phone");
         Integer userId = accountDao.selectIdByNumber(number);
         return userId;
     }

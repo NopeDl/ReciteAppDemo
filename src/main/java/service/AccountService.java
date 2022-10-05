@@ -21,8 +21,8 @@ public interface AccountService {
 
     /**
      * 根据手机号查找userId
-     * @param number
+     * @param request
      * @return
      */
-    Integer getIdByNumber( String number);
+    Integer getIdByNumber(HttpServletRequest request);
 }
