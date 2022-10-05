@@ -41,14 +41,6 @@ public class User {
         return nickName;
     }
 
-    public int getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
@@ -85,6 +77,13 @@ public class User {
         this.image = image;
     }
 
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
 
     public String getSchool() {
         return school;
@@ -92,19 +91,5 @@ public class User {
 
     public void setSchool(String school) {
         this.school = school;
-    }
-
-    public User(int userId, String nickName, String sex, Date birthday, int points, String image, int cityId, String school) {
-        this.userId = userId;
-        this.nickName = nickName;
-        this.sex = sex;
-        this.birthday = birthday;
-        this.points = points;
-        this.image = image;
-        this.cityId = cityId;
-        this.school = school;
-    }
-
-    public User() {
     }
 }

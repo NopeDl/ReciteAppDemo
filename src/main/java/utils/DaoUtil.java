@@ -1,8 +1,8 @@
 package utils;
 
-import com.zz.core.SqlSessionFactory;
-import com.zz.core.SqlSessionFactoryBuilder;
-import com.zz.utils.Resources;
+import easydao.core.SqlSessionFactory;
+import easydao.core.SqlSessionFactoryBuilder;
+import easydao.utils.Resources;
 
 import java.io.IOException;
 import java.io.InputStream;

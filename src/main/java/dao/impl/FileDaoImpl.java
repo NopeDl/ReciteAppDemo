@@ -1,7 +1,7 @@
 package dao.impl;
 
-import com.zz.core.SqlSession;
-import com.zz.core.SqlSessionFactory;
+import easydao.core.SqlSession;
+import easydao.core.SqlSessionFactory;
 import dao.FileDao;
 import pojo.po.File;
 import utils.DaoUtil;

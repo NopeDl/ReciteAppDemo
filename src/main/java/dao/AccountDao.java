@@ -1,7 +1,6 @@
 package dao;
 
 import pojo.po.Account;
-import pojo.po.User;
 
 public interface AccountDao {
 

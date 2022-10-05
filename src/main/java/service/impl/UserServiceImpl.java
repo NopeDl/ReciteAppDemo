@@ -104,7 +104,15 @@ public class UserServiceImpl implements UserService {
         Integer cityId = Integer.parseInt(request.getParameter("cityId"));
         String schoolId = request.getParameter("schoolId");
 
-        User user = new User(userId, nickName, sex, birthday, points, imagePath, cityId, schoolId);
+        User user = new User();
+        user.setUserId(userId);
+        user.setNickName(nickName);
+        user.setBirthday(birthday);
+        user.setImage(imagePath);
+        user.setPoints(points);
+        user.setCityId(cityId);
+        user.setSex(sex);
+        user.setSchool(schoolId);
 
         int result = userDao.reMessageById(user);
         if (result > 0) {

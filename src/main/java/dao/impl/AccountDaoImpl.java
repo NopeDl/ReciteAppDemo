@@ -1,10 +1,9 @@
 package dao.impl;
 
-import com.zz.core.SqlSession;
-import com.zz.core.SqlSessionFactory;
+import easydao.core.SqlSession;
+import easydao.core.SqlSessionFactory;
 import dao.AccountDao;
 import pojo.po.Account;
-import pojo.po.User;
 import utils.DaoUtil;
 
 import java.util.List;
