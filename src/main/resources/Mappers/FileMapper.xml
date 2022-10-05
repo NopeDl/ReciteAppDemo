@@ -1,0 +1,7 @@
+<!DOCTYPE mapper>
+<mapper namespace="FileMapper">
+    <!--通过userId上传文件-->
+    <insert id="insertFile">
+        insert into file (fileContext,userId) values(#{fileContext},#{userId})
+    </insert>
+</mapper>
