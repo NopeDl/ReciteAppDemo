@@ -37,5 +37,13 @@ public interface UserService {
      * @param request
      * @return
      */
-    Message ReMsgById(int userId,HttpServletRequest request);
+    Message<?> ReMsgById(int userId,HttpServletRequest request);
+
+
+    /**
+     * 根据id设置头像
+     * @param request
+     * @return
+     */
+    Message<?> setFileById(HttpServletRequest request);
 }

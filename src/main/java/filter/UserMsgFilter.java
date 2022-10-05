@@ -10,8 +10,8 @@ import service.impl.UserServiceImpl;
 
 import java.io.IOException;
 
-//拦截用户获取信息
-@WebFilter({"/user.do/UserMsg", "/user.do/ChangePswd"})
+//拦截用户未登录非法请求
+@WebFilter({"/user.do/UserMsg", "/user.do/ChangePswd", "/upload/*"})
 public class UserMsgFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

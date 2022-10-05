@@ -92,17 +92,18 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 修改用户的个人资料
+     *
      * @param user
      * @return
      */
     @Override
     public int reMessageById(User user) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int update = sqlSession.update("reMessageById", user);
-        if(update>0){
+        int update = sqlSession.update("UserMapper.reMessageById", user);
+        if (update > 0) {
             //说明修改成功
             sqlSession.commit();
-        }else{
+        } else {
             //否则回滚
             sqlSession.rollBack();
         }
@@ -111,5 +112,26 @@ public class UserDaoImpl implements UserDao {
 
     }
 
-
+    /**
+     * 设置头像
+     *
+     * @param id 用户id
+     * @return
+     */
+    @Override
+    public int saveImagePathById(int id) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        User user = new User();
+        user.setUserId(id);
+        int update = sqlSession.update("UserMapper.setImgPath", user);
+        if (update > 0) {
+            //说明修改成功
+            sqlSession.commit();
+        } else {
+            //否则回滚
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
 }

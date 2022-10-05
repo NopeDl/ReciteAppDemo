@@ -11,7 +11,7 @@ public class User {
     private String sex;
     private Date birthday;
     private int points;
-    private String imagePath;
+    private String image;
     private int cityId;
     private String school;
 
@@ -23,7 +23,7 @@ public class User {
                 ", sex='" + sex + '\'' +
                 ", birthday=" + birthday +
                 ", points=" + points +
-                ", imagePath='" + imagePath + '\'' +
+                ", image='" + image + '\'' +
                 ", cityId=" + cityId +
                 ", school='" + school + '\'' +
                 '}';
@@ -77,12 +77,12 @@ public class User {
         this.points = points;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImage() {
+        return image;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImage(String image) {
+        this.image = image;
     }
 
 
@@ -94,13 +94,13 @@ public class User {
         this.school = school;
     }
 
-    public User(int userId, String nickName, String sex, Date birthday, int points, String imagePath, int cityId, String school) {
+    public User(int userId, String nickName, String sex, Date birthday, int points, String image, int cityId, String school) {
         this.userId = userId;
         this.nickName = nickName;
         this.sex = sex;
         this.birthday = birthday;
         this.points = points;
-        this.imagePath = imagePath;
+        this.image = image;
         this.cityId = cityId;
         this.school = school;
     }

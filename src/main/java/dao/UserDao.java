@@ -33,8 +33,17 @@ public interface UserDao {
 
     /**
      * 用户通过自己的userId来修改个人资料
+     *
      * @param user
      * @return
      */
     int reMessageById(User user);
+
+    /**
+     * 通过id存头像路径
+     *
+     * @param id 用户id
+     * @return
+     */
+    int saveImagePathById(int id);
 }

@@ -1,7 +1,6 @@
 package controller;
 
 
-
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -51,17 +50,15 @@ public class UserController extends HttpServlet {
         } else if ("ChangePswd".equals(requestURI)) {
             //修改密码
             msg = accountService.changePassword(request);
-        } else if("ReMessage".equals(requestURI)){
+        } else if ("ReMessage".equals(requestURI)) {
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
-            request.getRequestDispatcher("/upload/image").forward(request,response);
-
-        }else {
+            request.getRequestDispatcher("/upload/image").forward(request, response);
+        } else {
             msg = new Message<>(MsgInf.NOT_FOUND);
         }
         //发送响应消息体
         ResponseUtil.send(response, msg);
-
 
 
     }

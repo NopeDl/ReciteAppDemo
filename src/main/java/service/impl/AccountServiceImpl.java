@@ -1,21 +1,15 @@
 package service.impl;
 
-import com.mysql.cj.Session;
 import dao.AccountDao;
 import dao.UserDao;
 import dao.impl.AccountDaoImpl;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import pojo.po.Account;
-import pojo.po.User;
 import pojo.vo.Message;
 import service.AccountService;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = new AccountDaoImpl();
