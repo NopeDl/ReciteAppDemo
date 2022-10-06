@@ -47,7 +47,7 @@ public class AccountDaoImpl implements AccountDao {
     //根据手机号查找id,返回id
     public Integer selectIdByNumber(String  number) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Object> selectIdByNumber = sqlSession.selectList("selectIdByNumber", number);
+        List<Object> selectIdByNumber = sqlSession.selectList("AccountMapper.selectIdByNumber", number);
         if(selectIdByNumber.size()==0){
             return null;
         }else{
