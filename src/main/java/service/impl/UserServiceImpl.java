@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
         int ret = userDao.createUserByNumber(number, password, nickName);
         Message<?> message;
         if (ret == 1) {
-            message = new Message<>(MsgInf.OK);
+            message = new Message<>(MsgInf.OK, true);
         } else {
-            message = new Message<>("用户创建失败");
+            message = new Message<>("用户创建失败", false);
         }
         return message;
     }
