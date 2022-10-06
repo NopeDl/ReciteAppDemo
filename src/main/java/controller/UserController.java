@@ -7,7 +7,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pojo.po.User;
 import pojo.vo.Message;
 import service.AccountService;
 import service.UserService;
@@ -16,12 +15,7 @@ import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 执行用户相关操作
@@ -51,6 +45,7 @@ public class UserController extends HttpServlet {
             //修改密码
             msg = accountService.changePassword(request);
         } else if ("ReMessage".equals(requestURI)) {
+            //修改个人信息
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
             request.getRequestDispatcher("/upload/image").forward(request, response);
