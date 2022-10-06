@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
                 msg = new Message<>(MsgInf.UNAUTHORIZED);
             } else {
                 //验证成功
-                msg = new Message<>();
+                msg = new Message<>("登陆成功", true);
 //                //发送userId cookie给用户
 //                Cookie cookie = new Cookie("userId", account.getUserId() + "");
 //                response.addCookie(cookie);

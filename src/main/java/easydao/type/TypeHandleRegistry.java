@@ -1,6 +1,5 @@
 package easydao.type;
 
-import com.zz.type.impl.*;
 import easydao.type.impl.*;
 
 import java.util.Date;
