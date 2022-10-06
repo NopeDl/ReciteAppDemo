@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
             //把修改后的资料带走
             message = new Message<>(MsgInf.OK, user);
         } else {
-            message = new Message<>("该修改违法！");
+            message = new Message<>("该修改违法！", false);
         }
         return message;
     }
