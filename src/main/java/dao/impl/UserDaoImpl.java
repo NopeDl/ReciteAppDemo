@@ -133,4 +133,24 @@ public class UserDaoImpl implements UserDao {
         sqlSession.close();
         return update;
     }
+
+    /**
+     * 获取用户名
+     *
+     * @param nickName
+     * @return
+     */
+    @Override
+    public String selectNickName(String nickName) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        User user = new User();
+        user.setNickName(nickName);
+        List<Object> userList = sqlSession.selectList("UserMapper.selectNickName", user);
+        sqlSession.close();
+        if (userList.size() > 0) {
+            return ((User) userList.get(0)).getNickName();
+        } else {
+            return null;
+        }
+    }
 }

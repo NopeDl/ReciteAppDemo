@@ -167,4 +167,25 @@ public class UserServiceImpl implements UserService {
         }
         return message;
     }
+
+    /**
+     * 检查昵称是否可用
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Message<?> checkNickNameExists(HttpServletRequest request) {
+        String nickName = request.getParameter("username");
+        String name = userDao.selectNickName(nickName);
+        Message<?> msg;
+        if (name == null) {
+            //用户名可用
+            msg = new Message<>("用户名可用", true);
+        } else {
+            //用户名不可用
+            msg = new Message<>("用户名已被使用", false);
+        }
+        return msg;
+    }
 }

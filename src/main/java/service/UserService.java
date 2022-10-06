@@ -1,7 +1,6 @@
 package service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import pojo.po.User;
 import pojo.vo.Message;
 
 public interface UserService {
@@ -24,26 +23,37 @@ public interface UserService {
 
     /**
      * 通过传进去的在cookieName遍历cookie,寻找对应value的值
+     *
      * @param request
      * @param cookieName
      * @return 找到返回该值，
      */
-    String getCookie(HttpServletRequest request,String cookieName);
+    String getCookie(HttpServletRequest request, String cookieName);
 
 
     /**
      * 根据用户的id修改资料
+     *
      * @param userId
      * @param request
      * @return
      */
-    Message<?> ReMsgById(int userId,HttpServletRequest request);
+    Message<?> ReMsgById(int userId, HttpServletRequest request);
 
 
     /**
      * 根据id设置头像
+     *
      * @param request
      * @return
      */
     Message<?> setFileById(HttpServletRequest request);
+
+    /**
+     * 检查昵称是否可用
+     *
+     * @param request
+     * @return
+     */
+    Message<?> checkNickNameExists(HttpServletRequest request);
 }

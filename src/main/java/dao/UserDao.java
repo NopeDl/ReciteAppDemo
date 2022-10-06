@@ -46,4 +46,12 @@ public interface UserDao {
      * @return
      */
     int saveImagePathById(int id);
+
+    /**
+     * 获取用户名
+     *
+     * @param nickName
+     * @return
+     */
+    String selectNickName(String nickName);
 }

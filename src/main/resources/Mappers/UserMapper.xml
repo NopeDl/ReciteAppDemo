@@ -8,7 +8,11 @@
         select * from user where nickName = #{nickName}
     </select>
 
-    <insert id="insertUserByNickName" >
+    <select id="selectNickName" resultType="pojo.po.User">
+        select nickName from user where nickName = #{nickName}
+    </select>
+
+    <insert id="insertUserByNickName">
         insert into user (nickName) values(#{nickName})
     </insert>
 
