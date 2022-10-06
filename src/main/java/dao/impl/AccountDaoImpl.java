@@ -45,13 +45,15 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     //根据手机号查找id,返回id
-    public Integer selectIdByNumber(String  number) {
+    public Integer selectIdByNumber(String number) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Object> selectIdByNumber = sqlSession.selectList("AccountMapper.selectIdByNumber", number);
-        if(selectIdByNumber.size()==0){
+        Account account = new Account();
+        account.setNumber(number);
+        List<Object> selectIdByNumber = sqlSession.selectList("AccountMapper.selectIdByNumber", account);
+        if (selectIdByNumber.size() == 0) {
             return null;
-        }else{
-            return (Integer)selectIdByNumber.get(0);
+        } else {
+            return Integer.parseInt(((Account) selectIdByNumber.get(0)).getNumber());
         }
 
     }
