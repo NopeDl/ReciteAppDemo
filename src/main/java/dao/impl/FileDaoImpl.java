@@ -6,6 +6,8 @@ import dao.FileDao;
 import pojo.po.File;
 import utils.DaoUtil;
 
+import java.util.List;
+
 public class FileDaoImpl implements FileDao {
     private final SqlSessionFactory sqlSessionFactory;
 
@@ -27,5 +29,20 @@ public class FileDaoImpl implements FileDao {
         }
         sqlSession.close();
         return 0;
+    }
+
+    /**
+     * 获取文件总个数
+     * @return
+     */
+    @Override
+    public Integer selectCount() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> userId = sqlSession.selectList("FileMapper.selectCount", "userId");
+        if(userId!=null){
+            return null;
+        }else {
+           return (Integer) userId.get(0);
+        }
     }
 }

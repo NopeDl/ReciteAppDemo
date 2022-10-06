@@ -8,4 +8,14 @@ public interface FileDao {
      * @return
      */
     int insertFileByUserId(int userId,String path);
+
+
+    /**
+     *获取总的文件个数
+     * @return
+     */
+    Integer selectCount();
+
+
+
 }

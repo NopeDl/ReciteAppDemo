@@ -9,8 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
+import service.FileService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
+import service.impl.FileServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
@@ -24,6 +26,7 @@ import java.io.IOException;
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
     private final UserService userService = new UserServiceImpl();
+    private final FileService fileService=new FileServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +52,9 @@ public class UserController extends HttpServlet {
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
             request.getRequestDispatcher("/upload/image").forward(request, response);
+        } else if("UpLoadFile".equals(requestURI)){
+            //用户上传文件
+            Message message = fileService.UpLoad(request);
         } else {
             msg = new Message<>(MsgInf.NOT_FOUND);
         }
