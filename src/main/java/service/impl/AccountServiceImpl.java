@@ -32,11 +32,6 @@ public class AccountServiceImpl implements AccountService {
             } else {
                 //验证成功
                 msg = new Message<>("登陆成功", true);
-//                //发送userId cookie给用户
-//                Cookie cookie = new Cookie("userId", account.getUserId() + "");
-//                response.addCookie(cookie);
-
-//                !!! new version !!!
 //                登录成功后再session中设置用户id
                 request.getSession().setAttribute("userId", account.getUserId());
             }
@@ -60,11 +55,36 @@ public class AccountServiceImpl implements AccountService {
         return message;
     }
 
-
+    /**
+     * 根据手机号获取id
+     *
+     * @param request
+     * @return
+     */
     @Override
     public Integer getIdByNumber(HttpServletRequest request) {
         String number = request.getParameter("phone");
         Integer userId = accountDao.selectIdByNumber(number);
         return userId;
+    }
+
+    /**
+     * 检测手机号是否存在
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Message<?> checkNumberExists(HttpServletRequest request) {
+        Message<?> msg;
+        Integer id = this.getIdByNumber(request);
+        if (id == null) {
+            //手机号没被使用过
+            msg = new Message<>("该手机号可以使用", true);
+        } else {
+            //手机号被使用过
+            msg = new Message<>("该手机号已被注册", false);
+        }
+        return msg;
     }
 }
