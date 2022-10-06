@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
             Account account = accountDao.selectAccount(number, password);
             if (account == null) {
                 //验证信息不通过
-                msg = new Message<>(MsgInf.UNAUTHORIZED);
+                msg = new Message<>(MsgInf.UNAUTHORIZED, false);
             } else {
                 //验证成功
                 msg = new Message<>("登陆成功", true);
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
                 request.getSession().setAttribute("userId", account.getUserId());
             }
         } else {
-            msg = new Message<>("phone或者password参数不能为空");
+            msg = new Message<>("phone或者password参数不能为空", false);
         }
         return msg;
     }
