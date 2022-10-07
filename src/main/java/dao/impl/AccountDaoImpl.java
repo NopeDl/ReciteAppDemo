@@ -50,10 +50,11 @@ public class AccountDaoImpl implements AccountDao {
         Account account = new Account();
         account.setNumber(number);
         List<Object> selectIdByNumber = sqlSession.selectList("AccountMapper.selectIdByNumber", account);
+        sqlSession.close();
         if (selectIdByNumber.size() == 0) {
             return null;
         } else {
-            return Integer.parseInt(((Account) selectIdByNumber.get(0)).getNumber());
+            return ((Account) selectIdByNumber.get(0)).getUserId();
         }
 
     }

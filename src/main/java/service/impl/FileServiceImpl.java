@@ -2,7 +2,6 @@ package service.impl;
 
 import dao.FileDao;
 import dao.impl.FileDaoImpl;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -10,41 +9,39 @@ import pojo.vo.Message;
 import service.FileService;
 import sun.misc.CharacterDecoder;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 
 public class FileServiceImpl implements FileService {
-    FileService fileService=new FileServiceImpl();
-    FileDao fileDao=new FileDaoImpl();
+    FileDao fileDao = new FileDaoImpl();
 
     //将base64的pdf转化为txt文本
     @Override
-    public Message UpLoad(HttpServletRequest request) {
+    public Message<?> UpLoad(HttpServletRequest request) {
         Message<?> message;
         //获取从前端传过来的文件的base64编码
-       String fileBase64 = request.getParameter("fileBase64");
+        String fileBase64 = request.getParameter("fileBase64");
 
-       //获取文件的个数
+        //获取文件的个数
         Integer integer = fileDao.selectCount();
-        int fileId=integer+1;
+        int fileId = integer + 1;
 
         //去掉base64的头部
         int start = fileBase64.indexOf(",");
-        String base64String = fileBase64.substring(start+1, fileBase64.length());
+        String base64String = fileBase64.substring(start + 1, fileBase64.length());
 
-        String url = fileService.getASPdf(base64String, fileId);
-        String context = fileService.rePdf(url);//放回文本内容
-        String textUrl = fileService.reAsText(context, fileId);
+        String url = getASPdf(base64String, fileId);
+        String context = rePdf(url);//放回文本内容
+        String textUrl = reAsText(context, fileId);
 
         //或许有可能获取不到？？？
         int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
 
         //调用dao层
         int result = fileDao.insertFileByUserId(userId, textUrl);
-        if(result>0){
-            message=new Message<>("上传成功",true);
-        }else {
-            message=new Message<>("上传失败",false);
+        if (result > 0) {
+            message = new Message<>("上传成功", true);
+        } else {
+            message = new Message<>("上传失败", false);
         }
         return message;
 
@@ -53,23 +50,24 @@ public class FileServiceImpl implements FileService {
 
     /**
      * 将base64去掉头部后，转化为txt
+     *
      * @param base64String
      * @param fileId
      * @return
      */
     @Override
-    public String getASPdf(String base64String,int fileId) {
+    public String getASPdf(String base64String, int fileId) {
 
-        BufferedInputStream bufferedInputStream=null;
-        FileOutputStream fileOutputStream=null;
-        BufferedOutputStream bufferedOutputStreamb=null;
-        String fileName="D:/pdfFile/"+fileId+".pdf";
+        BufferedInputStream bufferedInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        BufferedOutputStream bufferedOutputStreamb = null;
+        String fileName = "D:/pdfFile/" + fileId + ".pdf";
 
         try {
 
 
-            File file=new File(fileName);
-            if(!file.exists()){
+            File file = new File(fileName);
+            if (!file.exists()) {
                 file.createNewFile();
             }
 
@@ -78,9 +76,9 @@ public class FileServiceImpl implements FileService {
             byte[] bytes = decoder.decodeBuffer(base64String);
 
             //读取数据的缓冲输入流对象
-            bufferedInputStream=new BufferedInputStream(new ByteArrayInputStream(bytes));
+            bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
             //创建到file的输出流
-            fileOutputStream=new FileOutputStream(file);
+            fileOutputStream = new FileOutputStream(file);
             // 为文件输出流对接缓冲输出流对象
             bufferedOutputStreamb = new BufferedOutputStream(fileOutputStream);
 
@@ -95,7 +93,7 @@ public class FileServiceImpl implements FileService {
             bufferedOutputStreamb.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 bufferedInputStream.close();
                 fileOutputStream.close();
@@ -107,23 +105,23 @@ public class FileServiceImpl implements FileService {
 
 
         }
-    return  fileName;
+        return fileName;
     }
 
     /**
      * 将pdf转化为txt
-     * @param url
      *
+     * @param url
      */
     @Override
     public String rePdf(String url) {
 
-        String context=null;
+        String context = null;
         try {
-            File file=new File(url);
-            PDDocument document= PDDocument.load(file);
-            PDFTextStripper stripper=new PDFTextStripper();
-             context=stripper.getText(document);
+            File file = new File(url);
+            PDDocument document = PDDocument.load(file);
+            PDFTextStripper stripper = new PDFTextStripper();
+            context = stripper.getText(document);
             //删除pdf文件
             file.delete();
         } catch (IOException e) {
@@ -138,32 +136,33 @@ public class FileServiceImpl implements FileService {
 
     /**
      * 传进来一个文本，把他存为text
+     *
      * @param context
      * @param fileId
      * @return
      */
     @Override
     public String reAsText(String context, int fileId) {
-        FileOutputStream fileOutputStream=null;
-        String fileName="D:/pdfFile/"+fileId+".txt";
+        FileOutputStream fileOutputStream = null;
+        String fileName = "D:/pdfFile/" + fileId + ".txt";
         try {
 
-            File file=new File(fileName);
-            if(!file.exists()) {
+            File file = new File(fileName);
+            if (!file.exists()) {
                 file.createNewFile();
             }
-            byte[] bytes=new byte[1024];
-            bytes= context.getBytes();
+            byte[] bytes = new byte[1024];
+            bytes = context.getBytes();
 
 
-            fileOutputStream=new FileOutputStream(file);
+            fileOutputStream = new FileOutputStream(file);
 
-            fileOutputStream.write(bytes,0,bytes.length);
+            fileOutputStream.write(bytes, 0, bytes.length);
 
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 fileOutputStream.close();
             } catch (IOException e) {

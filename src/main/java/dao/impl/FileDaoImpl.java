@@ -33,16 +33,18 @@ public class FileDaoImpl implements FileDao {
 
     /**
      * 获取文件总个数
+     *
      * @return
      */
     @Override
     public Integer selectCount() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> userId = sqlSession.selectList("FileMapper.selectCount", "userId");
-        if(userId!=null){
+        sqlSession.close();
+        if (userId.size() == 0) {
             return null;
-        }else {
-           return (Integer) userId.get(0);
+        } else {
+            return (Integer) userId.get(0);
         }
     }
 }

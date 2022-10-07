@@ -26,7 +26,7 @@ import java.io.IOException;
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
     private final UserService userService = new UserServiceImpl();
-    private final FileService fileService=new FileServiceImpl();
+    private final FileService fileService = new FileServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -52,9 +52,9 @@ public class UserController extends HttpServlet {
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
             request.getRequestDispatcher("/upload/image").forward(request, response);
-        } else if("UpLoadFile".equals(requestURI)){
+        } else if ("UpLoadFile".equals(requestURI)) {
             //用户上传文件
-            Message message = fileService.UpLoad(request);
+            msg = fileService.UpLoad(request);
         } else {
             msg = new Message<>(MsgInf.NOT_FOUND);
         }
