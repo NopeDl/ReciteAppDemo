@@ -28,7 +28,7 @@ public class InfController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String uri = StringUtil.parseURI(request.getRequestURI());
-        Message<?> msg;
+        Message msg;
         if ("checkUsedNumber".equals(uri)) {
             //检查手机号是否存在
             msg = accountService.checkNumberExists(request);
@@ -36,7 +36,7 @@ public class InfController extends HttpServlet {
             //检查昵称是否存在
             msg = userService.checkNickNameExists(request);
         } else {
-            msg = new Message<>(MsgInf.NOT_FOUND);
+            msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);
     }

@@ -25,12 +25,12 @@ public class UploadController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String uri = StringUtil.parseURI(request.getRequestURI());
-        Message<?> msg;
+        Message msg;
         if ("file".equals(uri)) {
             //上传文件
             msg = userService.setFileById(request);
         } else {
-            msg = new Message<>(MsgInf.NOT_FOUND);
+            msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);
     }

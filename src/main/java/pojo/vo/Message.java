@@ -2,10 +2,13 @@ package pojo.vo;
 
 import enums.MsgInf;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 用于封装响应前端的信息
  */
-public class Message<T> {
+public class Message {
     /**
      * 响应状态码: 200 404 500等...
      */
@@ -19,7 +22,7 @@ public class Message<T> {
     /**
      * 响应数据
      */
-    private T data;
+    private Map<String, Object> data = new HashMap<>();
 
     public Message() {
         //默认发送成功消息
@@ -36,18 +39,22 @@ public class Message<T> {
         this.content = content;
     }
 
-    public Message(String content, T data) {
-        this.code = 200;
-        this.content = content;
-        this.data = data;
+    public void addData(String name, Object o) {
+        data.put(name, o);
     }
 
+//    public Message(String content, T data) {
+//        this.code = 200;
+//        this.content = content;
+//        this.data = data;
+//    }
 
-    public Message(MsgInf msgInf, T data) {
-        this.code = msgInf.getCode();
-        this.content = msgInf.getContent();
-        this.data = data;
-    }
+
+//    public Message(MsgInf msgInf, T data) {
+//        this.code = msgInf.getCode();
+//        this.content = msgInf.getContent();
+//        this.data = data;
+//    }
 
     public int getCode() {
         return code;
@@ -57,7 +64,11 @@ public class Message<T> {
         return content;
     }
 
-    public T getData() {
+    public Map<String, Object> getData() {
         return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
     }
 }

@@ -16,8 +16,8 @@ public class FileServiceImpl implements FileService {
 
     //将base64的pdf转化为txt文本
     @Override
-    public Message<?> UpLoad(HttpServletRequest request) {
-        Message<?> message;
+    public Message UpLoad(HttpServletRequest request) {
+        Message message;
         //获取从前端传过来的文件的base64编码
         String fileBase64 = request.getParameter("fileBase64");
 
@@ -34,14 +34,16 @@ public class FileServiceImpl implements FileService {
         String textUrl = reAsText(context, fileId);
 
         //或许有可能获取不到？？？
-        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
-
+//        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
+        int userId = Integer.parseInt(request.getParameter("userId"));//前端可以储存userId解决跨域session失效问题
         //调用dao层
         int result = fileDao.insertFileByUserId(userId, textUrl);
         if (result > 0) {
-            message = new Message<>("上传成功", true);
+            message = new Message("上传成功");
+            message.addData("uploadSuccess", true);
         } else {
-            message = new Message<>("上传失败", false);
+            message = new Message("上传失败");
+            message.addData("uploadSuccess", false);
         }
         return message;
 

@@ -11,7 +11,7 @@ public interface UserService {
      *
      * @return
      */
-    Message<?> createUser(HttpServletRequest request);
+    Message createUser(HttpServletRequest request);
 
 
     /***
@@ -38,7 +38,7 @@ public interface UserService {
      * @param request
      * @return
      */
-    Message<?> ReMsgById(int userId, HttpServletRequest request);
+    Message ReMsgById(int userId, HttpServletRequest request);
 
 
     /**
@@ -47,7 +47,7 @@ public interface UserService {
      * @param request
      * @return
      */
-    Message<?> setFileById(HttpServletRequest request);
+    Message setFileById(HttpServletRequest request);
 
     /**
      * 检查昵称是否可用
@@ -55,5 +55,5 @@ public interface UserService {
      * @param request
      * @return
      */
-    Message<?> checkNickNameExists(HttpServletRequest request);
+    Message checkNickNameExists(HttpServletRequest request);
 }

@@ -19,7 +19,7 @@ public interface AccountService {
      * @param request
      * @return
      */
-    Message<?> changePassword(HttpServletRequest request);
+    Message changePassword(HttpServletRequest request);
 
     /**
      * 根据手机号查找userId
@@ -35,5 +35,5 @@ public interface AccountService {
      * @param request
      * @return
      */
-    Message<?> checkNumberExists(HttpServletRequest request);
+    Message checkNumberExists(HttpServletRequest request);
 }

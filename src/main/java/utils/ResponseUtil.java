@@ -12,10 +12,9 @@ public class ResponseUtil {
      *
      * @param response
      * @param message
-     * @param <T>
      * @throws IOException
      */
-    public static <T> void send(HttpServletResponse response, Message<T> message) throws IOException {
+    public static  void send(HttpServletResponse response, Message message) throws IOException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("msg", message);
         response.getWriter().write(jsonObject.toJSONString());

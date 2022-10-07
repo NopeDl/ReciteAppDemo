@@ -17,6 +17,8 @@ import utils.FileUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import java.text.DateFormat;
@@ -37,16 +39,21 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Message<?> createUser(HttpServletRequest request) {
+    public Message createUser(HttpServletRequest request) {
         String number = request.getParameter("phone");
         String password = request.getParameter("password");
         String nickName = request.getParameter("username");
         int ret = userDao.createUserByNumber(number, password, nickName);
-        Message<?> message;
+        Message message;
         if (ret == 1) {
-            message = new Message<>(MsgInf.OK, true);
+            User user = userDao.selectUserByNickName(nickName);
+            int userId = user.getUserId();
+            message = new Message(MsgInf.OK);
+            message.addData("isSuccess", true);
+            message.addData("userId", userId);//将id发送给前端
         } else {
-            message = new Message<>("用户创建失败", false);
+            message = new Message("用户创建失败");
+            message.addData("isSuccess", true);
         }
         return message;
     }
@@ -55,12 +62,14 @@ public class UserServiceImpl implements UserService {
     //通过userId来查找用户资料
     public Message selectUserMsg(HttpServletRequest request) {
 
-        Message<?> message;
+        Message message;
 //        int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
-        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
+//        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
+        int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.selectUserById(userId);
         //将响应的数据封装到message里
-        message = new Message<User>(MsgInf.OK, user);
+        message = new Message(MsgInf.OK);
+        message.addData("user", user);
         return message;
     }
 
@@ -87,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Message ReMsgById(int userId, HttpServletRequest request) {
-        Message<?> message;
+        Message message;
         String nickName = request.getParameter("userName");
         String sex = request.getParameter("sex");
         //将生日转化为data
@@ -117,9 +126,11 @@ public class UserServiceImpl implements UserService {
         int result = userDao.reMessageById(user);
         if (result > 0) {
             //把修改后的资料带走
-            message = new Message<>(MsgInf.OK, user);
+            message = new Message(MsgInf.OK);
+            message.addData("user", user);
         } else {
-            message = new Message<>("该修改违法！", false);
+            message = new Message("该修改违法！");
+            message.addData("isSuccess", false);
         }
         return message;
     }
@@ -132,14 +143,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
 
-    public Message<?> setFileById(HttpServletRequest request) {
-        Message<?> message;
+    public Message setFileById(HttpServletRequest request) {
+        Message message;
         try {
             //获取头像
             Part part = request.getPart("file");
             if (part == null) {
                 //为空
-                message = new Message<>("文件上传错误", false);
+                message = new Message("文件上传错误");
+                message.addData("uploadSuccess", false);
             } else {
                 //不为空
                 //获取文件输入流
@@ -157,7 +169,8 @@ public class UserServiceImpl implements UserService {
                 int userId = (int) request.getSession().getAttribute("userId");
                 fileDao.insertFileByUserId(userId, savePath);
                 //封装响应消息
-                message = new Message<>("文件上传正常", true);
+                message = new Message("文件上传正常");
+                message.addData("uploadSuccess", true);
                 input.close();
             }
         } catch (IOException e) {
@@ -175,16 +188,18 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Message<?> checkNickNameExists(HttpServletRequest request) {
+    public Message checkNickNameExists(HttpServletRequest request) {
         String nickName = request.getParameter("username");
         String name = userDao.selectNickName(nickName);
-        Message<?> msg;
+        Message msg;
         if (name == null) {
             //用户名可用
-            msg = new Message<>("用户名可用", true);
+            msg = new Message("用户名可用");
+            msg.addData("isOk", true);
         } else {
             //用户名不可用
-            msg = new Message<>("用户名已被使用", false);
+            msg = new Message("用户名已被使用");
+            msg.addData("isOk", false);
         }
         return msg;
     }

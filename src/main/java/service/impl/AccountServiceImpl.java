@@ -19,40 +19,50 @@ public class AccountServiceImpl implements AccountService {
      * 根据手机号和密码验证账户
      */
     @Override
-    public Message<?> checkAccount(HttpServletRequest request, HttpServletResponse response) {
+    public Message checkAccount(HttpServletRequest request, HttpServletResponse response) {
         String number = request.getParameter("phone");
         String password = request.getParameter("password");
-        Message<Object> msg;
+        Message msg;
         if (number != null && password != null) {
             //参数不为空
             Account account = accountDao.selectAccount(number, password);
             if (account == null) {
                 //验证信息不通过
-                msg = new Message<>(MsgInf.UNAUTHORIZED, false);
+                msg = new Message(MsgInf.UNAUTHORIZED);
+                msg.addData("isSuccess", false);
             } else {
                 //验证成功
-                msg = new Message<>("登陆成功", true);
+                msg = new Message("登陆成功");
+                msg.addData("isSuccess", true);
+                msg.addData("userId", account.getUserId());//将userid发送给前端储存
+
 //                登录成功后再session中设置用户id
-                request.getSession().setAttribute("userId", account.getUserId());
+//                request.getSession().setAttribute("userId", account.getUserId());
             }
         } else {
-            msg = new Message<>("phone或者password参数不能为空", false);
+            msg = new Message("phone或者password参数不能为空");
+            msg.addData("isSuccess", false);
         }
         return msg;
     }
 
     @Override
-    public Message<?> changePassword(HttpServletRequest request) {
-        int userId = (int) request.getSession().getAttribute("userId");
+    public Message changePassword(HttpServletRequest request) {
+//        int userId = (int) request.getSession().getAttribute("userId");
+        int userId = Integer.parseInt(request.getParameter("userId"));
         String newPassword = request.getParameter("password");
         int i = accountDao.changePasswordByUserId(userId, newPassword);
-        Message<?> message;
+        Message msg;
         if (i > 0) {
-            message = new Message<>("密码修改成功", "true");
+            msg = new Message("密码修改成功");
+            msg.addData("isSuccess", true);
+
         } else {
-            message = new Message<>("密码修改失败", "false");
+            msg = new Message("密码修改失败");
+            msg.addData("isSuccess", false);
+
         }
-        return message;
+        return msg;
     }
 
     /**
@@ -75,15 +85,17 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Message<?> checkNumberExists(HttpServletRequest request) {
-        Message<?> msg;
+    public Message checkNumberExists(HttpServletRequest request) {
+        Message msg;
         Integer id = this.getIdByNumber(request);
         if (id == null) {
             //手机号没被使用过
-            msg = new Message<>("该手机号可以使用", true);
+            msg = new Message("该手机号可以使用");
+            msg.addData("isOk", true);
         } else {
             //手机号被使用过
-            msg = new Message<>("该手机号已被注册", false);
+            msg = new Message("该手机号已被注册");
+            msg.addData("isOk", false);
         }
         return msg;
     }

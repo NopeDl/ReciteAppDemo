@@ -20,6 +20,7 @@ public class EncodingFilter extends HttpFilter {
         //解决跨域访问
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         chain.doFilter(request, response);
     }
 }

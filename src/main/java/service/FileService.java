@@ -10,5 +10,5 @@ public interface FileService {
 
     String reAsText(String context, int fileId);
 
-    Message<?> UpLoad(HttpServletRequest request);
+    Message UpLoad(HttpServletRequest request);
 }

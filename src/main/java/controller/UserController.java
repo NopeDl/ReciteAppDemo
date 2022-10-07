@@ -34,7 +34,7 @@ public class UserController extends HttpServlet {
         //获取URI
         String requestURI = StringUtil.parseURI(request.getRequestURI());
         //根据URI类型执行对应方法
-        Message<?> msg = null;
+        Message msg;
         if ("Login".equals(requestURI)) {
             //登录
             msg = accountService.checkAccount(request, response);
@@ -56,7 +56,7 @@ public class UserController extends HttpServlet {
             //用户上传文件
             msg = fileService.UpLoad(request);
         } else {
-            msg = new Message<>(MsgInf.NOT_FOUND);
+            msg = new Message(MsgInf.NOT_FOUND);
         }
         //发送响应消息体
         ResponseUtil.send(response, msg);
