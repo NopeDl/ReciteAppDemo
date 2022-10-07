@@ -51,10 +51,9 @@ public class UserController extends HttpServlet {
             //修改个人信息
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
-            request.getRequestDispatcher("/upload/image").forward(request, response);
         } else if("UpLoadFile".equals(requestURI)){
             //用户上传文件
-            Message message = fileService.UpLoad(request);
+           msg = fileService.UpLoad(request);
         } else {
             msg = new Message<>(MsgInf.NOT_FOUND);
         }
