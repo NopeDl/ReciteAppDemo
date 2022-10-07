@@ -10,16 +10,17 @@ import pojo.vo.Message;
 import service.FileService;
 import sun.misc.CharacterDecoder;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 
 public class FileServiceImpl implements FileService {
-    FileService fileService=new FileServiceImpl();
-    FileDao fileDao=new FileDaoImpl();
+
+   private  FileService fileService=null;
+    private final FileDao fileDao=new FileDaoImpl();
 
     //将base64的pdf转化为txt文本
     @Override
     public Message UpLoad(HttpServletRequest request) {
+        fileService=new FileServiceImpl();
         Message<?> message;
         //获取从前端传过来的文件的base64编码
        String fileBase64 = request.getParameter("fileBase64");
