@@ -19,8 +19,8 @@
 
     <!--通过userId修改个人资料-->
     <update id="reMessageById" parameterType="pojo.po.User">
-        update user set nickName=#{nickName},sex=#{sex},birthday=#{birthday},cityId=#{cityId},
-        schoolId=#{school} where userId=#{userId}
+        update user set nickName=#{nickName},sex=#{sex},birthday=#{birthday},image=#{imagePath},cityId=#{cityId},
+        school=#{school} where userId=#{userId}
     </update>
 
 </mapper>

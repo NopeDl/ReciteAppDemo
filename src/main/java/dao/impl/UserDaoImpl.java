@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao {
         List<Object> objectList = sqlSession.selectList("UserMapper.selectUserById", user);
         sqlSession.close();
         return objectList.size() == 0 ? null : (User) objectList.get(0);
+
     }
 
     /**
@@ -63,6 +64,7 @@ public class UserDaoImpl implements UserDao {
         user.setNickName(nickName);
         //插入用户
         int insert = sqlSession.insert("UserMapper.insertUserByNickName", user);
+        System.out.println(insert);
         if (insert > 0) {
             sqlSession.commit();
         } else {
