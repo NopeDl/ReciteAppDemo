@@ -1,12 +1,12 @@
 package service.impl;
 
-import dao.FileDao;
+
+import dao.ModleDao;
 import dao.UserDao;
-import dao.impl.FileDaoImpl;
+import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -17,8 +17,6 @@ import utils.FileUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import java.text.DateFormat;
@@ -30,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao = new UserDaoImpl();
 
-    private final FileDao fileDao = new FileDaoImpl();
+    private final ModleDao modleDao = new ModleDaoImpl();
 
     /**
      * 注册用户
@@ -94,6 +92,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * 通过用户id来改个人信息
+     * @param userId
+     * @param request
+     * @return
+     */
     @Override
     public Message ReMsgById(int userId, HttpServletRequest request) {
         Message message;
@@ -167,7 +171,7 @@ public class UserServiceImpl implements UserService {
                 FileUtil.save(savePath, input);
                 //将地址保存在数据库
                 int userId = (int) request.getSession().getAttribute("userId");
-                fileDao.insertFileByUserId(userId, savePath);
+                modleDao.insertFileByUserId(userId, savePath);
                 //封装响应消息
                 message = new Message("文件上传正常");
                 message.addData("uploadSuccess", true);
