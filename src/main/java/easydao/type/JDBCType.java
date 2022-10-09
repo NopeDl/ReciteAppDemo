@@ -15,7 +15,7 @@ public enum JDBCType {
     DATE(Types.DATE);
 
     /**
-     * ��ȡsqlTypeֵ
+     * 获取sqlType值
      */
     public final int value;
 
@@ -24,7 +24,7 @@ public enum JDBCType {
 
     static {
         /**
-         * ��JAVA��ӳ���JDBC��
+         * 将JAVA类映射成JDBC类
          */
         jdbcTypeMapper = new HashMap<>();
         jdbcTypeMapper.put(String.class, VARCHAR);
@@ -40,7 +40,7 @@ public enum JDBCType {
         jdbcTypeMapper.put(Date.class, DATE);
 
         /**
-         * ��JDBC��ӳ���JAVA��
+         * 将JDBC类映射成JAVA类
          */
         javaTypeMapper = new HashMap<>();
         javaTypeMapper.put(VARCHAR.value,String.class);

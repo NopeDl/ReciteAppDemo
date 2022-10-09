@@ -10,7 +10,7 @@ public class Resources {
     }
 
     /**
-     * ������·���µ���Դ
+     * 返回类路径下的资源
      *
      * @param path
      * @return

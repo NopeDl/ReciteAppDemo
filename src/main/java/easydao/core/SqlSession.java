@@ -31,21 +31,21 @@ public class SqlSession {
     }
 
     /**
-     * �ύ
+     * 提交
      */
     public void commit() {
         sqlSessionFactory.getTransactionManager().commit();
     }
 
     /**
-     * �ر�
+     * 关闭
      */
     public void close() {
         sqlSessionFactory.getTransactionManager().close();
     }
 
     /**
-     * ����
+     * 连接
      */
     public void rollBack() {
         sqlSessionFactory.getTransactionManager().rollBack();
@@ -53,7 +53,7 @@ public class SqlSession {
 
 
     /**
-     * ����
+     * 插入
      *
      * @param sqlId
      * @param pojo
@@ -64,7 +64,7 @@ public class SqlSession {
     }
 
     /**
-     * ����
+     * 插入
      * @param sqlId
      * @return
      */
@@ -76,13 +76,13 @@ public class SqlSession {
             PreparedStatement ps = connection.prepareStatement(sql);
             i = ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("sql���:" + sql + " ����");
+            throw new RuntimeException("sql语句:" + sql + " 出错");
         }
         return i;
     }
 
     /**
-     * ɾ��
+     * 删除
      *
      * @param sqlId
      * @param pojo
@@ -93,7 +93,7 @@ public class SqlSession {
     }
 
     /**
-     * ����
+     * 更新
      *
      * @param sqlId
      * @param pojo
@@ -104,19 +104,19 @@ public class SqlSession {
     }
 
     /**
-     * ͨ����ɾ�ķ���
+     * 通用增删改方法
      */
     private int normalDMLOperate(String sqlId, Object pojo) {
-        //Ԥ����ps
+        //预编译ps
         PreparedStatement ps = setPreparedStatementParam(sqlId, pojo);
-        //������PS
+        //设置完PS
         int i = 0;
         try {
             if (ps != null) {
                 i = ps.executeUpdate();
             }
         } catch (SQLException e) {
-            //����ع�
+            //事务回滚
             rollBack();
             e.printStackTrace();
         } finally {
@@ -132,34 +132,34 @@ public class SqlSession {
     }
 
     /**
-     * ��ѯ
+     * 查询
      *
-     * @param sqlId sql���ID
+     * @param sqlId sql语句ID
      * @param param pojo
      */
     public List<Object> selectList(String sqlId, Object param) {
         List<Object> resultList = new ArrayList<>();
-        //Ԥ����sqlָ��
+        //预编译sql指令
         PreparedStatement ps = setPreparedStatementParam(sqlId, param);
-        //��ȡȫ�޶���
+        //获取全限定名
         SqlStatement sqlStatement = sqlSessionFactory.getStatementMappers().get(sqlId);
         String resultType = sqlStatement.getResultType();
-        //��ȡxmlsql
+        //获取xmlsql
         String xmlsql = sqlStatement.getSql();
 
-        //ִ�в�ѯ��ȡ�����
+        //执行查询获取结果集
         ResultSet rs = null;
 
 
         try {
-            //��ȡresultType��������
+            //获取resultType类属性名
             Class<?> clazz = Class.forName(resultType);
             Field[] fields = clazz.getFields();
             List<String> fieldsNameList = new ArrayList<>();
             for (Field field : fields) {
                 fieldsNameList.add(field.getName());
             }
-            //ִ�в�ѯ
+            //执行查询
 
             rs = ps.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
@@ -167,44 +167,43 @@ public class SqlSession {
             while (rs.next()) {
 
                 int columnCount = metaData.getColumnCount();
-                //ʵ����resultType
+                //实例化resultType
                 Object o = clazz.newInstance();
                 for (int i = 1; i <= columnCount; i++) {
-                    //��ȡ������
+                    //根据列名获取属性名
                     String columnName = metaData.getColumnLabel(i);
-                    //��ȡ���ʹ�����
+                    //获取类型处理器
                     int columnType = metaData.getColumnType(i);
-                    System.out.println();
                     Class javaType = JDBCType.getJavaType(columnType);
 
                     if (javaType != null) {
                          TypeHandler typeHandler = sqlSessionFactory.getTypeHandleRegistry().getHandler(javaType.getTypeName());
-                        //������������ȡ���ݲ���װ��һ��pojo
+                        //根据属性名获取数据并封装成一个pojo
                         Object fieldVal = typeHandler.getResult(rs, columnName);
-                        //������������ȡset����
+                        //根据属性名获取set方法
                         String methodName = "set" + columnName.toUpperCase().charAt(0) + columnName.substring(1);
-                        //ִ��set����
+                        //执行set方法
                         clazz.getDeclaredMethod(methodName,javaType).invoke(o,fieldVal);
                     } else {
-                        throw new RuntimeException("javaTypeΪ��");
+                        throw new RuntimeException("javaType为空");
                     }
                 }
                 resultList.add(o);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("��ѯ����");
+            throw new RuntimeException("查询错误");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(resultType + "�����");
+            throw new RuntimeException(resultType + "类错误");
         } catch (InstantiationException e) {
-            throw new RuntimeException(resultType + "��ʵ��������");
+            throw new RuntimeException(resultType + "类实例化错误");
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(resultType + "��Ƿ�����");
+            throw new RuntimeException(resultType + "类非法访问");
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         } finally {
-            //�ͷ���Դ
+            //释放资源
             if (rs != null) {
                 try {
                     rs.close();
@@ -218,23 +217,23 @@ public class SqlSession {
 
 
     /**
-     * ����ps����
+     * 设置ps参数
      *
-     * @param sqlId sql���id
+     * @param sqlId sql语句id
      * @param pojo  pojo
-     * @return ������ϵ�preparedStatement
+     * @return 设置完毕的preparedStatement
      */
     private PreparedStatement setPreparedStatementParam(String sqlId, Object pojo) {
-        //��ȡ����
+        //获取连接
         Connection connection = sqlSessionFactory.getTransactionManager().getConnection();
-        //����PreparedStatement
-        //��ȡxml sql
+        //创建PreparedStatement
+        //获取xml sql
         String xmlSql = sqlSessionFactory.getStatementMappers().get(sqlId).getSql();
         //insert into user (username,password) values (#{username},#{password})
-        //����sql(��xmlSql����ת�� ? )
+        //处理sql(将xmlSql参数转成 ? )
         String sql = StringParser.parseSql(xmlSql);
         //insert into user (username,password) values (?,?)
-//        ��ò��������ò���
+        //获得参数并设置参数
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement(sql);
@@ -248,15 +247,15 @@ public class SqlSession {
         try {
             int count = 1;
             for (String methodName : methodNameList) {
-                //��ȡ����
+                //获取方法
                 Method declaredMethod = pojo.getClass().getDeclaredMethod(methodName);
-                //���ݷ�����÷���ֵȫ�޶�����
+                //根据方法获得返回值全限定类名
                 String className = declaredMethod.getGenericReturnType().getTypeName();
-                //����ȫ�޶�������ȡ������
+                //根据全限定类名获取处理器
                 TypeHandler handler = getSqlSessionFactory().getTypeHandleRegistry().getHandler(className);
-                //ִ��get������ȡpojo����ֵ
+                //执行get方法获取pojo属性值
                 Object param = declaredMethod.invoke(pojo);
-                //ִ�д�����������pojo����ֵ�����ӦpreparedStatement��
+                //执行处理器方法将pojo属性值填入对应preparedStatement中
                 handler.setParameter(ps, count, param, JDBCType.getJDBCType(className));
                 count++;
             }

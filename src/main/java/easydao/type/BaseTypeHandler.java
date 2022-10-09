@@ -8,7 +8,7 @@ public abstract class BaseTypeHandler<T> implements TypeHandler<T> {
     @Override
     public void setParameter(PreparedStatement ps, int col, T param, JDBCType jdbcType) {
         if (param == null) {
-            //�������Ϊ��,����nullֵ
+            //如果参数为空,设置null值
             if (jdbcType != null) {
                 try {
                     ps.setNull(col, jdbcType.value);
@@ -16,10 +16,10 @@ public abstract class BaseTypeHandler<T> implements TypeHandler<T> {
                     e.printStackTrace();
                 }
             } else {
-                throw new RuntimeException("jdbcType����Ϊ��");
+                throw new RuntimeException("jdbcType不能为空");
             }
         } else {
-            //ִ�и����Ͷ�Ӧ��set��nullֵ����
+            //执行各类型对应的set非null值方法
             try {
                 setNotNullParam(ps, col, param, jdbcType);
             } catch (SQLException e) {
@@ -33,17 +33,17 @@ public abstract class BaseTypeHandler<T> implements TypeHandler<T> {
         try {
             return getNullableResult(rs, col);
         } catch (SQLException e) {
-            throw new RuntimeException("��ȡ" + col + "����");
+            throw new RuntimeException("获取" + col + "错误");
         }
     }
 
     /**
-     * ��������д�ķ�nullֵ���÷���
+     * 让子类重写的非null值设置方法
      *
      * @param ps       preparedStatement
-     * @param col      ��Ҫ���õ����±�
-     * @param param    ���õĲ���
-     * @param jdbcType ��Ӧ����
+     * @param col      需要设置的列下标
+     * @param param    设置的参数
+     * @param jdbcType 对应类型
      */
     protected abstract void setNotNullParam(PreparedStatement ps, int col, T param, JDBCType jdbcType) throws SQLException;
 

@@ -15,7 +15,7 @@ public class TypeHandleRegistry {
     }
 
     /**
-     * ע��java����sql���ʹ���Ĺ�ϵ
+     * 注册java类与sql类型处理的关系
      */
     private void initTypeMapper() {
         jdbcTypeHandlerMapper.put(String.class.getTypeName(), new StringTypeHandler());

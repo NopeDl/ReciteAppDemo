@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据id设置头像
+     * 根据id设置文件
      *
      * @param request
      * @return

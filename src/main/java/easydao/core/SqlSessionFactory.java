@@ -9,7 +9,7 @@ import java.util.Map;
 public class SqlSessionFactory {
 
     /**
-     * ���������
+     * 事务管理器
      */
     private TransactionManager transactionManager;
 
@@ -22,16 +22,16 @@ public class SqlSessionFactory {
     private TypeHandleRegistry typeHandleRegistry;
 
     /**
-     * ����SQLSession
+     * 开启SQLSession
      *
-     * @return SQLSession����
+     * @return SQLSession对象
      */
     public SqlSession openSession() {
         return openSession(false);
     }
 
     public SqlSession openSession(boolean autoCommit) {
-        //������
+        //打开连接
         transactionManager.openConnection(autoCommit);
 
         return new SqlSession(this);

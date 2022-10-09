@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
+import service.ModleService;
 import service.UserService;
+import service.impl.ModleServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
@@ -20,6 +22,7 @@ import java.io.IOException;
 @MultipartConfig
 public class UploadController extends HttpServlet {
     private UserService userService = new UserServiceImpl();
+    private ModleService modleService = new ModleServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -29,6 +32,9 @@ public class UploadController extends HttpServlet {
         if ("file".equals(uri)) {
             //上传文件
             msg = userService.setFileById(request);
+        } else if ("parseContent".equals(uri)) {
+            //获取PDF并解析内容
+            msg = modleService.parsePDFContent(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

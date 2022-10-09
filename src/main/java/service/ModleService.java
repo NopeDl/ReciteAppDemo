@@ -1,6 +1,7 @@
 package service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 
 public interface ModleService {
@@ -56,5 +57,10 @@ public interface ModleService {
      */
     boolean replaceContext(String context,int modleId);
 
+    /**
+     * 解析pdf内容
+     * @return 返回pdf中内容
+     */
+    Message parsePDFContent(HttpServletRequest request);
 
 }

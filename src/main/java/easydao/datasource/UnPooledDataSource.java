@@ -21,7 +21,7 @@ public class UnPooledDataSource implements DataSource {
         this.username = username;
         this.password = password;
 
-        //ע������
+        //注册驱动
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {

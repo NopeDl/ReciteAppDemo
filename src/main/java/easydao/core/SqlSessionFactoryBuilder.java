@@ -31,12 +31,12 @@ public class SqlSessionFactoryBuilder {
         Map<String, SqlStatement> statementMappers = null;
         TypeHandleRegistry typeHandleRegistry = null;
         try {
-            //����XML
+            //解析XML
             SAXReader reader = new SAXReader();
             Document document = reader.read(input);
             Element environments = (Element) document.selectSingleNode("/configuration/environments");
             String defaultEnvironmentName = (environment == null ? environments.attributeValue("default") : environment);
-            //��ȡ������ǩԪ��
+            //获取环境标签元素
             List<Node> nodes = document.selectNodes("/configuration/environments/environment");
             Element environmentElm = null;
             for (Node node : nodes) {
@@ -46,19 +46,19 @@ public class SqlSessionFactoryBuilder {
                     break;
                 }
             }
-            //��ȡ�����������ǩԪ��
+            //获取事务管理器标签元素
             Element transactionManagerElm = environmentElm.element("transactionManager");
-            //��ȡ����Դ��ǩԪ��
+            //获取数据源标签元素
             Element dataSourceElm = environmentElm.element("dataSource");
-            //��������������Դ
+            //解析并创造数据源
             DataSource dataSource = getDataSource(dataSourceElm);
-            //�������������������
+            //解析并创建事务管理器
             transactionManager = getTransactionManager(transactionManagerElm, dataSource);
-            //����������statementMappers
-            //��ȡMapper��ǩԪ��
+            //解析并创建statementMappers
+            //获取Mapper标签元素
             Element mappers = (Element) document.selectSingleNode("/configuration/mappers");
             statementMappers = getMappers(mappers);
-            //��������ת����
+            //创建类型转换器
             typeHandleRegistry = new TypeHandleRegistry();
         } catch (DocumentException e) {
             e.printStackTrace();
@@ -67,14 +67,14 @@ public class SqlSessionFactoryBuilder {
     }
 
     /**
-     * ��ȡ����Դ
+     * 获取数据源
      *
-     * @param dataSourceElm ����Դ��ǩԪ��
-     * @return ����Դ
+     * @param dataSourceElm 数据源标签元素
+     * @return 数据源
      */
     private DataSource getDataSource(Element dataSourceElm) {
         String type = dataSourceElm.attributeValue("type").toUpperCase();
-        //��ȡproperty
+        //获取property
         Map<String, String> properties = new HashMap<>();
         List<Element> propertiesElm = dataSourceElm.elements("property");
         for (Element elm : propertiesElm) {
@@ -83,30 +83,30 @@ public class SqlSessionFactoryBuilder {
             properties.put(name, value);
         }
 
-        //����type������Ӧ����Դ����
+        //根据type创建对应数据源对象
         DataSource dataSource = null;
         String driver = properties.get("driver");
         String url = properties.get("url");
         String username = properties.get("username");
         String password = properties.get("password");
         if ("UNPOOLED".equals(type)) {
-            //�����ӳ�
+            //无连接池
             dataSource = new UnPooledDataSource(driver, url, username, password);
         } else if ("POOLED".equals(type)) {
-            //���ӳ�
+            //连接池
             dataSource = new PooledDataSource(driver, url, username, password);
         } else {
-            //����
+            //其他
         }
         return dataSource;
     }
 
     /**
-     * ��ȡ�������������
+     * 获取事务管理器对象
      *
-     * @param transactionManagerElm �����������ǩԪ��
-     * @param dataSource            ����Դ
-     * @return �������������
+     * @param transactionManagerElm 事务管理器标签元素
+     * @param dataSource            数据源
+     * @return 事务管理器对象
      */
     private TransactionManager getTransactionManager(Element transactionManagerElm, DataSource dataSource) {
         String type = transactionManagerElm.attributeValue("type").toUpperCase();
@@ -121,40 +121,40 @@ public class SqlSessionFactoryBuilder {
     }
 
     /**
-     * ��ȡstatementMappers����
+     * 获取statementMappers集合
      *
-     * @param mappers mapperԪ�ر�ǩ
-     * @return ����
+     * @param mappers mapper元素标签
+     * @return 集合
      */
     private Map<String, SqlStatement> getMappers(Element mappers) {
         Map<String, SqlStatement> statementMap = new HashMap<>();
-        //��ȡmappers�µ�mapper xml�ļ�������
+        //获取mappers下的mapper xml文件并解析
         SAXReader saxReader = new SAXReader();
         List<Element> elements = mappers.elements();
         for (Element element : elements) {
             try {
-                //��ȡ�ļ�·��
+                //获取文件路径
                 String mapperXMLPath = element.attributeValue("resource");
-                //����XML
+                //解析XML
                 Document document = saxReader.read(Resources.getResourceAsStream(mapperXMLPath));
-                //��ȡnamespace
+                //获取namespace
                 Element mapper = (Element) document.selectSingleNode("mapper");
                 String namespace = mapper.attributeValue("namespace").trim();
-                //��ȡSql��䲢��װ��SqlStatement����
+                //获取Sql语句并封装成SqlStatement对象
                 List<Element> sqlElms = mapper.elements();
                 for (Element sqlElm : sqlElms) {
-                    //��ȡsql id
+                    //获取sql id
                     String id = sqlElm.attributeValue("id").trim();
                     String sqlId = namespace + "." + id;
-                    //��ȡsql���
+                    //获取sql语句
                     String sql = sqlElm.getTextTrim();
-                    //��ȡresultType
+                    //获取resultType
                     String resultType = sqlElm.attributeValue("resultType");
-                    //��װ
+                    //封装
                     SqlStatement sqlStatement = new SqlStatement();
                     sqlStatement.setSql(sql);
                     sqlStatement.setResultType(resultType);
-                    //����map��
+                    //放入map中
                     statementMap.put(sqlId, sqlStatement);
                 }
             } catch (DocumentException e) {

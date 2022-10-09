@@ -4,33 +4,33 @@ import java.sql.Connection;
 
 public interface TransactionManager {
     /**
-     * �ύ
+     * 提交
      */
     void commit();
 
     /**
-     * �ر�
+     * 关闭
      */
     void close();
 
     /**
-     * �ع�
+     * 回滚
      */
     void rollBack();
 
     /**
-     * ��ȡ����
+     * 获取连接
      */
     Connection getConnection();
 
     /**
-     * ������
+     * 打开连接
      */
     void openConnection();
 
     /**
-     * �Զ��������
-     * @param autoCommit �Ƿ��Զ��ύ
+     * 自定义打开连接
+     * @param autoCommit 是否自动提交
      */
     void openConnection(boolean autoCommit);
 }
