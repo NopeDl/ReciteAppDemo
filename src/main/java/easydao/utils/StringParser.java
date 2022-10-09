@@ -27,7 +27,7 @@ public class StringParser {
                 break;
             }
             int right = xmlSql.indexOf("}", left);
-            //��ȡ������
+            //获取属性名
             String property = xmlSql.substring(left + 1, right).trim();
             beginIndex = right + 1;
             paramList.add(property);
