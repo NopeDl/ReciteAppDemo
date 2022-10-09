@@ -9,10 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
-import service.FileService;
+import service.ModleService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
-import service.impl.FileServiceImpl;
+import service.impl.ModleServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
@@ -26,7 +26,7 @@ import java.io.IOException;
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
     private final UserService userService = new UserServiceImpl();
-    private final FileService fileService = new FileServiceImpl();
+    private final ModleService ModleService=new ModleServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +34,7 @@ public class UserController extends HttpServlet {
         //获取URI
         String requestURI = StringUtil.parseURI(request.getRequestURI());
         //根据URI类型执行对应方法
-        Message msg;
+        Message msg = null;
         if ("Login".equals(requestURI)) {
             //登录
             msg = accountService.checkAccount(request, response);
@@ -51,16 +51,17 @@ public class UserController extends HttpServlet {
             //修改个人信息
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
-            request.getRequestDispatcher("/upload/image").forward(request, response);
-        } else if ("UpLoadFile".equals(requestURI)) {
-            //用户上传文件
-            msg = fileService.UpLoad(request);
-        } else {
+        } else if("UpLoadFile".equals(requestURI)){
+            //用户选择上传文件,上传文件只是想要将文件的内容获取，服务端并没有一直保存pdf文件
+           msg = ModleService.UpLoad(request);
+        }else if("MakeModle".equals(requestURI)){
+            //用户制作模板，三种情况:一种是空模板cv,一种是选择已有的模板再制作，一种是选择本地文件进行创作
+            msg = ModleService.createModle(request);
+        }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         //发送响应消息体
         ResponseUtil.send(response, msg);
-
 
     }
 }
