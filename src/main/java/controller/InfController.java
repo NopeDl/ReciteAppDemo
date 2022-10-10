@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
+import service.PageService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
+import service.impl.PageServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
@@ -24,6 +26,8 @@ public class InfController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
     private final AccountService accountService = new AccountServiceImpl();
 
+    private final PageService pageService = new PageServiceImpl();
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,6 +39,8 @@ public class InfController extends HttpServlet {
         } else if ("checkUserNickName".equals(uri)) {
             //检查昵称是否存在
             msg = userService.checkNickNameExists(request);
+        } else if ("getPage".equals(uri)) {
+            msg = pageService.getPage(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
