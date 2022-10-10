@@ -2,6 +2,7 @@ package service.impl;
 
 import dao.ModleDao;
 import dao.impl.ModleDaoImpl;
+import easydao.utils.Resources;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -15,6 +16,7 @@ import utils.StringUtil;
 import java.io.*;
 import java.sql.Connection;
 import java.util.Base64;
+import java.util.UUID;
 
 public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
@@ -296,7 +298,7 @@ public class ModleServiceImpl implements ModleService {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
 //        String fileName = "D:/pdfFile/" + modleId + ".txt";
-        String fileName = StringUtil.getTempURL(modleId);
+        String fileName = Resources.getResource(modleId+" .txt ");
         File file = new File(fileName);
 
 //        StringBuilder result = new StringBuilder();
@@ -332,14 +334,15 @@ public class ModleServiceImpl implements ModleService {
     public String WriteAsTxt(String context, int modleId) {
         FileOutputStream fileOutputStream = null;
 //        String filePath = "D:/pdfFile/" + modleId + ".txt";
-        String filePath = StringUtil.getTempURL(modleId + "");
+//        String filePath = StringUtil.getTempURL(modleId + "");
+        String filePath = Resources.getResource(modleId + ".txt");
         try {
 
             File file = new File(filePath);
             if (!file.exists()) {
                 file.createNewFile();
             }
-            byte[] bytes = new byte[1024];
+            byte[] bytes;
             bytes = context.getBytes();
 
 

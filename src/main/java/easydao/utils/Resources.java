@@ -1,8 +1,6 @@
 package easydao.utils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
 public class Resources {
 
@@ -24,5 +22,9 @@ public class Resources {
             throw new RuntimeException(e);
         }
         return input;
+    }
+
+    public static String getResource(String path) {
+        return Resources.class.getResource("/").getPath().substring(1) + path;
     }
 }

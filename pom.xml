@@ -97,7 +97,7 @@
     </dependencies>
 
     <build>
-        <finalName>ReciteAppDemo</finalName>
+        <finalName>ReciteMemory</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

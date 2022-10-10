@@ -43,8 +43,9 @@ public class PageServiceImpl implements PageService {
                 for (Element element : elements) {
                     sb.append(element.asXML());
                 }
+                String ret = sb.toString().replaceAll("\"", "'");
                 Message msg = new Message("文档读取成功");
-                msg.addData("page",sb.toString());
+                msg.addData("page",ret);
                 return msg;
             }
         } catch (DocumentException e) {
