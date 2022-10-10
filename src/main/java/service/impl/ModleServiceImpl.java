@@ -10,8 +10,10 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import pojo.po.Modle;
 import pojo.vo.Message;
 import service.ModleService;
+import utils.StringUtil;
 
 import java.io.*;
+import java.sql.Connection;
 import java.util.Base64;
 
 public class ModleServiceImpl implements ModleService {
@@ -109,8 +111,7 @@ public class ModleServiceImpl implements ModleService {
         // ! !  报错
 //        String filePath = "D:/pdfFile/" + pdfFile + ".pdf"; //拼接存储的地址（pdf只是暂时存储在这里，一旦读取就删掉）
         //10.10 尝试解决办法
-        String filePath = (this.getClass().getClassLoader().getResource("/").getPath() + pdfFile + ".pdf").substring(1);
-
+        String filePath = StringUtil.getTempURL(pdfFile);
         try {
             file = new File(filePath);
             //如果没有文件，要创建这个文件
@@ -275,7 +276,8 @@ public class ModleServiceImpl implements ModleService {
     public Message ReTxt(HttpServletRequest request) {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
-        String fileName = "D:/pdfFile/" + modleId + ".txt";
+//        String fileName = "D:/pdfFile/" + modleId + ".txt";
+        String fileName = StringUtil.getTempURL(modleId);
         File file = new File(fileName);
 
 //        StringBuilder result = new StringBuilder();
@@ -310,7 +312,8 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public String WriteAsTxt(String context, int modleId) {
         FileOutputStream fileOutputStream = null;
-        String filePath = "D:/pdfFile/" + modleId + ".txt";
+//        String filePath = "D:/pdfFile/" + modleId + ".txt";
+        String filePath = StringUtil.getTempURL(modleId+"");
         try {
 
             File file = new File(filePath);

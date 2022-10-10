@@ -5,13 +5,13 @@
         insert into modle (fileContext,userId) values(#{fileContext},#{userId})
     </insert>
 
-    <select id="selectCount" parameterType="string" resultType="java.lang.Integer">
+    <select id="selectCount" parameterType="string" resultType="pojo.po.Count">
         select count(userId) from modle
     </select>
 
     <!--    int selectModleTitle 查找userId为xx的用户，模板title为xx的模板个数-->
-    <select id="selectNumByTitle" parameterType="pojo.po.Modle" resultType="java.lang.Integer">
-        select count(*) from modle where modleTitle=#{modleTitle} and userId=#{userId}
+    <select id="selectNumByTitle" parameterType="pojo.po.Modle" resultType="pojo.po.Count">
+        select count(*) as number  from modle where modleTitle=#{modleTitle} and userId=#{userId}
     </select>
 
 <!--    &lt;!&ndash;修改原来的模板&ndash;&gt;-->

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.ModleService;
 import service.impl.ModleServiceImpl;
+import utils.ResponseUtil;
 import utils.StringUtil;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.IOException;
 @WebServlet("/modle/*")
 public class ModleController extends HttpServlet {
     private final ModleService ModleService = new ModleServiceImpl();
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = StringUtil.parseURI(request.getRequestURI());
@@ -33,6 +35,6 @@ public class ModleController extends HttpServlet {
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
-
+        ResponseUtil.send(response, msg);
     }
 }

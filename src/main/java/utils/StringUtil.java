@@ -10,4 +10,9 @@ public class StringUtil {
     public static String parseURI(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
     }
+
+    public static String getTempURL(String fileName){
+        return (StringUtil.class.getClassLoader().getResource("/").getPath() + fileName + ".pdf").substring(1);
+
+    }
 }

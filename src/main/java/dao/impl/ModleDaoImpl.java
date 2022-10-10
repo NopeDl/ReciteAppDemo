@@ -3,6 +3,7 @@ package dao.impl;
 import dao.ModleDao;
 import easydao.core.SqlSession;
 import easydao.core.SqlSessionFactory;
+import pojo.po.Count;
 import pojo.po.File;
 import pojo.po.Modle;
 import utils.DaoUtil;
@@ -43,9 +44,9 @@ public class ModleDaoImpl implements ModleDao {
         List<Object> userId = sqlSession.selectList("ModleMapper.selectCount", "userId");
         sqlSession.close();
         if (userId.size() == 0) {
-            return null;
+            return 0;
         } else {
-            return (Integer) userId.get(0);
+            return ((Count) userId.get(0)).getNumber();
         }
     }
 
@@ -62,7 +63,7 @@ public class ModleDaoImpl implements ModleDao {
         if (objects.size() == 0) {
             return 0;
         } else {
-            return (int) objects.get(0);
+            return ((Count) objects.get(0)).getNumber();
         }
 
     }
