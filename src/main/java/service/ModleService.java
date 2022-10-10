@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 
+import java.io.InputStream;
+
 public interface ModleService {
 
     /**
@@ -15,10 +17,10 @@ public interface ModleService {
 
     /**
      * 将base64转化为pdf
-     * @param base64String
+     * @param input
      * @return
      */
-    String getPdfPath(String base64String,String pdfFile);
+    String getPdfPath(InputStream input, String pdfFile);
 
     /**
      * 将pdf内容提取,返回文本内容
