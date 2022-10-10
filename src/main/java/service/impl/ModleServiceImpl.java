@@ -294,7 +294,7 @@ public class ModleServiceImpl implements ModleService {
      * @return
      */
     @Override
-    public Message ReTxt(HttpServletRequest request) {
+    public Message reTxt(HttpServletRequest request) {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
 //        String fileName = "D:/pdfFile/" + modleId + ".txt";

@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,6 +33,9 @@ public class ModleController extends HttpServlet {
         if ("MakeModle".equals(requestURI)) {
             //用户制作模板，三种情况:一种是空模板cv,一种是选择已有的模板再制作，一种是选择本地文件进行创作
             msg = ModleService.createModle(request);
+        }else if("study".equals(requestURI)){
+            //显示模板
+            msg= ModleService.reTxt(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

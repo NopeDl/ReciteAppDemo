@@ -8,6 +8,8 @@ import java.io.InputStream;
 
 public interface ModleService {
 
+
+
     /**
      * 用户上传文件，这里应该还要返回pdf文件里面的文字内容
      * @return
@@ -41,7 +43,7 @@ public interface ModleService {
      * @param request
      * @return
      */
-    Message ReTxt(HttpServletRequest request);
+    Message reTxt(HttpServletRequest request);
 
 
     /***
