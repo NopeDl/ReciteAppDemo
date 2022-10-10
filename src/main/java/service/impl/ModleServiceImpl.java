@@ -42,6 +42,7 @@ public class ModleServiceImpl implements ModleService {
                 }
                 //将字符串转换成base64字符串
                 String fileBase64 = new String(Base64.getEncoder().encode(sb.toString().getBytes()));
+                System.out.println(fileBase64);
                 //在request域中储存该base64字符串
                 request.setAttribute("fileBase64", fileBase64);
                 //让upload继续根据base64逻辑处理(略有修改，parameter拿不到参数时会从attribute中拿)
@@ -67,11 +68,17 @@ public class ModleServiceImpl implements ModleService {
             fileBase64 = (String) request.getAttribute("fileBase64");
         }
 
-        int start = fileBase64.indexOf(",");
-        String base64String = fileBase64.substring(start + 1, fileBase64.length());
+//        int start = fileBase64.indexOf(",");
+//        String base64String = fileBase64.substring(start + 1, fileBase64.length());
 
-        String url = getPdfPath(base64String, "pdfFile");// 获取pdf文件的存储位置,这个pdfFile只是一个中间过度的
-        String context = rePdf(url);//拿到pdf里面的内容
+//        String url = getPdfPath(base64String, "pdfFile");// 获取pdf文件的存储位置,这个pdfFile只是一个中间过度的
+        String url = getPdfPath(fileBase64, "pdfFile");// 获取pdf文件的存储位置,这个pdfFile只是一个中间过度的
+//        String context = rePdf(url);//拿到pdf里面的内容
+
+        //假数据,传一个假的context
+        String context="一 中国武装力量的构成 ①《抓任命共和国国防法》规定：”中华任命共和国的武装力量，由中国人民解放军现役部 队和预备役部队，" +
+                "中国人民武装警察部队，民兵组成。” ②中华人民共和国的基本体制是“三结合”即由中国任命解放军，中国人民武装警察部队和 民兵三结合。 " +
+                "③我国的武装力量";
 
         int userId = Integer.parseInt(request.getParameter("userId"));//前端可以储存userId解决跨域session失效问题
 
@@ -167,14 +174,20 @@ public class ModleServiceImpl implements ModleService {
     public String rePdf(String url) {
 
         String context = null;
-        PDDocument document;
+        PDDocument document = null;
         try {
             File file = new File(url);
             document = PDDocument.load(file);//会报错？？？？？？？
+
+//            document.loadFromFile("test.pdf");
             PDFTextStripper stripper = new PDFTextStripper();
             context = stripper.getText(document);
             //删除pdf文件
             file.delete();
+
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
