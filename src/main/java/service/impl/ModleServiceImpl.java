@@ -295,31 +295,72 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public Message reTxt(HttpServletRequest request) {
+        //这里会出现空指针异常，更改方法里面的尝试
+
+//        Message message;
+//        String modleId = request.getParameter("modleId");//获取模板id
+////        String fileName = "D:/pdfFile/" + modleId + ".txt";
+//        String fileName = Resources.getResource(modleId+" .txt ");
+//        File file = new File(fileName);
+//
+////        StringBuilder result = new StringBuilder();
+//        String result = null;
+//        String line = null;
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(file)); //构造一个BufferedReader类来读取文件
+//
+//            while ((line = br.readLine()) != null) { //使用readLine方法，一次读一行
+//                result += line + '\n';
+//            }
+//            br.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        //这样读取前面会有null;因此剔除null
+//        String context = result.substring(4, result.length());
+//        message = new Message("读取模板内容成功");
+//        message.addData("modleContext", context);//返回响应数据，模板内容
+//        return message;
+
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
-//        String fileName = "D:/pdfFile/" + modleId + ".txt";
-        String fileName = Resources.getResource(modleId+" .txt ");
-        File file = new File(fileName);
 
-//        StringBuilder result = new StringBuilder();
-        String result = null;
-        String line = null;
+        String modlePath = "D:/pdfFile/"+modleId+".txt";
+        FileReader fileReader = null;
+        BufferedReader br=null;
+        StringBuilder sb=null;
+        String temp = "";
+
+
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file)); //构造一个BufferedReader类来读取文件
-
-            while ((line = br.readLine()) != null) { //使用readLine方法，一次读一行
-                result += line + '\n';
+            File  file = new File(modlePath);
+            fileReader = new FileReader(file);
+            br = new BufferedReader(fileReader);
+            sb = new StringBuilder();
+            while ((temp = br.readLine()) != null) {
+                // 拼接换行符
+                sb.append(temp + "\n");
             }
-            br.close();
-        } catch (Exception e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        //这样读取前面会有null;因此剔除null
-        String context = result.substring(4, result.length());
+
+        String context = sb.toString();
+        System.out.println(context);
+
         message = new Message("读取模板内容成功");
         message.addData("modleContext", context);//返回响应数据，模板内容
         return message;
+
 
     }
 
