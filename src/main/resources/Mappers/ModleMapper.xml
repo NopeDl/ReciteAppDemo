@@ -6,7 +6,7 @@
     </insert>
 
     <select id="selectCount" parameterType="string" resultType="pojo.po.Count">
-        select count(userId) from modle
+        select count(userId) as number  from modle
     </select>
 
     <!--    int selectModleTitle 查找userId为xx的用户，模板title为xx的模板个数-->

@@ -46,7 +46,7 @@ public class ModleDaoImpl implements ModleDao {
         if (userId.size() == 0) {
             return 0;
         } else {
-            return ((Count) userId.get(0)).getNumber();
+            return (((Count) userId.get(0)).getNumber()).intValue();
         }
     }
 
@@ -63,7 +63,7 @@ public class ModleDaoImpl implements ModleDao {
         if (objects.size() == 0) {
             return 0;
         } else {
-            return ((Count) objects.get(0)).getNumber();
+            return (((Count) objects.get(0)).getNumber()).intValue();
         }
 
     }

@@ -266,8 +266,8 @@ public class ModleServiceImpl implements ModleService {
                 message = new Message("模板标题不能重复");
             } else {
                 //获取此时的总模板个数，然后生成下一条模板
-                int integer = modleDao.selectCount();
-                int modleId = integer + 1;//为新模板所应该对应的模板id
+                Integer num = modleDao.selectCount();
+                int modleId = num + 1;//为新模板所应该对应的模板id
                 modle.setModleId(modleId);
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleId);

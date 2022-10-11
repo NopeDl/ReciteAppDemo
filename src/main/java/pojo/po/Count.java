@@ -1,20 +1,20 @@
 package pojo.po;
 
 public class Count {
-    private int number;
+    private Long number;
 
-    public Count(int number) {
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
         this.number = number;
     }
 
     public Count() {
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
+    public Count(Long number) {
         this.number = number;
     }
 }
