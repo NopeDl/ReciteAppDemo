@@ -326,7 +326,7 @@ public class ModleServiceImpl implements ModleService {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
 
-        String modlePath = "D:/pdfFile/"+modleId+".txt";
+        String modlePath = Resources.getResource(modleId + ".txt");
         FileReader fileReader = null;
         BufferedReader br=null;
         StringBuilder sb=null;
@@ -408,7 +408,7 @@ public class ModleServiceImpl implements ModleService {
     public boolean replaceContext(String context, int modleId) {
         //覆盖成功返回true，失败返回false
         try {
-            String modlePath = "D:/pdfFile/" + modleId + ".txt";
+            String modlePath = Resources.getResource(modleId + ".txt");
             PrintWriter printWriter = new PrintWriter(modlePath);
             printWriter.write(context);
             printWriter.flush();
