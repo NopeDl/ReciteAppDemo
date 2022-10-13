@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper>
+<mapper namespace="UmrMapper">
+    <select id="selectModleByUserId" parameterType="pojo.po.Umr" resultType="pojo.po.Umr">
+        select * from umr where userId=#{userId}
+    </select>
+
+
+</mapper>
