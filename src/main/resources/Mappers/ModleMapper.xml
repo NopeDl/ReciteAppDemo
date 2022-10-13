@@ -25,4 +25,8 @@
         values(#{modleId},#{modleTitle},#{modlePath},#{userId})
     </insert>
 
+    <select id="selectModleById" resultType="pojo.po.Modle">
+        select * from modle where modleId = #{modleId}
+    </select>
+
 </mapper>

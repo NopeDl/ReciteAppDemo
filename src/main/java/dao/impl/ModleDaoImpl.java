@@ -1,5 +1,6 @@
 package dao.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import easydao.core.SqlSession;
 import easydao.core.SqlSessionFactory;
@@ -98,5 +99,24 @@ public class ModleDaoImpl implements ModleDao {
         }
         sqlSession.close();
         return result;
+    }
+
+    /**
+     * 根据模板Id获取模板数据
+     * @param modle
+     * @return
+     */
+    @Override
+    public Modle selectModleById(Modle modle) {
+        int modleId = modle.getModleId();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modleId);
+        sqlSession.close();
+        sqlSession.close();
+        if (resultList.size() >0 ){
+            return (Modle) resultList.get(0);
+        }else {
+            return null;
+        }
     }
 }

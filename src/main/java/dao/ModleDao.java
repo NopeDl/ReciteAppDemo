@@ -42,4 +42,11 @@ public interface ModleDao {
      */
     int insertModle(Modle modle);
 
+    /**
+     * 根据模板id查找模板信息
+     * @param modle
+     * @return
+     */
+    Modle selectModleById(Modle modle);
+
 }
