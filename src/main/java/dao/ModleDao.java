@@ -2,6 +2,8 @@ package dao;
 
 import pojo.po.Modle;
 
+import java.util.List;
+
 public interface ModleDao {
 
     /**
@@ -48,5 +50,12 @@ public interface ModleDao {
      * @return
      */
     Modle selectModleById(Modle modle);
+
+    /**
+     * 获取标签下所有模板
+     * @param modle
+     * @return
+     */
+    List<Modle> selectModlesByTag(Modle modle);
 
 }

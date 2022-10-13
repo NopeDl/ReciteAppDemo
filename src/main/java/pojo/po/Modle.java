@@ -6,14 +6,35 @@ public class Modle {
     private String modlePath;
     private int userId;
 
+    private int modleLabel;
+
+    private int coins;
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
     public Modle() {
     }
 
-    public Modle(int modleId, String modleTitle, String modlePath, int userId) {
+    public int getModleLabel() {
+        return modleLabel;
+    }
+
+    public void setModleLabel(int modleLabel) {
+        this.modleLabel = modleLabel;
+    }
+
+    public Modle(int modleId, String modleTitle, String modlePath, int userId, int modleLabel) {
         this.modleId = modleId;
         this.modleTitle = modleTitle;
         this.modlePath = modlePath;
         this.userId = userId;
+        this.modleLabel = modleLabel;
     }
 
     public int getModleId() {

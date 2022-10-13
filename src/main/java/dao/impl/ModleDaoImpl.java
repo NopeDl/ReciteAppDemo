@@ -9,6 +9,7 @@ import pojo.po.File;
 import pojo.po.Modle;
 import utils.DaoUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModleDaoImpl implements ModleDao {
@@ -115,6 +116,29 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         if (resultList.size() >0 ){
             return (Modle) resultList.get(0);
+        }else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取标签下所有模板
+     * @param modle
+     * @return
+     */
+    @Override
+    public List<Modle> selectModlesByTag(Modle modle) {
+        int modleLabel = modle.getModleLabel();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectModlesByTag", modle);
+        sqlSession.close();
+        if (objects.size()>0){
+            List<Modle> modleList = new ArrayList<>();
+            for (Object object : objects) {
+                Modle ret = (Modle) object;
+                modleList.add(ret);
+            }
+            return modleList;
         }else {
             return null;
         }
