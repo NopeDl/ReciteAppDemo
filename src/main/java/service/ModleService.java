@@ -50,10 +50,10 @@ public interface ModleService {
     /***
      * 将String类型的字符串存为txt文本，并且返回文件的地址
      * @param context
-     * @param modleId
+     * @param modleTitle
      * @return
      */
-    String WriteAsTxt(String context,int modleId);
+    String WriteAsTxt(String context,String modleTitle);
 
 
     /**
@@ -82,5 +82,15 @@ public interface ModleService {
      * @return
      */
     Message reward(HttpServletRequest request);
+
+
+    /**
+     * 查询用户的记忆库
+     * @param request
+     * @return
+     */
+    Message getUserMemory(HttpServletRequest request);
+
+
 
 }

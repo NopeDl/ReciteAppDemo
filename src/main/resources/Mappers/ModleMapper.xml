@@ -40,4 +40,21 @@
         select * from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
+<!--    <select id="slectModleByUserId" parameterType="pojo.po.Modle" >-->
+<!--        select modleId from umr where userId=#{userId}-->
+
+<!--    </select>-->
+
+    <!--selectModleByModleId-->
+    <select id="selectModleByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Umr">
+        select * from modle where modleId=#{modleId}
+    </select>
+
+<!--    selectPathByModleId-->
+    <select id="selectPathByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+        select modlePath from modle where modleId=#{modleId}
+    </select>
+
+
+
 </mapper>

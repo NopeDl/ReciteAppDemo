@@ -1,6 +1,8 @@
 package dao;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import pojo.po.Modle;
+import pojo.po.Umr;
 
 import java.util.List;
 
@@ -66,5 +68,33 @@ public interface ModleDao {
      * @return
      */
     List<Modle> selectModlesByTag(Modle modle);
+
+//    /**
+//     * 通过用户userId来查找用户有的模板
+//     * @param userId
+//     * @return
+//     */
+//    String[] slectModleByUserId(int userId);
+
+    /**
+     * 根据umr里面的userId的来查找所对应的modleid
+     * @param umr
+     * @return
+     */
+    Umr[] selectModleByUserId(Umr umr);
+
+    /**
+     * 根据传进来的modle里面的属性modleId来查找相对应的信息
+     * @param umr
+     * @return
+     */
+    Modle selectModleByModleId(Umr umr);
+
+    /**
+     * 根据modleId来查找相对应的modlePath
+     * @param modleId
+     * @return
+     */
+    String selectPathByModleId(int modleId);
 
 }

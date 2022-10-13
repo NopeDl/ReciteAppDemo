@@ -5,8 +5,8 @@ public class Modle {
     private String modleTitle;
     private String modlePath;
     private int userId;
-
     private int modleLabel;
+
 
     private int coins;
 
@@ -34,20 +34,13 @@ public class Modle {
     public Modle() {
     }
 
-    public int getModleLabel() {
-        return modleLabel;
-    }
 
-    public void setModleLabel(int modleLabel) {
-        this.modleLabel = modleLabel;
-    }
 
     public Modle(int modleId, String modleTitle, String modlePath, int userId, int modleLabel) {
         this.modleId = modleId;
         this.modleTitle = modleTitle;
         this.modlePath = modlePath;
         this.userId = userId;
-        this.modleLabel = modleLabel;
     }
 
     public int getModleId() {
@@ -82,6 +75,16 @@ public class Modle {
         this.userId = userId;
     }
 
+
+    public int getModleLabel() {
+        return modleLabel;
+    }
+
+    public void setModleLable(int modleLable) {
+        this.modleLabel = modleLabel;
+    }
+
+
     @Override
     public String toString() {
         return "Modle{" +
@@ -89,6 +92,9 @@ public class Modle {
                 ", modleTitle='" + modleTitle + '\'' +
                 ", modlePath='" + modlePath + '\'' +
                 ", userId=" + userId +
+                ", modleLable=" + modleLabel +
+                ", coins=" + coins +
+                ", pageIndex=" + pageIndex +
                 '}';
     }
 }
