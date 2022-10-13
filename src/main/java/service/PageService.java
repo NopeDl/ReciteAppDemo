@@ -9,5 +9,6 @@ public interface PageService {
      * @param request
      * @return 页面
      */
+    @Deprecated
     Message getPage(HttpServletRequest request);
 }

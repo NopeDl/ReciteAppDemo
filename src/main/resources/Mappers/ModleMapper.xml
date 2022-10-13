@@ -25,6 +25,11 @@
         values(#{modleId},#{modleTitle},#{modlePath},#{userId})
     </insert>
 
+    <!-- 修改模板打赏量  -->
+    <update id="updateCoinsByModleId">
+        update modle set coins += #{coins} where modleId = #{modleId}
+    </update>>
+
     <!--根据模板id获取模板信息-->
     <select id="selectModleById" resultType="pojo.po.Modle">
         select * from modle where modleId = #{modleId}
@@ -32,7 +37,7 @@
 
     <!-- 获取标签下所有模板 -->
     <select id="selectModlesByTag" resultType="pojo.po.Modle">
-        select * from modle where modleLabel = #{modleLabel}
+        select * from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
 </mapper>

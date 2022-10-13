@@ -10,6 +10,19 @@ public class Modle {
 
     private int coins;
 
+    /**
+     * sql语句中limit使用
+     */
+    private int pageIndex;
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
     public int getCoins() {
         return coins;
     }

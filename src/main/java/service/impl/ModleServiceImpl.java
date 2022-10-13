@@ -16,6 +16,7 @@ import utils.StringUtil;
 import java.io.*;
 import java.sql.Connection;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 public class ModleServiceImpl implements ModleService {
@@ -263,7 +264,7 @@ public class ModleServiceImpl implements ModleService {
             int sum = modleDao.selectNumByTitle(modle);
             if (sum > 0) {
 //                说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-                message = new Message("模板标题不能重复");
+                message = new Message("模板标题不能重复 ");
             } else {
                 //获取此时的总模板个数，然后生成下一条模板
                 Integer num = modleDao.selectCount();
@@ -326,7 +327,7 @@ public class ModleServiceImpl implements ModleService {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
 
-        String modlePath = Resources.getResource(modleId + ".txt");
+        String modlePath = Resources.getResource("static/modles/"+modleId + ".txt");
         FileReader fileReader = null;
         BufferedReader br=null;
         StringBuilder sb=null;
@@ -360,8 +361,6 @@ public class ModleServiceImpl implements ModleService {
         message = new Message("读取模板内容成功");
         message.addData("modleContext", context);//返回响应数据，模板内容
         return message;
-
-
     }
 
     /**
@@ -374,9 +373,7 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public String WriteAsTxt(String context, int modleId) {
         FileOutputStream fileOutputStream = null;
-//        String filePath = "D:/pdfFile/" + modleId + ".txt";
-//        String filePath = StringUtil.getTempURL(modleId + "");
-        String filePath = Resources.getResource(modleId + ".txt");
+        String filePath = Resources.getResource("static/modles/"+modleId + ".txt");
         try {
 
             File file = new File(filePath);
@@ -420,5 +417,68 @@ public class ModleServiceImpl implements ModleService {
 
         return false;
 
+    }
+
+    /**
+     * 获取标签下所有模板
+     * @param request
+     * @return
+     */
+    @Override
+    public Message getModlesByTag(HttpServletRequest request) {
+        String pageIndexStr = request.getParameter("pageIndex");
+        String modleLabelStr = request.getParameter("modleLabel");
+        Message msg;
+        if (pageIndexStr != null && modleLabelStr !=null){
+            //获取分页起始处和模板分类标签
+            int pageIndex = Integer.parseInt(pageIndexStr);
+            int modleLabel = Integer.parseInt(modleLabelStr);
+            //封装查询数据
+            Modle modle = new Modle();
+            modle.setModleLabel(modleLabel);
+            modle.setPageIndex(pageIndex);
+            //获得查询信息
+            List<Modle> modleList = modleDao.selectModlesByTag(modle);
+            //封装响应信息
+            msg = new Message("获取成功");
+            msg.addData("modleList",modleList);
+        }else {
+            //没有获取到参数
+            msg = new Message("参数获取失败");
+        }
+        return msg;
+    }
+
+    /**'
+     * 给模板打赏
+     * @param request
+     * @return
+     */
+    @Override
+    public Message reward(HttpServletRequest request) {
+        String coinsStr = request.getParameter("coins");
+        String modleIdStr = request.getParameter("modleId");
+        Message msg;
+        if (coinsStr != null && modleIdStr !=null) {
+            int coins = Integer.parseInt(coinsStr);
+            int modleId = Integer.parseInt(modleIdStr);
+            //封装修改数据
+            Modle modle = new Modle();
+            modle.setModleId(modleId);
+            modle.setCoins(coins);
+            //执行修改
+            int success = modleDao.updateModleCoins(modle);
+            if (success>0){
+                msg = new Message("打赏成功");
+                msg.addData("rewardSuccess",true);
+            }else {
+                msg = new Message("打赏失败");
+                msg.addData("rewardSuccess",false);
+            }
+        }else {
+            msg = new Message("操作失败,参数不能为空");
+            msg.addData("rewardSuccess",false);
+        }
+        return msg;
     }
 }

@@ -83,6 +83,24 @@ public class ModleDaoImpl implements ModleDao {
 
 
     /**
+     * 修改模板打赏量
+     * @param modle
+     * @return
+     */
+    @Override
+    public int updateModleCoins(Modle modle) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("ModleMapper.updateCoinsByModleId", modle);
+        if (update > 0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return 0;
+    }
+
+    /**
      * 插入新的模板
      * @param modle
      * @return

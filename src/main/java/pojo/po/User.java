@@ -15,6 +15,26 @@ public class User {
     private int cityId;
     private String school;
 
+    private int stars;
+
+    private String rank;
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -38,6 +38,7 @@ public interface ModleService {
      */
     Message createModle(HttpServletRequest request);
 
+
     /**
      *读取txt文本里里面的string
      * @param request
@@ -66,5 +67,20 @@ public interface ModleService {
      * @return 返回pdf中内容
      */
     Message parsePDFContent(HttpServletRequest request);
+
+    /**
+     * 获取标签下所有模板
+     * @param request
+     * @return
+     */
+    Message getModlesByTag(HttpServletRequest request);
+
+
+    /**
+     * 给模板打赏
+     * @param request
+     * @return
+     */
+    Message reward(HttpServletRequest request);
 
 }
