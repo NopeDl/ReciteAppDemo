@@ -179,7 +179,7 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         if (objects.size() != 0) {
             //有路径
-            modlePath = (String) objects.get(0);
+            modlePath = ((Modle)objects.get(0)).getModlePath();
         }
         return modlePath;
     }

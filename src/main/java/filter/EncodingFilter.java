@@ -53,7 +53,16 @@ public class EncodingFilter extends HttpFilter {
             throws IOException, ServletException {
         //统一设置编码
         request.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        String requestURI = request.getRequestURI();
+        if (requestURI.contains(".css")){
+            response.setContentType("text/css;charset=utf-8");
+        }else {
+            response.setContentType("text/html;charset=utf-8");
+        }
+
+
+
         //解决跨域访问
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "*");

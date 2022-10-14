@@ -7,29 +7,26 @@ import pojo.vo.Message;
 import java.io.InputStream;
 
 public interface ModleService {
+//    /**
+//     * 用户上传文件，这里应该还要返回pdf文件里面的文字内容
+//     * @return
+//     */
+//    Message UpLoad(HttpServletRequest request);
 
 
-
-    /**
-     * 用户上传文件，这里应该还要返回pdf文件里面的文字内容
-     * @return
-     */
-    Message UpLoad(HttpServletRequest request);
-
-
-    /**
-     * 将base64转化为pdf
-     * @param input
-     * @return
-     */
-    String getPdfPath(InputStream input, String pdfFile);
-
-    /**
-     * 将pdf内容提取,返回文本内容
-     * @param url
-
-     */
-    String rePdf(String url);
+//    /**
+//     * 将base64转化为pdf
+//     * @param input
+//     * @return
+//     */
+//    String getPdfPath(InputStream input, String pdfFile);
+//
+//    /**
+//     * 将pdf内容提取,返回文本内容
+//     * @param url
+//
+//     */
+//    String rePdf(String url);
 
     /**
      * 创作模板
@@ -66,7 +63,7 @@ public interface ModleService {
      * 解析pdf内容
      * @return 返回pdf中内容
      */
-    Message parsePDFContent(HttpServletRequest request);
+    Message parseFile(HttpServletRequest request);
 
     /**
      * 获取标签下所有模板

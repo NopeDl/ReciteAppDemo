@@ -37,7 +37,7 @@ public class UploadController extends HttpServlet {
             msg = userService.setFileById(request);
         } else if ("parseContent".equals(uri)) {
             //获取PDF并解析内容
-            msg = modleService.parsePDFContent(request);
+            msg = modleService.parseFile(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

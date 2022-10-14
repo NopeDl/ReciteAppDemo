@@ -5,18 +5,16 @@ import dao.UMRDao;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UMRDaoImpl;
 import easydao.utils.Resources;
+import handlers.FileHandler;
+import handlers.FileHandlerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import pojo.po.Label;
 import pojo.po.Modle;
 import pojo.po.Umr;
-import pojo.po.User;
 import pojo.vo.Message;
 import service.ModleService;
-import utils.StringUtil;
 
 import java.io.*;
 import java.util.*;
@@ -26,126 +24,42 @@ public class ModleServiceImpl implements ModleService {
 
     private final UMRDao umrDao = new UMRDaoImpl();
 
+    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
+
     /**
-     * 解析pdf
+     * 解析文件
      *
      * @param request
      * @return
      */
     @Override
-    public Message parsePDFContent(HttpServletRequest request) {
+    public Message parseFile(HttpServletRequest request) {
+        Message msg;
         try {
-            Part pdfFile = request.getPart("pdfFile");//获取文件
-            Message msg;
-            if (pdfFile != null) {
-                //文件不为空
-                InputStream input = pdfFile.getInputStream();
-                request.setAttribute("fileInputStream", input);
-
-                return UpLoad(request);
+            //获取上传的文件
+            Part upLoadFile = request.getPart("upLoadFile");
+            //获取输入流
+            if (upLoadFile != null) {
+                String fileType = upLoadFile.getContentType();
+                InputStream input = upLoadFile.getInputStream();
+                //根据文件类型获得文件处理器
+                FileHandler handler = fileHandlerFactory.getHandler(fileType, input);
+                String context = handler.parseContent();
+                //将换行转换为前端html换行标签
+                context = context.replaceAll("\\r\\n", "<\\br>");
+                msg = new Message("文件解析成功");
+                msg.addData("context", context);
             } else {
-                msg = new Message("文件上传错误");
-                msg.addData("uploadSuccess", false);
+                msg = new Message("文件上传失败");
             }
-            return msg;
-        } catch (IOException | ServletException e) {
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ServletException e) {
             throw new RuntimeException(e);
         }
+        return msg;
     }
-
-    //将base64的pdf转化为txt文本,然后提取
-    @Override
-    public Message UpLoad(HttpServletRequest request) {
-        Message message;
-        InputStream input = (InputStream) request.getAttribute("fileInputStream");
-        String url = getPdfPath(input, "pdfFile");
-        String context = rePdf(url);
-        context = context.replaceAll("\\r\\n", "<\\br>");
-
-        //将文件内容封装在message返回
-        message = new Message("上传成功");
-        message.addData("context", context);//响应的数据为pdf文本里面的内容
-        return message;
-
-    }
-
-
-    /**
-     * 将base64去掉头部后，转化为pdf
-     *
-     * @param input
-     * @param pdfFile
-     * @return
-     */
-    @Override
-    public String getPdfPath(InputStream input, String pdfFile) {
-        //将String base64String参数替换成流 ->
-        BufferedInputStream bufferedInputStream = null;
-        FileOutputStream fileOutputStream = null;
-        BufferedOutputStream bufferedOutputStreamb = null;
-        File file = null;
-        String filePath = StringUtil.getTempURL(pdfFile);
-        try {
-            file = new File(filePath);
-            //如果没有文件，要创建这个文件
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            OutputStream out = new FileOutputStream(filePath);
-            byte[] bytes = new byte[1024];
-            int len;
-            while ((len = input.read(bytes)) != -1) {
-                out.write(bytes, 0, len);
-            }
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bufferedInputStream != null) {
-                    bufferedInputStream.close();
-                }
-                if (fileOutputStream != null) {
-                    fileOutputStream.close();
-                }
-                if (bufferedOutputStreamb != null) {
-                    bufferedOutputStreamb.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return filePath;
-    }
-
-    /**
-     * 获取pdf文本里面的内容
-     *
-     * @param url
-     */
-    @Override
-    public String rePdf(String url) {
-
-        String context = null;
-        PDDocument document = null;
-        try {
-            File file = new File(url);
-            document = PDDocument.load(file);//会报错？？？？？？？
-
-//            document.loadFromFile("test.pdf");
-            PDFTextStripper stripper = new PDFTextStripper();
-            context = stripper.getText(document);
-            //删除pdf文件
-            file.delete();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return context;
-
-    }
-
 
     /**
      * 创建模板
@@ -235,34 +149,6 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public Message reTxt(HttpServletRequest request) {
-        //这里会出现空指针异常，更改方法里面的尝试
-
-//        Message message;
-//        String modleId = request.getParameter("modleId");//获取模板id
-////        String fileName = "D:/pdfFile/" + modleId + ".txt";
-//        String fileName = Resources.getResource(modleId+" .txt ");
-//        File file = new File(fileName);
-//
-////        StringBuilder result = new StringBuilder();
-//        String result = null;
-//        String line = null;
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(file)); //构造一个BufferedReader类来读取文件
-//
-//            while ((line = br.readLine()) != null) { //使用readLine方法，一次读一行
-//                result += line + '\n';
-//            }
-//            br.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        //这样读取前面会有null;因此剔除null
-//        String context = result.substring(4, result.length());
-//        message = new Message("读取模板内容成功");
-//        message.addData("modleContext", context);//返回响应数据，模板内容
-//        return message;
-
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
 
