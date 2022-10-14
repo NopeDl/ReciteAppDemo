@@ -6,9 +6,16 @@ public class Modle {
     private String modlePath;
     private int userId;
     private int modleLabel;
-
-
     private int coins;
+    private Integer mStatus;
+
+    public Integer getMStatus() {
+        return mStatus;
+    }
+
+    public void setMStatus(Integer mStatus) {
+        this.mStatus = mStatus;
+    }
 
     /**
      * sql语句中limit使用

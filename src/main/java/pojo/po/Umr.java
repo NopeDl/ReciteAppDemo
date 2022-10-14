@@ -24,11 +24,11 @@ public class Umr {
         this.modleId = modleId;
     }
 
-    public int getmStatus() {
+    public int getMStatus() {
         return mStatus;
     }
 
-    public void setmStatus(int mStatus) {
+    public void setMStatus(int mStatus) {
         this.mStatus = mStatus;
     }
 

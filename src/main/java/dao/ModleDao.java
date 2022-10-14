@@ -63,6 +63,8 @@ public interface ModleDao {
      */
     Modle selectModleByModleId(Modle modle);
 
+
+
     /**
      * 获取标签下所有模板
      * @param modle
@@ -91,5 +93,14 @@ public interface ModleDao {
      * @return
      */
     List<Label> selectLabels();
+
+    /**
+     * 获取模板id
+     *
+     * 同一个用户不可以拥有一样标题的模板（有bug，收藏的情况下）
+     * @param modle
+     * @return
+     */
+    Modle selectModleIdByUserIdAndTitle(Modle modle);
 
 }

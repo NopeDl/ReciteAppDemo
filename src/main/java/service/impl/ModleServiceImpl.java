@@ -13,6 +13,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import pojo.po.Label;
 import pojo.po.Modle;
 import pojo.po.Umr;
+import pojo.po.User;
 import pojo.vo.Message;
 import service.ModleService;
 import utils.StringUtil;
@@ -27,6 +28,7 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 解析pdf
+     *
      * @param request
      * @return
      */
@@ -204,13 +206,15 @@ public class ModleServiceImpl implements ModleService {
                 //保存进数据库
                 int result = modleDao.insertModle(modle);
                 //获取modleId
-
-                Integer integer = modleDao.selectCount();
+                int modleId = modleDao.selectModleIdByUserIdAndTitle(modle).getModleId();
                 //保存um关系
                 Umr umr = new Umr();
                 umr.setUserId(userId);
-
-                if (result > 0) {
+                umr.setModleId(modleId);
+                umr.setMStatus(0);//自己创建是0，收藏是1
+                int i = umrDao.insertUMR(umr);
+                //可能存在并发问题，需要事务
+                if (result > 0 && i > 0) {
                     //说明此时插入成功
                     message = new Message("生成新模板成功");
                     message.addData("modle", modle);//？需不需要返回模板对象
@@ -327,10 +331,12 @@ public class ModleServiceImpl implements ModleService {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                fileOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return filePath;
@@ -425,30 +431,34 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public Message getUserMemory(HttpServletRequest request) {
         Message message;
-        Modle modle;
+
         //获取用户的id,从而获取用户的模板
         int userId = Integer.parseInt(request.getParameter("userId"));
         Umr umr = new Umr();
         umr.setUserId(userId);
 
-        Umr[] umrs = umrDao.selectModleByUserId(umr);
-        if (umrs.length == 0) {
+        List<Umr> umrs = umrDao.selectModleByUserId(umr);
+        if (umrs == null) {
             //说明该用户的记忆库啥也没有
             message = new Message();
             message.addData("userMemory", "这里空空如也，快去模板社区进行探索吧！");
 
         } else {
-            //返回有modle的信息和它的状态（已读还是未读）
+            //返回有modle的信息和它的状态（已收藏还是未收藏）
             //创建一个hashmap来解决
-            HashMap<Modle, Integer> map = new HashMap<>();
-            ;
-            for (int i = 0; i < umrs.length; i++) {
-                umrs[i].getModleId();
-                modle = umrDao.selectModleByModleId(umrs[i]);
-                map.put(modle, umrs[i].getmStatus());//放modle和状态
+            ArrayList<Modle> modles = new ArrayList<>();
+            int modleIdTemp;//查询用临时变量
+            Modle tempMod = new Modle();//查询用临时modle对象
+            for (int i = 0; i < umrs.size(); i++) {
+                modleIdTemp = umrs.get(i).getModleId();
+                tempMod.setModleId(modleIdTemp);
+                //封装查询的modle数据
+                Modle modle = modleDao.selectModleByModleId(tempMod);
+                modle.setMStatus(umrs.get(i).getMStatus());
+                modles.add(modle);//放modle和状态
             }
             message = new Message();
-            message.addData("userModle", map);
+            message.addData("userModle", modles);
 
         }
         return message;

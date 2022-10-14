@@ -7,6 +7,7 @@ import pojo.po.Modle;
 import pojo.po.Umr;
 import utils.DaoUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UMRDaoImpl implements UMRDao {
@@ -24,20 +25,19 @@ public class UMRDaoImpl implements UMRDao {
      * @return
      */
     @Override
-    public Umr[] selectModleByUserId(Umr umr) {
-
-        Umr[] umrs;
+    public List<Umr> selectModleByUserId(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("UmrMapper.selectModleByUserId", umr);
         sqlSession.close();
         if (objects.size() == 0) {
-            umrs = new Umr[0];
+            return null;
         } else {
-            umrs = new Umr[objects.size()];
-
+            List<Umr> umrList = new ArrayList<>();
+            for (Object object : objects) {
+                umrList.add((Umr) object);
+            }
+            return umrList;
         }
-
-        return umrs;
     }
 
 

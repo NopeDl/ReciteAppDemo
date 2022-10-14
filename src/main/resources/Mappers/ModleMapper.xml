@@ -10,11 +10,6 @@
         select count(*) as number  from modle where modleTitle=#{modleTitle} and userId=#{userId}
     </select>
 
-<!--    &lt;!&ndash;修改原来的模板&ndash;&gt;-->
-<!--    <update id="updateMOdle" parameterType="pojo.po.Modle">-->
-<!--        update modle set modleText=-->
-<!--    </update>-->
-
     <!--insertModle 生成新模板-->
     <insert id="insertModle" parameterType="pojo.po.Modle">
         insert into modle(modleTitle,modlePath,userId,modleLabel)
@@ -36,11 +31,6 @@
         select * from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
-<!--    <select id="slectModleByUserId" parameterType="pojo.po.Modle" >-->
-<!--        select modleId from umr where userId=#{userId}-->
-
-<!--    </select>-->
-
     <!--selectModleByModleId-->
     <select id="selectModleByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Umr">
         select * from modle where modleId=#{modleId}
@@ -54,5 +44,9 @@
     <select id="selectLables" resultType="pojo.po.Label">
         select labelId,labelName from lable
     </select>>
+
+    <select id="selectModleId" resultType="pojo.po.Modle">
+        select modleId from modle where userId=#{userId} and modleTitle=#{modleTitle}
+    </select>
 
 </mapper>
