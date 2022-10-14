@@ -1,8 +1,9 @@
 package service.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
+import dao.UMRDao;
 import dao.impl.ModleDaoImpl;
+import dao.impl.UMRDaoImpl;
 import easydao.utils.Resources;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,17 +18,15 @@ import service.ModleService;
 import utils.StringUtil;
 
 import java.io.*;
-import java.sql.Connection;
 import java.util.*;
 
 public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
 
+    private final UMRDao umrDao = new UMRDaoImpl();
+
     /**
-     * 2022.10.10:1.41
-     * <p>
-     * //尝试解决前端PDF转化Base64后请求头过长问题
-     *
+     * 解析pdf
      * @param request
      * @return
      */
@@ -39,24 +38,6 @@ public class ModleServiceImpl implements ModleService {
             if (pdfFile != null) {
                 //文件不为空
                 InputStream input = pdfFile.getInputStream();
-
-                //--------------------  有bug-----------------------------
-
-//                //将文件通过流转成字符串
-//                byte[] bytes = new byte[1024];
-//                int len;
-//                StringBuilder sb = new StringBuilder();
-//                while ((len = input.read(bytes)) != -1) {
-//                    sb.append(new String(bytes, 0, len));
-//                }
-//                //将字符串转换成base64字符串
-//                String fileBase64 = new String(Base64.getEncoder().encode(sb.toString().getBytes()));
-//                System.out.println(fileBase64);
-//                //在request域中储存该base64字符串
-//                request.setAttribute("fileBase64", fileBase64);
-                //让upload继续根据base64逻辑处理(略有修改，parameter拿不到参数时会从attribute中拿)
-
-                //------------------------ 尝试不转成base64------------------------------
                 request.setAttribute("fileInputStream", input);
 
                 return UpLoad(request);
@@ -74,29 +55,6 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public Message UpLoad(HttpServletRequest request) {
         Message message;
-//        //获取从前端传过来的文件的base64编码
-//        String fileBase64 = request.getParameter("fileBase64");
-//        //10.10 修改部分
-//        if (fileBase64 == null) {
-//            fileBase64 = (String) request.getAttribute("fileBase64");
-//        }
-
-//        int start = fileBase64.indexOf(",");
-//        String base64String = fileBase64.substring(start + 1, fileBase64.length());
-
-//        String url = getPdfPath(base64String, "pdfFile");// 获取pdf文件的存储位置,这个pdfFile只是一个中间过度的
-//        String url = getPdfPath(fileBase64, "pdfFile");// 获取pdf文件的存储位置,这个pdfFile只是一个中间过度的
-//        String context = rePdf(url);//拿到pdf里面的内容
-
-        //假数据,传一个假的context
-//        String context="一 中国武装力量的构成 ①《抓任命共和国国防法》规定：”中华任命共和国的武装力量，由中国人民解放军现役部 队和预备役部队，" +
-//                "中国人民武装警察部队，民兵组成。” ②中华人民共和国的基本体制是“三结合”即由中国任命解放军，中国人民武装警察部队和 民兵三结合。 " +
-//                "③我国的武装力量";
-
-//        int userId = Integer.parseInt(request.getParameter("userId"));//前端可以储存userId解决跨域session失效问题
-
-
-        //-----------------------------不使用base64版本---------------------
         InputStream input = (InputStream) request.getAttribute("fileInputStream");
         String url = getPdfPath(input, "pdfFile");
         String context = rePdf(url);
@@ -124,10 +82,6 @@ public class ModleServiceImpl implements ModleService {
         FileOutputStream fileOutputStream = null;
         BufferedOutputStream bufferedOutputStreamb = null;
         File file = null;
-
-        // ! !  报错
-//        String filePath = "D:/pdfFile/" + pdfFile + ".pdf"; //拼接存储的地址（pdf只是暂时存储在这里，一旦读取就删掉）
-        //10.10 尝试解决办法
         String filePath = StringUtil.getTempURL(pdfFile);
         try {
             file = new File(filePath);
@@ -135,36 +89,6 @@ public class ModleServiceImpl implements ModleService {
             if (!file.exists()) {
                 file.createNewFile();
             }
-
-
-            //将base64解码变成字节型的数组
-
-            //我这边会报错不知道为什么
-//            CharacterDecoder decoder = null;
-//            byte[] bytes = decoder.decodeBuffer(base64String);
-
-//            //10.10 解决方案
-//            byte[] bytes = Base64.getDecoder().decode(base64String);
-//
-//            //读取数据的缓冲输入流对象
-//            bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
-//            //创建到file的输出流
-//            fileOutputStream = new FileOutputStream(file);
-//            // 为文件输出流对接缓冲输出流对象
-//            bufferedOutputStreamb = new BufferedOutputStream(fileOutputStream);
-//
-//            //读取的内容放在bufferens
-//            byte[] buffers = new byte[1024];
-//            int len = bufferedInputStream.read(buffers);
-//            while (len != -1) {
-//                bufferedOutputStreamb.write(buffers, 0, len);
-//                len = bufferedInputStream.read(buffers);
-//            }
-//            // 刷新此输出流并强制写出所有缓冲的输出字节，必须这行代码，否则有可能有问题
-//            bufferedOutputStreamb.flush();
-
-
-            //------------------------不使用base64------------
             OutputStream out = new FileOutputStream(filePath);
             byte[] bytes = new byte[1024];
             int len;
@@ -271,17 +195,21 @@ public class ModleServiceImpl implements ModleService {
                 //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
                 message = new Message("模板标题不能重复 ");
             } else {
-                //获取此时的总模板个数，然后生成下一条模板
-//                Integer num = modleDao.selectCount();
-//                int modleId = num + 1;//为新模板所应该对应的模板id
-//                modle.setModleId(modleId);
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
                 //获取标签id
                 String lableId = request.getParameter("lableId");
                 modle.setModleLabel(Integer.parseInt(lableId));
+                //保存进数据库
                 int result = modleDao.insertModle(modle);
+                //获取modleId
+
+                Integer integer = modleDao.selectCount();
+                //保存um关系
+                Umr umr = new Umr();
+                umr.setUserId(userId);
+
                 if (result > 0) {
                     //说明此时插入成功
                     message = new Message("生成新模板成功");
@@ -503,7 +431,7 @@ public class ModleServiceImpl implements ModleService {
         Umr umr = new Umr();
         umr.setUserId(userId);
 
-        Umr[] umrs = modleDao.selectModleByUserId(umr);
+        Umr[] umrs = umrDao.selectModleByUserId(umr);
         if (umrs.length == 0) {
             //说明该用户的记忆库啥也没有
             message = new Message();
@@ -516,7 +444,7 @@ public class ModleServiceImpl implements ModleService {
             ;
             for (int i = 0; i < umrs.length; i++) {
                 umrs[i].getModleId();
-                modle = modleDao.selectModleByModleId(umrs[i]);
+                modle = umrDao.selectModleByModleId(umrs[i]);
                 map.put(modle, umrs[i].getmStatus());//放modle和状态
             }
             message = new Message();

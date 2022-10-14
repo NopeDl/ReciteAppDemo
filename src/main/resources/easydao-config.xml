@@ -16,5 +16,6 @@
         <mapper resource="Mappers/UserMapper.xml"/>
         <mapper resource="Mappers/AccountMapper.xml"/>
         <mapper resource="Mappers/ModleMapper.xml"/>
+        <mapper resource="Mappers/UmrMapper.xml"/>
     </mappers>
 </configuration>

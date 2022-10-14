@@ -161,47 +161,7 @@ public class ModleDaoImpl implements ModleDao {
     }
 
 
-    /**
-     * 根据umr里面的userI的来查找所对应的modleid
-     * @param umr
-     * @return
-     */
-    @Override
-    public Umr[] selectModleByUserId(Umr umr) {
 
-        Umr[] umrs;
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Object> objects = sqlSession.selectList("UmrMapper.selectModleByUserId", umr);
-        sqlSession.close();
-        if(objects.size()==0){
-            umrs=new Umr[0];
-        }else{
-            umrs=new Umr[objects.size()];
-
-        }
-
-        return umrs;
-    }
-
-
-    /**
-     * 根据传过来的modleId来查找modle信息
-     * @param umr
-     * @return
-     */
-    @Override
-    public Modle selectModleByModleId(Umr umr) {
-        Modle modle;
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Object> objects = sqlSession.selectList("ModleMapper.selectModleByModleId", umr);
-        sqlSession.close();
-        if(objects.size()==0){
-            modle=null;
-        }else{
-          modle= (Modle) objects.get(0);
-        }
-        return modle;
-    }
 
     /***
      * 根据模板对象的id号查找相对于的模板路径
