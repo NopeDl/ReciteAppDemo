@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-
+    @Deprecated
     public Message setFileById(HttpServletRequest request) {
         Message message;
         try {

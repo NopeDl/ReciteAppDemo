@@ -1,6 +1,7 @@
 package dao;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import pojo.po.Label;
 import pojo.po.Modle;
 import pojo.po.Umr;
 
@@ -60,7 +61,7 @@ public interface ModleDao {
      * @param modle
      * @return
      */
-    Modle selectModleById(Modle modle);
+    Modle selectModleByModleId(Modle modle);
 
     /**
      * 获取标签下所有模板
@@ -96,5 +97,11 @@ public interface ModleDao {
      * @return
      */
     String selectPathByModleId(int modleId);
+
+    /**
+     * 获取所有标签信息
+     * @return
+     */
+    List<Label> selectLabels();
 
 }

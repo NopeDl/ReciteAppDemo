@@ -1,10 +1,6 @@
 <!DOCTYPE mapper>
 <mapper namespace="ModleMapper">
-    <!--通过userId上传文件-->
-    <insert id="insertFile">
-        insert into modle (fileContext,userId) values(#{fileContext},#{userId})
-    </insert>
-
+    <!--  -->
     <select id="selectCount" parameterType="string" resultType="pojo.po.Count">
         select count(userId) as number  from modle
     </select>
@@ -21,8 +17,8 @@
 
     <!--insertModle 生成新模板-->
     <insert id="insertModle" parameterType="pojo.po.Modle">
-        insert into modle(modleId,modleTitle,modlePath,userId)
-        values(#{modleId},#{modleTitle},#{modlePath},#{userId})
+        insert into modle(modleTitle,modlePath,userId,modleLabel)
+        values(#{modleTitle},#{modlePath},#{userId},#{modleLabel})
     </insert>
 
     <!-- 修改模板打赏量  -->
@@ -54,7 +50,9 @@
     <select id="selectPathByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
         select modlePath from modle where modleId=#{modleId}
     </select>
-
-
+    <!-- 获取所有标签 -->
+    <select id="selectLables" resultType="pojo.po.Label">
+        select labelId,labelName from lable
+    </select>>
 
 </mapper>

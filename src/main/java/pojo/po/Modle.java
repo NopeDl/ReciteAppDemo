@@ -80,10 +80,9 @@ public class Modle {
         return modleLabel;
     }
 
-    public void setModleLable(int modleLable) {
+    public void setModleLabel(int modleLabel) {
         this.modleLabel = modleLabel;
     }
-
 
     @Override
     public String toString() {

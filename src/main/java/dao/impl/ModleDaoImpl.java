@@ -1,13 +1,9 @@
 package dao.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import easydao.core.SqlSession;
 import easydao.core.SqlSessionFactory;
-import pojo.po.Count;
-import pojo.po.File;
-import pojo.po.Modle;
-import pojo.po.Umr;
+import pojo.po.*;
 import pojo.vo.Message;
 import utils.DaoUtil;
 
@@ -128,7 +124,7 @@ public class ModleDaoImpl implements ModleDao {
      * @return
      */
     @Override
-    public Modle selectModleById(Modle modle) {
+    public Modle selectModleByModleId(Modle modle) {
         int modleId = modle.getModleId();
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modleId);
@@ -226,5 +222,23 @@ public class ModleDaoImpl implements ModleDao {
             modlePath= (String) objects.get(0);
         }
         return modlePath;
+    }
+
+    @Override
+    public List<Label> selectLabels() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> labelList = sqlSession.selectList("ModleMapper.selectLables", "ss");
+        sqlSession.close();
+        if (labelList.size()>0){
+            //如果查到则转换成po
+            List<Label> labelsList = new ArrayList<>();
+            for (Object o : labelList) {
+                labelsList.add((Label) o);
+            }
+            return labelsList;
+        }else {
+            return null;
+        }
+
     }
 }

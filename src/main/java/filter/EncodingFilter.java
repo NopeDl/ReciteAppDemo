@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -21,7 +23,7 @@ public class EncodingFilter extends HttpFilter {
         Properties properties = new Properties();
         try {
             //加载配置文件
-            properties.load(Resources.getResourceAsStream("static/rank.properties"));
+            properties.load(new InputStreamReader(Resources.getResourceAsStream("static/rank.properties"), StandardCharsets.UTF_8));
             Map<int[],String> rankMap = new HashMap<>();
             for (String key : properties.stringPropertyNames()) {
                 //key: "0,5"

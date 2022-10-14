@@ -47,6 +47,7 @@ public interface UserService {
      * @param request
      * @return
      */
+    @Deprecated
     Message setFileById(HttpServletRequest request);
 
     /**

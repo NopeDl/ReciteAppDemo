@@ -1,5 +1,6 @@
 package controller;
 
+import easydao.utils.Resources;
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -7,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import pojo.vo.Message;
 import service.ModleService;
 import service.UserService;
@@ -15,7 +17,7 @@ import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
 
-import java.io.IOException;
+import java.io.*;
 
 
 @WebServlet("/upload/*")
@@ -31,6 +33,7 @@ public class UploadController extends HttpServlet {
         Message msg;
         if ("file".equals(uri)) {
             //上传文件
+            //弃用
             msg = userService.setFileById(request);
         } else if ("parseContent".equals(uri)) {
             //获取PDF并解析内容

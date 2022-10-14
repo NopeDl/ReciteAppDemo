@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import pojo.po.Label;
 import pojo.po.Modle;
 import pojo.po.Umr;
 import pojo.vo.Message;
@@ -215,9 +216,6 @@ public class ModleServiceImpl implements ModleService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        new test3().readString(context,fileId);
-
         return context;
 
     }
@@ -236,7 +234,6 @@ public class ModleServiceImpl implements ModleService {
     public Message createModle(HttpServletRequest request) {
         Message message;
         Modle modle = new Modle();
-//        ModleService modleService = new ModleServiceImpl();//去掉没用
         //只需要获取文本内容和模板制作者，为该模板起名的标题即可
         String context = request.getParameter("context");
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -258,32 +255,32 @@ public class ModleServiceImpl implements ModleService {
 
             //根据modleId查路径
             boolean b = replaceContext(context, modleId);
-            if(b){
+            if (b) {
                 //结束覆盖过程
                 message = new Message("成功覆盖原模板");
                 message.addData("modle", modle);//？需不需要返回模板对象
-            }else{
-                message=new Message("覆盖失败");
+            } else {
+                message = new Message("覆盖失败");
             }
-
 
 
         } else {
             //对比该模板制作者的作于模板标题，不允许有有重复的标题
             int sum = modleDao.selectNumByTitle(modle);
             if (sum > 0) {
-//                说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
                 message = new Message("模板标题不能重复 ");
             } else {
                 //获取此时的总模板个数，然后生成下一条模板
-                Integer num = modleDao.selectCount();
-                int modleId = num + 1;//为新模板所应该对应的模板id
-                modle.setModleId(modleId);
+//                Integer num = modleDao.selectCount();
+//                int modleId = num + 1;//为新模板所应该对应的模板id
+//                modle.setModleId(modleId);
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
-
                 String modlePath = WriteAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
-
+                //获取标签id
+                String lableId = request.getParameter("lableId");
+                modle.setModleLabel(Integer.parseInt(lableId));
                 int result = modleDao.insertModle(modle);
                 if (result > 0) {
                     //说明此时插入成功
@@ -340,13 +337,13 @@ public class ModleServiceImpl implements ModleService {
         //获取模板路径
         String modlePath = modleDao.selectPathByModleId(Integer.parseInt(modleId));
         FileReader fileReader = null;
-        BufferedReader br=null;
-        StringBuilder sb=null;
+        BufferedReader br = null;
+        StringBuilder sb = null;
         String temp = "";
 
 
         try {
-            File  file = new File(modlePath);
+            File file = new File(modlePath);
             fileReader = new FileReader(file);
             br = new BufferedReader(fileReader);
             sb = new StringBuilder();
@@ -357,7 +354,7 @@ public class ModleServiceImpl implements ModleService {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 br.close();
             } catch (IOException e) {
@@ -384,7 +381,7 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public String WriteAsTxt(String context, String modleTitle) {
         FileOutputStream fileOutputStream = null;
-        String filePath =Resources.getResource("static/modles/"+System.currentTimeMillis()+modleTitle + ".txt");
+        String filePath = Resources.getResource("static/modles/" + System.currentTimeMillis() + modleTitle + ".txt");
         try {
             File file = new File(filePath);
             if (!file.exists()) {
@@ -433,6 +430,7 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 获取标签下所有模板
+     *
      * @param request
      * @return
      */
@@ -441,28 +439,30 @@ public class ModleServiceImpl implements ModleService {
         String pageIndexStr = request.getParameter("pageIndex");
         String modleLabelStr = request.getParameter("modleLabel");
         Message msg;
-        if (pageIndexStr != null && modleLabelStr !=null){
+        if (pageIndexStr != null && modleLabelStr != null) {
             //获取分页起始处和模板分类标签
             int pageIndex = Integer.parseInt(pageIndexStr);
             int modleLabel = Integer.parseInt(modleLabelStr);
             //封装查询数据
             Modle modle = new Modle();
-            modle.setModleLable(modleLabel);
+            modle.setModleLabel(modleLabel);
             modle.setPageIndex(pageIndex);
             //获得查询信息
             List<Modle> modleList = modleDao.selectModlesByTag(modle);
             //封装响应信息
             msg = new Message("获取成功");
-            msg.addData("modleList",modleList);
-        }else {
+            msg.addData("modleList", modleList);
+        } else {
             //没有获取到参数
             msg = new Message("参数获取失败");
         }
         return msg;
     }
 
-    /**'
+    /**
+     * '
      * 给模板打赏
+     *
      * @param request
      * @return
      */
@@ -471,7 +471,7 @@ public class ModleServiceImpl implements ModleService {
         String coinsStr = request.getParameter("coins");
         String modleIdStr = request.getParameter("modleId");
         Message msg;
-        if (coinsStr != null && modleIdStr !=null) {
+        if (coinsStr != null && modleIdStr != null) {
             int coins = Integer.parseInt(coinsStr);
             int modleId = Integer.parseInt(modleIdStr);
             //封装修改数据
@@ -480,16 +480,16 @@ public class ModleServiceImpl implements ModleService {
             modle.setCoins(coins);
             //执行修改
             int success = modleDao.updateModleCoins(modle);
-            if (success>0){
+            if (success > 0) {
                 msg = new Message("打赏成功");
-                msg.addData("rewardSuccess",true);
-            }else {
+                msg.addData("rewardSuccess", true);
+            } else {
                 msg = new Message("打赏失败");
-                msg.addData("rewardSuccess",false);
+                msg.addData("rewardSuccess", false);
             }
-        }else {
+        } else {
             msg = new Message("操作失败,参数不能为空");
-            msg.addData("rewardSuccess",false);
+            msg.addData("rewardSuccess", false);
         }
         return msg;
     }
@@ -500,28 +500,47 @@ public class ModleServiceImpl implements ModleService {
         Modle modle;
         //获取用户的id,从而获取用户的模板
         int userId = Integer.parseInt(request.getParameter("userId"));
-        Umr umr=new Umr();
+        Umr umr = new Umr();
         umr.setUserId(userId);
 
         Umr[] umrs = modleDao.selectModleByUserId(umr);
-        if(umrs.length==0){
+        if (umrs.length == 0) {
             //说明该用户的记忆库啥也没有
-            message=new Message();
-            message.addData("userMemory","这里空空如也，快去模板社区进行探索吧！");
+            message = new Message();
+            message.addData("userMemory", "这里空空如也，快去模板社区进行探索吧！");
 
-        }else{
+        } else {
             //返回有modle的信息和它的状态（已读还是未读）
             //创建一个hashmap来解决
-            HashMap<Modle, Integer> map=new HashMap<>();;
+            HashMap<Modle, Integer> map = new HashMap<>();
+            ;
             for (int i = 0; i < umrs.length; i++) {
                 umrs[i].getModleId();
-                modle= modleDao.selectModleByModleId(umrs[i]);
-                map.put(modle,umrs[i].getmStatus());//放modle和状态
+                modle = modleDao.selectModleByModleId(umrs[i]);
+                map.put(modle, umrs[i].getmStatus());//放modle和状态
             }
-            message=new Message();
-            message.addData("userModle",map);
+            message = new Message();
+            message.addData("userModle", map);
 
         }
         return message;
+    }
+
+    /**
+     * 获取所有标签信息
+     *
+     * @return
+     */
+    @Override
+    public Message getLabels() {
+        List<Label> labels = modleDao.selectLabels();
+        Message msg;
+        if (labels != null) {
+            msg = new Message("获取成功");
+            msg.addData("labelList", labels);
+        } else {
+            msg = new Message("暂无标签");
+        }
+        return msg;
     }
 }

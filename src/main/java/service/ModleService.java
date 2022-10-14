@@ -91,6 +91,10 @@ public interface ModleService {
      */
     Message getUserMemory(HttpServletRequest request);
 
-
+    /**
+     * 获取所有标签信息
+     * @return
+     */
+    Message getLabels();
 
 }
