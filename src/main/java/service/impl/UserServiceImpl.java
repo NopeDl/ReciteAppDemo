@@ -8,18 +8,11 @@ import dao.impl.DateDaoImpl;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.Part;
-import pojo.po.Label;
 import pojo.po.User;
 import pojo.vo.Message;
 import service.UserService;
-import utils.FileUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 import java.text.DateFormat;
@@ -64,8 +57,6 @@ public class UserServiceImpl implements UserService {
     public Message selectUserMsg(HttpServletRequest request) {
 
         Message message;
-//        int userId = Integer.parseInt(getCookie(request, "userId"));//查找userId
-//        int userId = (int) request.getSession().getAttribute("userId");//通过session获取userId
         int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.selectUserById(userId);
         //将响应的数据封装到message里
@@ -75,28 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 目前没啥用
-     *
-     * @param request
-     * @param cookieName
-     * @return
-     */
-    @Override
-    public String getCookie(HttpServletRequest request, String cookieName) {
-        Cookie[] cookies = request.getCookies();
-        //如果cookies为空，直接返回null;
-        if (cookies != null) {
-            for (Cookie c : cookies) {
-                if (cookieName.equals(c.getName())) {
-                    return c.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * 通过用户id来改个人信息
+     *
      * @param userId
      * @param request
      * @return
@@ -143,52 +114,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据id设置文件
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    @Deprecated
-    public Message setFileById(HttpServletRequest request) {
-        Message message;
-        try {
-            //获取头像
-            Part part = request.getPart("file");
-            if (part == null) {
-                //为空
-                message = new Message("文件上传错误");
-                message.addData("uploadSuccess", false);
-            } else {
-                //不为空
-                //获取文件输入流
-                InputStream input = part.getInputStream();
-                //获取文件名字
-                String imgName = UUID.randomUUID() + ".pdf";
-                //获取默认上传路径
-                String uploadPath = this.getClass().getResource("/upload").getPath().substring(1);
-                //设置路径
-                String savePath = uploadPath + imgName;
-                System.out.println(savePath);
-                //储存
-                FileUtil.save(savePath, input);
-                //将地址保存在数据库
-                int userId = (int) request.getSession().getAttribute("userId");
-                modleDao.insertFileByUserId(userId, savePath);
-                //封装响应消息
-                message = new Message("文件上传正常");
-                message.addData("uploadSuccess", true);
-                input.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        }
-        return message;
-    }
-
-    /**
      * 检查昵称是否可用
      *
      * @param request
@@ -213,6 +138,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获取积分榜前十
+     *
      * @param request
      * @return
      */
@@ -220,10 +146,10 @@ public class UserServiceImpl implements UserService {
     public Message rankingList(HttpServletRequest request) {
         List<User> userList = userDao.selectTopTen();
         Message msg;
-        if (userList.size()>0){
+        if (userList.size() > 0) {
             msg = new Message("获取成功");
-            msg.addData("ranking",userList);
-        }else {
+            msg.addData("ranking", userList);
+        } else {
             msg = new Message("获取失败");
         }
         return msg;
@@ -231,6 +157,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获取用户排位和信息
+     *
      * @param request
      * @return
      */
@@ -240,11 +167,11 @@ public class UserServiceImpl implements UserService {
         int userId = Integer.parseInt(request.getParameter("userId"));
         Integer userRanking = userDao.selectUserRanking(userId);//查询用户排名
         User user = userDao.selectUserById(userId);//查询用户信息
-        Map<String,Object> res = new HashMap<>();//封装数据
-        res.put("userRanking",userRanking);
-        res.put("user",user);
+        Map<String, Object> res = new HashMap<>();//封装数据
+        res.put("userRanking", userRanking);
+        res.put("user", user);
         msg = new Message("获取成功");
-        msg.addData("userData",res);
+        msg.addData("userData", res);
         return msg;
     }
 
@@ -258,20 +185,21 @@ public class UserServiceImpl implements UserService {
         } catch (ParseException e) {
             throw new RuntimeException("日期解析有误");
         }
-        int i = dateDao.insertDateByUserId(userId,date);
+        int i = dateDao.insertDateByUserId(userId, date);
         Message msg;
-        if (i>0){
+        if (i > 0) {
             msg = new Message("打卡成功");
-            msg.addData("isSuccess",true);
-        }else {
+            msg.addData("isSuccess", true);
+        } else {
             msg = new Message("打卡失败");
-            msg.addData("isSuccess",false);
+            msg.addData("isSuccess", false);
         }
         return msg;
     }
 
     /**
      * 获取打卡记录
+     *
      * @param request
      * @return
      */
@@ -280,10 +208,10 @@ public class UserServiceImpl implements UserService {
         int userId = Integer.parseInt(request.getParameter("userId"));
         List<String> list = dateDao.selectDateByUserId(userId);
         Message msg;
-        if (list!=null){
+        if (list != null) {
             msg = new Message("查找成功");
-            msg.addData("dateList",list);
-        }else {
+            msg.addData("dateList", list);
+        } else {
             msg = new Message("查找失败");
         }
         return msg;

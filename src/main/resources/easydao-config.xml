@@ -18,5 +18,6 @@
         <mapper resource="Mappers/ModleMapper.xml"/>
         <mapper resource="Mappers/UmrMapper.xml"/>
         <mapper resource="Mappers/DateMapper.xml"/>
+        <mapper resource="Mappers/LabelMapper.xml"/>
     </mappers>
 </configuration>

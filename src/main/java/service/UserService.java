@@ -21,15 +21,6 @@ public interface UserService {
      */
     Message selectUserMsg(HttpServletRequest request);
 
-    /**
-     * 通过传进去的在cookieName遍历cookie,寻找对应value的值
-     *
-     * @param request
-     * @param cookieName
-     * @return 找到返回该值，
-     */
-    String getCookie(HttpServletRequest request, String cookieName);
-
 
     /**
      * 根据用户的id修改资料
@@ -39,16 +30,6 @@ public interface UserService {
      * @return
      */
     Message ReMsgById(int userId, HttpServletRequest request);
-
-
-    /**
-     * 根据id设置头像
-     *
-     * @param request
-     * @return
-     */
-    @Deprecated
-    Message setFileById(HttpServletRequest request);
 
     /**
      * 检查昵称是否可用

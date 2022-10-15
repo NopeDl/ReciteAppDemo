@@ -4,7 +4,6 @@ import dao.ModleDao;
 import easydao.core.SqlSession;
 import easydao.core.SqlSessionFactory;
 import pojo.po.*;
-import pojo.vo.Message;
 import utils.DaoUtil;
 
 import java.util.ArrayList;
@@ -169,19 +168,25 @@ public class ModleDaoImpl implements ModleDao {
      * @return
      */
     @Override
-    public String selectPathByModleId(int modleId) {
+    public Modle selectPathTitlAndTag(int modleId) {
         Modle modle = new Modle();
         modle.setModleId(modleId);
 
+        //返回modle1
+        Modle modle1;
         String modlePath = null;//传回去的值
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectPathByModleId", modle);
         sqlSession.close();
         if (objects.size() != 0) {
             //有路径
-            modlePath = ((Modle)objects.get(0)).getModlePath();
+//            modlePath = ((Modle)objects.get(0)).getModlePath();
+            //返回路径，标题，标签，封装成modle
+           modle1 = (Modle) objects.get(0);
+        }else{
+            modle1=null;
         }
-        return modlePath;
+        return modle1;
     }
 
     @Override
@@ -202,6 +207,7 @@ public class ModleDaoImpl implements ModleDao {
 
     }
 
+
     /**
      * 获取模板id
      * <p>
@@ -216,5 +222,22 @@ public class ModleDaoImpl implements ModleDao {
         List<Object> modleList = sqlSession.selectList("ModleMapper.selectModleId", modle);
         sqlSession.close();
         return modleList.size() > 0 ? (Modle) modleList.get(0) : null;
+    }
+
+    @Override
+    public String selectPathByModleId(int modleId) {
+        Modle modle = new Modle();
+        modle.setModleId(modleId);
+
+        String modlePath = null;//传回去的值
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectPathByModleId", modle);
+        sqlSession.close();
+        if (objects.size() != 0) {
+            //有路径
+            modlePath = ((Modle)objects.get(0)).getModlePath();
+
+        }
+        return modlePath;
     }
 }

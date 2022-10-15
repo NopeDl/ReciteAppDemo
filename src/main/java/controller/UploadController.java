@@ -23,7 +23,6 @@ import java.io.*;
 @WebServlet("/upload/*")
 @MultipartConfig
 public class UploadController extends HttpServlet {
-    private UserService userService = new UserServiceImpl();
     private ModleService modleService = new ModleServiceImpl();
 
     @Override
@@ -31,11 +30,7 @@ public class UploadController extends HttpServlet {
             throws ServletException, IOException {
         String uri = StringUtil.parseURI(request.getRequestURI());
         Message msg;
-        if ("file".equals(uri)) {
-            //上传文件
-            //弃用
-            msg = userService.setFileById(request);
-        } else if ("parseContent".equals(uri)) {
+        if ("parseContent".equals(uri)) {
             //获取PDF并解析内容
             msg = modleService.parseFile(request);
         } else {

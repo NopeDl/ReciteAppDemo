@@ -82,10 +82,12 @@ public interface ModleDao {
 
 
     /**
-     * 根据modleId来查找相对应的modlePath
+     * 根据modleId来查找相对应的modlePath,modleTitle,modleLabel
      * @param modleId
      * @return
      */
+    Modle selectPathTitlAndTag(int modleId);
+
     String selectPathByModleId(int modleId);
 
     /**
