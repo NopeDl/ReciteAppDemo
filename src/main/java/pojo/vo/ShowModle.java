@@ -4,14 +4,14 @@ public class ShowModle {
 
     private String context;//模板内容
     private String labelName;//模板标签名字
-    private String labelValue;//模板标签编号
+    private int labelValue;//模板标签编号
     private String title;//模板标题
 
     public ShowModle() {
     }
 
 
-    public ShowModle(String context, String labelName, String labelValue, String title) {
+    public ShowModle(String context, String labelName, int labelValue, String title) {
         this.context = context;
         this.labelName = labelName;
         this.labelValue = labelValue;
@@ -43,11 +43,11 @@ public class ShowModle {
         this.labelName = labelName;
     }
 
-    public String getLabelValue() {
+    public int getLabelValue() {
         return labelValue;
     }
 
-    public void setLabelValue(String labelValue) {
+    public void setLabelValue(int labelValue) {
         this.labelValue = labelValue;
     }
 }

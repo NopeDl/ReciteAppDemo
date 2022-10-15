@@ -198,7 +198,11 @@ public class ModleServiceImpl implements ModleService {
         showModle.setTitle(modle.getModleTitle());//存模板标题
 
         //查找模板的标签名字,并且封装
-        showModle.getLabelName(labelDao.selectLableName(modle.getModleLabel()));
+        int modleLabel =modle.getModleLabel();
+        showModle.setLabelValue(modleLabel);//将模板标签编号存进去
+
+        //将模板标签名字存进去
+        showModle.getLabelName(labelDao.selectLableName(modleLabel));
 
 
         message = new Message("读取模板内容成功");
