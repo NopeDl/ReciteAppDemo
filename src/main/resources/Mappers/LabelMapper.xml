@@ -1,0 +1,10 @@
+<!DOCTYPE mapper>
+<mapper namespace="LabelMapper">
+    <!--  -->
+    <select id="selectLableName" parameterType="pojo.po.Label" resultType="pojo.po.Label">
+        select  labelName from label where labelId=#{labelId}
+    </select>
+
+
+
+</mapper>
