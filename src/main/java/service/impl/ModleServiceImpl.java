@@ -59,9 +59,7 @@ public class ModleServiceImpl implements ModleService {
                 msg = new Message("文件上传失败");
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ServletException e) {
+        } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
         }
         return msg;
@@ -199,29 +197,19 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public String WriteAsTxt(String context, String modleTitle) {
-        FileOutputStream fileOutputStream = null;
         String filePath = Resources.getResource("static/modles/" + System.currentTimeMillis() + modleTitle + ".txt");
         try {
             File file = new File(filePath);
-            if (!file.exists()) {
+            if (!file.exists()){
                 file.createNewFile();
             }
-            byte[] bytes;
-            bytes = context.getBytes();
-            fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(bytes, 0, bytes.length);
-        } catch (IOException e) {
+            FileHandler txtHandler = fileHandlerFactory.getHandler("txt", null);
+            String path = txtHandler.saveFile(filePath, context);
+            return path;
+        }catch (IOException e){
             e.printStackTrace();
-        } finally {
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return filePath;
+        return null;
     }
 
     //修改模板内容,根据传进来的modleId查找modlePath，从而修改文本

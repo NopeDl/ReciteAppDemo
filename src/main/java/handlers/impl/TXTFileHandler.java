@@ -48,4 +48,30 @@ public class TXTFileHandler implements FileHandler {
         }
         return sb.toString();
     }
+
+    @Override
+    public String saveFile(String filePath, String context) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            byte[] bytes;
+            bytes = context.getBytes();
+            fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(bytes, 0, bytes.length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return filePath;
+    }
 }

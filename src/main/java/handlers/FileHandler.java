@@ -16,4 +16,10 @@ public interface FileHandler {
      * @return 解析好的内容
      */
     String parseContent(InputStream input);
+
+    /**
+     * 保存文件
+     * @return
+     */
+    String saveFile(String filePath, String context);
 }

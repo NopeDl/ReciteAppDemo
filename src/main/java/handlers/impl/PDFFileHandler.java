@@ -48,4 +48,9 @@ public class PDFFileHandler implements FileHandler {
         }
         return context;
     }
+
+    @Override
+    public String saveFile(String filePath, String context) {
+        return null;
+    }
 }
