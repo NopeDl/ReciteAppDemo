@@ -7,29 +7,10 @@ import pojo.vo.Message;
 import java.io.InputStream;
 
 public interface ModleService {
-//    /**
-//     * 用户上传文件，这里应该还要返回pdf文件里面的文字内容
-//     * @return
-//     */
-//    Message UpLoad(HttpServletRequest request);
-
-
-//    /**
-//     * 将base64转化为pdf
-//     * @param input
-//     * @return
-//     */
-//    String getPdfPath(InputStream input, String pdfFile);
-//
-//    /**
-//     * 将pdf内容提取,返回文本内容
-//     * @param url
-//
-//     */
-//    String rePdf(String url);
 
     /**
      * 创作模板
+     *
      * @param request
      * @return
      */
@@ -37,7 +18,8 @@ public interface ModleService {
 
 
     /**
-     *读取txt文本里里面的string
+     * 读取txt文本里里面的string
+     *
      * @param request
      * @return
      */
@@ -50,23 +32,26 @@ public interface ModleService {
      * @param modleTitle
      * @return
      */
-    String WriteAsTxt(String context,String modleTitle);
+    String WriteAsTxt(String context, String modleTitle);
 
 
     /**
      * 更改原模版路径里面的内容
+     *
      * @return
      */
-    boolean replaceContext(String context,int modleId);
+    boolean replaceContext(String context, int modleId);
 
     /**
      * 解析pdf内容
+     *
      * @return 返回pdf中内容
      */
     Message parseFile(HttpServletRequest request);
 
     /**
      * 获取标签下所有模板
+     *
      * @param request
      * @return
      */
@@ -75,6 +60,7 @@ public interface ModleService {
 
     /**
      * 给模板打赏
+     *
      * @param request
      * @return
      */
@@ -83,6 +69,7 @@ public interface ModleService {
 
     /**
      * 查询用户的记忆库
+     *
      * @param request
      * @return
      */
@@ -90,8 +77,15 @@ public interface ModleService {
 
     /**
      * 获取所有标签信息
+     *
      * @return
      */
     Message getLabels();
+
+    /**
+     * 自动挖空
+     * @return
+     */
+    Message autoDig(HttpServletRequest request);
 
 }

@@ -5,6 +5,7 @@ import dao.UMRDao;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UMRDaoImpl;
 import easydao.utils.Resources;
+import enums.MsgInf;
 import handlers.FileHandler;
 import handlers.FileHandlerFactory;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import pojo.po.Modle;
 import pojo.po.Umr;
 import pojo.vo.Message;
 import service.ModleService;
+import utils.StringUtil;
 
 import java.io.*;
 import java.util.*;
@@ -151,41 +153,20 @@ public class ModleServiceImpl implements ModleService {
     public Message reTxt(HttpServletRequest request) {
         Message message;
         String modleId = request.getParameter("modleId");//获取模板id
-
         //获取模板路径
         String modlePath = modleDao.selectPathByModleId(Integer.parseInt(modleId));
-        FileReader fileReader = null;
-        BufferedReader br = null;
-        StringBuilder sb = null;
-        String temp = "";
-
-
         try {
-            File file = new File(modlePath);
-            fileReader = new FileReader(file);
-            br = new BufferedReader(fileReader);
-            sb = new StringBuilder();
-            while ((temp = br.readLine()) != null) {
-                // 拼接换行符
-                sb.append(temp + "\n");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //获取文件位置
+            InputStream input = new FileInputStream(modlePath);
+            //获取模板文件处理器
+            FileHandler txtHandler = fileHandlerFactory.getHandler("txt", input);
+            //解析文件内容
+            String context = txtHandler.parseContent();
+            message = new Message("读取模板内容成功");
+            message.addData("modleContext", context);//返回响应数据，模板内容
+        } catch (FileNotFoundException e) {
+            message = new Message(MsgInf.SERVER_ERROR);
         }
-
-
-        String context = sb.toString();
-        System.out.println(context);
-
-        message = new Message("读取模板内容成功");
-        message.addData("modleContext", context);//返回响应数据，模板内容
         return message;
     }
 
@@ -207,13 +188,8 @@ public class ModleServiceImpl implements ModleService {
             }
             byte[] bytes;
             bytes = context.getBytes();
-
-
             fileOutputStream = new FileOutputStream(file);
-
             fileOutputStream.write(bytes, 0, bytes.length);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -234,7 +210,6 @@ public class ModleServiceImpl implements ModleService {
         String modlePath = modleDao.selectPathByModleId(modleId);
         //覆盖成功返回true，失败返回false
         try {
-//            String modlePath = Resources.getResource(modleId + ".txt");
             PrintWriter printWriter = new PrintWriter(modlePath);
             printWriter.write(context);
             printWriter.flush();
@@ -350,6 +325,7 @@ public class ModleServiceImpl implements ModleService {
         return message;
     }
 
+
     /**
      * 获取所有标签信息
      *
@@ -366,5 +342,76 @@ public class ModleServiceImpl implements ModleService {
             msg = new Message("暂无标签");
         }
         return msg;
+    }
+
+
+    /**
+     * 系统自动挖空
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Message autoDig(HttpServletRequest request) {
+        String ratioStr = request.getParameter("ratio");
+        String modleIdStr = request.getParameter("modleId");
+        Message msg;
+        if (ratioStr != null && modleIdStr != null) {
+            //获取挖空比例
+            double ratio = (Integer.parseInt(ratioStr)) / 100.0;
+            //获取模板ID
+            int modleId = Integer.parseInt(modleIdStr);
+            //查询模板地址
+            String path = modleDao.selectPathByModleId(modleId);
+            //根据地址获取文件字节输入流
+            try {
+                InputStream inputStream = new FileInputStream(path);
+                //获取文件内容
+                FileHandler txtHandler = fileHandlerFactory.getHandler("txt", inputStream);
+                String content = txtHandler.parseContent();
+                //去除所有用户自己挖空内容
+                //需要优化太耗时
+                content = content.replaceAll("<div>", "").replaceAll("</div>", "");
+
+                //根据模板字符数确定要挖的字数
+                int charNum = (int) Math.round(content.length() * ratio);
+                //计算需要挖的空数
+                //假定要挖的空为  charNum * ratio
+                int blankNum = (int) Math.round(charNum * ratio);
+                List<Integer> charNums = this.getCharNums(charNum, blankNum);
+                String result = StringUtil.digBlank(content, charNums, blankNum);
+
+                result = result.replaceAll("\\s", "<\\br>");
+                msg = new Message("挖空成功");
+                msg.addData("context", result);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("获取" + path + "流失败");
+            }
+        } else {
+            msg = new Message("比例或模板id不能为空");
+        }
+        return msg;
+    }
+
+
+    /**
+     * 计算每个空需要多少字
+     *
+     * @param totalChar
+     * @param count
+     * @return
+     */
+    private ArrayList<Integer> getCharNums(int totalChar, int count) {
+        ArrayList<Integer> list = new ArrayList<>();
+        int min = count - 1;
+        Random random = new Random();
+        for (int i = 0; i < count - 1; i++) {
+            int num = random.nextInt(totalChar - min) + 1;
+            list.add(num);
+            totalChar -= num;
+            min--;
+        }
+        list.add(totalChar);
+        return list;
     }
 }

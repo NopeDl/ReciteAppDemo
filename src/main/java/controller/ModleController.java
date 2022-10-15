@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pojo.po.Modle;
 import pojo.vo.Message;
 import service.ModleService;
 import service.impl.ModleServiceImpl;
@@ -38,7 +37,9 @@ public class ModleController extends HttpServlet {
         } else if ("UserMemory".equals(requestURI)) {
             //获取用户的记忆库,返回用户的模板状态
             msg = modleService.getUserMemory(request);
-
+        } else if ("autoDig".equals(requestURI)) {
+            //自动挖空
+            msg = modleService.autoDig(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
