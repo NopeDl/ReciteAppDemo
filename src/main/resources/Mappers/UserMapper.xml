@@ -11,11 +11,26 @@
     <select id="selectNickName" resultType="pojo.po.User">
         select nickName from user where nickName = #{nickName}
     </select>
+    <!--  查询榜单前十  -->
+    <select id="selectTopTen" resultType="pojo.po.User">
+        select nickName,stars from user order by stars desc
+    </select>
+
+    <!--  查询当前用户排名  -->
+    <select id="selectUserRanking" resultType="pojo.po.Count">
+        SELECT number from (SELECT
+        @rownum:= @rownum + 1 AS number,
+        userId
+        FROM
+        (SELECT @rownum := 0) t,user
+        ORDER BY
+        stars DESC) as tmp
+        where userId = #{userId}
+    </select>
 
     <insert id="insertUserByNickName">
         insert into user (nickName) values(#{nickName})
     </insert>
-
 
     <!--通过userId修改个人资料-->
     <update id="reMessageById" parameterType="pojo.po.User">

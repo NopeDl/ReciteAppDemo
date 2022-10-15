@@ -26,7 +26,6 @@ import java.io.IOException;
 public class UserController extends HttpServlet {
     private final AccountService accountService = new AccountServiceImpl();
     private final UserService userService = new UserServiceImpl();
-//    private final ModleService ModleService = new ModleServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -51,6 +50,15 @@ public class UserController extends HttpServlet {
             //修改个人信息
             Integer userId = accountService.getIdByNumber(request);
             msg = userService.ReMsgById(userId, request);
+        }else if ("userRanking".equals(requestURI)) {
+            //获取用户排名和信息
+            msg = userService.userRanking(request);
+        } else if ("clockIn".equals(requestURI)) {
+            //打卡
+            msg = userService.clockIn(request);
+        } else if ("getClockInRecord".equals(requestURI)) {
+            //获取打卡记录
+            msg = userService.getClockInRecord(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

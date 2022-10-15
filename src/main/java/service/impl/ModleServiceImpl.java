@@ -414,4 +414,6 @@ public class ModleServiceImpl implements ModleService {
         list.add(totalChar);
         return list;
     }
+
+
 }

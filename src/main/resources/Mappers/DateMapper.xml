@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper>
+<mapper namespace="DateMapper">
+    <insert id="insertDate">
+        insert into t_date (date,userId) values (#{date},#{userId})
+    </insert>
+
+    <select id="selectDates" resultType="pojo.po.UDate">
+        select * from t_date where userId = #{userId}
+    </select>
+</mapper>

@@ -9,11 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
 import service.ModleService;
-import service.PageService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
 import service.impl.ModleServiceImpl;
-import service.impl.PageServiceImpl;
 import service.impl.UserServiceImpl;
 import utils.ResponseUtil;
 import utils.StringUtil;
@@ -28,7 +26,6 @@ public class InfController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
     private final AccountService accountService = new AccountServiceImpl();
     private final ModleService modleService = new ModleServiceImpl();
-    private final PageService pageService = new PageServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -44,13 +41,12 @@ public class InfController extends HttpServlet {
         } else if ("getModlesByTag".equals(uri)) {
             //获取标签下所有模板
             msg = modleService.getModlesByTag(request);
-        } else if ("getLabels".equals(uri)) {
+        } else if ("labels".equals(uri)) {
             msg = modleService.getLabels();
-        } else if ("getPage".equals(uri)) {
-            //获取页面
-            //暂时弃用
-            msg = pageService.getPage(request);
-        } else {
+        } else if ("rankingList".equals(uri)) {
+            //获取排行榜前十信息
+            msg = userService.rankingList(request);
+        }  else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

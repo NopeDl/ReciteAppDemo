@@ -1,7 +1,10 @@
 package dao;
 
+import pojo.po.Count;
 import pojo.po.User;
 import pojo.vo.Message;
+
+import java.util.List;
 
 public interface UserDao {
     /**
@@ -54,4 +57,13 @@ public interface UserDao {
      * @return
      */
     String selectNickName(String nickName);
+
+    List<User> selectTopTen();
+
+    /**
+     * 获取用户榜单排名
+     * @param userId
+     * @return
+     */
+    Integer selectUserRanking(int userId);
 }

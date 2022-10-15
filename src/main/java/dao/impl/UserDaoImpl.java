@@ -4,9 +4,11 @@ import easydao.core.SqlSession;
 import easydao.core.SqlSessionFactory;
 import dao.UserDao;
 import pojo.po.Account;
+import pojo.po.Count;
 import pojo.po.User;
 import utils.DaoUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
@@ -154,5 +156,40 @@ public class UserDaoImpl implements UserDao {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 获取前十信息
+     * @return 返回前十的昵称和星星数量
+     */
+    @Override
+    public List<User> selectTopTen() {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("UserMapper.selectTopTen", "");
+        sqlSession.close();
+        if (objects != null){
+            List<User> userList = new ArrayList<>();
+            for (Object object : objects) {
+                userList.add((User) object);
+            }
+            return userList;
+        }else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取用户榜单排名
+     * @param userId
+     * @return
+     */
+    @Override
+    public Integer selectUserRanking(int userId) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        User user = new User();
+        user.setUserId(userId);
+        List<Object> objects = sqlSession.selectList("UserMapper.selectUserRanking", user);
+        sqlSession.close();
+        return objects.size()>0?((Count)objects.get(0)).getNumber().intValue():null;
     }
 }

@@ -11,7 +11,7 @@ import utils.ResponseUtil;
 import java.io.IOException;
 
 //拦截用户未登录非法请求
-@WebFilter({"/user.do/UserMsg", "/user.do/ReMessage", "/user.do/ChangePswd", "/upload/*"})
+@WebFilter({"/user.do/UserMsg", "/user.do/ReMessage", "/user.do/ChangePswd", "/upload/*","/user.do/clockIn","/user.do/getClockInRecord"})
 public class UserMsgFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

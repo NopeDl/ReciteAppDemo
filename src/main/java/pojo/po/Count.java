@@ -11,6 +11,10 @@ public class Count {
         this.number = number;
     }
 
+    public void setNumber(double number) {
+        this.number = (long)number;
+    }
+
     public Count() {
     }
 

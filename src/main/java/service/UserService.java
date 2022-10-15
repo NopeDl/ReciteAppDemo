@@ -57,4 +57,32 @@ public interface UserService {
      * @return
      */
     Message checkNickNameExists(HttpServletRequest request);
+
+    /**
+     * 获取排行榜前十
+     * @param request
+     * @return
+     */
+    Message rankingList(HttpServletRequest request);
+
+    /**
+     * 获取用户排位和信息
+     * @param request
+     * @return
+     */
+    Message userRanking(HttpServletRequest request);
+
+    /**
+     * 打卡
+     * @param request
+     * @return
+     */
+    Message clockIn(HttpServletRequest request);
+
+    /**
+     *获取打卡记录
+     * @param request
+     * @return
+     */
+    Message getClockInRecord(HttpServletRequest request);
 }

@@ -1,8 +1,10 @@
 package service.impl;
 
 
+import dao.DateDao;
 import dao.ModleDao;
 import dao.UserDao;
+import dao.impl.DateDaoImpl;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
@@ -10,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
+import pojo.po.Label;
 import pojo.po.User;
 import pojo.vo.Message;
 import service.UserService;
@@ -17,18 +20,18 @@ import utils.FileUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
+import java.util.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao = new UserDaoImpl();
 
     private final ModleDao modleDao = new ModleDaoImpl();
+    private final DateDao dateDao = new DateDaoImpl();
 
     /**
      * 注册用户
@@ -204,6 +207,84 @@ public class UserServiceImpl implements UserService {
             //用户名不可用
             msg = new Message("用户名已被使用");
             msg.addData("isOk", false);
+        }
+        return msg;
+    }
+
+    /**
+     * 获取积分榜前十
+     * @param request
+     * @return
+     */
+    @Override
+    public Message rankingList(HttpServletRequest request) {
+        List<User> userList = userDao.selectTopTen();
+        Message msg;
+        if (userList.size()>0){
+            msg = new Message("获取成功");
+            msg.addData("ranking",userList);
+        }else {
+            msg = new Message("获取失败");
+        }
+        return msg;
+    }
+
+    /**
+     * 获取用户排位和信息
+     * @param request
+     * @return
+     */
+    @Override
+    public Message userRanking(HttpServletRequest request) {
+        Message msg;
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        Integer userRanking = userDao.selectUserRanking(userId);//查询用户排名
+        User user = userDao.selectUserById(userId);//查询用户信息
+        Map<String,Object> res = new HashMap<>();//封装数据
+        res.put("userRanking",userRanking);
+        res.put("user",user);
+        msg = new Message("获取成功");
+        msg.addData("userData",res);
+        return msg;
+    }
+
+    @Override
+    public Message clockIn(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(request.getParameter("date"));
+        } catch (ParseException e) {
+            throw new RuntimeException("日期解析有误");
+        }
+        int i = dateDao.insertDateByUserId(userId,date);
+        Message msg;
+        if (i>0){
+            msg = new Message("打卡成功");
+            msg.addData("isSuccess",true);
+        }else {
+            msg = new Message("打卡失败");
+            msg.addData("isSuccess",false);
+        }
+        return msg;
+    }
+
+    /**
+     * 获取打卡记录
+     * @param request
+     * @return
+     */
+    @Override
+    public Message getClockInRecord(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        List<String> list = dateDao.selectDateByUserId(userId);
+        Message msg;
+        if (list!=null){
+            msg = new Message("查找成功");
+            msg.addData("dateList",list);
+        }else {
+            msg = new Message("查找失败");
         }
         return msg;
     }
