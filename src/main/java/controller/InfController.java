@@ -42,6 +42,7 @@ public class InfController extends HttpServlet {
             //获取标签下所有模板
             msg = modleService.getModlesByTag(request);
         } else if ("labels".equals(uri)) {
+            //获取所有标签信息
             msg = modleService.getLabels();
         } else if ("rankingList".equals(uri)) {
             //获取排行榜前十信息

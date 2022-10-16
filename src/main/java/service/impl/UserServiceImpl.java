@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
             message.addData("userId", userId);//将id发送给前端
         } else {
             message = new Message("用户创建失败");
-            message.addData("isSuccess", true);
+            message.addData("isSuccess", false);
         }
         return message;
     }

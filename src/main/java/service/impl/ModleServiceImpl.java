@@ -10,6 +10,7 @@ import easydao.utils.Resources;
 import enums.MsgInf;
 import handlers.FileHandler;
 import handlers.FileHandlerFactory;
+import handlers.impl.TXTFileHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -52,7 +53,7 @@ public class ModleServiceImpl implements ModleService {
                 FileHandler handler = fileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
                 //将换行转换为前端html换行标签
-                context = context.replaceAll("\\r\\n", "<\\br>");
+//                context = context.replaceAll("\\r\\n", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
                 msg = new Message("文件解析成功");
                 msg.addData("context", context);
             } else {
@@ -82,7 +83,7 @@ public class ModleServiceImpl implements ModleService {
         String context = request.getParameter("context");
         int userId = Integer.parseInt(request.getParameter("userId"));
         String modleTitle = request.getParameter("modleTitle");
-        String modleLabel = request.getParameter("modleLabel");//获取标签
+        String modleLabel = request.getParameter("modleLabel");//获取标签id
 
 
         modle.setUserId(userId);//设置模板作者
@@ -120,9 +121,7 @@ public class ModleServiceImpl implements ModleService {
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
-                //获取标签id
-                String lableId = request.getParameter("lableId");
-                modle.setModleLabel(Integer.parseInt(lableId));
+                modle.setModleLabel(Integer.parseInt(modleLabel));
                 //保存进数据库
                 int result = modleDao.insertModle(modle);
                 //获取modleId
@@ -141,7 +140,6 @@ public class ModleServiceImpl implements ModleService {
                 } else {
                     message = new Message("生成新模板失败");
                 }
-
             }
         }
         return message;
@@ -324,6 +322,19 @@ public class ModleServiceImpl implements ModleService {
                 //封装查询的modle数据
                 Modle modle = modleDao.selectModleByModleId(tempMod);
                 modle.setMStatus(umrs.get(i).getMStatus());
+                //获取模板内容
+                String modlePath = modle.getModlePath();
+                InputStream input;
+                try {
+                     input = new FileInputStream(modlePath);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                //读取文本
+                TXTFileHandler txtFileHandler = new TXTFileHandler(input);
+                String content = txtFileHandler.parseContent();
+                modle.setContent(content);
+                modle.setModlePath(null);
                 modles.add(modle);//放modle和状态
             }
             message = new Message();
@@ -389,7 +400,7 @@ public class ModleServiceImpl implements ModleService {
                 List<Integer> charNums = this.getCharNums(charNum, blankNum);
                 String result = StringUtil.digBlank(content, charNums, blankNum);
 
-                result = result.replaceAll("\\s", "<\\br>");
+                result = result.replaceAll("\\s", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
                 msg = new Message("挖空成功");
                 msg.addData("context", result);
             } catch (FileNotFoundException e) {

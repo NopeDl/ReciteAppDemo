@@ -9,6 +9,24 @@ public class Modle {
     private int coins;
     private Integer mStatus;
 
+    private String content;
+
+    public Integer getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(Integer mStatus) {
+        this.mStatus = mStatus;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Integer getMStatus() {
         return mStatus;
     }

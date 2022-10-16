@@ -1,5 +1,6 @@
 package filter;
 
+import controller.test;
 import easydao.utils.Resources;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -46,6 +47,10 @@ public class EncodingFilter extends HttpFilter {
             e.printStackTrace();
             throw new RuntimeException("获取段位名称失败");
         }
+
+
+        test test = new test(9999);
+        test.start();
     }
 
     @Override
