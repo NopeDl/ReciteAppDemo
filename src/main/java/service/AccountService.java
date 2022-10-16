@@ -13,13 +13,13 @@ public interface AccountService {
      */
     Message checkAccount(HttpServletRequest request, HttpServletResponse response);
 
-    /**
-     * 修改密码
-     *
-     * @param request
-     * @return
-     */
-    Message changePassword(HttpServletRequest request);
+//    /**
+//     * 修改密码
+//     *
+//     * @param request
+//     * @return
+//     */
+//    Message changePassword(HttpServletRequest request);
 
     /**
      * 根据手机号查找userId

@@ -10,5 +10,8 @@
         insert into umr (userId,modleId,mStatus) values (#{userId},#{modleId},#{mStatus})
     </insert>
 
+    <delete id="deleteUMRByModleId">
+        delete from umr where modleId = #{modleId}
+    </delete>
 
 </mapper>

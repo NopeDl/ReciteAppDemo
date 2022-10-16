@@ -1,12 +1,12 @@
 package dao.impl;
 
-import easydao.core.SqlSession;
-import easydao.core.SqlSessionFactory;
+import tools.easydao.core.SqlSession;
+import tools.easydao.core.SqlSessionFactory;
 import dao.UserDao;
 import pojo.po.Account;
 import pojo.po.Count;
 import pojo.po.User;
-import utils.DaoUtil;
+import tools.utils.DaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,51 +94,6 @@ public class UserDaoImpl implements UserDao {
 
 
     /**
-     * 修改用户的个人资料
-     *
-     * @param user
-     * @return
-     */
-    @Override
-    public int reMessageById(User user) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        int update = sqlSession.update("UserMapper.reMessageById", user);
-        if (update > 0) {
-            //说明修改成功
-            sqlSession.commit();
-        } else {
-            //否则回滚
-            sqlSession.rollBack();
-        }
-        sqlSession.close();
-        return update;
-
-    }
-
-    /**
-     * 设置头像
-     *
-     * @param id 用户id
-     * @return
-     */
-    @Override
-    public int saveImagePathById(int id) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        User user = new User();
-        user.setUserId(id);
-        int update = sqlSession.update("UserMapper.setImgPath", user);
-        if (update > 0) {
-            //说明修改成功
-            sqlSession.commit();
-        } else {
-            //否则回滚
-            sqlSession.rollBack();
-        }
-        sqlSession.close();
-        return update;
-    }
-
-    /**
      * 获取用户名
      *
      * @param nickName
@@ -191,5 +146,71 @@ public class UserDaoImpl implements UserDao {
         List<Object> objects = sqlSession.selectList("UserMapper.selectUserRanking", user);
         sqlSession.close();
         return objects.size()>0?((Count)objects.get(0)).getNumber().intValue():null;
+    }
+
+    /**
+     * 修改用户名
+     * @param userId
+     * @param nickName
+     * @return
+     */
+    @Override
+    public int updateNickNameByUserID(int userId, String nickName) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setNickName(nickName);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("UserMapper.updateNickNameByUserID", user);
+        if (update>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
+
+    /**
+     * 修改头
+     * @param userId
+     * @param image
+     * @return
+     */
+    @Override
+    public int updateImageByUserID(int userId, String image) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setImage(image);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("UserMapper.updateImageByUserID", user);
+        if (update>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
+
+    /**
+     * 修改手机号
+     * @param userId
+     * @param number
+     * @return
+     */
+    @Override
+    public int updatePhoneByUserID(int userId, String number) {
+        Account account = new Account();
+        account.setUserId(userId);
+        account.setNumber(number);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("UserMapper.updatePhoneByUserID", account);
+        if (update>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
     }
 }

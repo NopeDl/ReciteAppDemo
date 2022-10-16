@@ -6,11 +6,11 @@ import dao.UMRDao;
 import dao.impl.LabelDaoImp;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UMRDaoImpl;
-import easydao.utils.Resources;
+import tools.easydao.utils.Resources;
 import enums.MsgInf;
-import handlers.FileHandler;
-import handlers.FileHandlerFactory;
-import handlers.impl.TXTFileHandler;
+import tools.handlers.FileHandler;
+import tools.handlers.FileHandlerFactory;
+import tools.handlers.impl.TXTFileHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
@@ -20,7 +20,7 @@ import pojo.po.Umr;
 import pojo.vo.Message;
 import pojo.vo.ShowModle;
 import service.ModleService;
-import utils.StringUtil;
+import tools.utils.StringUtil;
 
 import java.io.*;
 import java.util.*;
@@ -53,7 +53,7 @@ public class ModleServiceImpl implements ModleService {
                 FileHandler handler = fileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
                 //将换行转换为前端html换行标签
-//                context = context.replaceAll("\\r\\n", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
+                context = context.replaceAll("\\r\\n", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
                 msg = new Message("文件解析成功");
                 msg.addData("context", context);
             } else {
@@ -143,6 +143,31 @@ public class ModleServiceImpl implements ModleService {
             }
         }
         return message;
+    }
+
+    /**
+     * 删除模板
+     * @param request
+     * @return
+     */
+    @Override
+    public Message deleteModle(HttpServletRequest request) {
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        String path = modleDao.selectPathByModleId(modleId);
+        int deleteUmr = umrDao.deleteUMRByModleId(modleId);
+        int deleteModle = modleDao.deleteModle(modleId);
+        File file = new File(path);
+        boolean deleteFile = file.delete();
+        //没有用事务,可能会有bug
+        Message msg;
+        if (deleteUmr!=0 && 0!= deleteModle && deleteFile){
+            msg = new Message("删除成功");
+            msg.addData("deleteSuccess",true);
+        }else {
+            msg = new Message("删除失败");
+            msg.addData("deleteSuccess",false);
+        }
+        return msg;
     }
 
     /**
@@ -390,14 +415,19 @@ public class ModleServiceImpl implements ModleService {
                 String content = txtHandler.parseContent();
                 //去除所有用户自己挖空内容
                 //需要优化太耗时
-                content = content.replaceAll("<div>", "").replaceAll("</div>", "");
+                content = content.replaceAll("<div>", "").replaceAll("</div>", "").replaceAll("&nbsp;", "");
 
                 //根据模板字符数确定要挖的字数
                 int charNum = (int) Math.round(content.length() * ratio);
                 //计算需要挖的空数
                 //假定要挖的空为  charNum * ratio
                 int blankNum = (int) Math.round(charNum * ratio);
-                List<Integer> charNums = this.getCharNums(charNum, blankNum);
+//                List<Integer> charNums = this.getCharNums(charNum, blankNum);
+                List<Integer> charNums = new ArrayList<>();
+                Random random = new Random(System.currentTimeMillis());
+                for (int i=0;i<blankNum;i++){
+                    charNums.add(random.nextInt(10)+1);
+                }
                 String result = StringUtil.digBlank(content, charNums, blankNum);
 
                 result = result.replaceAll("\\s", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");

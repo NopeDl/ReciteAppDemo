@@ -31,13 +31,12 @@ public interface ModleDao {
      */
     int selectNumByTitle(Modle modle);
 
-//
-//    /**
-//     * 覆盖原有的模板
-//     * @param modle
-//     * @return
-//     */
-//    int updateMOdle(Modle modle);
+    /**
+     * 删除模板
+     * @param modleId
+     * @return
+     */
+    int deleteModle(int modleId);
 
 
     /**

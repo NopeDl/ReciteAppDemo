@@ -25,11 +25,10 @@ public interface UserService {
     /**
      * 根据用户的id修改资料
      *
-     * @param userId
      * @param request
      * @return
      */
-    Message ReMsgById(int userId, HttpServletRequest request);
+    Message ReMsgById(HttpServletRequest request);
 
     /**
      * 检查昵称是否可用

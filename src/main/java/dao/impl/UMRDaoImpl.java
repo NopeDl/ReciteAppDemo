@@ -1,11 +1,11 @@
 package dao.impl;
 
 import dao.UMRDao;
-import easydao.core.SqlSession;
-import easydao.core.SqlSessionFactory;
+import tools.easydao.core.SqlSession;
+import tools.easydao.core.SqlSessionFactory;
 import pojo.po.Modle;
 import pojo.po.Umr;
-import utils.DaoUtil;
+import tools.utils.DaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,5 +76,25 @@ public class UMRDaoImpl implements UMRDao {
             sqlSession.rollBack();
         }
         return insert;
+    }
+
+    /**
+     * 删除umr关系
+     * @param modleId
+     * @return
+     */
+    @Override
+    public int deleteUMRByModleId(int modleId) {
+        Modle modle = new Modle();
+        modle.setModleId(modleId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int delete = sqlSession.delete("UmrMapper.deleteUMRByModleId", modle);
+        if (delete>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return delete;
     }
 }

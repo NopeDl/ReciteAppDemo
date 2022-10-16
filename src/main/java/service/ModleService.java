@@ -16,6 +16,13 @@ public interface ModleService {
      */
     Message createModle(HttpServletRequest request);
 
+    /**
+     * 删除模板
+     * @param request
+     * @return
+     */
+    Message deleteModle(HttpServletRequest request);
+
 
     /**
      * 读取txt文本里里面的string

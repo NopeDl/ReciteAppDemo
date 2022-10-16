@@ -46,25 +46,6 @@ public class AccountServiceImpl implements AccountService {
         return msg;
     }
 
-    @Override
-    public Message changePassword(HttpServletRequest request) {
-//        int userId = (int) request.getSession().getAttribute("userId");
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        String newPassword = request.getParameter("password");
-        int i = accountDao.changePasswordByUserId(userId, newPassword);
-        Message msg;
-        if (i > 0) {
-            msg = new Message("密码修改成功");
-            msg.addData("isSuccess", true);
-
-        } else {
-            msg = new Message("密码修改失败");
-            msg.addData("isSuccess", false);
-
-        }
-        return msg;
-    }
-
     /**
      * 根据手机号获取id
      *

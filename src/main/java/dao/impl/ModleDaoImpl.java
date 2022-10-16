@@ -1,10 +1,11 @@
 package dao.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
-import easydao.core.SqlSession;
-import easydao.core.SqlSessionFactory;
+import tools.easydao.core.SqlSession;
+import tools.easydao.core.SqlSessionFactory;
 import pojo.po.*;
-import utils.DaoUtil;
+import tools.utils.DaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,5 +240,25 @@ public class ModleDaoImpl implements ModleDao {
 
         }
         return modlePath;
+    }
+
+    /**
+     * 删除模板
+     * @param modleId
+     * @return
+     */
+    @Override
+    public int deleteModle(int modleId) {
+        Modle modle = new Modle();
+        modle.setModleId(modleId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int delete = sqlSession.delete("ModleMapper.deleteModleByModleId", modle);
+        if (delete>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return delete;
     }
 }

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
-import utils.ResponseUtil;
+import tools.utils.ResponseUtil;
 
 import java.io.IOException;
 

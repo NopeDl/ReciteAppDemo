@@ -26,4 +26,11 @@ public interface UMRDao {
      * @return
      */
     int insertUMR(Umr umr);
+
+    /**
+     * 删除umr关系
+     * @param modleId
+     * @return
+     */
+    int deleteUMRByModleId(int modleId);
 }

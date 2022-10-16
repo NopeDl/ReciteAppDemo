@@ -9,13 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
-import service.ModleService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
-import service.impl.ModleServiceImpl;
 import service.impl.UserServiceImpl;
-import utils.ResponseUtil;
-import utils.StringUtil;
+import tools.utils.ResponseUtil;
+import tools.utils.StringUtil;
 
 import java.io.IOException;
 
@@ -43,13 +41,9 @@ public class UserController extends HttpServlet {
         } else if ("UserMsg".equals(requestURI)) {
             //用户个人信息获取
             msg = userService.selectUserMsg(request);
-        } else if ("ChangePswd".equals(requestURI)) {
-            //修改密码
-            msg = accountService.changePassword(request);
         } else if ("ReMessage".equals(requestURI)) {
             //修改个人信息
-            Integer userId = accountService.getIdByNumber(request);
-            msg = userService.ReMsgById(userId, request);
+            msg = userService.ReMsgById(request);
         }else if ("userRanking".equals(requestURI)) {
             //获取用户排名和信息
             msg = userService.userRanking(request);

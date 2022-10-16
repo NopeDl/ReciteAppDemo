@@ -33,22 +33,29 @@ public interface UserDao {
      */
     int createUserByNumber(String number, String password, String nickName);
 
-
     /**
-     * 用户通过自己的userId来修改个人资料
-     *
-     * @param user
+     * 修改昵称
+     * @param userId
+     * @param nickName
      * @return
      */
-    int reMessageById(User user);
+    int updateNickNameByUserID(int userId,String nickName);
 
     /**
-     * 通过id存头像路径
-     *
-     * @param id 用户id
+     * 修改头像
+     * @param userId
+     * @param image
      * @return
      */
-    int saveImagePathById(int id);
+    int updateImageByUserID(int userId,String image);
+
+    /**
+     * 修改电话
+     * @param userId
+     * @param number
+     * @return
+     */
+    int updatePhoneByUserID(int userId,String number);
 
     /**
      * 获取用户名

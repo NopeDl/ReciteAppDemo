@@ -32,10 +32,16 @@
         insert into user (nickName) values(#{nickName})
     </insert>
 
-    <!--通过userId修改个人资料-->
-    <update id="reMessageById" parameterType="pojo.po.User">
-        update user set nickName=#{nickName},sex=#{sex},birthday=#{birthday},image=#{imagePath},cityId=#{cityId},
-        school=#{school} where userId=#{userId}
+    <!--  修改昵称  -->
+    <update id="updateNickNameByUserID">
+        update user set nickName = #{nickName} where userId = #{userId}
     </update>
-
+    <!-- 修改头像 -->
+    <update id="updateImageByUserID">
+        update user set image = #{image} where userId = #{userId}
+    </update>
+    <!-- 修改手机号 -->
+    <update id="updatePhoneByUserID">
+        update account set number = #{number} where userId = #{userId}
+    </update>
 </mapper>

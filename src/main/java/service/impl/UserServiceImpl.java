@@ -1,9 +1,11 @@
 package service.impl;
 
 
+import dao.AccountDao;
 import dao.DateDao;
 import dao.ModleDao;
 import dao.UserDao;
+import dao.impl.AccountDaoImpl;
 import dao.impl.DateDaoImpl;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
@@ -15,7 +17,6 @@ import service.UserService;
 
 import java.util.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final ModleDao modleDao = new ModleDaoImpl();
     private final DateDao dateDao = new DateDaoImpl();
+    private final AccountDao accountDao = new AccountDaoImpl();
 
     /**
      * 注册用户
@@ -68,49 +70,63 @@ public class UserServiceImpl implements UserService {
     /**
      * 通过用户id来改个人信息
      *
-     * @param userId
      * @param request
      * @return
      */
     @Override
-    public Message ReMsgById(int userId, HttpServletRequest request) {
-        Message message;
-        String nickName = request.getParameter("userName");
-        String sex = request.getParameter("sex");
-        //将生日转化为data
-        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date birthday = null;
-        try {
-            birthday = fmt.parse(request.getParameter("birthday"));
-        } catch (ParseException e) {
-            e.printStackTrace();
+    public Message ReMsgById(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        String phone = request.getParameter("phone");
+        String nickName = request.getParameter("nickName");
+        String newPassword = request.getParameter("password");
+        String image = request.getParameter("image");
+
+        Message msg;
+        if (newPassword != null){
+            //修改密码
+            int i = accountDao.changePasswordByUserId(userId, newPassword);
+            if (i > 0) {
+                msg = new Message("密码修改成功");
+                msg.addData("isSuccess", true);
+            } else {
+                msg = new Message("密码修改失败");
+                msg.addData("isSuccess", false);
+            }
+        } else if (nickName !=null) {
+            //修改昵称
+            int i = userDao.updateNickNameByUserID(userId, nickName);
+            if (i > 0) {
+                msg = new Message("昵称修改成功");
+                msg.addData("isSuccess", true);
+            } else {
+                msg = new Message("昵称修改失败");
+                msg.addData("isSuccess", false);
+            }
+        } else if (phone !=null) {
+            //修改手机号
+            int i = userDao.updatePhoneByUserID(userId, phone);
+            if (i > 0) {
+                msg = new Message("手机号修改成功");
+                msg.addData("isSuccess", true);
+            } else {
+                msg = new Message("手机号修改失败");
+                msg.addData("isSuccess", false);
+            }
+        } else if (image != null) {
+            //修改头像
+            int i = userDao.updateImageByUserID(userId, image);
+            if (i > 0) {
+                msg = new Message("头像修改成功");
+                msg.addData("isSuccess", true);
+            } else {
+                msg = new Message("头像修改失败");
+                msg.addData("isSuccess", false);
+            }
+        } else{
+            //错误修改
+            msg = new Message("参数错误");
         }
-
-        Integer points = Integer.parseInt(request.getParameter("points"));
-        String imagePath = request.getParameter("imagePath");
-        Integer cityId = Integer.parseInt(request.getParameter("cityId"));
-        String schoolId = request.getParameter("schoolId");
-
-        User user = new User();
-        user.setUserId(userId);
-        user.setNickName(nickName);
-        user.setBirthday(birthday);
-        user.setImage(imagePath);
-        user.setPoints(points);
-        user.setCityId(cityId);
-        user.setSex(sex);
-        user.setSchool(schoolId);
-
-        int result = userDao.reMessageById(user);
-        if (result > 0) {
-            //把修改后的资料带走
-            message = new Message(MsgInf.OK);
-            message.addData("user", user);
-        } else {
-            message = new Message("该修改违法！");
-            message.addData("isSuccess", false);
-        }
-        return message;
+        return msg;
     }
 
     /**
