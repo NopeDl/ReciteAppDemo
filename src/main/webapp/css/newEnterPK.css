@@ -1,0 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+body {
+  background-color: #9b9ff3;
+}
+.enterPk {
+  overflow: hidden;
+}
+.enterPk .head_nav_pk {
+  margin-top: 2.66666667vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.enterPk .head_nav_pk span {
+  color: #fff;
+  margin-left: 4vw;
+}
+.enterPk .head_nav_pk .icon-xiangzuojiantou {
+  font-weight: 700;
+}
+.enterPk .pk_blood {
+  margin: 0 auto;
+  margin-top: 2.66666667vw;
+  display: flex;
+  align-items: center;
+  padding: 4vw 0;
+  width: 93.33333333vw;
+  height: 21.33333333vw;
+}
+.enterPk .pk_blood .other,
+.enterPk .pk_blood .mine {
+  width: 40vw;
+  height: 14.66666667vw;
+  display: flex;
+  align-items: center;
+  background-color: #5f5ff9;
+  border-radius: 2.66666667vw;
+}
+.enterPk .pk_blood .other .head_portrait,
+.enterPk .pk_blood .mine .head_portrait {
+  width: 13.33333333vw;
+  padding: 0.8vw;
+  margin-left: 1.33333333vw;
+  background-color: #fff;
+  border-radius: 100%;
+}
+.enterPk .pk_blood .other .head_portrait img,
+.enterPk .pk_blood .mine .head_portrait img {
+  width: 100%;
+  border-radius: 100%;
+}
+.enterPk .pk_blood .other .name_blood,
+.enterPk .pk_blood .mine .name_blood {
+  color: #fff;
+  font-size: 4vw;
+}
+.enterPk .pk_blood .other .name_blood .idname,
+.enterPk .pk_blood .mine .name_blood .idname {
+  font-size: 2.66666667vw;
+}
+.enterPk .pk_blood .other .name_blood .blook,
+.enterPk .pk_blood .mine .name_blood .blook {
+  text-align: center;
+}
+.enterPk .pk_blood .other {
+  background-color: #fd6363;
+}
+.enterPk .pk_blood .time {
+  width: 18.66666667vw;
+  height: 18.66666667vw;
+  background-color: #9b9ff3;
+  z-index: 100;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.enterPk .pk_blood .time .outercir1 {
+  width: 16vw;
+  height: 16vw;
+  border-radius: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.enterPk .pk_blood .time .outercir1 .outercir2 {
+  width: 14.66666667vw;
+  height: 14.66666667vw;
+  display: flex;
+  background: conic-gradient(#ff9500 100%, #fff 0%);
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.enterPk .pk_blood .time .outercir1 .outercir2 .outercir3 {
+  width: 10.66666667vw;
+  height: 10.66666667vw;
+  background-color: #fff;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.enterPk .pk_blood .time .outercir1 .innercir {
+  width: 9.33333333vw;
+  height: 9.33333333vw;
+  background-color: #9b9ff3;
+  text-align: center;
+  border-radius: 100%;
+  line-height: 9.33333333vw;
+  color: #fff;
+}
+.enterPk .text_box {
+  margin: 2.66666667vw auto;
+  width: 93.33333333vw;
+  height: 45vh;
+  background-color: #fff;
+  padding: 2.66666667vw;
+  overflow: scroll;
+  font-size: 4.8vw;
+  line-height: 9.33333333vw;
+  letter-spacing: 0.15em;
+  border-radius: 1.33333333vw;
+  box-shadow: 0.53333333vw 0.53333333vw 2.66666667vw rgba(0, 0, 0, 0.349);
+}
+.enterPk .text_box .highlight {
+  display: inline;
+  background: #f8cf04;
+  transition: all 0.3s;
+}
+.enterPk .text_box .highlight::selection {
+  background: #eaff02 !important;
+}
+.enterPk .text_box .input {
+  width: auto;
+  background-color: transparent !important;
+  color: rgba(188, 56, 244, 0.861) !important;
+  border-bottom: 0.53333333vw #000000 solid;
+  height: 8vw;
+  outline: none;
+  display: inline;
+}
+.enterPk .text_box .recite {
+  height: 8vw;
+  background-color: darkgray !important;
+  color: darkgray !important;
+  border-radius: 1.33333333vw;
+  user-select: none;
+}
+.enterPk .option {
+  margin: 2.13333333vw auto;
+  width: 93.33333333vw;
+  background-color: #fff;
+  padding: 0 8vw;
+  overflow: scroll;
+  font-size: 4vw;
+  line-height: 5.33333333vw;
+  letter-spacing: 0.15em;
+  border-radius: 1.33333333vw;
+  box-shadow: 0.53333333vw 0.53333333vw 2.66666667vw rgba(0, 0, 0, 0.349);
+}
+.enterPk .option .com {
+  margin: 5.33333333vw 0;
+  width: 66.66666667vw;
+  height: 6.66666667vw;
+  line-height: 6.66666667vw;
+}
+.enterPk .option .com .en {
+  display: inline-block;
+  width: 8vw;
+  height: 8vw;
+  background-color: #c4b2fb;
+  border-radius: 100%;
+  line-height: 8vw;
+  text-align: center;
+}

@@ -8,8 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ReciteAppDemo" />
         <module name="ReciteMemory" />
-        <module name="easyDao" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="easyDao" target="8" />
+      <module name="textImgAndPdf" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

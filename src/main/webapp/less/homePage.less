@@ -1,0 +1,346 @@
+//out:../css/
+@import 'base';
+@vw: 3.95vw;
+
+//顶栏
+.nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0  (12/@vw);
+    width: 100%;
+    height: 4.5rem;
+    background: #fff;
+    z-index: 21;
+    border-bottom: (1 / @vw) solid #dadada;
+    transition: all 0.5s;
+    overflow: hidden;
+
+    .logo{
+        width: (170/@vw);
+        height: (80/@vw);
+
+        img{
+            width: (170/@vw);
+            z-index: 2;
+        }
+    }
+
+    .btn{
+        font-size: (20/@vw);
+        outline: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        font: (16/@vw) 'Microsoft yahei',Arial, Helvetica, sans-serif;
+        padding: .5rem 2rem .55rem;
+        border: 1px solid rgb(137, 99, 137);
+        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        border-radius: .5em;
+        box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    }
+}
+
+.map{
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .main_con{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        padding: (60/@vw) 0 0;
+        margin: auto;
+        
+        .title{
+            text-align: center;
+            font-size: (30/@vw);
+            font-weight: 700;
+            color: #212930;
+            margin-bottom: (23/@vw);
+            margin-block-start: 0.83em;
+            margin-block-end: 0.83em;
+        }  
+        // .margintop{
+        //     margin-top: (20/@vw);
+        // }
+         
+        .intro{
+            text-align: center;
+            font-size: (18/@vw);
+            font-weight: 400;
+            color: #6c7d8f;
+            margin-bottom: (20/@vw);
+        }
+        .enjoy{
+            display: block;
+            margin: 0 auto;
+            width: (150/@vw);
+            height: (35/@vw);
+            line-height: (30/@vw);
+            text-align: center;
+            font-size: (18/@vw);
+            font-weight: 400;
+            color: #fff;
+            background-color: #7061d6;
+            margin-bottom: (20/@vw);
+            border: 1px solid ;
+        }
+        .pic_com{
+            width: (350/@vw);
+            margin: (10/@vw) (20/@vw);
+        }
+        .item_text{
+            margin: auto;
+            margin-top: (15/@vw);
+            width: (351/@vw);
+        
+            word-break: break-all;
+            white-space: initial;
+            .item_title{
+                font-size: (24/@vw);
+                font-weight: 600;
+                color: #000;
+                padding-bottom: (15/@vw);
+            }
+            .item_inshort{
+                font-size: (18/@vw);
+                font-weight: 400;
+                color: #6c7d8f;
+                margin-bottom: (50/@vw);
+            } 
+        }
+        .left{
+            text-align: right;
+        }
+    }
+}
+
+.title{
+    text-align: center;
+    font-size: (40/@vw);
+    font-weight: 700;
+    color: #212930;
+    margin-bottom: (23/@vw);
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+}  
+
+footer{
+    width: 100%;
+    height: (232/@vw);
+    padding: (20/@vw);
+    background: #7061d6;
+    overflow: hidden;
+    color: #fff;
+
+    .container{
+        padding-right: (15/@vw);
+        padding-left: (15/@vw);
+        margin-right: auto;
+        margin-left: auto;
+
+        .three_grid{
+            margin: 0 auto;
+            height: (50/@vw);
+            text-align: center;
+            .column{
+                float: none;
+                height: auto;
+                padding-top: (30/@vw);
+                h1{
+                    font-size: (38/@vw);
+                    letter-spacing: 3px;
+                    position: relative;
+                    top: (-5/@vw);
+                    font-weight: 600;
+                    color: #fff;
+                }
+            }
+            .column2{
+                float: none;
+                height: auto;
+                ul{
+                    list-style: none;
+                    text-align: center;
+                    a{
+                        color: #007bff;
+                        text-decoration: none;
+                        background-color: transparent;
+                        li{
+                            display: inline-block;
+                            line-height: (50/@vw);
+                            color: #b5b5c8;
+                            margin: 0 (10/@vw);
+                            font-size: (14/@vw);
+                        }
+                    }
+                }
+            }
+        }
+        .copyright{
+            margin-top: (70/@vw);
+            padding: (10/@vw) 0;
+            text-align: center;
+            p{
+                text-align: center;
+            }
+             a{
+                color: #f1f0da;
+             }
+        }
+    }
+}
+
+.animated {
+    -webkit-animation-duration: 1.5s;//表示开始动画以前的延时
+    animation-duration: 1.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    &.infinite {
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+    }
+}
+
+
+.boxtext{
+    text-align: center;
+}
+
+//动画类名
+
+.appearRight {
+    -webkit-animation-name: appearRight;
+    animation-name: appearRight;
+}
+
+.appearLeft {
+    -webkit-animation-name: appearLeft;
+    animation-name: appearLeft;
+}
+
+.slideleft{
+    visibility: visible; 
+    animation-delay: 0.32s;//实现秒数
+    animation-name: appearLeft;
+}
+
+.slideRight{
+    visibility: visible; 
+    animation-delay: 0.32s;//实现秒数
+    animation-name: appearRight;
+}
+
+.appearP1{
+    visibility: visible; 
+    animation-delay: 0.67s; 
+    animation-name: appear;
+}
+.appearP2{
+    visibility: visible; 
+    animation-delay: 0.90s; 
+    animation-name: appear;
+}
+.appearP3{
+    visibility: visible; 
+    animation-delay: 1.1s; 
+    animation-name: appear;
+}
+.appearP4{
+    visibility: visible; 
+    animation-delay: 1.1s;//实现秒数
+    animation-name: appearLeft;
+}
+
+.appearh1{
+    visibility: visible; 
+    animation-delay: 0.4s; 
+    animation-name: appear;
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    visibility: visible; 
+    animation-delay: 1s; 
+    animation-name: fadeIn;
+}
+
+//从右滑出的动画
+@keyframes appearRight {
+from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+}
+
+to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+}
+  
+
+
+//从左滑出动画
+@keyframes appearLeft {
+    from {
+      opacity: 0;
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+  
+    to {
+      opacity: 1;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+}
+  
+//出现动画
+@-webkit-keyframes appear {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+}
+
+//滑进
+@-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+

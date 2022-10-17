@@ -1,55 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/calendar.css">
+    <link rel="stylesheet" href="./css/pk.css">
+    <link rel="stylesheet" href="./css/MakingTemplates.css">
+    <link rel="stylesheet" href="./css/personal.css">
+    <link rel="stylesheet" href="./css/community.css">
 </head>
+
 <body>
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>菜鸟教程(runoob.com)</title>
+    <div class="scroll_box">
+        <!-- 记忆库 -->
+        <div class="memory_base main_page">
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-a-riqirili"></span>
+                </div>
+                <div class="header_search">
+                    <input type="text">
+                    <button>
+                        <span class="icon iconfont icon-sousuo3"></span>
+                    </button>
+                </div>
+                <div class="header_right">
+                    <div class="icon_btn">
+                        <span class="icon iconfont icon-shoucang"></span>
+                    </div>
+                </div>
+            </header>
+            <div class="container">
+                <div class="my_base">
+                    <ul class="base_lis">
+                    </ul>
+                    <div class="base_none_1"></div>
+                    <div class="base_bottom"></div>
+                </div>
+                <div class="collection_base">
+                    <ul class="base_lis">
+                    </ul>
+                    <div class="base_none_2"></div>
+                    <div class="base_bottom"></div>
+                </div>
+            </div>
 
-  <script type="text/javascript">
-    function WebSocketTest()
-    {
-      if ("WebSocket" in window)
-      {
+        </div>
+        <!-- 学习页面 -->
+        <div class="learn_page">
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-fanhui"></span>
+                </div>
+                <div class="header_right">
+                    <ul>
+                        <li>
+                            <span class="icon iconfont icon-tijiao"></span>
+                            <div class="name">提交</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-zhinengmoxie"></span>
+                            <div class="name">默写</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-biyanjing"></span>
+                            <div class="name">背诵</div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <div class="container">
+                <div class="title">
+                    <div class="label">
+                        <span>标签</span>
+                    </div>
+                    <div class="title_name ellipsis">标签标签标签</div>
+                </div>
+                <div class="text_box">
 
-        // 打开一个 web socket
-        var ws = new WebSocket("ws://localhost:9999/check");
+                </div>
+            </div>
+        </div>
+        <!-- 再编辑页面 -->
+        <div class="edit_page">
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-fanhui"></span>
+                </div>
+                <div class="header_right">
+                    <ul>
+                        <li>
+                            <span class="icon iconfont icon-tiku"></span>
+                            <div class="name">编辑</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-huabi"></span>
+                            <div class="name">挖空</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-xuanze"></span>
+                            <div class="name">选择</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-gongxiangtubiaozhuangtaileicaozuolei37"></span>
+                            <div class="name">保存</div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <div class="popup">
+                <div class="popup_box">
+                </div>
+            </div>
+            <div class="container">
+                <div class="title">
+                    <div class="label">
+                        <span>标签</span>
+                    </div>
+                    <input type="text" class="title_name">
+                </div>
+                <div class="text_box">
+                    <div class="text_page" id="text_page"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 打卡页面 -->
+        <div class="calendar_page">
+            <div class="left">
+                <span class="icon iconfont icon-fanhui"></span>
+            </div>
+            <!-- 背景紫色 -->
+            <div class="bcg"></div>
+            <div class="calendar">
+                <div class="calendar_header">
+                    <span class="month_picker" id="month_picker">February</span>
+                    <div class="year_picker">
+                        <span class="year_change" id="prev_year">
+                            <pre><</pre>
+                        </span>
+                        <span id="year">2021</span>
+                        <span class="year_change" id="next_year">
+                            <pre>></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="calendar_body">
+                    <div class="calendar_week_day">
+                        <div>周日</div>
+                        <div>周一</div>
+                        <div>周二</div>
+                        <div>周三</div>
+                        <div>周四</div>
+                        <div>周五</div>
+                        <div>周六</div>
+                    </div>
+                    <!-- 存放日期 -->
+                    <div class="calendar_days"></div>
+                </div>
+                <div class="month_list" id="month_list"></div>
+                <div class="calendar_footer">
+                    <div class="clock">
+                        <div class="situation">今日还未打卡</div>
+                        <button class="situation">签到</button>
+                    </div>
+                    <div class="title">今日学习数据</div>
+                    <div class="record_box">
+                        <div class="box">
+                            <div class="com time">
+                                <div class="com_title"> <i class="iconfont icon-shijian"></i> 学习时长</div>
+                                <div class="data">28min</div>
+                            </div>
+                            <div class="com  page">
+                                <div class="com_title"> <i class="iconfont icon-tongji1"></i> 学习篇数</div>
+                                <div class="data">2篇</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- pk页面 -->
+        <div class="pk_page main_page scroll_top">
+            <div class="main">
+                <div class="header">
+                    <div class="head_portrait">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="com idname">发际线与我作队</div>
+                        <div class="com integral">
 
-        ws.onopen = function()
-        {
-          // Web Socket 已连接上，使用 send() 方法发送数据
-        };
+                            <i class="iconfont icon-bonus-line"></i> <i class="cur">120</i> <i class="fixed"> / 120</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="competition_season">
+                    <div class="season_title"> <i>S1</i> 赛季</div>
+                    <div class="season_box">
+                        <div class="rank">
+                            <div class="season_name">初等学士</div>
+                            <div class="start">
+                                <i class="active iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                            </div>
+                        </div>
+                        <div class="role">
+                            <img src="./images/gif小人/红色小人.gif" class="loading_icon">
+                        </div>
+                        <div class="start_game">
+                            <a href="./newEnterPK.html">
+                                <input type="submit" value="开始匹配">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pk_footer_bg"></div>
+                <div class="pk_footer scroll_top">
+                    <div class="ranking_list" id="ranking_list">
+                        <div class="laiqu" id="laiqu">一</div>
+                        <div class="title_nav">
+                            <div class="rank_title">
+                                <i class="iconfont icon-paihangbang_paiming
+                                "></i> 排行榜公示
+                            </div>
+                            <div class="rank_pic">
+                                <!-- <img src="" alt=""> -->
+                            </div>
+                        </div>
+                        <div class="mine">
+                            <div class="com mine_title">
+                                <p>我的</p>
+                                <p>成绩</p>
+                            </div>
+                            <div class="head_portrait">
+                                <img src="./images/头像/头像-女学生2.png" alt="">
+                            </div>
+                            <div class="idname">发际线与我作队</div>
+                            <div class="com rank">第1名</div>
+                            <div class="com score">100分</div>
+                        </div>
+                        <div class="others">
+                            <div class="others_nav">
+                                <div class="left one">
+                                    <span class="rank"><img src="./images/pk/金牌 .png"></img></span
+                                        class="name"><span>队名</span>
+                                </div>
+                                <div class="right one">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><img src="./images/pk/银牌.png"></img></span
+                                        class="name"><span>hahah</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><img class="tong" src="./images/pk/铜牌.png"></img></span
+                                        class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>4</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>5</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>6</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>7</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>8</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>9</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i class="ten">10</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        ws.onmessage = function (evt)
-        {
-        };
+            </div>
+        </div>
+        <!-- 编辑页面 -->
+        <div class="Making_page main_page scroll_top">
+            <div class="bg"></div>
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-daoru"></span>
+                    <div class="name">导入</div>
+                    <form enctype="multipart/form-data" class="upload_form">
+                        <input type="file" accept="application/pdf" name="upLoadFile">
+                    </form>
+                </div>
+                <div class="header_right">
+                    <span class="icon iconfont icon-gongxiangtubiaozhuangtaileicaozuolei37"></span>
+                    <div class="name">保存</div>
+                </div>
+            </header>
+            <div class="loading">
+                <div class="spinner"></div>
+                <div class="text">上传文件中</div>
+            </div>
 
-        ws.onclose = function()
-        {
-        };
-      }
+            <div class="popup">
+                <div class="popup_box">
+                    <button>直接保存</button>
+                    <button>进入编辑</button>
+                </div>
+            </div>
+            <div class="popup2">
+                <div class="popup_box">标题不能与记忆库的模板重复</div>
+            </div>
+            <div class="container">
+                <div class="title">
+                    <div class="label">
+                        <span>标签</span>
+                        <span class="icon iconfont icon-xiangxiajiantou"></span>
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="text_box" contenteditable="true">
+                    <p></p>
+                </div>
+            </div>
+            <footer>
+                <ul>
+                    <li>
+                        <span class="icon iconfont icon-tiku1"></span>
+                        <div class="name">记忆库</div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-PK1"></span>
+                        <div class="name">
+                            PK
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-tianjia1"></span>
+                        <div class="name"></div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-ziyuangongxiang"></span>
+                        <div class="name">
+                            社区
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-yonghu"></span>
+                        <div class="name">
+                            我的
+                        </div>
+                    </li>
+                </ul>
+            </footer>
+        </div>
+        <!-- 社区页面 -->
+        <div class="community main_page scroll_top">
+            <header class="scroll_top">
+                <div class="header_search">
+                    <input type="text">
+                    <button>
+                        <span class="icon iconfont icon-sousuo3"></span>
+                    </button>
+                </div>
+            </header>
 
-      else
-      {
-        // 浏览器不支持 WebSocket
-        alert("您的浏览器不支持 WebSocket!");
-      }
-    }
-  </script>
+            <main>
+                <ul class="community_ul">
+                    <li>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
 
-</head>
-<body>
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask
+                                        hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="click">
+                            <div class="inter_box" id="interactive">
+                                <div class="interactive">
+                                    <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                    <span class="jifen iconfont icon-jifenhuiyuan
+                                "> &nbsp;<i>打赏</i></span>
+                                </div>
+                            </div>
+                            <i class=" menu iconfont icon-shixincaidan"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
 
-<div id="sse">
-  <a href="javascript:WebSocketTest()">运行 WebSocket</a>
-</div>
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask
+                                        hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="click">
+                            <div class="inter_box" id="interactive">
+                                <div class="interactive">
+                                    <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                    <span class="jifen iconfont icon-jifenhuiyuan
+                                "> &nbsp;<i>打赏</i></span>
+                                </div>
+                            </div>
+                            <i class=" menu iconfont icon-shixincaidan"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
+
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask
+                                        hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="click">
+                            <div class="inter_box" id="interactive">
+                                <div class="interactive">
+                                    <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                    <span class="jifen iconfont icon-jifenhuiyuan
+                                "> &nbsp;<i>打赏</i></span>
+                                </div>
+                            </div>
+                            <i class=" menu iconfont icon-shixincaidan"></i>
+                        </div>
+                    </li>
+                </ul>
+            </main>
+            <div class="community_footer"></div>
+        </div>
+        <!-- 个人页面 -->
+        <div class="personal main_page scroll_top">
+            <div class="person_main" style="display:block ;">
+                <div class="modify_succ">修改成功</div>
+                <div class="personal_box">
+                    <div class="head_portrait">
+                        <input type="file" accept=".jpg">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                    <div class="idname_box modify_lis">
+                        <div class="nicheng">昵称</div>
+                        <div class="right">
+                            <div class="idname modify_value">发际线与我作队 </div>
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                    </div>
+                    <div class="common mail_box modify_lis">
+                        <div class="title_box">修改手机号</div>
+                        <div class="right">
+                            <div class="phone modify_value"></div>
+                            <i class="right iconfont icon-xiangyoujiantou"></i>
+                        </div>
+
+
+                    </div>
+                    <div class="common modify_lis">
+                        <div class="title_box">修改密码</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                </div>
+                <div class="system_settings">
+                    <div class="common">
+                        <div class="title_box">新手教程</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <div class="common">
+                        <div class="title_box">显示设置</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <div class="common">
+                        <div class="title_box">关于我们</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                </div>
+                <div class="exit">
+                    <button>退出登录</button>
+                </div>
+                <div class="pm_footer"></div>
+            </div>
+
+            <div class="modify">
+                <div class="modify_box">
+                    <div class="modify_title">
+                        <div class="left">
+                            <i class="iconfont icon-xiangzuojiantou"></i>
+                        </div>
+                        <div class="modify_what">修改昵称</div>
+                    </div>
+                </div>
+
+                <div class="Modify_interface">
+                    <input type="text" name="" id="">
+                    <div class="modify_err">格式错误</div>
+                    <div class="confirm">
+                        <button>确认修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 底栏 -->
+        <div class="footer_nav">
+            <footer>
+                <ul>
+                    <li>
+                        <span class="icon iconfont icon-tiku1"></span>
+                        <div class="name">记忆库</div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-PK1"></span>
+                        <div class="name">
+                            PK
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-tianjia1"></span>
+                        <div class="name"></div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-ziyuangongxiang"></span>
+                        <div class="name">
+                            社区
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-yonghu"></span>
+                        <div class="name">
+                            我的
+                        </div>
+                    </li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+
 
 </body>
-</html>
-</body>
+<script src="./js/base.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/indexAjax.js"></script>
+<script src="./js/edit.js"></script>
+<script src="./js/learning.js"></script>
+<script src="./js/calendar.js"></script>
+<script src="./js/pk.js"></script>
+<script src="./js/personal.js"></script>
+<script src="./js/community.js"></script>
+
 </html>

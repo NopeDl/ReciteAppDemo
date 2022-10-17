@@ -9,6 +9,8 @@
     <version>1.0</version>
     <packaging>war</packaging>
 
+
+
     <name>ReciteAppDemo Maven Webapp</name>
 
     <properties>
@@ -16,6 +18,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
 
     <dependencies>
         <!-- mysql依赖-->
@@ -57,9 +60,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>2.0.3</version>
+            <version>1.7.25</version>
             <scope>provided</scope>
         </dependency>
+
 
 
         <!--json解析-->
@@ -107,7 +111,21 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+
+
     </dependencies>
+
+
 
     <build>
         <finalName>ReciteMemory</finalName>
@@ -151,5 +169,17 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+
+<!--        <filters>-->
+<!--            <filter>src/main/filters.properties</filter>-->
+<!--        </filters>-->
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
+
     </build>
 </project>

@@ -1,0 +1,280 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+body {
+  background-color: #f4f4f4;
+}
+.personal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.2s;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.personal .person_main {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
+}
+.personal .person_main .modify_succ {
+  z-index: 500;
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 37.97468354vw;
+  height: 12.65822785vw;
+  border-radius: 2.53164557vw;
+  background-color: #eae5ff;
+  text-align: center;
+  line-height: 12.65822785vw;
+  font-size: 5.06329114vw;
+}
+.personal .person_main .modify_succani {
+  animation: modify_succani 2s 0.2s;
+}
+@keyframes modify_succani {
+  0% {
+    top: -10%;
+  }
+  50% {
+    top: 4%;
+  }
+  70% {
+    top: 4%;
+  }
+  100% {
+    top: -10%;
+  }
+}
+.personal .person_main .system_settings,
+.personal .person_main .personal_box {
+  margin-top: 3.79746835vw;
+  background-color: #fff;
+  padding: 0 7.59493671vw;
+  border-radius: 5%;
+}
+.personal .person_main .system_settings .head_portrait,
+.personal .person_main .personal_box .head_portrait {
+  margin: 0 auto;
+  position: relative;
+  width: 30.37974684vw;
+  height: 30.37974684vw;
+  display: flex;
+  justify-content: center;
+}
+.personal .person_main .system_settings .head_portrait input,
+.personal .person_main .personal_box .head_portrait input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 100%;
+  z-index: 11;
+}
+.personal .person_main .system_settings .head_portrait img,
+.personal .person_main .personal_box .head_portrait img {
+  width: 30.37974684vw;
+  height: 30.37974684vw;
+  border-radius: 100%;
+}
+.personal .person_main .system_settings .idname_box,
+.personal .person_main .personal_box .idname_box {
+  margin-top: 5.06329114vw;
+  display: flex;
+  justify-content: space-between;
+}
+.personal .person_main .system_settings .idname_box .nicheng,
+.personal .person_main .personal_box .idname_box .nicheng {
+  height: 15.18987342vw;
+  line-height: 15.18987342vw;
+}
+.personal .person_main .system_settings .idname_box .right,
+.personal .person_main .personal_box .idname_box .right {
+  display: flex;
+  justify-content: space-between;
+  height: 15.18987342vw;
+  line-height: 15.18987342vw;
+}
+.personal .person_main .system_settings .idname_box .right .idname,
+.personal .person_main .personal_box .idname_box .right .idname {
+  color: #8d8a8a;
+  margin-right: 1.26582278vw;
+}
+.personal .person_main .system_settings .phone,
+.personal .person_main .personal_box .phone {
+  color: #8d8a8a;
+  margin-right: 1.26582278vw;
+}
+.personal .person_main .system_settings .common,
+.personal .person_main .personal_box .common {
+  display: flex;
+  justify-content: space-between;
+}
+.personal .person_main .system_settings .common .title_box,
+.personal .person_main .personal_box .common .title_box {
+  height: 17.72151899vw;
+  line-height: 17.72151899vw;
+}
+.personal .person_main .system_settings .common .right,
+.personal .person_main .personal_box .common .right {
+  display: flex;
+  justify-content: space-between;
+  height: 17.72151899vw;
+  line-height: 17.72151899vw;
+}
+.personal .person_main .personal_box {
+  padding-top: 5.06329114vw;
+}
+.personal .person_main .exit {
+  margin: 0 auto;
+  margin-top: 5.06329114vw;
+  width: 63.29113924vw;
+}
+.personal .person_main .exit button {
+  width: 63.29113924vw;
+  height: 12.65822785vw;
+  background-color: rgba(248, 8, 8, 0.425);
+  border: 0;
+  font-size: 5.06329114vw;
+  border-radius: 5%;
+}
+.personal .person_main .pm_footer {
+  width: 100%;
+  height: 25.3164557vw;
+}
+.personal .modify {
+  z-index: 20000;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100vh;
+  background-color: #f4f4f4;
+  transition: all 0.4s ease-in-out;
+}
+.personal .modify .modify_box {
+  background-color: #fff;
+  padding: 0 13.92405063vw 0 3.79746835vw;
+  border-radius: 10%;
+}
+.personal .modify .modify_box .modify_title {
+  display: flex;
+  justify-content: space-between;
+  height: 15.18987342vw;
+  line-height: 15.18987342vw;
+  font-size: 5.06329114vw;
+}
+.personal .modify .modify_box .modify_title .left {
+  flex: 1.4;
+  text-align: center;
+  line-height: 15.18987342vw;
+}
+.personal .modify .modify_box .modify_title .icon-xiangzuojiantou {
+  font-size: 5.06329114vw;
+}
+.personal .modify .modify_box .modify_title .modify_what {
+  flex: 8.6;
+  text-align: center;
+}
+.personal .modify .Modify_interface {
+  margin-top: 5.06329114vw;
+  padding: 0 7.59493671vw;
+}
+.personal .modify .Modify_interface input {
+  display: block;
+  width: 100%;
+  height: 15.18987342vw;
+  font-size: 6.32911392vw;
+  border: 0;
+  border-bottom: 1px solid #aeacac;
+}
+.personal .modify .Modify_interface .modify_err {
+  font-size: 4.55696203vw;
+  color: red;
+  opacity: 0;
+  transition: all 0.3s;
+  margin: 5.06329114vw auto;
+}
+.personal .modify .Modify_interface .confirm {
+  margin: 0 auto;
+  margin-top: 5.06329114vw;
+  width: 63.29113924vw;
+}
+.personal .modify .Modify_interface .confirm button {
+  width: 63.29113924vw;
+  height: 12.65822785vw;
+  background-color: #ffd161;
+  border: 0;
+  font-size: 5.06329114vw;
+  border-radius: 5%;
+}

@@ -47,7 +47,7 @@ public class EncodingFilter extends HttpFilter {
             e.printStackTrace();
             throw new RuntimeException("获取段位名称失败");
         }
-        new PKServer(9999).start();
+//        new PKServer(9999).start();
     }
 
     @Override

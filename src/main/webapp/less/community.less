@@ -1,0 +1,214 @@
+//out:../css/
+@import 'base';
+@vw: 3.75vw;
+
+body{
+    background-color: #f8f8f8;
+}
+
+.community{
+    background-color: #f4f4f4;
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: scroll;
+    transition: all .2s;
+    header {
+        z-index: 1000;
+        position: fixed;
+        left: 0;
+        top: 0;
+        transition: all .2s;
+        width: 100%;
+        height: (48 / @vw);
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 0 (15 / @vw);
+        transition: all .2s;
+    
+        .header_search {
+            position: relative;
+    
+            input {
+                padding: 0 (10 / @vw);
+                width: (300 / @vw);
+                height: (25 / @vw);
+                border-radius: (15 / @vw);
+                background-color: #ecedef;
+                // border: (1 / @vw) solid #000;
+                border: 0;
+            }
+    
+            button {
+                position: absolute;
+                right: 0;
+                width: (30 / @vw);
+                height: (30 / @vw);
+                border-radius: 50%;
+                border: none;
+                background-color: transparent;
+    
+                .icon {
+                    font-size: (20 / @vw);
+                    color: #979797;
+                    line-height:(30 / @vw) ;
+                }
+            }
+        }
+    
+        .header_btn {
+            width: (40 / @vw);
+            height: (40 / @vw);
+            border-radius: 50%;
+            border: (1 / @vw) solid #000;
+            text-align: center;
+            line-height: (40 / @vw);
+        }
+    }
+
+    main{
+        margin-top: (60/ @vw);
+        .community_ul{
+            border-radius: (10/@vw);
+            li{
+                display: block;
+                // background-color:#9468ae;
+                border-radius: (10/@vw);
+                margin-bottom: (20/@vw);
+                background-color: #ab97c9;
+                // background-image: linear-gradient(-135deg,#f57fb6b2,#6652a6b8);
+                padding-bottom: (5/@vw);
+                .color{
+                    background-color: #ab97c9a2;
+                    padding-top: (10/@vw);
+                    .upper{
+                        display: flex;
+                        align-items: center;
+                        width: 100%;
+                        
+                        // background-color:#fff;
+                        padding: 0 (10/@vw);
+                        
+                        .head_portrait{
+                            width: (45/@vw);
+                            border-radius: 100%;
+                            img{
+                                border-radius: 100%;
+                            };
+                        }
+    
+                        .idname1{
+                            font-size: (15/@vw);
+                            margin-left: (10/@vw);
+                        }
+                    }
+    
+                    .ellipsis {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                    }
+    
+                    .content {
+                        margin: 0 (15/@vw);
+                        margin-top: (15/@vw);
+                        padding: 0 (25/@vw);
+                        border-radius: (10/@vw);
+                        background-color:#75599c7a ;
+    
+                        h4 {
+                            width: (180 / @vw);
+                            margin-bottom: (5 / @vw);
+                            padding-top: (15/@vw);
+                            font-size: (18 / @vw);
+                        }
+                        .info_box{
+                            height: (50/@vw);
+                            .info {
+                                font-size: (14 / @vw);
+                                line-height: (20/@vw);
+                            }
+                        }
+                        
+                    }
+                }
+            }
+
+            .click{
+                position: relative;
+                height: (30/@vw);
+                line-height: (30/@vw);
+                margin-top: (5/@vw);
+                padding:0 (20/@vw);
+                text-align: right;
+
+                i{
+                    text-align: center;
+                    display: inline-block;
+                    width: (30/@vw);
+                    height: (20/@vw);
+                    background-color: #dedcdc;
+                    border-radius: 15%;
+                }
+                .icon-shixincaidan{
+                
+                    line-height: (20/@vw);
+                }
+
+                .inter_box{
+                    position: absolute;
+                    top: (2/@vw);
+                    right : (60/@vw);
+                    width: (0/@vw);
+                    overflow: hidden;
+                    transition: width .6s;
+
+                    .interactive{
+                        display: flex;
+                        justify-content: space-evenly;
+                        align-items: center;
+                        width: (160/@vw);
+                        span{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: (80/@vw);
+                            height: (25/@vw);
+                            color: #fff;
+                            background-color: #656464;
+                            font-size: (13/@vw);
+
+                            i{
+                                font-style: normal;
+                                line-height: (20/@vw);
+                                color: #fff;
+                                background-color: #656464;
+                            }
+
+                            .icon-jifenhuiyuan{
+                                font-weight: 700;
+                            }
+                        }
+
+                        .yellow{
+                            color: rgba(254, 211, 20, 0.943);
+                        }
+                    }
+                }
+  
+            }
+        }
+    }
+
+    .community_footer {
+        width: 100%;
+        height: (70 / @vw);
+    }
+}

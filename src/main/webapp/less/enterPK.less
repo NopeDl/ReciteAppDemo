@@ -1,0 +1,149 @@
+//out:../css/
+@import 'base';
+@vw: 3.95vw;
+
+body{
+    background-color: #f4f4f4;
+}
+
+.enterPK {
+    position: relative;
+}
+
+.left {
+    z-index: 10000;
+    position: absolute;
+    top: (20 / @vw);
+    left: (15 / @vw);
+
+    .icon {
+        color: #fff;
+        font-weight: 700;
+        font-size: (30 / @vw);
+    }
+}
+
+.pk_infer{
+    width: 100%;
+    overflow: hidden;
+    padding:(20/@vw) (15/@vw);
+    // background-color: rgba(152, 116, 180, 0.798);
+
+    .pk_box{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        // background: linear-gradient(#6b61a8,#c7d2e8);
+        // background-color:rgba(152, 116, 180, 0.798);
+        border-radius: 5%;
+        background-image: url(../images/1.png) ;
+        // background: url("bg.png") no-repeat;
+        height:100%;
+        width:100%;
+        overflow: hidden;
+        background-size:cover;
+
+        .other_pk,
+        .person_pk{
+            padding: (10/@vw) (0/@vw);
+            width: 100%;
+            // background-color: #fff;
+            
+            
+            .person_blood_bar{
+                margin: 0 auto;
+                width: (100/@vw);
+                height: (15/@vw);
+                border-radius: (5/@vw)  (5/@vw)  (5/@vw)  (5/@vw);
+                background-color:rgba(120, 119, 119, 0.38);
+    
+                .blood_red{
+                    width: (50/@vw);
+                    height: (15/@vw);
+                    background-color:rgba(247, 10, 10, 0.981);
+                    border-radius: (5/@vw)  (5/@vw)  (5/@vw)  (5/@vw);
+                }
+            }
+    
+            .person_role{
+                margin: 0 auto ;
+                margin-top: (10/@vw);
+                width: (100/@vw);
+                height: (100/@vw);
+                
+                img{
+                    width: (100/@vw);
+                    height: (80/@vw);
+                }
+            }
+    
+            .other_role{
+                margin-left: (0/@vw);
+            }
+    
+            .idname{
+                color: rgb(0, 0, 0);
+                margin-top: (0/@vw);
+                text-align: center;
+            }
+        }
+    
+        .pk_logo{
+            width: (100/@vw);
+            height: (100/@vw);
+        }
+    } 
+}
+
+// .editor{
+//     margin: 0 auto;
+//     margin-top: (15/@vw);
+//     width: (370/@vw);
+//     height: (600/@vw);
+//     background-color: #fff;
+
+// }
+
+.text_box {
+    margin: 0 auto;
+    width: (370 / @vw);
+    height: 80vh;
+    background-color: #fff;
+    padding: (10 / @vw);
+    overflow: scroll;
+    font-size: (18 / @vw);
+    line-height: (35/@vw);
+    // text-indent: 2em;
+    letter-spacing: 0.15em;
+    border-radius: (5 / @vw);
+    box-shadow: (2 / @vw) (2 / @vw) (10 / @vw) rgba(0, 0, 0, 0.349);
+
+    .highlight {
+        display: inline;
+        background: rgb(248, 207, 4);
+        transition: all .3s;
+
+        &::selection {
+            background: rgb(234, 255, 2) !important;
+        }
+    }
+
+    .input {
+        width: auto;
+        background-color: transparent !important;
+        color: rgba(188, 56, 244, 0.861) !important;
+        border-bottom: (2 / @vw) rgb(0, 0, 0) solid;
+        height: (30 / @vw);
+        outline: none;
+        display: inline;
+        // -webkit-user-modify: read-write-plaintext-only;
+    }
+
+    .recite {
+        height: (30 / @vw);
+        background-color: darkgray !important;
+        color: darkgray !important;
+        border-radius: (5 / @vw);
+        user-select: none;
+    }
+}
