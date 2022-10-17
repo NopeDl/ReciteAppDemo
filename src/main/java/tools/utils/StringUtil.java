@@ -18,6 +18,17 @@ public class StringUtil {
         return (StringUtil.class.getClassLoader().getResource("/").getPath() + fileName + ".pdf").substring(1);
     }
 
+    public static String handleParagraph(String content){
+        //将换行转换为<p>标签
+        //将开头首句添加<p>
+        content = content.replaceAll("\\r\\n", "</p><p>");
+        content = "<p>" + content;
+        content = content + "</p>";
+        return content;
+    }
+
+
+
     /**
      * 自动挖空
      *

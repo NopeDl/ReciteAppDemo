@@ -1,6 +1,5 @@
 package dao.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;

@@ -1,9 +1,7 @@
 package dao;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import pojo.po.Label;
 import pojo.po.Modle;
-import pojo.po.Umr;
 
 import java.util.List;
 
