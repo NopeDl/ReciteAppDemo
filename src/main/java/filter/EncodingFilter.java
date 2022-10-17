@@ -7,7 +7,6 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import wsserver.PKServer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,7 +46,6 @@ public class EncodingFilter extends HttpFilter {
             e.printStackTrace();
             throw new RuntimeException("获取段位名称失败");
         }
-//        new PKServer(9999).start();
     }
 
     @Override
