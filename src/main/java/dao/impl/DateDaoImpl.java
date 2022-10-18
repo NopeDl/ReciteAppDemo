@@ -41,13 +41,16 @@ public class DateDaoImpl implements DateDao {
      * @return
      */
     @Override
-    public List<String> selectDateByUserId(int userId) {
+    public List<String> selectDateByUserId(int userId,String month,String year) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        User user = new User();
-        user.setUserId(userId);
-        List<Object> objects = sqlSession.selectList("DateMapper.selectDates", user);
+        UDate uDate = new UDate();
+        uDate.setUserId(userId);
+        uDate.setYear(year);
+        uDate.setMonth(month);
+        List<Object> objects = sqlSession.selectList("DateMapper.selectDates", uDate);
         sqlSession.close();
         if (objects.size()>0){
+            System.out.println("我是真的大于0");
             List<String> dateList = new ArrayList<>();
             for (Object object : objects) {
                 DateFormat dateFormat = DateFormat.getDateInstance();

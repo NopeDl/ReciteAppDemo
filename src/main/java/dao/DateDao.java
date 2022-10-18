@@ -16,5 +16,5 @@ public interface DateDao {
      * @param userId
      * @return
      */
-    List<String> selectDateByUserId(int userId);
+    List<String> selectDateByUserId(int userId,String month,String year);
 }

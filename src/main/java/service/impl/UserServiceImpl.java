@@ -222,7 +222,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message getClockInRecord(HttpServletRequest request) {
         int userId = Integer.parseInt(request.getParameter("userId"));
-        List<String> list = dateDao.selectDateByUserId(userId);
+        String month = request.getParameter("month");
+        String year = request.getParameter("year");
+
+        List<String> list = dateDao.selectDateByUserId(userId,month,year);
         Message msg;
         if (list != null) {
             msg = new Message("查找成功");
