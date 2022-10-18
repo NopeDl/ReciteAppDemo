@@ -14,4 +14,12 @@
         delete from umr where modleId = #{modleId}
     </delete>
 
+    <insert id="collectModleById" parameterType="pojo.po.Umr" >
+        insert into umr(userId,modleId,mStatus) values(#{userId},#{modleId},#{mStatus})
+    </insert>
+
+    <delete id="cancelMOdleById" parameterType="pojo.po.Umr">
+        delete from umr where userId=#{userId} and mStatus=#{modleId} and mStatus=#{mStatus}
+    </delete>
+
 </mapper>

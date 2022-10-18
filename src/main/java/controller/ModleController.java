@@ -43,7 +43,13 @@ public class ModleController extends HttpServlet {
         } else if ("autoDig".equals(requestURI)) {
             //自动挖空
             msg = modleService.autoDig(request);
-        } else {
+        } else if("Collection".equals(requestURI)){
+            //用户收藏模板
+            msg=modleService.collectModle(request);
+        }else if("CancelCollet".equals(requestURI)){
+            msg=modleService.cancelModleCollect(request);
+
+        }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

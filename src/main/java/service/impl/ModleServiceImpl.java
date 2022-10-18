@@ -33,6 +33,58 @@ public class ModleServiceImpl implements ModleService {
 
     private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
+
+    /**
+     * 取消用户收藏的模板
+     * @return
+     */
+    @Override
+    public Message cancelModleCollect(HttpServletRequest request) {
+        Message message;
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+//        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
+        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
+
+        if("1".equals(mStatus)){
+            message = new Message("取消失败");
+        }
+        else {
+            int i = modleDao.collectModleById(userId, modleId, mStatus);
+            if (i > 0) {
+                //说明此时成功
+                message = new Message("取消收藏成功");
+            } else {
+                message = new Message("取消失败");
+            }
+        }
+        return message;
+
+    }
+
+    //好困好困好困好困好困好困好困好困好困好困
+    @Override
+    public Message collectModle(HttpServletRequest request) {
+        Message message;
+        //用户收藏非自己的模板
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+//        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
+        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
+
+        //调用modleDao来将收藏的东西insert
+        int i = modleDao.collectModleById(userId, modleId,mStatus);
+        if(i>0){
+            //成功插入
+            message=new Message("收藏成功");
+        }else{
+            message=new Message("收藏失败");
+        }
+        return message;
+    }
+
+
+
     /**
      * 解析文件
      *
@@ -52,9 +104,10 @@ public class ModleServiceImpl implements ModleService {
                 //根据文件类型获得文件处理器
                 FileHandler handler = fileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
+                System.out.println(context);
                 //将换行转换为前端html换行标签
-//                context = context.replaceAll("\\r\\n", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
-                context = StringUtil.handleParagraph(context);
+                context = context.replaceAll("\\r\\n", "<\\br>");
+//                context = StringUtil.handleParagraph(context);
                 msg = new Message("文件解析成功");
                 msg.addData("context", context);
             } else {
@@ -66,6 +119,7 @@ public class ModleServiceImpl implements ModleService {
         }
         return msg;
     }
+
 
     /**
      * 创建模板

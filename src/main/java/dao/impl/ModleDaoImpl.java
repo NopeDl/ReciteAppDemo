@@ -16,6 +16,54 @@ public class ModleDaoImpl implements ModleDao {
         sqlSessionFactory = DaoUtil.getSqlSessionFactory();
     }
 
+    /**
+     * 用户取消收藏的模板
+     * @param userId
+     * @param modleId
+     * @param mStatus
+     * @return
+     */
+    @Override
+    public int cancelMOdleById(int userId, int modleId, int mStatus) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Umr umr = new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);//将数据封装为一个umr对象
+        umr.setMStatus(mStatus);
+        int result = sqlSession.delete("UmrMapper.cancelMOdleById", umr);
+        if(result>0){
+            sqlSession.commit();
+        }else{
+            sqlSession.rollBack();
+        }
+
+        sqlSession.close();
+        return result;
+    }
+
+    /**
+     * 用户收藏别人的模板
+     * @return
+     */
+    @Override
+    public int collectModleById(int userId,int modleId,int mStatus) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Umr umr = new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);//将数据封装为一个umr对象
+        umr.setMStatus(mStatus);
+        int insert = sqlSession.insert("UmrMapper.collectModleById", umr);
+        if(insert>0){
+            sqlSession.commit();
+        }else{
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return insert;
+
+
+    }
+
     @Override
     public int insertFileByUserId(int userId, String path) {
         SqlSession sqlSession = sqlSessionFactory.openSession();

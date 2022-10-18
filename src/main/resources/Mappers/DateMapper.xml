@@ -6,6 +6,6 @@
     </insert>
 
     <select id="selectDates" parameterType="pojo.po.UDate" resultType="pojo.po.UDate">
-        select date from t_date where userId = #{userId} and date like '%${year}%${month}%'
+        select date from t_date where userId = #{userId} and date like #{exp}
     </select>
 </mapper>

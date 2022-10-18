@@ -47,6 +47,8 @@ public class DateDaoImpl implements DateDao {
         uDate.setUserId(userId);
         uDate.setYear(year);
         uDate.setMonth(month);
+        uDate.setExp("%"+year+"%"+month+"%");
+
         List<Object> objects = sqlSession.selectList("DateMapper.selectDates", uDate);
         sqlSession.close();
         if (objects.size()>0){

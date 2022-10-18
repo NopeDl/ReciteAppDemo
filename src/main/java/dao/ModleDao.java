@@ -2,10 +2,29 @@ package dao;
 
 import pojo.po.Label;
 import pojo.po.Modle;
+import pojo.vo.Message;
 
 import java.util.List;
 
 public interface ModleDao {
+
+
+    /**
+     * 取消用户收藏
+     * @param userId
+     * @param modleId
+     * @param mStatus
+     * @return
+     */
+    int cancelMOdleById(int userId,int modleId,int mStatus);
+
+
+    /**
+     * 讲收藏的模板写进表umr中
+     * @return
+     */
+    int  collectModleById(int userId,int modleId,int mStatus);
+
 
     /**
      * 通过用户id上传文件
