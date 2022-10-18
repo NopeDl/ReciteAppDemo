@@ -1,26 +1,19 @@
 package tools.handlers.impl;
 
+import tools.handlers.BaseFileHandler;
 import tools.handlers.FileHandler;
+import tools.handlers.FileType;
 
 import java.io.*;
 
-public class TXTFileHandler implements FileHandler {
-    private InputStream input;
-
-    /**
-     * 禁止访问无参构造
-     */
-    private TXTFileHandler() {
+public class TXTFileHandler extends BaseFileHandler {
+    public TXTFileHandler(InputStream input, FileType fileType) {
+        super(input, fileType);
     }
-
-    public TXTFileHandler(InputStream input) {
-        this.input = input;
-    }
-
 
     @Override
     public String parseContent() {
-        return this.parseContent(input);
+        return this.parseContent(getInput());
     }
 
     @Override

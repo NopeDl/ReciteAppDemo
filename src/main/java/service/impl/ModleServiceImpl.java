@@ -31,7 +31,7 @@ public class ModleServiceImpl implements ModleService {
     private final UMRDao umrDao = new UMRDaoImpl();
     private final LabelDao labelDao=new LabelDaoImp();
 
-    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
+//    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
 
     /**
@@ -102,7 +102,8 @@ public class ModleServiceImpl implements ModleService {
                 String fileType = upLoadFile.getContentType();
                 InputStream input = upLoadFile.getInputStream();
                 //根据文件类型获得文件处理器
-                FileHandler handler = fileHandlerFactory.getHandler(fileType, input);
+                fileType = fileType.substring(fileType.indexOf("/") + 1);
+                FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
                 System.out.println(context);
                 //将换行转换为前端html换行标签
@@ -243,7 +244,7 @@ public class ModleServiceImpl implements ModleService {
             //获取文件位置
             InputStream input = new FileInputStream(modlePath);
             //获取模板文件处理器
-            FileHandler txtHandler = fileHandlerFactory.getHandler("txt", input);
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
             //解析文件内容
             String context = txtHandler.parseContent();
             ShowModle showModle=new ShowModle();
@@ -281,7 +282,7 @@ public class ModleServiceImpl implements ModleService {
             if (!file.exists()){
                 file.createNewFile();
             }
-            FileHandler txtHandler = fileHandlerFactory.getHandler("txt", null);
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", null);
             String path = txtHandler.saveFile(filePath, context);
             return path;
         }catch (IOException e){
@@ -411,7 +412,7 @@ public class ModleServiceImpl implements ModleService {
                     throw new RuntimeException(e);
                 }
                 //读取文本
-                TXTFileHandler txtFileHandler = new TXTFileHandler(input);
+                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt",input);
                 String content = txtFileHandler.parseContent();
                 modle.setContent(content);
                 modle.setModlePath(null);
@@ -466,7 +467,7 @@ public class ModleServiceImpl implements ModleService {
             try {
                 InputStream inputStream = new FileInputStream(path);
                 //获取文件内容
-                FileHandler txtHandler = fileHandlerFactory.getHandler("txt", inputStream);
+                FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
                 String content = txtHandler.parseContent();
                 //去除所有用户自己挖空内容
                 //需要优化太耗时
