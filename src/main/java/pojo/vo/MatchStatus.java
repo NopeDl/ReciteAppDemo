@@ -1,38 +1,17 @@
 package pojo.vo;
 
-import java.util.Objects;
-
 /**
- * 封装匹配用户的相关信息
- * @author h2012
+ * @author yeyeye
+ * @Date 2022/10/18 1:37
  */
 public class MatchStatus {
-    /**
-     * 匹配用户的id
-     */
-    private int userId;
-
-    /**
-     * 用户参赛模板id
-     */
-    private int modleId;
-
-    private int wordsNum;
-
-    public int getWordsNum() {
-        return wordsNum;
-    }
-
-    public void setWordsNum(int wordsNum) {
-        this.wordsNum = wordsNum;
-    }
+    private int userId;//选择pk的用户的userId
+    private int modleId;//要pk的modleId;
+    private int modleNum;//目标模板的字数
+    private int difficulty;//用户选择的难度，有三种，1是简单；2是中等；3是困难
+    private String context;//获取模板的内容
 
     public MatchStatus() {
-    }
-
-    public MatchStatus(int userId, int modleId) {
-        this.userId = userId;
-        this.modleId = modleId;
     }
 
     public int getUserId() {
@@ -51,20 +30,37 @@ public class MatchStatus {
         this.modleId = modleId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MatchStatus that = (MatchStatus) o;
-        return userId == that.userId && modleId == that.modleId && wordsNum == that.wordsNum;
+    public int getModleNum() {
+        return modleNum;
+    }
+
+    public void setModleNum(int modleNum) {
+        this.modleNum = modleNum;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(userId, modleId, wordsNum);
+    public String toString() {
+        return "MatchInf{" +
+                "userId=" + userId +
+                ", modleId=" + modleId +
+                ", modleNum=" + modleNum +
+                ", context='" + context + '\'' +
+                '}';
     }
 }

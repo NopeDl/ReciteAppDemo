@@ -17,6 +17,26 @@ public class ModleDaoImpl implements ModleDao {
     }
 
     /**
+     * 获取某个模板的标题是叫什么
+     * @param modle
+     * @return
+     */
+    @Override
+    public String selectTitleByModleId(Modle modle) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        String userTitle=null;
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectTitleByModleId", modle);
+       sqlSession.close();
+        if(objects.size()==0){
+            //说明没有叫这个标题的模板
+        }else{
+             userTitle= ((Modle)objects.get(0)).getModleTitle();
+        }
+        return userTitle;
+
+    }
+
+    /**
      * 用户取消收藏的模板
      * @param userId
      * @param modleId

@@ -119,4 +119,18 @@ public interface ModleDao {
      * @return 更改结果
      */
     int updateModleCommon(int modleId,int common);
+
+    /**
+     * 根据模板id查询标题
+     * @param modle
+     * @return
+     */
+    String selectTitleByModleId(Modle modle);
+
+    /**
+     * 更改某个模板的标签
+     * @param modle
+     * @return
+     */
+    boolean changeModleTag(Modle modle);
 }
