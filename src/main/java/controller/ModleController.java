@@ -37,6 +37,9 @@ public class ModleController extends HttpServlet {
         } else if ("reward".equals(requestURI)) {
             //打赏
             msg = modleService.reward(request);
+        } else if ("toCommunity".equals(requestURI)) {
+            //将模板添加至社区
+            msg = modleService.toCommunity(request);
         } else if ("UserMemory".equals(requestURI)) {
             //获取用户的记忆库,返回用户的模板状态
             msg = modleService.getUserMemory(request);

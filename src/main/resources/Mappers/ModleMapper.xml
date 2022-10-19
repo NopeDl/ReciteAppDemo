@@ -68,4 +68,11 @@
     <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
         select modleTitle from modle where modleId=#{modleId}
     </select>
+
+    <!--  更改模板上传状态  -->
+    <update id="updateModleCommon">
+        update modle set common = #{common} where modleId=#{modleId}
+    </update>
+
+
 </mapper>

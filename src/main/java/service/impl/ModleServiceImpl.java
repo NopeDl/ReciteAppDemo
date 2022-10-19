@@ -139,21 +139,24 @@ public class ModleServiceImpl implements ModleService {
         String context = request.getParameter("context");
         int userId = Integer.parseInt(request.getParameter("userId"));
         String modleTitle = request.getParameter("modleTitle");
-        String modleLabel = request.getParameter("modleLabel");//获取标签id
+        //获取标签id
+        String modleLabel = request.getParameter("modleLabel");
 
-        modle.setUserId(userId);//设置模板作者
-        modle.setModleTitle(modleTitle);//设置模板标题
-        modle.setModleLabel(Integer.parseInt(modleLabel));//设置模板标签
-
+        //设置模板作者
+        modle.setUserId(userId);
+        //设置模板标题
+        modle.setModleTitle(modleTitle);
+        //设置模板标签
+        modle.setModleLabel(Integer.parseInt(modleLabel));
 
         //先看标题有没有重复的
+
         String overWrite = request.getParameter("overWrite");//覆盖值为1，不覆盖值为0
         if ("1".equals(overWrite)) {
             //此时为覆盖的情况下
             //获取原模板的id
             int modleId = Integer.parseInt(request.getParameter("modleId"));
             modle.setModleId(modleId);//设置模板的id
-
 
             //这时候只需要将原模板里面的东西替换成context就行
             //标题分为两种情况，一种是改了名字的，一种是没改的
@@ -268,12 +271,12 @@ public class ModleServiceImpl implements ModleService {
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
             //解析文件内容
             String context = txtHandler.parseContent();
-            ShowModle showModle=new ShowModle();
+            ShowModle showModle = new ShowModle();
             showModle.setContext(context);//存模板内容
             showModle.setTitle(modle.getModleTitle());//存模板标题
 
             //查找模板的标签名字,并且封装
-            int modleLabel =modle.getModleLabel();
+            int modleLabel = modle.getModleLabel();
             showModle.setLabelValue(modleLabel);//将模板标签编号存进去
 
             //将模板标签名字存进去
@@ -312,7 +315,12 @@ public class ModleServiceImpl implements ModleService {
         return null;
     }
 
-    //修改模板内容,根据传进来的modleId查找modlePath，从而修改文本
+    /**
+     * 修改模板内容,根据传进来的modleId查找modlePath，从而修改文本
+     * @param context
+     * @param modleId
+     * @return
+     */
     @Override
     public boolean replaceContext(String context, int modleId) {
         String modlePath = modleDao.selectPathByModleId(modleId);
@@ -386,8 +394,8 @@ public class ModleServiceImpl implements ModleService {
      * '
      * 给模板打赏
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 响应
      */
     @Override
     public Message reward(HttpServletRequest request) {
@@ -561,5 +569,25 @@ public class ModleServiceImpl implements ModleService {
         return list;
     }
 
-
+    /**
+     * 上传至模板社区
+     *
+     * @param request 请求
+     * @return 响应数据封装
+     */
+    @Override
+    public Message toCommunity(HttpServletRequest request) {
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        int common = Integer.parseInt(request.getParameter("common"));
+        int success = modleDao.updateModleCommon(modleId, common);
+        Message msg;
+        if (success > 0) {
+            msg = new Message("发布成功");
+            msg.addData("isPublic", true);
+        } else {
+            msg = new Message("发布失败");
+            msg.addData("isPublic", false);
+        }
+        return msg;
+    }
 }
