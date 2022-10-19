@@ -2,12 +2,12 @@
 <mapper namespace="ModleMapper">
     <!--  -->
     <select id="selectCount" parameterType="string" resultType="pojo.po.Count">
-        select count(userId) as number from modle
+        select count(userId) as number  from modle
     </select>
 
     <!--    int selectModleTitle 查找userId为xx的用户，模板title为xx的模板个数-->
     <select id="selectNumByTitle" parameterType="pojo.po.Modle" resultType="pojo.po.Count">
-        select count(*) as number from modle where modleTitle=#{modleTitle} and userId=#{userId}
+        select count(*) as number  from modle where modleTitle=#{modleTitle} and userId=#{userId}
     </select>
 
     <!--insertModle 生成新模板-->
@@ -32,7 +32,7 @@
 
     <!-- 获取标签下所有模板 -->
     <select id="selectModlesByTag" resultType="pojo.po.Modle">
-        select * from modle where modleLabel = #{modleLabel} and common = 1 limit #{pageIndex}*20,20
+        select * from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
     <!--selectModleByModleId-->
@@ -58,6 +58,16 @@
         select modlePath from modle where modleId=#{modleId}
     </select>
 
+
+    <update id="changeModleTag" parameterType="pojo.po.Modle" >
+        update  modle set modleLabel=#{modleLabel} ,modleTitle=#{modleTitle} where modleId=#{modleId}
+    </update>
+
+
+    <!--selectTitleByModleId-->
+    <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
+        select modleTitle from modle where modleId=#{modleId}
+    </select>
 
     <!--  更改模板上传状态  -->
     <update id="updateModleCommon">

@@ -69,15 +69,16 @@ public class ModleServiceImpl implements ModleService {
         //用户收藏非自己的模板
         int userId = Integer.parseInt(request.getParameter("userId"));
         int modleId = Integer.parseInt(request.getParameter("modleId"));
+//        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
 
         //调用modleDao来将收藏的东西insert
-        int i = modleDao.collectModleById(userId, modleId, mStatus);
-        if (i > 0) {
+        int i = modleDao.collectModleById(userId, modleId,mStatus);
+        if(i>0){
             //成功插入
-            message = new Message("收藏成功");
-        } else {
-            message = new Message("收藏失败");
+            message=new Message("收藏成功");
+        }else{
+            message=new Message("收藏失败");
         }
         return message;
     }
@@ -101,7 +102,7 @@ public class ModleServiceImpl implements ModleService {
                 String fileType = upLoadFile.getSubmittedFileName();
                 InputStream input = upLoadFile.getInputStream();
                 //根据文件类型获得文件处理器
-                fileType = fileType.substring(fileType.lastIndexOf(".") + 1);
+                fileType = fileType.substring(fileType.indexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
                 System.out.println(context);
@@ -158,18 +159,33 @@ public class ModleServiceImpl implements ModleService {
             //此时为覆盖的情况下
             //获取原模板的id
             int modleId = Integer.parseInt(request.getParameter("modleId"));
-            //设置模板的id
-            modle.setModleId(modleId);
+            modle.setModleId(modleId);//设置模板的id
+
             //这时候只需要将原模板里面的东西替换成context就行
-            int sum = modleDao.selectNumByTitle(modle);
-            if (sum > 0) {
-                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-                message = new Message("模板标题不能重复 ");
-                return message;
+            //标题分为两种情况，一种是改了名字的，一种是没改的
+            //查找要覆盖的模板的标题
+            String s = modleDao.selectTitleByModleId(modle);
+            if(modleTitle.equals(s)){
+                //说明此时没有改名字
+                modle.setModlePath(modleLabel);
+            }else {
+
+                int sum = modleDao.selectNumByTitle(modle);
+
+                if (sum > 0) {
+//                    说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                    message = new Message("模板标题不能重复 ");
+                }
+
             }
             //根据modleId查路径
             boolean b = replaceContext(context, modleId);
-            if (b) {
+            //这个时候得更新模板标签和标题
+            //更改模板的标签
+
+            boolean b1 = modleDao.changeModleTag(modle);
+            if (b&&b1) {
+
                 //结束覆盖过程
                 message = new Message("成功覆盖原模板");
                 modle.setModlePath(null);
@@ -178,37 +194,37 @@ public class ModleServiceImpl implements ModleService {
             } else {
                 message = new Message("覆盖失败");
             }
+
+
         } else {
-//            //对比该模板制作者的作于模板标题，不允许有有重复的标题
-//            int sum = modleDao.selectNumByTitle(modle);
-//            if (sum > 0) {
-//                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-//                message = new Message("模板标题不能重复 ");
-//            } else {
-            //将模板内容存为txt文本,返回模板路径，封装在modle对象里
-            String modlePath = WriteAsTxt(context, modleTitle);
-            modle.setModlePath(modlePath);
-            modle.setModleLabel(Integer.parseInt(modleLabel));
-            //保存进数据库
-            int result = modleDao.insertModle(modle);
-            //获取modleId
-            int modleId = modleDao.selectModleIdByUserIdAndTitle(modle).getModleId();
-            //保存um关系
-            Umr umr = new Umr();
-            umr.setUserId(userId);
-            umr.setModleId(modleId);
-            //自己创建是0，收藏是1
-            umr.setMStatus(0);
-            int i = umrDao.insertUMR(umr);
-            //可能存在并发问题，需要事务
-            if (result > 0 && i > 0) {
-                //说明此时插入成功
-                message = new Message("生成新模板成功");
-                modle.setModlePath(null);
-                //？需不需要返回模板对象
-                message.addData("modle", modle);
+            //对比该模板制作者的作于模板标题，不允许有有重复的标题
+            int sum = modleDao.selectNumByTitle(modle);
+            if (sum > 0) {
+                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                message = new Message("模板标题不能重复 ");
             } else {
-                message = new Message("生成新模板失败");
+                //将模板内容存为txt文本,返回模板路径，封装在modle对象里
+                String modlePath = WriteAsTxt(context, modleTitle);
+                modle.setModlePath(modlePath);
+                modle.setModleLabel(Integer.parseInt(modleLabel));
+                //保存进数据库
+                int result = modleDao.insertModle(modle);
+                //获取modleId
+                int modleId = modleDao.selectModleIdByUserIdAndTitle(modle).getModleId();
+                //保存um关系
+                Umr umr = new Umr();
+                umr.setUserId(userId);
+                umr.setModleId(modleId);
+                umr.setMStatus(0);//自己创建是0，收藏是1
+                int i = umrDao.insertUMR(umr);
+                //可能存在并发问题，需要事务
+                if (result > 0 && i > 0) {
+                    //说明此时插入成功
+                    message = new Message("生成新模板成功");
+                    message.addData("modle", modle);//？需不需要返回模板对象
+                } else {
+                    message = new Message("生成新模板失败");
+                }
             }
         }
         return message;
@@ -216,9 +232,8 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 删除模板
-     *
-     * @param request 请求
-     * @return 响应数据
+     * @param request
+     * @return
      */
     @Override
     public Message deleteModle(HttpServletRequest request) {
@@ -230,12 +245,12 @@ public class ModleServiceImpl implements ModleService {
         boolean deleteFile = file.delete();
         //没有用事务,可能会有bug
         Message msg;
-        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
+        if (deleteUmr!=0 && 0!= deleteModle && deleteFile){
             msg = new Message("删除成功");
-            msg.addData("deleteSuccess", true);
-        } else {
+            msg.addData("deleteSuccess",true);
+        }else {
             msg = new Message("删除失败");
-            msg.addData("deleteSuccess", false);
+            msg.addData("deleteSuccess",false);
         }
         return msg;
     }
