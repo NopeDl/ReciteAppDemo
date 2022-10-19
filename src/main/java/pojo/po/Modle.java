@@ -35,6 +35,16 @@ public class Modle {
         this.mStatus = mStatus;
     }
 
+    private int reward;
+
+    public int getReward() {
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
     /**
      * sql语句中limit使用
      */
@@ -116,8 +126,11 @@ public class Modle {
                 ", modleTitle='" + modleTitle + '\'' +
                 ", modlePath='" + modlePath + '\'' +
                 ", userId=" + userId +
-                ", modleLable=" + modleLabel +
+                ", modleLabel=" + modleLabel +
                 ", coins=" + coins +
+                ", mStatus=" + mStatus +
+                ", content='" + content + '\'' +
+                ", reward=" + reward +
                 ", pageIndex=" + pageIndex +
                 '}';
     }

@@ -99,10 +99,10 @@ public class ModleServiceImpl implements ModleService {
             Part upLoadFile = request.getPart("upLoadFile");
             //获取输入流
             if (upLoadFile != null) {
-                String fileType = upLoadFile.getContentType();
+                String fileType = upLoadFile.getSubmittedFileName();
                 InputStream input = upLoadFile.getInputStream();
                 //根据文件类型获得文件处理器
-                fileType = fileType.substring(fileType.indexOf("/") + 1);
+                fileType = fileType.substring(fileType.indexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
                 System.out.println(context);

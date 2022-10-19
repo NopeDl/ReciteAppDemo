@@ -17,7 +17,7 @@
     </insert>
     <!--  删除模板 -->
     <delete id="deleteModleByModleId">
-        delete from modle where modleId = #{modleId}
+        delete * from modle where modleId = #{modleId}
     </delete>
 
     <!-- 修改模板打赏量  -->
@@ -26,7 +26,7 @@
     </update>>
 
     <!--根据模板id获取模板信息-->
-    <select id="selectModleById" resultType="pojo.po.Modle">
+    <select id="selectModleById" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
         select * from modle where modleId = #{modleId}
     </select>
 
@@ -36,8 +36,8 @@
     </select>>
 
     <!--selectModleByModleId-->
-    <select id="selectModleByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Umr">
-        select * from modle where modleId=#{modleId}
+    <select id="selectModleByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+        select modleId,modleTitle,modlePath,userId,modleLabel from modle where modleId=#{modleId}
     </select>
 
 
