@@ -1,26 +1,21 @@
 package tools.handlers.impl;
 
+import tools.handlers.BaseFileHandler;
 import tools.handlers.FileHandler;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import tools.handlers.FileType;
 
 import java.io.*;
 
-public class PDFFileHandler implements FileHandler {
-    private InputStream input;
+public class PDFFileHandler extends BaseFileHandler {
 
-    /**
-     * 禁止访问无参构造
-     */
-    private PDFFileHandler() {
-    }
-
-    public PDFFileHandler(InputStream input) {
-        this.input = input;
+    public PDFFileHandler(InputStream input, FileType fileType) {
+        super(input, fileType);
     }
 
     public String parseContent() {
-        return this.parseContent(input);
+        return this.parseContent(getInput());
     }
 
     /**

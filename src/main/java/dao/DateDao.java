@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface DateDao {
      * @param userId
      * @return
      */
-    int insertDateByUserId(int userId, Date date);
+    int insertDateByUserId(int userId, LocalDate date);
 
     /**
      * 查询打卡记录

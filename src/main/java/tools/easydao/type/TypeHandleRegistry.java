@@ -2,6 +2,8 @@ package tools.easydao.type;
 
 import tools.easydao.type.impl.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +36,7 @@ public class TypeHandleRegistry {
         jdbcTypeHandlerMapper.put(float.class.getTypeName(), new FloatTypeHandler());
 
         jdbcTypeHandlerMapper.put(Date.class.getTypeName(), new DateTypeHandler());
+        jdbcTypeHandlerMapper.put(LocalDate.class.getTypeName(), new LocalDateTypeHandler());
     }
 
     public TypeHandler getHandler(String className){

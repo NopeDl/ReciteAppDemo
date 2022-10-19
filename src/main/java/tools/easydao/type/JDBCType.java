@@ -1,6 +1,8 @@
 package tools.easydao.type;
 
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,7 @@ public enum JDBCType {
     FLOAT(Types.FLOAT),
     VARCHAR(Types.VARCHAR),
     CHAR(Types.CHAR),
+    TIMESTAMP(Types.TIMESTAMP),
     DATE(Types.DATE);
 
     /**
@@ -38,6 +41,7 @@ public enum JDBCType {
         jdbcTypeMapper.put(Float.class, FLOAT);
         jdbcTypeMapper.put(float.class, FLOAT);
         jdbcTypeMapper.put(Date.class, DATE);
+        jdbcTypeMapper.put(LocalDate.class,TIMESTAMP);
 
         /**
          * 将JDBC类映射成JAVA类
@@ -50,6 +54,7 @@ public enum JDBCType {
         javaTypeMapper.put(DOUBLE.value,double.class);
         javaTypeMapper.put(FLOAT.value,float.class);
         javaTypeMapper.put(DATE.value,Date.class);
+        javaTypeMapper.put(TIMESTAMP.value, LocalDate.class);
     }
 
     JDBCType(int value) {

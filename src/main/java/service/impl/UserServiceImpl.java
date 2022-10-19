@@ -15,6 +15,8 @@ import pojo.po.User;
 import pojo.vo.Message;
 import service.UserService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import java.text.ParseException;
@@ -194,13 +196,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message clockIn(HttpServletRequest request) {
         int userId = Integer.parseInt(request.getParameter("userId"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = simpleDateFormat.parse(request.getParameter("date"));
-        } catch (ParseException e) {
-            throw new RuntimeException("日期解析有误");
-        }
+        LocalDate date = LocalDate.parse(request.getParameter("date"));
         int i = dateDao.insertDateByUserId(userId, date);
         Message msg;
         if (i > 0) {
