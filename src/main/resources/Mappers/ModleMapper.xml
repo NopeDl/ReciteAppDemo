@@ -58,4 +58,14 @@
         select modlePath from modle where modleId=#{modleId}
     </select>
 
+
+    <update id="changeModleTag" parameterType="pojo.po.Modle" >
+        update  modle set modleLabel=#{modleLabel} ,modleTitle=#{modleTitle} where modleId=#{modleId}
+    </update>
+
+
+    <!--selectTitleByModleId-->
+    <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
+        select modleTitle from modle where modleId=#{modleId}
+    </select>
 </mapper>

@@ -141,13 +141,12 @@ public class ModleServiceImpl implements ModleService {
         String modleTitle = request.getParameter("modleTitle");
         String modleLabel = request.getParameter("modleLabel");//获取标签id
 
-
         modle.setUserId(userId);//设置模板作者
         modle.setModleTitle(modleTitle);//设置模板标题
         modle.setModleLabel(Integer.parseInt(modleLabel));//设置模板标签
 
-        //先看标题有没有重复的
 
+        //先看标题有没有重复的
         String overWrite = request.getParameter("overWrite");//覆盖值为1，不覆盖值为0
         if ("1".equals(overWrite)) {
             //此时为覆盖的情况下
@@ -155,18 +154,32 @@ public class ModleServiceImpl implements ModleService {
             int modleId = Integer.parseInt(request.getParameter("modleId"));
             modle.setModleId(modleId);//设置模板的id
 
+
             //这时候只需要将原模板里面的东西替换成context就行
-            int sum = modleDao.selectNumByTitle(modle);
-            if (sum > 0) {
-                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-                message = new Message("模板标题不能重复 ");
-                return message;
+            //标题分为两种情况，一种是改了名字的，一种是没改的
+            //查找要覆盖的模板的标题
+            String s = modleDao.selectTitleByModleId(modle);
+            if(modleTitle.equals(s)){
+                //说明此时没有改名字
+                modle.setModlePath(modleLabel);
+            }else {
+
+                int sum = modleDao.selectNumByTitle(modle);
+
+                if (sum > 0) {
+//                    说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                    message = new Message("模板标题不能重复 ");
+                }
+
             }
-
-
             //根据modleId查路径
             boolean b = replaceContext(context, modleId);
-            if (b) {
+            //这个时候得更新模板标签和标题
+            //更改模板的标签
+
+            boolean b1 = modleDao.changeModleTag(modle);
+            if (b&&b1) {
+
                 //结束覆盖过程
                 message = new Message("成功覆盖原模板");
                 message.addData("modle", modle);//？需不需要返回模板对象
@@ -176,12 +189,12 @@ public class ModleServiceImpl implements ModleService {
 
 
         } else {
-//            //对比该模板制作者的作于模板标题，不允许有有重复的标题
-//            int sum = modleDao.selectNumByTitle(modle);
-//            if (sum > 0) {
-//                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-//                message = new Message("模板标题不能重复 ");
-//            } else {
+            //对比该模板制作者的作于模板标题，不允许有有重复的标题
+            int sum = modleDao.selectNumByTitle(modle);
+            if (sum > 0) {
+                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                message = new Message("模板标题不能重复 ");
+            } else {
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
@@ -205,7 +218,7 @@ public class ModleServiceImpl implements ModleService {
                     message = new Message("生成新模板失败");
                 }
             }
-//        }
+        }
         return message;
     }
 

@@ -121,4 +121,18 @@ public interface ModleDao {
      */
     Modle selectModleIdByUserIdAndTitle(Modle modle);
 
+    /**
+     * 修改模板的标签
+     * @param modle
+     * @return
+     */
+    boolean changeModleTag(Modle modle);
+
+
+    /**
+     * 根据模板id查找用户的title
+     * @param modle
+     * @return
+     */
+    String selectTitleByModleId(Modle modle);
 }
