@@ -10,7 +10,7 @@ public enum SocketMsgInf {
      */
     CONNECTION_TRUE("CONNECTION",true),
     CONNECTION_FALSE("CONNECTION",false),
-    SERVER_ERROR("SERVER_STATUS",false),
+    SERVER_ERROR("SERVER_ERROR",false),
     SERVER_CLOSE("ALIVE",false),
     OPERATE_NOTFOUND("OPERATE",false),
     MATCH_SUCCESS("MATCH_SUCCESS",true),

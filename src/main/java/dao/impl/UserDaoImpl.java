@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
      * @return
      */
     @Override
-    public User selectUserById(int userId) {
+    public synchronized User selectUserById(int userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         User user = new User();
         user.setUserId(userId);

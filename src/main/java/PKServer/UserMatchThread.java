@@ -19,10 +19,11 @@ public class UserMatchThread implements Runnable {
         //在此进行循环遍历map，用来匹配对手
         // 打印值集合
         boolean flag = true;
+
         while (flag) {
+
             Map<MatchInf, PkUser> matchingPool = StatusPool.MATCHING_POOL;
             Map<MatchInf, PkUser> matchedPool = StatusPool.MATCHED_POOL;
-            System.out.println(Thread.currentThread().getName() +this.matchInf.getUserId() + "  匹配中......");
             //判断以下用户是否还在池子里
             if (matchingPool.containsKey(matchInf)) {
                 for (MatchInf key : matchingPool.keySet()) {

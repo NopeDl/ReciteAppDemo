@@ -15,6 +15,7 @@ import java.util.List;
 public class SqlSession {
     private SqlSessionFactory sqlSessionFactory;
 
+
     public SqlSession() {
     }
 
@@ -106,7 +107,7 @@ public class SqlSession {
     /**
      * 通用增删改方法
      */
-    private int normalDMLOperate(String sqlId, Object pojo) {
+    private synchronized int normalDMLOperate(String sqlId, Object pojo) {
         //预编译ps
         PreparedStatement ps = setPreparedStatementParam(sqlId, pojo);
         //设置完PS
@@ -137,7 +138,7 @@ public class SqlSession {
      * @param sqlId sql语句ID
      * @param param pojo
      */
-    public List<Object> selectList(String sqlId, Object param) {
+    public synchronized List<Object> selectList(String sqlId, Object param) {
         List<Object> resultList = new ArrayList<>();
         //预编译sql指令
         PreparedStatement ps = setPreparedStatementParam(sqlId, param);
@@ -223,7 +224,7 @@ public class SqlSession {
      * @param pojo  pojo
      * @return 设置完毕的preparedStatement
      */
-    private PreparedStatement setPreparedStatementParam(String sqlId, Object pojo) {
+    private synchronized PreparedStatement setPreparedStatementParam(String sqlId, Object pojo) {
         //获取连接
         Connection connection = sqlSessionFactory.getTransactionManager().getConnection();
         //创建PreparedStatement

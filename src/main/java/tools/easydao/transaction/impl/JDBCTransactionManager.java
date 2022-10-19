@@ -6,6 +6,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author yeyeye
+ */
 public class JDBCTransactionManager implements TransactionManager {
     private Connection connection;
 
@@ -31,8 +34,10 @@ public class JDBCTransactionManager implements TransactionManager {
     @Override
     public void close() {
         try {
-            connection.close();
-            connection = null;
+            if (connection != null) {
+                connection.close();
+                connection = null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

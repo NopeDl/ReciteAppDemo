@@ -4,6 +4,7 @@ import pojo.vo.MatchInf;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author yeyeye
@@ -13,17 +14,17 @@ public class StatusPool {
     /**
      * 匹配池
      */
-    public static final Map<MatchInf,PkUser> MATCHING_POOL = new HashMap<>();
+    public static final Map<MatchInf,PkUser> MATCHING_POOL = new ConcurrentHashMap<>();
 
     /**
      * 将互相匹配到的人放在一起
      */
-    public static final Map<Integer,Integer> PK=new HashMap<>();
+    public static final Map<Integer,Integer> PK=new ConcurrentHashMap<>();
 
     /**
      * 比赛池
      */
-    public static final Map<MatchInf,PkUser> MATCHED_POOL = new HashMap<>();
+    public static final Map<MatchInf,PkUser> MATCHED_POOL = new ConcurrentHashMap<>();
 
     /**
      * 进入匹配池

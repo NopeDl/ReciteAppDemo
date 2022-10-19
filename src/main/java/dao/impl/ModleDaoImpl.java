@@ -195,7 +195,7 @@ public class ModleDaoImpl implements ModleDao {
      * @return 模板数据
      */
     @Override
-    public Modle selectModleByModleId(int modleId) {
+    public synchronized Modle selectModleByModleId(int modleId) {
         Modle modle = new Modle();
         modle.setModleId(modleId);
         SqlSession sqlSession = sqlSessionFactory.openSession();

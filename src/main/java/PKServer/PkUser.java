@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author yeyeye
@@ -88,6 +90,7 @@ public class PkUser {
     public void onError(Throwable throwable) {
         //发送错误报告
         try {
+            throwable.printStackTrace();
             ResponseUtil.send(this.session,new SocketMessage(SocketMsgInf.SERVER_ERROR));
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,37 +139,44 @@ public class PkUser {
         //查找对方的用户信息响应给客户端
         User user = null;
         //获取PK池
-        Map<Integer,Integer> matchedPool =  StatusPool.PK;
-        if (matchedPool.containsKey(this.matchInf.getUserId())){
-            //说明是自己先匹配到的，自己的信息作为键，对方信息为值
-            //获取对方的信息
-            Integer enemyUserId = matchedPool.get(this.matchInf.getUserId());
-            if (enemyUserId != null){
-                //匹配成功
-                //根据用户id查找用户信息
-                user = userdao.selectUserById(enemyUserId);
-            }
-        }else {
-            //说明被别人匹配到，自己的信息是值,对方的信息是键
-            Set<Integer> keys = matchedPool.keySet();
-            for (Integer enemyUserId : keys) {
-                Integer myUserId = matchedPool.get(enemyUserId);
-                //如果我的ID和对手的匹配对手的ID相同，说明这个Key就是我的对手
-                if (myUserId.equals(matchedPool.get(this.matchInf.getUserId()))){
-                    //查找对手信息
+        Map<Integer,Integer> pkPool =  StatusPool.PK;
+        Lock lock = new ReentrantLock();
+        lock.lock();
+        try{
+            if (pkPool.containsKey(this.matchInf.getUserId())){
+                //说明是自己先匹配到的，自己的信息作为键，对方信息为值
+                //获取对方的信息
+                Integer enemyUserId = pkPool.get(this.matchInf.getUserId());
+                if (enemyUserId != null){
+                    //匹配成功
+                    //根据用户id查找用户信息
                     user = userdao.selectUserById(enemyUserId);
-                    break;
+                }
+            }else {
+                //说明被别人匹配到，自己的信息是值,对方的信息是键
+                Set<Integer> keys = pkPool.keySet();
+                for (Integer enemyUserId : keys) {
+                    Integer myUserId = pkPool.get(enemyUserId);
+                    //如果我的ID和对手的匹配对手的ID相同，说明这个Key就是我的对手
+                    if (myUserId.equals(pkPool.get(this.matchInf.getUserId()))){
+                        //查找对手信息
+                        user = userdao.selectUserById(enemyUserId);
+                        break;
+                    }
                 }
             }
+            SocketMessage msg;
+            if (user!=null){
+                //真的匹配成功了！
+                msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
+                msg.addData("enemyInf",user);
+            }else {
+                msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);
+            }
+            return msg;
+        }finally {
+            lock.unlock();
         }
-        SocketMessage msg;
-        if (user!=null){
-            //真的匹配成功了！
-            msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
-            msg.addData("enemyInf",user);
-        }else {
-            msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);
-        }
-        return msg;
+
     }
 }
