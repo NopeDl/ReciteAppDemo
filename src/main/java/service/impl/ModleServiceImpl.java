@@ -245,12 +245,12 @@ public class ModleServiceImpl implements ModleService {
         boolean deleteFile = file.delete();
         //没有用事务,可能会有bug
         Message msg;
-        if (deleteUmr!=0 && 0!= deleteModle && deleteFile){
+        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
             msg = new Message("删除成功");
-            msg.addData("deleteSuccess",true);
-        }else {
+            msg.addData("deleteSuccess", true);
+        } else {
             msg = new Message("删除失败");
-            msg.addData("deleteSuccess",false);
+            msg.addData("deleteSuccess", false);
         }
         return msg;
     }
