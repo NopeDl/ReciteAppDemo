@@ -10,8 +10,10 @@ public class Modle {
     private Integer mStatus;
 
     private String content;
-
-    private int common;//模板是否上传到社区
+    /**
+     * 模板是否上传到社区
+     */
+    private int common;
     public Integer getmStatus() {
         return mStatus;
     }
@@ -19,6 +21,7 @@ public class Modle {
     public void setmStatus(Integer mStatus) {
         this.mStatus = mStatus;
     }
+
 
     public String getContent() {
         return content;

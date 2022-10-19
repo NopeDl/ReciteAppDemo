@@ -201,6 +201,7 @@ public class ModleDaoImpl implements ModleDao {
             List<Modle> modleList = new ArrayList<>();
             for (Object object : objects) {
                 Modle ret = (Modle) object;
+                ret.setModlePath(null);
                 modleList.add(ret);
             }
             return modleList;
@@ -222,7 +223,8 @@ public class ModleDaoImpl implements ModleDao {
 
         //返回modle1
         Modle modle1;
-        String modlePath = null;//传回去的值
+        //传回去的值
+        String modlePath = null;
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectPathByModleId", modle);
         sqlSession.close();
@@ -276,8 +278,8 @@ public class ModleDaoImpl implements ModleDao {
     public String selectPathByModleId(int modleId) {
         Modle modle = new Modle();
         modle.setModleId(modleId);
-
-        String modlePath = null;//传回去的值
+        //传回去的值
+        String modlePath = null;
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectPathByModleId", modle);
         sqlSession.close();
@@ -291,8 +293,8 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 删除模板
-     * @param modleId
-     * @return
+     * @param modleId 需要删除的模板ID
+     * @return 操作结果
      */
     @Override
     public int deleteModle(int modleId) {
@@ -307,5 +309,27 @@ public class ModleDaoImpl implements ModleDao {
         }
         sqlSession.close();
         return delete;
+    }
+
+    /**
+     * 更新模板发布状态
+     * @param modleId 需要操作的模板ID
+     * @param common 0为不发布，1为发布
+     * @return 更改结果
+     */
+    @Override
+    public int updateModleCommon(int modleId,int common) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Modle modle = new Modle();
+        modle.setModleId(modleId);
+        modle.setCommon(common);
+        int update = sqlSession.update("ModleMapper.updateModleCommon", modle);
+        if(update>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
     }
 }

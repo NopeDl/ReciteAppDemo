@@ -88,15 +88,6 @@ public interface ModleDao {
      */
     List<Modle> selectModlesByTag(Modle modle);
 
-//    /**
-//     * 通过用户userId来查找用户有的模板
-//     * @param userId
-//     * @return
-//     */
-//    String[] slectModleByUserId(int userId);
-
-
-
     /**
      * 根据modleId来查找相对应的modlePath,modleTitle,modleLabel
      * @param modleId
@@ -108,7 +99,7 @@ public interface ModleDao {
 
     /**
      * 获取所有标签信息
-     * @return
+     * @return 所有标签
      */
     List<Label> selectLabels();
 
@@ -116,9 +107,16 @@ public interface ModleDao {
      * 获取模板id
      *
      * 同一个用户不可以拥有一样标题的模板（有bug，收藏的情况下）
-     * @param modle
-     * @return
+     * @param modle 封装的查找模板信息
+     * @return 查到的模板
      */
     Modle selectModleIdByUserIdAndTitle(Modle modle);
 
+    /**
+     * 更改模板发布状态
+     * @param common 0为不发布，1为发布
+     * @param modleId 需要修改的模板ID
+     * @return 更改结果
+     */
+    int updateModleCommon(int modleId,int common);
 }

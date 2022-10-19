@@ -114,4 +114,11 @@ public interface ModleService {
      */
     Message autoDig(HttpServletRequest request);
 
+
+    /**
+     * 将模板上传至社区
+     * @param request
+     * @return
+     */
+    Message toCommunity(HttpServletRequest request);
 }
