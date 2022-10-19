@@ -108,7 +108,6 @@ public class ModleServiceImpl implements ModleService {
                 System.out.println(context);
                 //将换行转换为前端html换行标签
                 context = context.replaceAll("\\r\\n", "<\\br>");
-//                context = StringUtil.handleParagraph(context);
                 msg = new Message("文件解析成功");
                 msg.addData("context", context);
             } else {
@@ -124,9 +123,13 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 创建模板
+     * <p>
+     * 逻辑解释：先获取三种方式创建模板都应该有的东西context，userId，modleTitle，overWrite（只有选择已有模板创作才能选1或0，否则都应该是0）
+     * 如果是1则说明覆盖模板，那么获取模板id,这时候只需要替换原模板路径的txt文本内容就好
+     * 否则还应该比对改作者的模板名称是否有和此次想同的，没有则创建成功，否则创建失败，
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 响应数据封装
      */
     //逻辑解释：先获取三种方式创建模板都应该有的东西context，userId，modleTitle，overWrite（只有选择已有模板创作才能选1或0，否则都应该是0）
     //如果是1则说明覆盖模板，那么获取模板id,这时候只需要替换原模板路径的txt文本内容就好
@@ -150,8 +153,8 @@ public class ModleServiceImpl implements ModleService {
         modle.setModleLabel(Integer.parseInt(modleLabel));
 
         //先看标题有没有重复的
-
-        String overWrite = request.getParameter("overWrite");//覆盖值为1，不覆盖值为0
+        //覆盖值为1，不覆盖值为0
+        String overWrite = request.getParameter("overWrite");
         if ("1".equals(overWrite)) {
             //此时为覆盖的情况下
             //获取原模板的id
@@ -185,7 +188,9 @@ public class ModleServiceImpl implements ModleService {
 
                 //结束覆盖过程
                 message = new Message("成功覆盖原模板");
-                message.addData("modle", modle);//？需不需要返回模板对象
+                modle.setModlePath(null);
+                //？需不需要返回模板对象
+                message.addData("modle", modle);
             } else {
                 message = new Message("覆盖失败");
             }
@@ -240,12 +245,12 @@ public class ModleServiceImpl implements ModleService {
         boolean deleteFile = file.delete();
         //没有用事务,可能会有bug
         Message msg;
-        if (deleteUmr!=0 && 0!= deleteModle && deleteFile){
+        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
             msg = new Message("删除成功");
-            msg.addData("deleteSuccess",true);
-        }else {
+            msg.addData("deleteSuccess", true);
+        } else {
             msg = new Message("删除失败");
-            msg.addData("deleteSuccess",false);
+            msg.addData("deleteSuccess", false);
         }
         return msg;
     }
@@ -303,13 +308,13 @@ public class ModleServiceImpl implements ModleService {
         String filePath = Resources.getResource("static/modles/" + System.currentTimeMillis() + modleTitle + ".txt");
         try {
             File file = new File(filePath);
-            if (!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", null);
             String path = txtHandler.saveFile(filePath, context);
             return path;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -444,14 +449,16 @@ public class ModleServiceImpl implements ModleService {
             //返回有modle的信息和它的状态（已收藏还是未收藏）
             //创建一个hashmap来解决
             ArrayList<Modle> modles = new ArrayList<>();
-            int modleIdTemp;//查询用临时变量
-            Modle tempMod = new Modle();//查询用临时modle对象
-            for (int i = 0; i < umrs.size(); i++) {
-                modleIdTemp = umrs.get(i).getModleId();
+            //查询用临时变量
+            int modleIdTemp;
+            //查询用临时modle对象
+            Modle tempMod = new Modle();
+            for (Umr value : umrs) {
+                modleIdTemp = value.getModleId();
                 tempMod.setModleId(modleIdTemp);
                 //封装查询的modle数据
-                Modle modle = modleDao.selectModleByModleId(tempMod);
-                modle.setMStatus(umrs.get(i).getMStatus());
+                Modle modle = modleDao.selectModleByModleId(modleIdTemp);
+                modle.setMStatus(value.getMStatus());
                 //获取模板内容
                 //下面内容考虑下封装
                 String modlePath = modle.getModlePath();
@@ -462,11 +469,12 @@ public class ModleServiceImpl implements ModleService {
                     throw new RuntimeException(e);
                 }
                 //读取文本
-                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt",input);
+                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                 String content = txtFileHandler.parseContent();
                 modle.setContent(content);
                 modle.setModlePath(null);
-                modles.add(modle);//放modle和状态
+                //放modle和状态
+                modles.add(modle);
             }
             message = new Message();
             message.addData("userModle", modles);
@@ -475,10 +483,11 @@ public class ModleServiceImpl implements ModleService {
         return message;
     }
 
+
     /**
      * 获取所有标签信息
      *
-     * @return
+     * @return 所有标签信息
      */
     @Override
     public Message getLabels() {
@@ -530,8 +539,8 @@ public class ModleServiceImpl implements ModleService {
 //                List<Integer> charNums = this.getCharNums(charNum, blankNum);
                 List<Integer> charNums = new ArrayList<>();
                 Random random = new Random(System.currentTimeMillis());
-                for (int i=0;i<blankNum;i++){
-                    charNums.add(random.nextInt(10)+1);
+                for (int i = 0; i < blankNum; i++) {
+                    charNums.add(random.nextInt(10) + 1);
                 }
                 String result = StringUtil.digBlank(content, charNums, blankNum);
 
