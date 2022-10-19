@@ -48,7 +48,8 @@ public class ModleDaoImpl implements ModleDao {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Umr umr = new Umr();
         umr.setUserId(userId);
-        umr.setModleId(modleId);//将数据封装为一个umr对象
+        //将数据封装为一个umr对象
+        umr.setModleId(modleId);
         umr.setMStatus(mStatus);
         int result = sqlSession.delete("UmrMapper.cancelMOdleById", umr);
         if(result>0){
@@ -70,7 +71,8 @@ public class ModleDaoImpl implements ModleDao {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Umr umr = new Umr();
         umr.setUserId(userId);
-        umr.setModleId(modleId);//将数据封装为一个umr对象
+        //将数据封装为一个umr对象
+        umr.setModleId(modleId);
         umr.setMStatus(mStatus);
         int insert = sqlSession.insert("UmrMapper.collectModleById", umr);
         if(insert>0){
@@ -135,18 +137,6 @@ public class ModleDaoImpl implements ModleDao {
         }
 
     }
-
-//    /**
-//     * 更新模板里面的内容
-//     * @param modleId
-//     * @param modlePath
-//     * @return
-//     */
-//    @Override
-//    public int updateMOdle(int modleId, String modlePath) {
-//        return 0;
-//    }
-
 
     /**
      * 修改模板打赏量
@@ -252,8 +242,6 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         if (objects.size() != 0) {
             //有路径
-//            modlePath = ((Modle)objects.get(0)).getModlePath();
-            //返回路径，标题，标签，封装成modle
            modle1 = (Modle) objects.get(0);
         }else{
             modle1=null;
@@ -353,5 +341,10 @@ public class ModleDaoImpl implements ModleDao {
         }
         sqlSession.close();
         return update;
+    }
+
+    @Override
+    public boolean changeModleTag(Modle modle) {
+        return false;
     }
 }
