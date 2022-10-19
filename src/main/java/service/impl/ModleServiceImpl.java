@@ -146,6 +146,7 @@ public class ModleServiceImpl implements ModleService {
         modle.setModleTitle(modleTitle);//设置模板标题
         modle.setModleLabel(Integer.parseInt(modleLabel));//设置模板标签
 
+        //先看标题有没有重复的
 
         String overWrite = request.getParameter("overWrite");//覆盖值为1，不覆盖值为0
         if ("1".equals(overWrite)) {
@@ -155,6 +156,13 @@ public class ModleServiceImpl implements ModleService {
             modle.setModleId(modleId);//设置模板的id
 
             //这时候只需要将原模板里面的东西替换成context就行
+            int sum = modleDao.selectNumByTitle(modle);
+            if (sum > 0) {
+                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+                message = new Message("模板标题不能重复 ");
+                return message;
+            }
+
 
             //根据modleId查路径
             boolean b = replaceContext(context, modleId);
@@ -168,12 +176,12 @@ public class ModleServiceImpl implements ModleService {
 
 
         } else {
-            //对比该模板制作者的作于模板标题，不允许有有重复的标题
-            int sum = modleDao.selectNumByTitle(modle);
-            if (sum > 0) {
-                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
-                message = new Message("模板标题不能重复 ");
-            } else {
+//            //对比该模板制作者的作于模板标题，不允许有有重复的标题
+//            int sum = modleDao.selectNumByTitle(modle);
+//            if (sum > 0) {
+//                //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
+//                message = new Message("模板标题不能重复 ");
+//            } else {
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
@@ -197,7 +205,7 @@ public class ModleServiceImpl implements ModleService {
                     message = new Message("生成新模板失败");
                 }
             }
-        }
+//        }
         return message;
     }
 
@@ -331,6 +339,8 @@ public class ModleServiceImpl implements ModleService {
             modle.setPageIndex(pageIndex);
             //获得查询信息
             List<Modle> modleList = modleDao.selectModlesByTag(modle);
+//
+//            System.out.println(modleList.get(0));
             //封装响应信息
             msg = new Message("获取成功");
             msg.addData("modleList", modleList);
@@ -407,7 +417,7 @@ public class ModleServiceImpl implements ModleService {
                 String modlePath = modle.getModlePath();
                 InputStream input;
                 try {
-                     input = new FileInputStream(modlePath);
+                    input = new FileInputStream(modlePath);
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -424,7 +434,6 @@ public class ModleServiceImpl implements ModleService {
         }
         return message;
     }
-
 
     /**
      * 获取所有标签信息
