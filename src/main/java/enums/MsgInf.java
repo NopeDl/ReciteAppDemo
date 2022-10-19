@@ -1,7 +1,14 @@
 package enums;
 
+/**
+ * @author yeyeye
+ */
+
 public enum MsgInf {
 
+    /**
+     * 状态和值
+     */
     OK(200, "OK"),
     NOT_FOUND(404, "资源不存在"),
     UNAUTHORIZED(401, "信息认证失败"),

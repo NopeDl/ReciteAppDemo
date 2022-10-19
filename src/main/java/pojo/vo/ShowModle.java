@@ -2,10 +2,25 @@ package pojo.vo;
 
 public class ShowModle {
 
-    private String context;//模板内容
-    private String labelName;//模板标签名字
-    private int labelValue;//模板标签编号
-    private String title;//模板标题
+    /**
+     * 模板内容
+     */
+    private String context;
+
+    /**
+     * 模板标签名字
+     */
+    private String labelName;
+
+    /**
+     * 模板标签编号
+     */
+    private int labelValue;
+
+    /**
+     * 模板标题
+     */
+    private String title;
 
     public ShowModle() {
     }

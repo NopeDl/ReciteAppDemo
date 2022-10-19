@@ -1,58 +1,94 @@
 package PKServer;
 
+import dao.ModleDao;
+import dao.UserDao;
+import dao.impl.ModleDaoImpl;
+import dao.impl.UserDaoImpl;
+import enums.SocketMsgInf;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import pojo.vo.MatchStatus;
+import pojo.po.Modle;
+import pojo.po.User;
+import pojo.vo.MatchInf;
+import pojo.vo.SocketMessage;
+import tools.handlers.FileHandler;
+import tools.handlers.FileHandlerFactory;
+import tools.utils.ResponseUtil;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author yeyeye
  */
-@ServerEndpoint("/Hello/{userId}/{modleId}")
+@ServerEndpoint("/PK/{userId}/{modleId}/{difficulty}")
 public class PkUser {
 
-    private static final StatusPool STATUS_POOL = new StatusPool();
-
+    private static final UserDao userdao = new UserDaoImpl();
+    private static final ModleDao modleDao = new ModleDaoImpl();
+    /**
+     * 会话
+     */
     private Session session;
 
-    private MatchStatus matchStatus;
+    /**
+     * 当前用户匹配信息
+     */
+    private MatchInf matchInf;
 
 
     @OnMessage
-    public void onMessage(String message) throws IOException {
-        if ("START".equals(message)){
+    public void onMessage(String operate) throws IOException {
+        SocketMessage msg;
+        if ("START".equals(operate)){
             //开始匹配
-            startMatch();
+            msg = startMatch();
         }else {
-
+            msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
         }
+        ResponseUtil.send(this.session,msg);
     }
 
-
-
+    /**
+     * 开启连接
+     * 给客户端响应连接成功信息
+     * @param session 会话
+     * @param userId 连接的用户ID
+     * @param modleId 连接用户比赛是所使用的模板ID
+     * @param difficulty 比赛难度
+     * @throws IOException 异常
+     */
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId")String userId,@PathParam("modleId")String modleId)
+    public void onOpen(Session session, @PathParam("userId")String userId,@PathParam("modleId")String modleId,@PathParam("difficulty")String difficulty)
             throws IOException {
         this.session = session;
-        this.matchStatus = new MatchStatus();
-        matchStatus.setUserId(Integer.parseInt(userId));
-        matchStatus.setModleId(Integer.parseInt(modleId));
-        session.getBasicRemote().sendText("连接成功：userid=" + userId);
+        //封装该比赛用户信息
+        this.matchInf = new MatchInf();
+        matchInf.setUserId(Integer.parseInt(userId));
+        matchInf.setModleId(Integer.parseInt(modleId));
+        matchInf.setDifficulty(difficulty);
+        //发送连接成功信息
+        ResponseUtil.send(this.session,new SocketMessage());
     }
 
 
     @OnClose
     public void onClose() throws IOException{
-        session.getBasicRemote().sendText("close:userId=" + this.matchStatus.getUserId());
+        //发送关闭消息
+        SocketMessage smsg = new SocketMessage(SocketMsgInf.SERVER_CLOSE);
+        ResponseUtil.send(this.session,smsg);
     }
 
     @OnError
     public void onError(Throwable throwable) {
+        //发送错误报告
         try {
-            session.getBasicRemote().sendText("连接失败:user=" + this.matchStatus.getUserId());
-            session.getBasicRemote().sendText(throwable.getLocalizedMessage());
+            ResponseUtil.send(this.session,new SocketMessage(SocketMsgInf.SERVER_ERROR));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,6 +104,69 @@ public class PkUser {
         return super.equals(obj);
     }
 
-    private void startMatch() {
+    /**
+     * 执行开始匹配方法
+     */
+    private SocketMessage startMatch(){
+        //补全匹配信息（模板字数，难度，内容）
+        Modle modle = modleDao.selectModleByModleId(this.matchInf.getModleId());
+        //根据路径获取内容
+        InputStream input = null;
+        try {
+            input = new FileInputStream(modle.getModlePath());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt",input);
+        String content = txtFileHandler.parseContent();
+        //将内容封装
+        this.matchInf.setContent(content);
+        this.matchInf.setModleNum(content.length());
+        //将当前用户加入匹配池
+        StatusPool.MATCHING_POOL.put(this.matchInf,this);
+        //开始匹配
+        Thread userMatchThread = new Thread(new UserMatchThread(this.matchInf));
+        userMatchThread.start();
+        try {
+            userMatchThread.join();//等待匹配完毕再执行下面逻辑
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //匹配结束后用户会在PK池和比赛池中存在
+        //查找对方的用户信息响应给客户端
+        User user = null;
+        //获取PK池
+        Map<Integer,Integer> matchedPool =  StatusPool.PK;
+        if (matchedPool.containsKey(this.matchInf.getUserId())){
+            //说明是自己先匹配到的，自己的信息作为键，对方信息为值
+            //获取对方的信息
+            Integer enemyUserId = matchedPool.get(this.matchInf.getUserId());
+            if (enemyUserId != null){
+                //匹配成功
+                //根据用户id查找用户信息
+                user = userdao.selectUserById(enemyUserId);
+            }
+        }else {
+            //说明被别人匹配到，自己的信息是值,对方的信息是键
+            Set<Integer> keys = matchedPool.keySet();
+            for (Integer enemyUserId : keys) {
+                Integer myUserId = matchedPool.get(enemyUserId);
+                //如果我的ID和对手的匹配对手的ID相同，说明这个Key就是我的对手
+                if (myUserId.equals(matchedPool.get(this.matchInf.getUserId()))){
+                    //查找对手信息
+                    user = userdao.selectUserById(enemyUserId);
+                    break;
+                }
+            }
+        }
+        SocketMessage msg;
+        if (user!=null){
+            //真的匹配成功了！
+            msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
+            msg.addData("enemyInf",user);
+        }else {
+            msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);
+        }
+        return msg;
     }
 }

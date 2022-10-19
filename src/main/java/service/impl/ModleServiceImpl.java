@@ -442,7 +442,7 @@ public class ModleServiceImpl implements ModleService {
                 modleIdTemp = value.getModleId();
                 tempMod.setModleId(modleIdTemp);
                 //封装查询的modle数据
-                Modle modle = modleDao.selectModleByModleId(tempMod);
+                Modle modle = modleDao.selectModleByModleId(modleIdTemp);
                 modle.setMStatus(value.getMStatus());
                 //获取模板内容
                 //下面内容考虑下封装

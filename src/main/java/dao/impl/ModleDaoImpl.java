@@ -171,11 +171,13 @@ public class ModleDaoImpl implements ModleDao {
     /**
      * 根据模板Id获取模板数据
      *
-     * @param modle
-     * @return
+     * @param modleId 需要查找的模板ID
+     * @return 模板数据
      */
     @Override
-    public Modle selectModleByModleId(Modle modle) {
+    public Modle selectModleByModleId(int modleId) {
+        Modle modle = new Modle();
+        modle.setModleId(modleId);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modle);
         sqlSession.close();

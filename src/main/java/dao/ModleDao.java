@@ -74,10 +74,10 @@ public interface ModleDao {
 
     /**
      * 根据模板id查找模板信息
-     * @param modle
-     * @return
+     * @param modleId 需要查找的模板ID
+     * @return 模板内容
      */
-    Modle selectModleByModleId(Modle modle);
+    Modle selectModleByModleId(int modleId);
 
 
 
