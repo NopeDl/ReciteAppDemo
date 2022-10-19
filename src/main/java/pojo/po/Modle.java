@@ -11,6 +11,7 @@ public class Modle {
 
     private String content;
 
+    private int common;//模板是否上传到社区
     public Integer getmStatus() {
         return mStatus;
     }
@@ -43,6 +44,14 @@ public class Modle {
 
     public void setReward(int reward) {
         this.reward = reward;
+    }
+
+    public int getCommon() {
+        return common;
+    }
+
+    public void setCommon(int common) {
+        this.common = common;
     }
 
     /**
@@ -130,6 +139,7 @@ public class Modle {
                 ", coins=" + coins +
                 ", mStatus=" + mStatus +
                 ", content='" + content + '\'' +
+                ", common=" + common +
                 ", reward=" + reward +
                 ", pageIndex=" + pageIndex +
                 '}';

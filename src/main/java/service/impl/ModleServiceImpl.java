@@ -337,10 +337,28 @@ public class ModleServiceImpl implements ModleService {
             Modle modle = new Modle();
             modle.setModleLabel(modleLabel);
             modle.setPageIndex(pageIndex);
+
             //获得查询信息
             List<Modle> modleList = modleDao.selectModlesByTag(modle);
-//
-//            System.out.println(modleList.get(0));
+
+            for (int i = 0; i < modleList.size(); i++) {
+                //根据路径读取文件内容
+
+                String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
+                InputStream input;
+                try {
+                    input = new FileInputStream(modlePath);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                //读取文本
+                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt",input);
+                String content = txtFileHandler.parseContent();
+                modleList.get(i).setContent(content);
+
+            }
+
+            System.out.println(modleList.get(0));
             //封装响应信息
             msg = new Message("获取成功");
             msg.addData("modleList", modleList);
@@ -414,6 +432,7 @@ public class ModleServiceImpl implements ModleService {
                 Modle modle = modleDao.selectModleByModleId(tempMod);
                 modle.setMStatus(umrs.get(i).getMStatus());
                 //获取模板内容
+                //下面内容考虑下封装
                 String modlePath = modle.getModlePath();
                 InputStream input;
                 try {
