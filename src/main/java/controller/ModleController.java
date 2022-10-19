@@ -47,6 +47,7 @@ public class ModleController extends HttpServlet {
             //用户收藏模板
             msg=modleService.collectModle(request);
         }else if("CancelCollet".equals(requestURI)){
+            //用户取消收藏
             msg=modleService.cancelModleCollect(request);
 
         }else {

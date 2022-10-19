@@ -46,7 +46,7 @@ public class ModleServiceImpl implements ModleService {
 //        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
 
-        if("1".equals(mStatus)){
+        if(1==mStatus){
             message = new Message("取消失败");
         }
         else {
