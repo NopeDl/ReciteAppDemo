@@ -7,7 +7,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author yeyeye
+ */
+
 public enum JDBCType {
+    /**
+     * sql 字段类型
+     */
     INT(Types.INTEGER),
     BIGINT(Types.BIGINT),
     DOUBLE(Types.DOUBLE),
@@ -15,7 +22,8 @@ public enum JDBCType {
     VARCHAR(Types.VARCHAR),
     CHAR(Types.CHAR),
     TIMESTAMP(Types.TIMESTAMP),
-    DATE(Types.DATE);
+    DATE(Types.DATE),
+    TEXT(Types.LONGVARCHAR);
 
     /**
      * 获取sqlType值
@@ -55,6 +63,7 @@ public enum JDBCType {
         javaTypeMapper.put(FLOAT.value,float.class);
         javaTypeMapper.put(DATE.value,Date.class);
         javaTypeMapper.put(TIMESTAMP.value, LocalDate.class);
+        javaTypeMapper.put(TEXT.value,String.class);
     }
 
     JDBCType(int value) {
