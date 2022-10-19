@@ -197,7 +197,7 @@ public class ModleDaoImpl implements ModleDao {
     @Override
     public Modle selectModleByModleId(Modle modle) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modle);
+        List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleByModleId", modle);
         sqlSession.close();
         if (resultList.size() > 0) {
             return (Modle) resultList.get(0);
@@ -295,6 +295,22 @@ public class ModleDaoImpl implements ModleDao {
     }
 
     @Override
+    public boolean changeModleTag(Modle modle) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("ModleMapper.changeModleTag", modle);
+        boolean flag=false;
+        if(update>0){
+            flag=true;
+            sqlSession.commit();
+        }else{
+           sqlSession.rollBack();
+        }
+        sqlSession.close();
+//        System.out.println("flag="+flag);
+        return flag;
+    }
+
+    @Override
     public String selectPathByModleId(int modleId) {
         Modle modle = new Modle();
         modle.setModleId(modleId);
@@ -352,4 +368,7 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         return update;
     }
+
+
+
 }
