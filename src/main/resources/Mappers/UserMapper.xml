@@ -44,4 +44,8 @@
     <update id="updatePhoneByUserID">
         update account set number = #{number} where userId = #{userId}
     </update>
+    <!--selectNameImgById-->
+    <select id="selectNameImgById" parameterType="pojo.vo.Community" resultType="pojo.po.User">
+        select nickName,image from user where userId=#{userId}
+    </select>
 </mapper>

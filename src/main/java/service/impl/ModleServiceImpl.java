@@ -3,9 +3,13 @@ package service.impl;
 import dao.LabelDao;
 import dao.ModleDao;
 import dao.UMRDao;
+import dao.UserDao;
 import dao.impl.LabelDaoImp;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UMRDaoImpl;
+import dao.impl.UserDaoImpl;
+import pojo.po.User;
+import pojo.vo.Community;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
@@ -30,6 +34,7 @@ public class ModleServiceImpl implements ModleService {
 
     private final UMRDao umrDao = new UMRDaoImpl();
     private final LabelDao labelDao=new LabelDaoImp();
+    private final UserDao userDao=new UserDaoImpl();
 
 //    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
@@ -205,6 +210,8 @@ public class ModleServiceImpl implements ModleService {
             } else {
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
                 String modlePath = WriteAsTxt(context, modleTitle);
+                System.out.println(context);
+                System.out.println(modlePath);
                 modle.setModlePath(modlePath);
                 modle.setModleLabel(Integer.parseInt(modleLabel));
                 //保存进数据库
@@ -354,7 +361,7 @@ public class ModleServiceImpl implements ModleService {
     public Message getModlesByTag(HttpServletRequest request) {
         String pageIndexStr = request.getParameter("pageIndex");
         String modleLabelStr = request.getParameter("modleLabel");
-        Message msg;
+        Message msg=null;
         if (pageIndexStr != null && modleLabelStr != null) {
             //获取分页起始处和模板分类标签
             int pageIndex = Integer.parseInt(pageIndexStr);
@@ -365,32 +372,41 @@ public class ModleServiceImpl implements ModleService {
             modle.setPageIndex(pageIndex);
 
             //获得查询信息
-            List<Modle> modleList = modleDao.selectModlesByTag(modle);
 
-            for (int i = 0; i < modleList.size(); i++) {
-                //根据路径读取文件内容
+            //返回一个Community类型（不包括属性common）
+            List<Community> modleList = modleDao.selectModlesByTag(modle);
+            if (modleList.size() > 0) {
+                for (int i = 0; i < modleList.size(); i++) {
+                    //根据路径读取文件内容
+                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
+                    InputStream input;
+                    try {
+                        input = new FileInputStream(modlePath);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //读取文本
+                    FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+                    String content = txtFileHandler.parseContent();
+//                    modleList.get(i).setContent(content);
 
-                String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
-                InputStream input;
-                try {
-                    input = new FileInputStream(modlePath);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
+                    User user = userDao.selectNameImgById(modleList.get(i));
+                    if(user!=null){
+                        //传进来昵称和头像
+                        modleList.get(i).setNickName(user.getNickName());
+                        modleList.get(i).setImg(user.getImage());
+                    }
                 }
-                //读取文本
-                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt",input);
-                String content = txtFileHandler.parseContent();
-                modleList.get(i).setContent(content);
 
+//                System.out.println(modleList.get(0));
+                //封装响应信息
+                msg = new Message("获取成功");
+                msg.addData("modleList", modleList);
+//
+            } else {
+                //没有获取到参数
+                msg = new Message("参数获取失败");
             }
-
-            System.out.println(modleList.get(0));
-            //封装响应信息
-            msg = new Message("获取成功");
-            msg.addData("modleList", modleList);
-        } else {
-            //没有获取到参数
-            msg = new Message("参数获取失败");
         }
         return msg;
     }

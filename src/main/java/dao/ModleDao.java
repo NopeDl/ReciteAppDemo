@@ -2,6 +2,7 @@ package dao;
 
 import pojo.po.Label;
 import pojo.po.Modle;
+import pojo.vo.Community;
 import pojo.vo.Message;
 
 import java.util.List;
@@ -86,7 +87,7 @@ public interface ModleDao {
      * @param modle
      * @return
      */
-    List<Modle> selectModlesByTag(Modle modle);
+    List<Community> selectModlesByTag(Modle modle);
 
     /**
      * 根据modleId来查找相对应的modlePath,modleTitle,modleLabel

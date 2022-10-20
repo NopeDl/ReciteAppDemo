@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.ModleDao;
+import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import pojo.po.*;
@@ -215,20 +216,22 @@ public class ModleDaoImpl implements ModleDao {
      * @return
      */
     @Override
-    public List<Modle> selectModlesByTag(Modle modle) {
+    public List<Community> selectModlesByTag(Modle modle) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectModlesByTag", modle);
         sqlSession.close();
+        List<Community> modleList = new ArrayList<>();
         if (objects.size() > 0) {
-            List<Modle> modleList = new ArrayList<>();
+//            List<Modle> modleList = new ArrayList<>();
             for (Object object : objects) {
-                Modle ret = (Modle) object;
-                ret.setModlePath(null);
+                Community ret = (Community) object;
+//                ret.setModlePath(null);
                 modleList.add(ret);
+
             }
             return modleList;
         } else {
-            return null;
+            return modleList;
         }
     }
 

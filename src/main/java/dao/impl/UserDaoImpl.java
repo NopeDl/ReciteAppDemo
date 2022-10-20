@@ -1,5 +1,6 @@
 package dao.impl;
 
+import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import dao.UserDao;
@@ -16,6 +17,24 @@ public class UserDaoImpl implements UserDao {
 
     public UserDaoImpl() {
         this.sqlSessionFactory = DaoUtil.getSqlSessionFactory();
+    }
+
+    /**
+     * 用户根据userId来查找用户昵称和头像
+     * @param community
+     * @return
+     */
+    @Override
+    public User selectNameImgById(Community community) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("UserMapper.selectNameImgById", community);
+        sqlSession.close();
+        if(objects.size()>0){
+            //说明查得到消息
+            return (User) objects.get(0);
+        }else{
+            return null;
+        }
     }
 
     /**
