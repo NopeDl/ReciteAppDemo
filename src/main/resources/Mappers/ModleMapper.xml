@@ -15,9 +15,10 @@
         insert into modle(modleTitle,modlePath,userId,modleLabel)
         values(#{modleTitle},#{modlePath},#{userId},#{modleLabel})
     </insert>
+
     <!--  删除模板 -->
-    <delete id="deleteModleByModleId">
-        delete * from modle where modleId = #{modleId}
+    <delete id="deleteModleByModleId" parameterType="pojo.po.Modle">
+        delete  from modle where modleId = #{modleId}
     </delete>
 
     <!-- 修改模板打赏量  -->

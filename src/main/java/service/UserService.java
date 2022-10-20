@@ -65,4 +65,12 @@ public interface UserService {
      * @return
      */
     Message getClockInRecord(HttpServletRequest request);
+
+    /**
+     * 将用户的头像的base64形式存在
+     * @param base64
+     * @param useId
+     * @return
+     */
+    String WriteImageAsTxt(String base64, int useId);
 }

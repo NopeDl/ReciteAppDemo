@@ -217,6 +217,7 @@ public class ModleServiceImpl implements ModleService {
                 int result = modleDao.insertModle(modle);
                 //获取modleId
                 int modleId = modleDao.selectModleIdByUserIdAndTitle(modle).getModleId();
+                modle.setModleId(modleId);
                 //保存um关系
                 Umr umr = new Umr();
                 umr.setUserId(userId);
@@ -377,8 +378,7 @@ public class ModleServiceImpl implements ModleService {
             if (modleList.size() > 0) {
                 for (int i = 0; i < modleList.size(); i++) {
                     //根据路径读取文件内容
-                    //获取改模板的路径；根据路径读取文件内容
-                    String modlePath = modleList.get(i).getModlePath();
+                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
                     InputStream input;
                     try {
                         input = new FileInputStream(modlePath);
@@ -388,6 +388,9 @@ public class ModleServiceImpl implements ModleService {
                     //读取文本
                     FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                     String content = txtFileHandler.parseContent();
+//                    modleList.get(i).setContent(content);
+                    modleList.get(i).setContent(content);
+                    modleList.get(i).setModlePath("");
 
                     User user = userDao.selectNameImgById(modleList.get(i));
                     if(user!=null){
@@ -577,17 +580,33 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public Message toCommunity(HttpServletRequest request) {
+        Message msg;
+        ;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int common = Integer.parseInt(request.getParameter("common"));
-        int success = modleDao.updateModleCommon(modleId, common);
-        Message msg;
-        if (success > 0) {
-            msg = new Message("发布成功");
-            msg.addData("isPublic", true);
+        if (common == 1) {
+            //说明用户想要上传模板
+            int success = modleDao.updateModleCommon(modleId, common);
+            if (success > 0) {
+                msg = new Message("发布成功");
+                msg.addData("isPublic", true);
+            } else {
+                msg = new Message("发布失败");
+                msg.addData("isPublic", false);
+            }
         } else {
-            msg = new Message("发布失败");
-            msg.addData("isPublic", false);
+            //说明用户想要上传模板
+            int success = modleDao.updateModleCommon(modleId, common);
+            if (success > 0) {
+                msg = new Message("删除成功");
+                msg.addData("isPublic", false);
+            } else {
+                msg = new Message("删除失败");
+                msg.addData("isPublic", true);
+            }
         }
+
         return msg;
     }
+
 }
