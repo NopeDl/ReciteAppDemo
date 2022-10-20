@@ -14,7 +14,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.User;
 import pojo.vo.Message;
 import service.UserService;
+import tools.easydao.utils.Resources;
+import tools.handlers.FileHandler;
+import tools.handlers.FileHandlerFactory;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -63,10 +67,29 @@ public class UserServiceImpl implements UserService {
         Message message;
         int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.selectUserById(userId);
+        if("".equals(user.getImage())){
+            //说明此时头像为默认头像，不需要重新读取
+            //将响应的数据封装到message里
+            user.setBase64("");
+        }else{
+            //说明头像已经改变过了，需要重新读取
+            String imagePath = user.getImage();//头像的存放路径
+            InputStream input;
+            try {
+                input = new FileInputStream(imagePath);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            //读取文本,这里表现为读取头像的base64路径
+            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+            String base64 = txtFileHandler.parseContent();//读取出来base64
+            user.setBase64(base64);
+        }
         //将响应的数据封装到message里
         message = new Message(MsgInf.OK);
         message.addData("user", user);
         return message;
+
     }
 
     /**
@@ -81,10 +104,10 @@ public class UserServiceImpl implements UserService {
         String phone = request.getParameter("phone");
         String nickName = request.getParameter("nickName");
         String newPassword = request.getParameter("password");
-        String image = request.getParameter("image");
+        String base64 = request.getParameter("base64");
 
         Message msg;
-        if (newPassword != null){
+        if (!"".equals(newPassword)){
             //修改密码
             int i = accountDao.changePasswordByUserId(userId, newPassword);
             if (i > 0) {
@@ -94,7 +117,7 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("密码修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (nickName !=null) {
+        } else if (!"".equals(nickName)) {
             //修改昵称
             int i = userDao.updateNickNameByUserID(userId, nickName);
             if (i > 0) {
@@ -104,7 +127,7 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("昵称修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (phone !=null) {
+        } else if (!"".equals(phone)) {
             //修改手机号
             int i = userDao.updatePhoneByUserID(userId, phone);
             if (i > 0) {
@@ -114,9 +137,11 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("手机号修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (image != null) {
+        } else if (!"".equals(base64)) {
+            //说明返回来一个base64，应该将他存进static目录下的imgPath
+            String imagePath=WriteImageAsTxt(base64,userId);
             //修改头像
-            int i = userDao.updateImageByUserID(userId, image);
+            int i = userDao.updateImageByUserID(userId, imagePath);
             if (i > 0) {
                 msg = new Message("头像修改成功");
                 msg.addData("isSuccess", true);
@@ -230,5 +255,30 @@ public class UserServiceImpl implements UserService {
             msg = new Message("查找失败");
         }
         return msg;
+    }
+
+    /**
+     * 将头像的base64形式存static/imgPath下的txt文件,返回base64的存储路径
+     * @param base64
+     * @param useId
+     * @return
+     */
+    @Override
+    public String WriteImageAsTxt(String base64, int useId) {
+        String filePath = Resources.getResource("static/imgPath/" + System.currentTimeMillis() + String.valueOf(useId) + ".txt");
+        System.out.println(filePath);
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", null);
+            String imagePath = txtHandler.saveFile(filePath, base64);
+            return imagePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
