@@ -10,10 +10,9 @@ import enums.SocketMsgInf;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
-import pkserver.threads.TimeLimitThread;
 import pkserver.threads.UserMatchThread;
-import pojo.po.Modle;
-import pojo.po.User;
+import pojo.po.db.Modle;
+import pojo.po.db.User;
 import pojo.vo.MatchInf;
 import pojo.vo.SocketMessage;
 import tools.handlers.FileHandler;
@@ -52,37 +51,38 @@ public class PkUser {
      */
     private PkRoom pkRoom;
 
-    private boolean isFirstStart = true;
-
 
     @OnMessage
-    public void onMessage(String operate) throws IOException {
+    public void onMessage(Session session, String operate) throws IOException {
         SocketMessage msg;
         if ("START".equals(operate)) {
             //开始匹配
             msg = startMatch();
+            ResponseUtil.send(this.session, msg);
         } else if ("Ready".equals(operate)) {
             //说明匹配成功准备开始比赛了
-            Thread timeThread = new Thread(new TimeLimitThread(this.pkRoom));
-            timeThread.start();
+            if (!pkRoom.isTimerAlive()) {
+                //如果计时器没打开则打开计时器
+                pkRoom.startTimer();
+            }
             msg = new SocketMessage();
             //响应服务器准备成功的信息
-            msg.addData("isReady",true);
+            msg.addData("isReady", true);
+            ResponseUtil.send(this.session, msg);
         } else if (JSONObject.isValid(operate)) {
             //锁上防止并发异常
             Lock lock = new ReentrantLock();
             lock.lock();
             try {
                 //如果是json则执行扣血等操作
-                this.pkRoom.excute(operate,this);
-                msg = this.pkRoom.getResponseMessage();
-            }finally {
+                this.pkRoom.excute(operate, this);
+            } finally {
                 lock.unlock();
             }
         } else {
             msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
+            ResponseUtil.send(this.session, msg);
         }
-        ResponseUtil.send(this.session, msg);
     }
 
     /**
@@ -110,14 +110,14 @@ public class PkUser {
 
 
     @OnClose
-    public void onClose() throws IOException {
+    public void onClose(Session session) throws IOException {
         //发送关闭消息
         SocketMessage smsg = new SocketMessage(SocketMsgInf.SERVER_CLOSE);
         ResponseUtil.send(this.session, smsg);
     }
 
     @OnError
-    public void onError(Throwable throwable) {
+    public void onError(Session session, Throwable throwable) {
         //发送错误报告
         try {
             throwable.printStackTrace();

@@ -2,7 +2,6 @@ package service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pojo.po.Account;
 import pojo.vo.Message;
 
 public interface AccountService {

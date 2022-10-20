@@ -1,23 +1,23 @@
 <!DOCTYPE mapper>
 <mapper namespace="ModleMapper">
     <!--  -->
-    <select id="selectCount" parameterType="string" resultType="pojo.po.Count">
+    <select id="selectCount" parameterType="string" resultType="pojo.po.db.Count">
         select count(userId) as number  from modle
     </select>
 
     <!--    int selectModleTitle 查找userId为xx的用户，模板title为xx的模板个数-->
-    <select id="selectNumByTitle" parameterType="pojo.po.Modle" resultType="pojo.po.Count">
+    <select id="selectNumByTitle" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Count">
         select count(*) as number  from modle where modleTitle=#{modleTitle} and userId=#{userId}
     </select>
 
     <!--insertModle 生成新模板-->
-    <insert id="insertModle" parameterType="pojo.po.Modle">
+    <insert id="insertModle" parameterType="pojo.po.db.Modle">
         insert into modle(modleTitle,modlePath,userId,modleLabel)
         values(#{modleTitle},#{modlePath},#{userId},#{modleLabel})
     </insert>
 
     <!--  删除模板 -->
-    <delete id="deleteModleByModleId" parameterType="pojo.po.Modle">
+    <delete id="deleteModleByModleId" parameterType="pojo.po.db.Modle">
         delete  from modle where modleId = #{modleId}
     </delete>
 
@@ -27,46 +27,46 @@
     </update>>
 
     <!--根据模板id获取模板信息-->
-    <select id="selectModleById" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+    <select id="selectModleById" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
         select * from modle where modleId = #{modleId}
     </select>
 
     <!-- 获取标签下所有模板 -->
-    <select id="selectModlesByTag" parameterType="pojo.po.Modle" resultType="pojo.vo.Community">
+    <select id="selectModlesByTag" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
         select modleId,modleTitle,modlePath,userId,modleLabel,coins  from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
     <!--selectModleByModleId-->
-    <select id="selectModleByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+    <select id="selectModleByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
         select modleId,modleTitle,modlePath,userId,modleLabel from modle where modleId=#{modleId}
     </select>
 
 
-    <select id="selectPathTitlAndTag" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+    <select id="selectPathTitlAndTag" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
         select modlePath,modleTitle,modleLabel from modle where modleId=#{modleId}
     </select>
     <!-- 获取所有标签 -->
-    <select id="selectLables" resultType="pojo.po.Label">
+    <select id="selectLables" resultType="pojo.po.db.Label">
         select labelId,labelName from lable
     </select>>
 
-    <select id="selectModleId" resultType="pojo.po.Modle">
+    <select id="selectModleId" resultType="pojo.po.db.Modle">
         select modleId from modle where userId=#{userId} and modleTitle=#{modleTitle}
     </select>
 
     <!--    selectPathByModleId-->
-    <select id="selectPathByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
+    <select id="selectPathByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
         select modlePath from modle where modleId=#{modleId}
     </select>
 
 
-    <update id="changeModleTag" parameterType="pojo.po.Modle" >
+    <update id="changeModleTag" parameterType="pojo.po.db.Modle" >
         update  modle set modleLabel=#{modleLabel} ,modleTitle=#{modleTitle} where modleId=#{modleId}
     </update>
 
 
     <!--selectTitleByModleId-->
-    <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
+    <select id="selectTitleByModleId" arameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
         select modleTitle from modle where modleId=#{modleId}
     </select>
 

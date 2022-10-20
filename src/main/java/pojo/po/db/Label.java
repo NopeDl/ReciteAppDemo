@@ -1,4 +1,4 @@
-package pojo.po;
+package pojo.po.db;
 
 public class Label {
     private int labelId;

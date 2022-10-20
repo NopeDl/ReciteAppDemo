@@ -1,4 +1,4 @@
-package pojo.po;
+package pojo.po.db;
 
 /**
  * 用户个人账号封装类

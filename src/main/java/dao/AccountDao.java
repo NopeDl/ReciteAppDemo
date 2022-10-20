@@ -1,6 +1,6 @@
 package dao;
 
-import pojo.po.Account;
+import pojo.po.db.Account;
 
 public interface AccountDao {
 

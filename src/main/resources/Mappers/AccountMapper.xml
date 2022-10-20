@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper>
 <mapper namespace="AccountMapper">
-    <select id="checkAccount" resultType="pojo.po.Account">
+    <select id="checkAccount" resultType="pojo.po.db.Account">
         select * from account where number = #{number} and password = #{password}
     </select>
     <insert id="insertAccount">
@@ -15,7 +15,7 @@
     <!--int selectIdByNumber()-->
 
     <!--根据手机号查找用户id-->
-    <select id="selectIdByNumber" parameterType="string" resultType="pojo.po.Account">
+    <select id="selectIdByNumber" parameterType="string" resultType="pojo.po.db.Account">
         select * from account where number=#{number}
     </select>
 

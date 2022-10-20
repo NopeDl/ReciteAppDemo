@@ -1,23 +1,23 @@
 <!DOCTYPE mapper>
 <mapper namespace="UserMapper">
-    <select id="selectUserById" resultType="pojo.po.User">
+    <select id="selectUserById" resultType="pojo.po.db.User">
         select * from user where userId = #{userId}
     </select>
 
-    <select id="selectUserByNickName" resultType="pojo.po.User">
+    <select id="selectUserByNickName" resultType="pojo.po.db.User">
         select * from user where nickName = #{nickName}
     </select>
 
-    <select id="selectNickName" resultType="pojo.po.User">
+    <select id="selectNickName" resultType="pojo.po.db.User">
         select nickName from user where nickName = #{nickName}
     </select>
     <!--  查询榜单前十  -->
-    <select id="selectTopTen" resultType="pojo.po.User">
+    <select id="selectTopTen" resultType="pojo.po.db.User">
         select nickName,stars from user order by stars desc
     </select>
 
     <!--  查询当前用户排名  -->
-    <select id="selectUserRanking" resultType="pojo.po.Count">
+    <select id="selectUserRanking" resultType="pojo.po.db.Count">
         SELECT number from (SELECT
         @rownum:= @rownum + 1 AS number,
         userId
@@ -45,7 +45,7 @@
         update account set number = #{number} where userId = #{userId}
     </update>
     <!--selectNameImgById-->
-    <select id="selectNameImgById" parameterType="pojo.vo.Community" resultType="pojo.po.User">
+    <select id="selectNameImgById" parameterType="pojo.vo.Community" resultType="pojo.po.db.User">
         select nickName,image from user where userId=#{userId}
     </select>
 </mapper>

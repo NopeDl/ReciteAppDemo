@@ -4,9 +4,9 @@ import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import dao.UserDao;
-import pojo.po.Account;
-import pojo.po.Count;
-import pojo.po.User;
+import pojo.po.db.Account;
+import pojo.po.db.Count;
+import pojo.po.db.User;
 import tools.utils.DaoUtil;
 
 import java.util.ArrayList;

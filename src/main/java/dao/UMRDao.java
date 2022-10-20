@@ -1,7 +1,7 @@
 package dao;
 
-import pojo.po.Modle;
-import pojo.po.Umr;
+import pojo.po.db.Modle;
+import pojo.po.db.Umr;
 
 import java.util.List;
 

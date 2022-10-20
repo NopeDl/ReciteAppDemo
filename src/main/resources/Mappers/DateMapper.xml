@@ -5,7 +5,7 @@
         insert into t_date (date,userId) values (#{date},#{userId})
     </insert>
 
-    <select id="selectDates" parameterType="pojo.po.UDate" resultType="pojo.po.UDate">
+    <select id="selectDates" parameterType="pojo.po.db.UDate" resultType="pojo.po.db.UDate">
         select date from t_date where userId = #{userId} and date like #{exp}
     </select>
 </mapper>

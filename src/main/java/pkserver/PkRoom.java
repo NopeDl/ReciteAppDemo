@@ -1,12 +1,12 @@
 package pkserver;
 
 import com.alibaba.fastjson.JSONObject;
-import dao.UserDao;
-import dao.impl.UserDaoImpl;
 import enums.SocketMsgInf;
-import pojo.po.User;
+import pkserver.threads.TimeLimitThread;
+import pojo.po.pk.AnswerStatus;
+import pojo.po.pk.AnswersRecord;
+import pojo.po.pk.UserHp;
 import pojo.vo.MatchInf;
-import pojo.vo.Message;
 import pojo.vo.SocketMessage;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
@@ -39,11 +39,9 @@ public class PkRoom {
     private final Map<PkUser, Double> hpMap = new HashMap<>();
 
     /**
-     * 记录双方答题的对错
-     * 里面的list记录对应用户的题目对错状态
+     * 记录双方答题结果
      */
-    private final Map<PkUser, List<Boolean>> answers = new HashMap<>();
-
+    private final Map<PkUser,AnswersRecord> answersRecords = new HashMap<>();
     /**
      * 挖空数
      */
@@ -58,6 +56,17 @@ public class PkRoom {
      * 房间对外响应消息封装
      */
     private SocketMessage responseMessage;
+
+    private final Thread timer = new Thread(new TimeLimitThread(this));
+
+    public void startTimer(){
+        this.timer.start();
+    }
+
+    public boolean isTimerAlive(){
+        return timer.isAlive();
+    }
+
 
 
     private PkRoom() {
@@ -97,7 +106,22 @@ public class PkRoom {
         int blankTimeLimits = p1Inf.getDifficulty().getTimeLimits();
         //设置该房间总时间限制
         this.timeLimits = (long) this.blankNum * blankTimeLimits;
+        //初始化answers集合
+        //初始化玩家1战绩集合
+        AnswersRecord answersRecord01 = new AnswersRecord();
+        //设置ID
+        answersRecord01.setUserId(getPlayer01().getMatchInf().getUserId());
+
+        //初始化玩家2战绩集合
+        AnswersRecord answersRecord02 = new AnswersRecord();
+        //设置ID
+        answersRecord02.setUserId(getPlayer02().getMatchInf().getUserId());
+        //添加进总记录集合
+        answersRecords.put(this.player01,answersRecord01);
+        answersRecords.put(this.player02,answersRecord02);
     }
+
+
 
     /**
      * 开始本房间比赛
@@ -108,9 +132,12 @@ public class PkRoom {
         if (jsonObject != null) {
             //处理Json数据
             //获取答案对错
-            boolean isRight = (Boolean) jsonObject.get("answer");
-            //将答案对错存在对应表中
-            savePlayerAnswer(curUser, isRight);
+            String answerName = (String) jsonObject.get("answerName");
+            boolean isRight = (Boolean) jsonObject.get("answerValue");
+            //封装答案信息
+            AnswerStatus answerStatus = new AnswerStatus(answerName,isRight);
+            //保存
+            saveRecord(curUser,answerStatus);
             //如果是对的则需要扣对手的血量
             if (isRight) {
                 PkUser enemy = getEnemy(curUser);
@@ -119,16 +146,27 @@ public class PkRoom {
                 //计算扣的血
                 hp -= (1.0 / this.blankNum) * 100;
                 //设置血量
-                setHp(curUser,hp);
+                setHp(enemy, hp);
             }
             //检查双方输赢状态
-
-
+            SocketMessage msg;
+            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
+                //结束比赛
+                this.end();
+            } else {
+                //比赛还没结束
+                //将双方血量响应回去
+                msg = new SocketMessage();
+                List<UserHp> hpLists = new ArrayList<>();
+                hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(),getHp(this.player01)));
+                hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(),getHp(this.player02)));
+                msg.addData("hpInf",hpLists);
+                roomBroadcast(msg);
+            }
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);
         }
     }
-
 
 
     /**
@@ -138,22 +176,41 @@ public class PkRoom {
         //将输赢信息封装
         SocketMessage result = getWinner();
         roomBroadcast(result);
-       //结束游戏,并关闭房间
+        //结束游戏,并关闭房间
         try {
             player01.getSession().close();
             player02.getSession().close();
+            //移除池中相关信息
             StatusPool.PK_ROOM_LIST.remove(this);
+            StatusPool.MATCHED_POOL.remove(player01.getMatchInf());
+            StatusPool.MATCHED_POOL.remove(player02.getMatchInf());
+            StatusPool.PK.remove(player01.getMatchInf().getUserId());
+            StatusPool.PK.remove(player02.getMatchInf().getUserId());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * 保存用户答案记录
+     * @param player 用户
+     * @param answerStatus 封装的答案信息
+     */
+    private void saveRecord(PkUser player,AnswerStatus answerStatus){
+        answersRecords.get(player).getAnswersRecord().add(answerStatus);
+    }
 
-    private void roomBroadcast(SocketMessage msg){
-        //给房间内两位玩家发送结果和战绩
+
+    /**
+     * 房间广播
+     *
+     * @param msg msg
+     */
+    private void roomBroadcast(SocketMessage msg) {
+        //给房间内两位玩家发送结果
         try {
-            ResponseUtil.send(player01.getSession(),msg);
-            ResponseUtil.send(player02.getSession(),msg);
+            ResponseUtil.send(player01.getSession(), msg);
+            ResponseUtil.send(player02.getSession(), msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,35 +219,28 @@ public class PkRoom {
     /**
      * 获取赢家
      */
-    private SocketMessage getWinner(){
+    private SocketMessage getWinner() {
         double player01Hp = getHp(player01);
         double player02Hp = getHp(player02);
-        MatchInf winnerInf;
-        if (player01Hp < player01Hp){
+        int winnerId;
+        if (player01Hp < player02Hp) {
             //玩家2赢
-            winnerInf = player02.getMatchInf();
+            winnerId = player02.getMatchInf().getUserId();
         } else if (player02Hp < player01Hp) {
             //玩家1赢
-            winnerInf = player01.getMatchInf();
-        }else {
+            winnerId = player01.getMatchInf().getUserId();
+        } else {
             //平局
-            winnerInf = null;
+            winnerId = -1;
         }
-
         SocketMessage msg = new SocketMessage();
         //封装赢者数据
-        msg.addData("winner", winnerInf);
+        msg.addData("winnerId", winnerId);
         //封装双方战绩
-        List<Boolean> player01Records = answers.get(player01);
-        List<Boolean> player02Records = answers.get(player02);
-        Map<User,List<Boolean>> records = new HashMap<>();
-        UserDao userDao = new UserDaoImpl();
-        //查询双方信息
-        User user01 = userDao.selectUserById(player01.getMatchInf().getUserId());
-        User user02 = userDao.selectUserById(player02.getMatchInf().getUserId());
-        records.put(user01,player01Records);
-        records.put(user02,player02Records);
-        msg.addData("record", records);
+        List<AnswersRecord> answersRecordList = new ArrayList<>();
+        answersRecordList.add(answersRecords.get(player01));
+        answersRecordList.add(answersRecords.get(player02));
+        msg.addData("records",answersRecordList);
         return msg;
     }
 
@@ -231,15 +281,6 @@ public class PkRoom {
         this.hpMap.put(player, hp);
     }
 
-    /**
-     * 保存用户答案
-     *
-     * @param player 用户
-     * @param b      题目对错
-     */
-    private void savePlayerAnswer(PkUser player, boolean b) {
-        this.answers.get(player).add(b);
-    }
 
     /**
      * 加入房间

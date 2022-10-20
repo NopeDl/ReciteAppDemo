@@ -1,4 +1,4 @@
-package pojo.po;
+package pojo.po.db;
 
 import java.util.Date;
 

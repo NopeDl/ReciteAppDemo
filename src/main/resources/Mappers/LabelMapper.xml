@@ -1,11 +1,11 @@
 <!DOCTYPE mapper>
 <mapper namespace="LabelMapper">
     <!--  -->
-    <select id="selectLableName" parameterType="pojo.po.Label" resultType="pojo.po.Label">
+    <select id="selectLableName" parameterType="pojo.po.db.Label" resultType="pojo.po.db.Label">
         select  labelName from label where labelId=#{labelId}
     </select>
 
-    <select id="selectLableByLableId" resultType="pojo.po.Label">
+    <select id="selectLableByLableId" resultType="pojo.po.db.Label">
         select labelId,labelName from lable where labelId = #{labelId}
     </select>>
 

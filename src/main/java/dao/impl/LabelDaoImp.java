@@ -3,7 +3,7 @@ package dao.impl;
 import dao.LabelDao;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
-import pojo.po.Label;
+import pojo.po.db.Label;
 import tools.utils.DaoUtil;
 
 import java.util.List;

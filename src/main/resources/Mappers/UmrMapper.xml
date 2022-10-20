@@ -2,7 +2,7 @@
 <!DOCTYPE mapper>
 <mapper namespace="UmrMapper">
     <!--  获取用户模板库所有内容  -->
-    <select id="selectModleByUserId" parameterType="pojo.po.Umr" resultType="pojo.po.Umr">
+    <select id="selectModleByUserId" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Umr">
         select * from umr where userId=#{userId}
     </select>
 
@@ -14,11 +14,11 @@
         delete from umr where modleId = #{modleId}
     </delete>
 
-    <insert id="collectModleById" parameterType="pojo.po.Umr" >
+    <insert id="collectModleById" parameterType="pojo.po.db.Umr" >
         insert into umr(userId,modleId,mStatus) values(#{userId},#{modleId},#{mStatus})
     </insert>
 
-    <delete id="cancelMOdleById" parameterType="pojo.po.Umr">
+    <delete id="cancelMOdleById" parameterType="pojo.po.db.Umr">
         delete from umr where userId=#{userId} and mStatus=#{modleId} and mStatus=#{mStatus}
     </delete>
 

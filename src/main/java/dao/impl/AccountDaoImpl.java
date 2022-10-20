@@ -3,7 +3,7 @@ package dao.impl;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import dao.AccountDao;
-import pojo.po.Account;
+import pojo.po.db.Account;
 import tools.utils.DaoUtil;
 
 import java.util.List;

@@ -1,9 +1,7 @@
 package dao;
 
-import pojo.po.Count;
-import pojo.po.User;
+import pojo.po.db.User;
 import pojo.vo.Community;
-import pojo.vo.Message;
 
 import java.util.List;
 

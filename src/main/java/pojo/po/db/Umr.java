@@ -1,4 +1,4 @@
-package pojo.po;
+package pojo.po.db;
 
 public class Umr {
     private int userId;

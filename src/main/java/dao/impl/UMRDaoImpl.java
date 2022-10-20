@@ -3,8 +3,8 @@ package dao.impl;
 import dao.UMRDao;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
-import pojo.po.Modle;
-import pojo.po.Umr;
+import pojo.po.db.Modle;
+import pojo.po.db.Umr;
 import tools.utils.DaoUtil;
 
 import java.util.ArrayList;

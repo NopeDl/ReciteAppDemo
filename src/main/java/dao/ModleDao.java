@@ -1,9 +1,8 @@
 package dao;
 
-import pojo.po.Label;
-import pojo.po.Modle;
+import pojo.po.db.Label;
+import pojo.po.db.Modle;
 import pojo.vo.Community;
-import pojo.vo.Message;
 
 import java.util.List;
 
