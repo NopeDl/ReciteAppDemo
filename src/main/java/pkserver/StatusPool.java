@@ -1,9 +1,8 @@
-package PKServer;
+package pkserver;
 
 import pojo.vo.MatchInf;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,6 +26,11 @@ public class StatusPool {
     public static final Map<MatchInf,PkUser> MATCHED_POOL = new ConcurrentHashMap<>();
 
     /**
+     * 房间总数
+     */
+    public static final List<PkRoom> PK_ROOM_LIST = Collections.synchronizedList(new ArrayList<>());
+
+    /**
      * 进入匹配池
      * @param pkUser 要匹配的用户
      * @param matchInf 匹配用户的信息
@@ -41,6 +45,13 @@ public class StatusPool {
      */
     public void enterMatchedPool(MatchInf matchInf,PkUser pkUser){
         MATCHED_POOL.put(matchInf,pkUser);
+    }
+
+    public void getEnemyPlayer(MatchInf curPlayerMatchInf){
+        //获取对手用户ID
+        int curPlayerId = MATCHED_POOL.get(curPlayerMatchInf).getMatchInf().getUserId();
+        Integer enemyId = PK.get(curPlayerId);
+
     }
 
 }

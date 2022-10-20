@@ -377,7 +377,8 @@ public class ModleServiceImpl implements ModleService {
             if (modleList.size() > 0) {
                 for (int i = 0; i < modleList.size(); i++) {
                     //根据路径读取文件内容
-                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
+                    //获取改模板的路径；根据路径读取文件内容
+                    String modlePath = modleList.get(i).getModlePath();
                     InputStream input;
                     try {
                         input = new FileInputStream(modlePath);
@@ -387,7 +388,6 @@ public class ModleServiceImpl implements ModleService {
                     //读取文本
                     FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                     String content = txtFileHandler.parseContent();
-//                    modleList.get(i).setContent(content);
 
                     User user = userDao.selectNameImgById(modleList.get(i));
                     if(user!=null){
@@ -395,6 +395,8 @@ public class ModleServiceImpl implements ModleService {
                         modleList.get(i).setNickName(user.getNickName());
                         modleList.get(i).setImg(user.getImage());
                     }
+                    //不回显给前端路径
+                    modleList.get(i).setModlePath(null);
                 }
 
 //                System.out.println(modleList.get(0));

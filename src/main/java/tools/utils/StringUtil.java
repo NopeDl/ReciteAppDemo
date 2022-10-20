@@ -42,7 +42,7 @@ public class StringUtil {
 
     public static String autoDig(int modleId, Difficulty difficulty) {
         //获取挖空比例
-        double ratio = difficulty.getRatio() / 100.0;
+        double ratio = difficulty.getRatio();
         //查询模板地址
         String path = (new ModleDaoImpl()).selectPathByModleId(modleId);
         //根据地址获取文件字节输入流
@@ -59,8 +59,8 @@ public class StringUtil {
             int charNum = (int) Math.round(content.length() * ratio);
             //计算需要挖的空数
             //假定要挖的空为  charNum * ratio
-            int blankNum = (int) Math.round(charNum * ratio);
-//                List<Integer> charNums = this.getCharNums(charNum, blankNum);
+            int blankNum = getBlankNumByContentLength(charNum,ratio);
+            //挖空
             List<Integer> charNums = new ArrayList<>();
             Random random = new Random(System.currentTimeMillis());
             for (int i = 0; i < blankNum; i++) {
@@ -72,6 +72,15 @@ public class StringUtil {
         }
     }
 
+    /**
+     * 获取挖空数量
+     * @param charNum 文章字数
+     * @param ratio 挖空比例
+     * @return 挖空数量
+     */
+    public static int getBlankNumByContentLength(int charNum,double ratio){
+        return (int) Math.round(charNum * ratio);
+    }
 
     /**
      * 自动挖空实现

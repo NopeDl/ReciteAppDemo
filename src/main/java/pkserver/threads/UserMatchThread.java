@@ -1,5 +1,7 @@
-package PKServer;
+package pkserver.threads;
 
+import pkserver.PkUser;
+import pkserver.StatusPool;
 import pojo.vo.MatchInf;
 
 import java.util.Map;
@@ -41,6 +43,7 @@ public class UserMatchThread implements Runnable {
                                 matchedPool.put(matchInf, matchingPool.get(matchInf));
                                 //将匹配的两个人凡在map里面
                                 StatusPool.PK.put(matchInf.getUserId(), key.getUserId());
+                                StatusPool.PK.put(key.getUserId(), matchInf.getUserId());
                                 //匹配到的不是自己，应该移除自己和匹配到的对象，进入比赛的池子
                                 matchingPool.remove(key);
                                 matchingPool.remove(matchInf);

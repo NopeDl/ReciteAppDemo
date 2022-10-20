@@ -14,7 +14,11 @@ public enum SocketMsgInf {
     SERVER_CLOSE("ALIVE",false),
     OPERATE_NOTFOUND("OPERATE",false),
     MATCH_SUCCESS("MATCH_SUCCESS",true),
-    MATCH_FAILED("MATCH_FAILED",false);
+    MATCH_FAILED("MATCH_FAILED",false),
+    NOT_MATCH("NOT_MATCH",false),
+    JSON_ERROR("JSON_ERROR",false);
+
+
 
     private String name;
 
