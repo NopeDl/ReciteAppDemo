@@ -67,11 +67,11 @@ public class UserServiceImpl implements UserService {
         Message message;
         int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.selectUserById(userId);
-        if("".equals(user.getImage())){
+        if ("".equals(user.getImage())) {
             //说明此时头像为默认头像，不需要重新读取
             //将响应的数据封装到message里
             user.setBase64("");
-        }else{
+        } else {
             //说明头像已经改变过了，需要重新读取
             String imagePath = user.getImage();//头像的存放路径
             InputStream input;
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
         String base64 = request.getParameter("base64");
 
         Message msg;
-        if (!"".equals(newPassword)){
+        if (newPassword != null) {
             //修改密码
             int i = accountDao.changePasswordByUserId(userId, newPassword);
             if (i > 0) {
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("密码修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (!"".equals(nickName)) {
+        } else if (nickName != null) {
             //修改昵称
             int i = userDao.updateNickNameByUserID(userId, nickName);
             if (i > 0) {
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("昵称修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (!"".equals(phone)) {
+        } else if (phone != null) {
             //修改手机号
             int i = userDao.updatePhoneByUserID(userId, phone);
             if (i > 0) {
@@ -137,9 +137,9 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("手机号修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else if (!"".equals(base64)) {
+        } else if (base64 != null) {
             //说明返回来一个base64，应该将他存进static目录下的imgPath
-            String imagePath=WriteImageAsTxt(base64,userId);
+            String imagePath = WriteImageAsTxt(base64, userId);
             //修改头像
             int i = userDao.updateImageByUserID(userId, imagePath);
             if (i > 0) {
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
                 msg = new Message("头像修改失败");
                 msg.addData("isSuccess", false);
             }
-        } else{
+        } else {
             //错误修改
             msg = new Message("参数错误");
         }
@@ -246,7 +246,7 @@ public class UserServiceImpl implements UserService {
         String month = request.getParameter("month");
         String year = request.getParameter("year");
 
-        List<String> list = dateDao.selectDateByUserId(userId,month,year);
+        List<String> list = dateDao.selectDateByUserId(userId, month, year);
         Message msg;
         if (list != null) {
             msg = new Message("查找成功");
@@ -259,6 +259,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 将头像的base64形式存static/imgPath下的txt文件,返回base64的存储路径
+     *
      * @param base64
      * @param useId
      * @return
