@@ -353,7 +353,7 @@ public class ModleDaoImpl implements ModleDao {
     }
 
     /**
-     * 更新模板发布状态
+     * 上传模板
      * @param modleId 需要操作的模板ID
      * @param common 0为不发布，1为发布
      * @return 更改结果
@@ -373,7 +373,6 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         return update;
     }
-
 
 
 }
