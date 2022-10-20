@@ -4,6 +4,7 @@ import dao.ModleDao;
 import dao.UserDao;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
+import enums.Difficulty;
 import enums.SocketMsgInf;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
@@ -15,6 +16,7 @@ import pojo.vo.SocketMessage;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
 import tools.utils.ResponseUtil;
+import tools.utils.StringUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,7 +75,7 @@ public class PkUser {
         this.matchInf = new MatchInf();
         matchInf.setUserId(Integer.parseInt(userId));
         matchInf.setModleId(Integer.parseInt(modleId));
-        matchInf.setDifficulty(difficulty);
+        matchInf.setDifficulty(Difficulty.getRatio(difficulty));
         //发送连接成功信息
         ResponseUtil.send(this.session,new SocketMessage());
     }
@@ -170,6 +172,9 @@ public class PkUser {
                 //真的匹配成功了！
                 msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
                 msg.addData("enemyInf",user);
+                //还需将内容自动挖空响应
+                String context = StringUtil.autoDig(this.matchInf.getModleId(), this.matchInf.getDifficulty());
+                msg.addData("context",context);
             }else {
                 msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);
             }

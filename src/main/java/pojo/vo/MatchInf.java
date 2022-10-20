@@ -1,5 +1,8 @@
 package pojo.vo;
 
+import enums.Difficulty;
+import org.apache.xmlbeans.impl.util.Diff;
+
 import java.util.Objects;
 
 /**
@@ -25,7 +28,7 @@ public class MatchInf {
     /**
      * 难度
      */
-    private String difficulty;
+    private Difficulty difficulty;
 
     /**
      * 模板内容
@@ -69,11 +72,11 @@ public class MatchInf {
         this.modleNum = modleNum;
     }
 
-    public String getDifficulty() {
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 

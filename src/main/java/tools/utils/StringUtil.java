@@ -1,5 +1,17 @@
 package tools.utils;
 
+import dao.ModleDao;
+import dao.impl.ModleDaoImpl;
+import enums.Difficulty;
+import tools.handlers.FileHandler;
+import tools.handlers.FileHandlerFactory;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,9 +40,41 @@ public class StringUtil {
     }
 
 
+    public static String autoDig(int modleId, Difficulty difficulty) {
+        //获取挖空比例
+        double ratio = difficulty.getRatio() / 100.0;
+        //查询模板地址
+        String path = (new ModleDaoImpl()).selectPathByModleId(modleId);
+        //根据地址获取文件字节输入流
+        try {
+            InputStream inputStream = Files.newInputStream(Paths.get(path));
+            //获取文件内容
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
+            String content = txtHandler.parseContent();
+            //去除所有用户自己挖空内容
+            //需要优化太耗时
+            content = content.replaceAll("<div>", "").replaceAll("</div>", "");
+
+            //根据模板字符数确定要挖的字数
+            int charNum = (int) Math.round(content.length() * ratio);
+            //计算需要挖的空数
+            //假定要挖的空为  charNum * ratio
+            int blankNum = (int) Math.round(charNum * ratio);
+//                List<Integer> charNums = this.getCharNums(charNum, blankNum);
+            List<Integer> charNums = new ArrayList<>();
+            Random random = new Random(System.currentTimeMillis());
+            for (int i = 0; i < blankNum; i++) {
+                charNums.add(random.nextInt(10) + 1);
+            }
+             return StringUtil.digBlank(content, charNums, blankNum);
+        }catch (IOException e){
+            throw new RuntimeException("获取" + path + "流失败");
+        }
+    }
+
 
     /**
-     * 自动挖空
+     * 自动挖空实现
      *
      * @param content  挖空的内容
      * @param charNum  每个空里面的字数（数组）
@@ -55,9 +99,9 @@ public class StringUtil {
     }
 
     /**
-     * 获取随机数
+     * 获取非零随机数
      *
-     * @return
+     * @return 非零随机数
      */
     private static int getRandomInt(int bound) {
         Random random = new Random(System.currentTimeMillis());

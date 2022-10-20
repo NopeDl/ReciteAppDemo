@@ -6,6 +6,7 @@ import dao.UMRDao;
 import dao.impl.LabelDaoImp;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UMRDaoImpl;
+import enums.Difficulty;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
@@ -516,42 +517,16 @@ public class ModleServiceImpl implements ModleService {
         Message msg;
         if (ratioStr != null && modleIdStr != null) {
             //获取挖空比例
-            double ratio = (Integer.parseInt(ratioStr)) / 100.0;
+            Difficulty difficulty = Difficulty.getRatio(ratioStr);
             //获取模板ID
             int modleId = Integer.parseInt(modleIdStr);
-            //查询模板地址
-            String path = modleDao.selectPathByModleId(modleId);
-            //根据地址获取文件字节输入流
-            try {
-                InputStream inputStream = new FileInputStream(path);
-                //获取文件内容
-                FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
-                String content = txtHandler.parseContent();
-                //去除所有用户自己挖空内容
-                //需要优化太耗时
-                content = content.replaceAll("<div>", "").replaceAll("</div>", "").replaceAll("&nbsp;", "");
 
-                //根据模板字符数确定要挖的字数
-                int charNum = (int) Math.round(content.length() * ratio);
-                //计算需要挖的空数
-                //假定要挖的空为  charNum * ratio
-                int blankNum = (int) Math.round(charNum * ratio);
-//                List<Integer> charNums = this.getCharNums(charNum, blankNum);
-                List<Integer> charNums = new ArrayList<>();
-                Random random = new Random(System.currentTimeMillis());
-                for (int i = 0; i < blankNum; i++) {
-                    charNums.add(random.nextInt(10) + 1);
-                }
-                String result = StringUtil.digBlank(content, charNums, blankNum);
+            String content = StringUtil.autoDig(modleId, difficulty);
 
-                result = result.replaceAll("\\s", "<\\br>&nbsp;&nbsp;&nbsp;&nbsp;");
-                msg = new Message("挖空成功");
-                msg.addData("context", result);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("获取" + path + "流失败");
-            }
+            msg = new Message("挖空成功");
+            msg.addData("content",content);
         } else {
-            msg = new Message("比例或模板id不能为空");
+            msg = new Message("难度或模板id不能为空");
         }
         return msg;
     }
