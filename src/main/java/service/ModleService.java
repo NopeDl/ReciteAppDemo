@@ -10,11 +10,11 @@ import java.io.InputStream;
 public interface ModleService {
 
 
-    /**
-     * 取消收藏的模板
-     * @return
-     */
-    Message cancelModleCollect(HttpServletRequest request);
+//    /**
+//     * 取消收藏的模板
+//     * @return
+//     */
+//    Message cancelModleCollect(HttpServletRequest request);
 
 
 

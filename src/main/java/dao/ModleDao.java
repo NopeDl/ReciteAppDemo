@@ -2,6 +2,7 @@ package dao;
 
 import pojo.po.db.Label;
 import pojo.po.db.Modle;
+import pojo.po.db.Umr;
 import pojo.vo.Community;
 
 import java.util.List;
@@ -9,17 +10,18 @@ import java.util.List;
 public interface ModleDao {
 
 
-    /**
-     * 取消用户收藏
-     * @param userId
-     * @param modleId
-     * @param mStatus
-     * @return
-     */
-    int cancelMOdleById(int userId,int modleId,int mStatus);
+//    /**
+//     * 取消用户收藏
+//     * @param userId
+//     * @param modleId
+//     * @param mStatus
+//     * @return
+//     */
+//    int cancelMOdleById(int userId,int modleId,int mStatus);
+//
 
-
     /**
+     * 收藏模板
      * 讲收藏的模板写进表umr中
      * @return
      */
@@ -133,4 +135,12 @@ public interface ModleDao {
      * @return
      */
     boolean changeModleTag(Modle modle);
+
+
+    /**
+     * 查看该模板是否属于该用户
+     * @param umr
+     * @return
+     */
+    Integer selectIfContain(Umr umr);
 }

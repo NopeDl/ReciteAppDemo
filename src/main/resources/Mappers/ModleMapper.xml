@@ -42,31 +42,31 @@
     </select>
 
 
-    <select id="selectPathTitlAndTag" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
+    <select id="selectPathTitlAndTag" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
         select modlePath,modleTitle,modleLabel from modle where modleId=#{modleId}
     </select>
     <!-- 获取所有标签 -->
-    <select id="selectLables" resultType="pojo.po.db.Label">
+    <select id="selectLables" resultType="pojo.po.Label">
         select labelId,labelName from lable
     </select>>
 
-    <select id="selectModleId" resultType="pojo.po.db.Modle">
+    <select id="selectModleId" resultType="pojo.po.Modle">
         select modleId from modle where userId=#{userId} and modleTitle=#{modleTitle}
     </select>
 
     <!--    selectPathByModleId-->
-    <select id="selectPathByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
+    <select id="selectPathByModleId" parameterType="pojo.po.Modle" resultType="pojo.po.Modle">
         select modlePath from modle where modleId=#{modleId}
     </select>
 
 
-    <update id="changeModleTag" parameterType="pojo.po.db.Modle" >
+    <update id="changeModleTag" parameterType="pojo.po.Modle" >
         update  modle set modleLabel=#{modleLabel} ,modleTitle=#{modleTitle} where modleId=#{modleId}
     </update>
 
 
     <!--selectTitleByModleId-->
-    <select id="selectTitleByModleId" arameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
+    <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
         select modleTitle from modle where modleId=#{modleId}
     </select>
 
