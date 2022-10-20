@@ -33,7 +33,7 @@
 
     <!-- 获取标签下所有模板 -->
     <select id="selectModlesByTag" parameterType="pojo.po.Modle" resultType="pojo.vo.Community">
-        select modleId,modleTitle,modlePath,userId,modleLabel,coins  from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
+        select *  from modle where modleLabel = #{modleLabel} limit #{pageIndex},20
     </select>>
 
     <!--selectModleByModleId-->
@@ -66,7 +66,7 @@
 
 
     <!--selectTitleByModleId-->
-    <select id="selectTitleByModleId" arameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
+    <select id="selectTitleByModleId" parameterType="pojo.po.Modle"  resultType="pojo.po.Modle">
         select modleTitle from modle where modleId=#{modleId}
     </select>
 
@@ -74,6 +74,12 @@
     <update id="updateModleCommon">
         update modle set common = #{common} where modleId=#{modleId}
     </update>
+
+
+    <!--selectIfContain-->
+    <select id="selectIfContain" parameterType="pojo.po.Umr" resultType="pojo.po.Count">
+        select count(userId) as number from modle where modleId=#{modleId} and userId=#{userId}
+    </select>
 
 
 </mapper>

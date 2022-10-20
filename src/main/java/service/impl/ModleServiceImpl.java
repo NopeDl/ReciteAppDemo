@@ -39,34 +39,34 @@ public class ModleServiceImpl implements ModleService {
 
 //    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
-
-    /**
-     * 取消用户收藏的模板
-     * @return
-     */
-    @Override
-    public Message cancelModleCollect(HttpServletRequest request) {
-        Message message;
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        int modleId = Integer.parseInt(request.getParameter("modleId"));
-//        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
-        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
-
-        if(1==mStatus){
-            message = new Message("取消失败");
-        }
-        else {
-            int i = modleDao.collectModleById(userId, modleId, mStatus);
-            if (i > 0) {
-                //说明此时成功
-                message = new Message("取消收藏成功");
-            } else {
-                message = new Message("取消失败");
-            }
-        }
-        return message;
-
-    }
+//
+//    /**
+//     * 取消用户收藏的模板
+//     * @return
+//     */
+//    @Override
+//    public Message cancelModleCollect(HttpServletRequest request) {
+//        Message message;
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int modleId = Integer.parseInt(request.getParameter("modleId"));
+////        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
+//        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
+//
+//        if(1==mStatus){
+//            message = new Message("取消失败");
+//        }
+//        else {
+//            int i = modleDao.collectModleById(userId, modleId, mStatus);
+//            if (i > 0) {
+//                //说明此时成功
+//                message = new Message("取消收藏成功");
+//            } else {
+//                message = new Message("取消失败");
+//            }
+//        }
+//        return message;
+//
+//    }
 
     //好困好困好困好困好困好困好困好困好困好困
     @Override
@@ -75,17 +75,74 @@ public class ModleServiceImpl implements ModleService {
         //用户收藏非自己的模板
         int userId = Integer.parseInt(request.getParameter("userId"));
         int modleId = Integer.parseInt(request.getParameter("modleId"));
-//        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
+        Umr umr=new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);
+        umr.setMStatus(mStatus);
 
-        //调用modleDao来将收藏的东西insert
-        int i = modleDao.collectModleById(userId, modleId,mStatus);
-        if(i>0){
-            //成功插入
-            message=new Message("收藏成功");
-        }else{
-            message=new Message("收藏失败");
+        //先去modle表里找用户收藏的是不是自己的模板
+        int integer1 = modleDao.selectIfContain(umr);
+        if(integer1>0){
+            //说明是用户自己的模板,用户不能操作自己的模板
+            message=new Message("该操作违法！");
+            return message;
+        }else {
+
+
+            //先查看下该模板是否已被该用户所收藏了
+            //是为umr有该条表，说明此时已经收藏成功
+//        boolean b = umrDao.slelectIfCollect(umr);
+            int integer = umrDao.slelectIfCollect(umr);
+
+            //大于0为有这条记录
+            System.out.println(integer);
+            //第一种，用户自己收藏过
+            if (integer > 0) {
+                //umr 表中已经有对应的数据，说明此时已经是收藏了的
+                if (mStatus == 1) {
+                    //收藏了又收藏，报错
+                    message = new Message("收藏失败，该模板已被收藏");
+                } else {
+                    //此时如果不收藏，那就是取消收藏
+                    int i = umrDao.deleteUMRByModleId(umr);
+                    if (i > 0) {
+                        //取消收藏成功
+                        message = new Message("取消收藏成功");
+                    } else {
+                        message = new Message("取消收藏失败");
+                    }
+                }
+
+                //未收藏过
+            } else {
+                //用户想要收藏
+                if (mStatus == 1) {
+                    System.out.println("我来啦");
+                    //说明此时用户想要收藏
+                    int i = umrDao.insertUMR(umr);
+                    if (i > 0) {
+                        //说明收藏成功
+                        message = new Message("收藏成功");
+                    } else {
+                        message = new Message("收藏失败");
+                    }
+                } else {
+                    //umr表都没这个收藏，（用户又取消收藏，这时候要报错）
+                    message = new Message("例表里没有这个收藏呢，请收藏后再进行操作");
+                }
+            }
         }
+
+//        //调用modleDao来将收藏的东西insert
+//        int i = modleDao.collectModleById(userId, modleId,mStatus);
+//        if(i>0){
+//            //成功插入
+//            message=new Message("收藏成功");
+//        }else{
+//            message=new Message("收藏失败");
+//        }
+//        return message;
         return message;
     }
 
@@ -246,7 +303,11 @@ public class ModleServiceImpl implements ModleService {
     public Message deleteModle(HttpServletRequest request) {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         String path = modleDao.selectPathByModleId(modleId);
-        int deleteUmr = umrDao.deleteUMRByModleId(modleId);
+
+        Umr umr=new Umr();
+        umr.setModleId(modleId);
+        int deleteUmr = umrDao.deleteUMRByModleId(umr);
+
         int deleteModle = modleDao.deleteModle(modleId);
         File file = new File(path);
         boolean deleteFile = file.delete();

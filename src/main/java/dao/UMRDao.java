@@ -29,8 +29,16 @@ public interface UMRDao {
 
     /**
      * 删除umr关系
-     * @param modleId
+     * @param umr
      * @return
      */
-    int deleteUMRByModleId(int modleId);
+    int deleteUMRByModleId(Umr umr);
+
+    /**
+     * 根据传进来的userId和modleId查看某个模板是否被已被收藏
+     * @param umr
+     * @return
+     */
+    Integer slelectIfCollect(Umr umr);
+
 }

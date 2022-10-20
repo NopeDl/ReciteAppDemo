@@ -1,5 +1,6 @@
 package dao.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
@@ -16,6 +17,27 @@ public class ModleDaoImpl implements ModleDao {
     public ModleDaoImpl() {
         sqlSessionFactory = DaoUtil.getSqlSessionFactory();
     }
+
+
+    /**
+     * 收藏前先查看用户要收藏的模板是不是自己模板
+     * @param umr
+     * @return
+     */
+    @Override
+    public Integer selectIfContain(Umr umr) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> userId = sqlSession.selectList("ModleMapper.selectIfContain",umr);
+        sqlSession.close();
+        if(userId.size()==0){
+            //说明此时不属于该用户
+            return 0;
+        }else{
+            //说明此时属于用户自己的模板
+            return (((Count) userId.get(0)).getNumber()).intValue();
+        }
+    }
+
 
     /**
      * 获取某个模板的标题是叫什么
@@ -37,30 +59,30 @@ public class ModleDaoImpl implements ModleDao {
 
     }
 
-    /**
-     * 用户取消收藏的模板
-     * @param userId
-     * @param modleId
-     * @param mStatus
-     * @return
-     */
-    @Override
-    public int cancelMOdleById(int userId, int modleId, int mStatus) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        Umr umr = new Umr();
-        umr.setUserId(userId);
-        umr.setModleId(modleId);//将数据封装为一个umr对象
-        umr.setMStatus(mStatus);
-        int result = sqlSession.delete("UmrMapper.cancelMOdleById", umr);
-        if(result>0){
-            sqlSession.commit();
-        }else{
-            sqlSession.rollBack();
-        }
-
-        sqlSession.close();
-        return result;
-    }
+//    /**
+//     * 用户取消收藏的模板
+//     * @param userId
+//     * @param modleId
+//     * @param mStatus
+//     * @return
+//     */
+//    @Override
+//    public int cancelMOdleById(int userId, int modleId, int mStatus) {
+//        SqlSession sqlSession = sqlSessionFactory.openSession();
+//        Umr umr = new Umr();
+//        umr.setUserId(userId);
+//        umr.setModleId(modleId);//将数据封装为一个umr对象
+//        umr.setMStatus(mStatus);
+//        int result = sqlSession.delete("UmrMapper.cancelMOdleById", umr);
+//        if(result>0){
+//            sqlSession.commit();
+//        }else{
+//            sqlSession.rollBack();
+//        }
+//
+//        sqlSession.close();
+//        return result;
+//    }
 
     /**
      * 用户收藏别人的模板
@@ -73,14 +95,14 @@ public class ModleDaoImpl implements ModleDao {
         umr.setUserId(userId);
         umr.setModleId(modleId);//将数据封装为一个umr对象
         umr.setMStatus(mStatus);
-        int insert = sqlSession.insert("UmrMapper.collectModleById", umr);
-        if(insert>0){
+        int update = sqlSession.insert("UmrMapper.collectModleById", umr);
+        if(update>0){
             sqlSession.commit();
         }else{
             sqlSession.rollBack();
         }
         sqlSession.close();
-        return insert;
+        return update;
 
 
     }
@@ -315,6 +337,7 @@ public class ModleDaoImpl implements ModleDao {
         return flag;
     }
 
+
     @Override
     public String selectPathByModleId(int modleId) {
         Modle modle = new Modle();
@@ -373,6 +396,7 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         return update;
     }
+
 
 
 }

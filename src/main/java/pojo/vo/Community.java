@@ -9,6 +9,7 @@ public class Community {
     private String modlePath;
     private int modleLabel;
     private String content;//模板内容
+    private int common;
     private int coins;
     private int userId;
     private String nickName;
@@ -90,6 +91,15 @@ public class Community {
         this.coins = coins;
     }
 
+
+    public int getCommon() {
+        return common;
+    }
+
+    public void setCommon(int common) {
+        this.common = common;
+    }
+
     @Override
     public String toString() {
         return "Community{" +
@@ -98,6 +108,7 @@ public class Community {
                 ", modlePath='" + modlePath + '\'' +
                 ", modleLabel=" + modleLabel +
                 ", content='" + content + '\'' +
+                ", common=" + common +
                 ", coins=" + coins +
                 ", userId=" + userId +
                 ", nickName='" + nickName + '\'' +

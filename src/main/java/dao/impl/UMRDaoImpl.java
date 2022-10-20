@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.UMRDao;
+import pojo.po.Count;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import pojo.po.Modle;
@@ -80,15 +81,13 @@ public class UMRDaoImpl implements UMRDao {
 
     /**
      * 删除umr关系
-     * @param modleId
+     * @param umr
      * @return
      */
     @Override
-    public int deleteUMRByModleId(int modleId) {
-        Modle modle = new Modle();
-        modle.setModleId(modleId);
+    public int deleteUMRByModleId(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int delete = sqlSession.delete("UmrMapper.deleteUMRByModleId", modle);
+        int delete = sqlSession.delete("UmrMapper.deleteUMRByModleId",umr);
         if (delete>0){
             sqlSession.commit();
         }else {
@@ -97,4 +96,30 @@ public class UMRDaoImpl implements UMRDao {
         sqlSession.close();
         return delete;
     }
+
+    /**
+     * 根据传进来的userId和modleId查看某个模板是否被已被收藏
+     * 返回true,说明用户有收藏，否则没有收藏
+     * @param umr
+     * @return
+     */
+    @Override
+    public Integer slelectIfCollect(Umr umr) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> userId = sqlSession.selectList("UmrMapper.slelectIfCollect", umr);
+        sqlSession.close();
+        if(userId.size()==0){
+            //说明此时没有有结果
+            //umr中没有信息,说明没有收藏
+            return 0;
+        }else{
+            //说明有收藏
+            return (((Count) userId.get(0)).getNumber()).intValue();
+        }
+    }
+
+
+
+
+
 }
