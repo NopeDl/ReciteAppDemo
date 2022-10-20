@@ -1,7 +1,7 @@
 package dao.impl;
 
 import dao.UMRDao;
-import pojo.po.Count;
+import pojo.po.db.Count;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import pojo.po.db.Modle;

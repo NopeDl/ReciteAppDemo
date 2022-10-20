@@ -136,13 +136,7 @@ public class UserServiceImpl implements UserService {
             }
         } else if (base64 != null) {
             //说明返回来一个base64，应该将他存进static目录下的imgPath
-            String decode = null;
-            try {
-                decode = URLDecoder.decode(base64, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String imagePath = WriteImageAsTxt(decode, userId);
+            String imagePath = WriteImageAsTxt(base64, userId);
             //修改头像
             int i = userDao.updateImageByUserID(userId, imagePath);
             if (i > 0) {
