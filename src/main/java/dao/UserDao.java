@@ -2,11 +2,21 @@ package dao;
 
 import pojo.po.Count;
 import pojo.po.User;
+import pojo.vo.Community;
 import pojo.vo.Message;
 
 import java.util.List;
 
 public interface UserDao {
+
+
+    /**
+     * 根据用户id获取用户的昵称和头像
+     * @param community
+     * @return
+     */
+    User selectNameImgById(Community community);
+
     /**
      * 通过用户id获取该用户
      *
