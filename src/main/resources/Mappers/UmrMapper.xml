@@ -18,12 +18,12 @@
         insert into umr(userId,modleId,mStatus) values(#{userId},#{modleId},#{mStatus})
     </insert>
 
-    <delete id="cancelMOdleById" parameterType="pojo.po.Umr">
-        delete from umr where userId=#{userId} and modleId=#{modleId} and mStatus=#{mStatus}
-    </delete>
+<!--    <delete id="cancelMOdleById" parameterType="pojo.po.db.Umr">-->
+<!--        delete from umr where userId=#{userId} and modleId=#{modleId} and mStatus=#{mStatus}-->
+<!--    </delete>-->
 
     <!--slelectIfCollect-->
-    <select id="slelectIfCollect" parameterType="pojo.po.Umr" resultType="pojo.po.db.Count">
+    <select id="slelectIfCollect" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Count">
         select count(mstatus) as number from umr where userId=#{userId} and modleId=#{modleId}
     </select>
 

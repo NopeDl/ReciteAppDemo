@@ -21,6 +21,7 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 收藏前先查看用户要收藏的模板是不是自己模板
+     * 在modle表查询
      * @param umr
      * @return
      */
@@ -317,6 +318,7 @@ public class ModleDaoImpl implements ModleDao {
     public Modle selectModleIdByUserIdAndTitle(Modle modle) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> modleList = sqlSession.selectList("ModleMapper.selectModleId", modle);
+//        List<Object> modleList = sqlSession.selectList("ModleMapper.selectModleIdByUserIdAndTitle", modle);
         sqlSession.close();
         return modleList.size() > 0 ? (Modle) modleList.get(0) : null;
     }

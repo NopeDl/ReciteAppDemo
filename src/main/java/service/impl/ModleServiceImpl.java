@@ -433,7 +433,7 @@ public class ModleServiceImpl implements ModleService {
 
             //获得查询信息
 
-            //返回一个Community类型（不包括属性common）
+            //返回一个Community类型（包含modle里面的 所有属性）
             List<Community> modleList = modleDao.selectModlesByTag(modle);
             if (modleList.size() > 0) {
                 for (int i = 0; i < modleList.size(); i++) {
@@ -655,7 +655,7 @@ public class ModleServiceImpl implements ModleService {
                 msg.addData("isPublic", false);
             }
         } else {
-            //说明用户想要上传模板
+            //说明用户想要下架模板
             int success = modleDao.updateModleCommon(modleId, common);
             if (success > 0) {
                 msg = new Message("删除成功");
