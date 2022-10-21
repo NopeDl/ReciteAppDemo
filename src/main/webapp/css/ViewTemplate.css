@@ -139,6 +139,8 @@ body {
 .viewTemplate .view_box .template_box .title {
   margin-top: 2.53164557vw;
   font-size: 4.55696203vw;
+  padding-bottom: 3.79746835vw;
+  border-bottom: 1px solid #9c9c9c31;
   text-align: center;
 }
 .viewTemplate .view_box footer {

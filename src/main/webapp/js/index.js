@@ -14,6 +14,7 @@ for (let i = 0; i < $('.footer_nav li').length; i++) {
         }
         if (i == 3) {
             $('.community header').classList.remove('scroll_top');
+            $('.community header .label li')[0].onclick();
         }
 
         $('.main_page')[i].classList.remove('scroll_top');

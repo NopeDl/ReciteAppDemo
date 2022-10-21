@@ -37,7 +37,7 @@ $('.modify .confirm').onclick = (e) => {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?nickName=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
-            
+
             if (newstr.data.isSuccess) {
                 for (let x of $('.idname'))
                     x.innerHTML = modify_value;
@@ -45,7 +45,7 @@ $('.modify .confirm').onclick = (e) => {
                 $('.modify_succ').classList.add('modify_succani');
                 curr.userInfo.nickName = modify_value;
                 saveData('current_user', curr);
-            }else{
+            } else {
                 $('.modify_err').innerHTML = '用户名已被使用';
                 $('.modify_err').style.opacity = '1';
             }
@@ -57,17 +57,17 @@ $('.modify .confirm').onclick = (e) => {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?phone=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
-            if(newstr.data.isSuccess){
+            if (newstr.data.isSuccess) {
                 $('.modify_value')[modifyNum].innerHTML = modify_value;
                 $('.modify_title .left').onclick();
                 $('.modify_succ').classList.add('modify_succani');
                 curr.userInfo.phone = modify_value;
                 saveData('current_user', curr);
-            }else{
+            } else {
                 $('.modify_err').innerHTML = '手机号已被注册';
                 $('.modify_err').style.opacity = '1';
             }
-            
+
         }, true);
     }
     //修改密码
@@ -75,10 +75,10 @@ $('.modify .confirm').onclick = (e) => {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?password=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
-            if(newstr.data.isSuccess){
+            if (newstr.data.isSuccess) {
                 $('.modify_title .left').onclick();
                 $('.modify_succ').classList.add('modify_succani');
-            }else{
+            } else {
                 $('.modify_err').innerHTML = '修改密码失败';
                 $('.modify_err').style.opacity = '1';
             }
@@ -97,25 +97,26 @@ $('.modify').onclick = () => {
 
 $('.personal .head_portrait input').onchange = function (e) {
     const fileList = e.target.files;
-
+    let fd = new FormData($('.img_form'));
     if (fileList.length) {
         //通过window.URL.createObjectURL(files[0])获得一个http格式的url路径
         imgUrl = window.URL.createObjectURL(fileList[0]);
         //设置img中的src进行显示
         $('.personal .head_portrait img').src = imgUrl;
+        // var reader = new FileReader();
+        // reader.readAsDataURL(fileList[0])   //将读取的文件转换成base64格式
 
-        var reader = new FileReader();
-        reader.readAsDataURL(fileList[0])   //将读取的文件转换成base64格式
-        
-        reader.onload = function (e) {
-            let base64Data = e.target.result;
-            // var newBase64 = base64Data.replace(/\+/g, "%2B");
-            let newBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
-            console.log(base64Data);
-            ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?userId=${curr.userId}`,'post',`base64=${newBase64}`,(str) => {
-                let newstr = JSON.parse(str).msg;
-                console.log(newstr);
-            },true);
-        }
+        // reader.onload = function (e) {
+        //     let base64Data = e.target.result;
+        //     // var newBase64 = base64Data.replace(/\+/g, "%2B");
+        //     let newBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
+        //     console.log(base64Data);
+
+        // }
+
+        ajax(`http://8.134.104.234:8080/ReciteMemory/upload/uploadImg?userId=${curr.userId}`, 'post', fd, (str) => {
+            let newstr = JSON.parse(str).msg;
+            console.log(newstr);
+        }, false);
     }
 }

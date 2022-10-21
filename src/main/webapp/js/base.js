@@ -63,7 +63,7 @@ Array.prototype.remove = function (val) {
 };
 
 //新建模板到仓库
-function newTP(title, context, modleId, label, flag) {
+function newTP(title, context, modleId, label,common, flag) {
     let li = document.createElement('li');
     li.innerHTML = `<div class="tp_inner">
                         <div class="modleId">${modleId}</div>
@@ -82,6 +82,7 @@ function newTP(title, context, modleId, label, flag) {
                             <div class="tp_btn edit">编辑</div>
                             <div class="tp_btn del">删除</div>
                         </div>
+                        <div class="common">${common}</div>
                     </div>`
     if (flag) {
         $('.my_base .base_lis').prepend(li);
@@ -138,7 +139,17 @@ function comTP(title, context, modleId, label, username,name_flag) {
 }
 
 //上传页面渲染模板
-function UploadTP(title, context, modleId, label) {
+function UploadTP(title, context, modleId, label,common) {
+    let select = '';
+    if(common == 1){
+        select = `<div class="circle selected">
+                    <i class="iconfont icon-xuanze1"></i>
+                </div>`
+    }else{
+        select = `<div class="circle">
+                    <i class="iconfont icon-xuanze1"></i>
+                </div>`
+    }
     let li = document.createElement('li');
     li.innerHTML = `<div class="modleId">${modleId}</div>
                     <div class="content">
@@ -150,11 +161,7 @@ function UploadTP(title, context, modleId, label) {
                             <div class="info ellipsis">${context}</div>
                         </div>
                     </div>
-                    <div class="select">
-                        <div class="circle">
-                            <i class="iconfont icon-xuanze1"></i>
-                        </div>
-                    </div>`
+                    <div class="select">${select}</div>`
     $('.upload_page ul').prepend(li);
 }
 

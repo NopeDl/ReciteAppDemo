@@ -26,6 +26,24 @@ $('.start_game').onclick = () => {
             img_box.classList.remove("animated");
         }
         img_box.classList.add("xz");
+        // createWebSocket ();
+        ConnectionClicked();
     }, 2200);
-
 }
+
+ajax(`http://8.134.104.234:8080/ReciteMemory/inf.get/rankingList`, 'get', ``, (str) => {
+    let newstr = JSON.parse(str).msg;
+    console.log(newstr);
+    let ranking = newstr.data.ranking;
+    0
+    Array.from(ranking).forEach((x, i) => {
+        if (i < 10) {
+            $('.others_nav')[i].querySelectorAll('.left span')[1].innerHTML = x.nickName;
+            $('.others_nav')[i].querySelector('.right').innerHTML = `${x.stars}分`;
+        }
+        if (x.nickName == curr.userInfo.nickName) {
+            $('.ranking_list .mine .rank').innerHTML = `第${i+1}名`
+            $('.ranking_list .mine .score').innerHTML = `${x.stars}分`
+        }
+    })
+}, true);

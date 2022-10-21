@@ -114,7 +114,7 @@ a {
   position: fixed;
   display: flex;
   align-items: center;
-  width: 40vw;
+  width: 38.13333333vw;
   height: 14.66666667vw;
   border-radius: 2.66666667vw;
   background-color: #5f5ff9;
@@ -157,7 +157,7 @@ a {
   position: fixed;
   display: flex;
   align-items: center;
-  width: 40vw;
+  width: 38.13333333vw;
   height: 14.66666667vw;
   border-radius: 2.66666667vw;
   background-color: #fd6363;
@@ -168,7 +168,7 @@ a {
 .enterPk .pk_blood .time {
   width: 18.66666667vw;
   height: 18.66666667vw;
-  background-color: #9b9ff3;
+  background-color: #bba5dd;
   z-index: 100;
   border-radius: 100%;
   display: flex;
@@ -576,6 +576,17 @@ a {
   background-image: linear-gradient(to right, rgba(239, 239, 239, 0.436), rgba(217, 216, 216, 0.574), rgba(244, 241, 241, 0.722));
   border-radius: 2.66666667vw;
 }
+.enter_vs {
+  width: 18.13333333vw;
+  height: 18.13333333vw;
+  background-color: #bba5dd;
+  z-index: 100;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 10.66666667vw;
+  color: #fff;
+  line-height: 17.33333333vw;
+}
 .vs_title {
   z-index: 100;
   position: fixed;
@@ -899,6 +910,18 @@ a {
   animation-name: appearbottom;
   animation-timing-function: ease-in-out;
 }
+.disappearup {
+  -webkit-animation-name: disappearup;
+  animation-delay: 1s;
+  animation-name: disappearup;
+  animation-timing-function: ease-in-out;
+}
+.disappearbottom {
+  -webkit-animation-name: disappearbottom;
+  animation-delay: 1s;
+  animation-name: disappearbottom;
+  animation-timing-function: ease-in-out;
+}
 .appear {
   visibility: visible;
   animation-delay: 1.8s;
@@ -908,6 +931,9 @@ a {
   visibility: visible;
   animation-delay: 0.3s;
   animation-name: disappear;
+}
+.disappear_xz {
+  animation: disappear 1s forwards;
 }
 .appear_xz {
   visibility: visible;
@@ -948,6 +974,18 @@ a {
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes disappearup {
+  0% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
   }
 }
 @keyframes appearup2 {
@@ -993,6 +1031,18 @@ a {
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes disappearbottom {
+  0% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
   }
 }
 @keyframes appearbottom2 {

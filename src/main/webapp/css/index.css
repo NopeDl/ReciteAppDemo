@@ -145,7 +145,7 @@ body {
   line-height: 11.39240506vw;
 }
 .memory_base header .header_right .icon_btn .icon {
-  color: rgba(255, 187, 0, 0.608);
+  color: #ffd161;
   font-size: 8.10126582vw;
 }
 .memory_base header .header_right .change_ani {
@@ -218,6 +218,8 @@ body {
   align-items: center;
   transition: all 0.3s ease-in-out;
 }
+.memory_base .container .collection_base li .tp_inner .common,
+.memory_base .container .my_base li .tp_inner .common,
 .memory_base .container .collection_base li .tp_inner .modleId,
 .memory_base .container .my_base li .tp_inner .modleId {
   display: none;
@@ -599,6 +601,12 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10001;
+}
+.pk_end {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 10000;
 }
 .upload_page {
@@ -671,10 +679,12 @@ body {
   display: none;
 }
 .upload_page .container li .content {
+  width: 100%;
   padding: 3.79746835vw 0;
   border-bottom: 1px solid #e4e4e4;
 }
 .upload_page .container li .content .title_label {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -707,7 +717,6 @@ body {
 .upload_page .container li .select {
   padding-left: 5.06329114vw;
   padding-right: 2.53164557vw;
-  width: 45.56962025vw;
   height: 10.12658228vw;
   display: flex;
   justify-content: flex-end;

@@ -13,9 +13,9 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/modle/UserMemory?userId=${curr.user
             console.log(x);
             let newcon = x.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
             if (x.MStatus == '0')
-                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), true);
+                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common,true);
             else
-                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), false);
+                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common,false);
         }
         $('.footer_nav li')[0].onclick();
     } else {
@@ -39,7 +39,7 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/UserMsg?userId=${curr.userI
     } else {
         let img = 'data:image/jpeg;base64,' + curr.userInfo.base64;
         for (let x of $('.head_portrait img')) {
-            x.src = img;
+            x.src = curr.userInfo.base64;
         }
     }
 
@@ -57,10 +57,10 @@ $('.Making_page .header_left input').onchange = function(e) {
             $('.Making_page .loading').style.display = 'none';
             let newstr = JSON.parse(str).msg;
             let context = newstr.data.context;
-            let newcon = context.replace(/<\/p>/g, '').replace(/<p>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            // let newcon = context.replace(/<\/p>/g, '').replace(/<p>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
             //将文件内容渲染到页面
             $('.Making_page .title input').value = file.name;
-            $('.Making_page .text_box').innerHTML = newcon;
+            $('.Making_page .text_box').innerHTML = context;
         }, false)
     }
 }
@@ -112,7 +112,7 @@ $('.Making_page .popup_box button')[0].onclick = () => {
             ajax(`http://8.134.104.234:8080/ReciteMemory/modle/MakeModle`, 'post', poststr, (str) => {
                 let newstr = JSON.parse(str).msg;
                 let modle = newstr.data.modle;
-                newTP(newtitle, newcontext, modle.modleId, newlabel, true);
+                newTP(newtitle, newcontext, modle.modleId, newlabel,0,true);
                 //刷新仓库
                 $('.footer_nav li')[0].onclick();
                 MakingTP();
@@ -133,7 +133,7 @@ $('.Making_page .popup_box button')[1].onclick = () => {
             console.log(newstr);
             let modle = newstr.data.modle;
             newTPFlag = true;
-            newTP(newtitle, newcon, modle.modleId, newlabel, true);
+            newTP(newtitle, newcon, modle.modleId, newlabel, 0,true);
             //刷新仓库
             $('.footer_nav li')[0].onclick();
             $('.edit_page .title_name').value = newtitle;

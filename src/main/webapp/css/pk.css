@@ -111,9 +111,9 @@ body {
   color: #fff;
 }
 .pk_page .main .header .info .integral {
-  background-color: #e8e5e5;
-  opacity: 0.4;
+  background-color: rgba(232, 229, 229, 0.357);
   text-align: center;
+  padding: 0 1.26582278vw;
 }
 .pk_page .main .header .info .integral i {
   font-size: 5.06329114vw;
@@ -122,19 +122,16 @@ body {
 .pk_page .main .header .info .integral .icon-bonus-line {
   color: #fdb717;
   font-size: 5.06329114vw;
-  font-weight: 1000;
 }
 .pk_page .main .header .info .integral .cur {
   color: #000;
   opacity: 1;
   font-size: 4.55696203vw;
-  font-weight: 700;
 }
 .pk_page .main .header .info .integral .fixed {
   color: #000;
   opacity: 1;
   font-size: 3.03797468vw;
-  font-weight: 700;
 }
 .pk_page .main .competition_season {
   z-index: 1000;

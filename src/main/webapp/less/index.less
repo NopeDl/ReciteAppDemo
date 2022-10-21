@@ -98,7 +98,8 @@ body {
                 line-height: (45 / @vw);
 
                 .icon {
-                    color: rgba(255, 187, 0, 0.608);
+                    // color: rgba(255, 187, 0, 0.608);
+                    color: #ffd161;
                     font-size: (32 / @vw);
                 }
             }
@@ -181,6 +182,7 @@ body {
                     align-items: center;
                     transition: all .3s ease-in-out;
 
+                    .common,
                     .modleId {
                         display: none;
                     }
@@ -651,6 +653,13 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 10001;
+}
+
+.pk_end {
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 10000;
 }
 
@@ -732,10 +741,12 @@ body {
             }
 
             .content{
+                width: (100%);
                 padding: (15/@vw) 0;
                 border-bottom: 1px solid #e4e4e4;
 
                 .title_label{
+                    width: (100%);
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -775,7 +786,7 @@ body {
             .select{
                 padding-left: (20/@vw);
                 padding-right: (10/@vw);
-                width: (180/@vw);
+                // width: (180/@vw);
                 height: (40/@vw);
                 display: flex;
                 justify-content: flex-end;

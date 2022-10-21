@@ -221,8 +221,8 @@ a {
 .Making_page .popup2 .popup_box,
 .Making_page .popup .popup_box {
   position: absolute;
-  width: 75.94936709vw;
-  height: 75.94936709vw;
+  width: 65.82278481vw;
+  height: 50.63291139vw;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -236,14 +236,14 @@ a {
 }
 .Making_page .popup2 .popup_box button,
 .Making_page .popup .popup_box button {
-  width: 50.63291139vw;
-  height: 20.25316456vw;
+  width: 45.56962025vw;
+  height: 15.18987342vw;
   border: none;
   border-radius: 2.53164557vw;
   box-shadow: 1.01265823vw 1.01265823vw 3.79746835vw rgba(0, 0, 0, 0.296);
   background-color: #eeedf5;
   outline: none;
-  font-size: 6.58227848vw;
+  font-size: 4.55696203vw;
 }
 .Making_page .popup2 .popup_box button:last-child,
 .Making_page .popup .popup_box button:last-child {
@@ -251,8 +251,8 @@ a {
 }
 .Making_page .popup2 .popup_box {
   top: 40%;
-  height: 37.97468354vw;
-  font-size: 5.06329114vw;
+  height: 25.3164557vw;
+  font-size: 4.55696203vw;
 }
 .Making_page .container {
   width: 100%;

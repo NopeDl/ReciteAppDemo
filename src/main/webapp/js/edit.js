@@ -157,15 +157,17 @@ btns[3].onclick = () => {
     })
 
     if(fal){
-        if (newTPFlag) {
-            all('.my_base li')[0].querySelector('.title').innerHTML = title1;
-            all('.my_base li')[0].querySelector('.info').innerHTML = info1;
-            console.log(all('.my_base li')[0]);
-            all('.my_base li')[0].querySelector('.label span')[1].innerHTML = label1;
-        } else {
-            title.innerHTML = title1;
-            info.innerHTML = info1;
-            label.querySelectorAll('span')[1].innerHTML = label1;
+        if(mStatus == '0'){
+            if (newTPFlag) {
+                all('.my_base li')[0].querySelector('.title').innerHTML = title1;
+                all('.my_base li')[0].querySelector('.info').innerHTML = info1;
+                console.log(all('.my_base li')[0]);
+                all('.my_base li')[0].querySelector('.label span')[1].innerHTML = label1;
+            } else {
+                title.innerHTML = title1;
+                info.innerHTML = info1;
+                label.querySelectorAll('span')[1].innerHTML = label1;
+            }
         }
         let poststr = '';
         let newinfo = info1.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,'<缩进>');
@@ -181,12 +183,11 @@ btns[3].onclick = () => {
             if(mStatus == 1){
                 let modle = newstr.data.modle;
                 newTPFlag = true;
-                newTP(title1,info1,modle.modleId,label1,true);
-                $('.collection_base ul').removeChild(modleId.parentNode.parentNode);
+                newTP(title1,info1,modle.modleId,label1,0,true);
                 mStatus = 0;
                 $('.footer_nav li')[0].onclick();
             }
-            
+            xrcomTP();
         }, true);
         btns[3].classList.add('choice');
         $('.edit_page .header_right .name')[3].innerHTML = '已保存';
