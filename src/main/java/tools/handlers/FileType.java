@@ -11,7 +11,8 @@ public enum FileType {
     DOCX,
     DOC,
     PDF,
-    TXT;
+    TXT,
+    IMG;
 
     FileType() {
     }

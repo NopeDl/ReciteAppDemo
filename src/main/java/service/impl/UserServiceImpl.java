@@ -1,6 +1,7 @@
 package service.impl;
 
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dao.AccountDao;
 import dao.DateDao;
 import dao.ModleDao;
@@ -10,7 +11,9 @@ import dao.impl.DateDaoImpl;
 import dao.impl.ModleDaoImpl;
 import dao.impl.UserDaoImpl;
 import enums.MsgInf;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import pojo.po.db.User;
 import pojo.vo.Message;
 import service.UserService;
@@ -78,8 +81,10 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException(e);
             }
             //读取文本,这里表现为读取头像的base64路径
-            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-            String base64 = txtFileHandler.parseContent();//读取出来base64
+            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+            String base64 = imgHandler.parseContent();
+//            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+//            String base64 = txtFileHandler.parseContent();//读取出来base64
             user.setBase64(base64);
         }
         //将响应的数据封装到message里
@@ -276,7 +281,37 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
+    }
+
+    /**
+     * 保存头像
+     * @param request
+     * @return
+     */
+    @Override
+    public Message saveImg(HttpServletRequest request){
+        Message msg = new Message();
+        try {
+            //获取USERID
+            int userId = Integer.parseInt(request.getParameter("userId"));
+            Part image = request.getPart("image");
+            FileHandler imgFileHandler = FileHandlerFactory.getHandler("img",image.getInputStream());
+            String filePath = Resources.getResource("static/images/") + System.currentTimeMillis() + image.getSubmittedFileName();
+            //获取ReciteMemory/.......
+            //拼接图像路径
+            imgFileHandler.saveFile(filePath,null);
+            int i = userDao.updateImageByUserID(userId,filePath);
+            if (i>0){
+                msg.addData("uploadSuccess",true);
+            }else {
+                msg.addData("uploadSuccess",false);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        }
+        return msg;
     }
 }

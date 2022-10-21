@@ -100,7 +100,10 @@ public class PkRoom {
 
         //有bug，先写死
 //        this.blankNum = Math.min(p1BlankNum, p2BlankNum);
-        this.blankNum = 15;
+        // <div>
+        String matchStr = "</div>";
+        String content = p1Inf.getContent();
+        this.blankNum = StringUtil.subStrCount(content,matchStr);
 
         //根据难度和挖空数记录总时长
         //各个难度所对应每个空的时间不一样，先写死后续再优化！！！！！！
@@ -152,12 +155,19 @@ public class PkRoom {
             }
             //检查双方输赢状态
             SocketMessage msg;
+            boolean isContinue = true;
             if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
+                //有一边没血了
                 //结束比赛
+                isContinue = false;
                 this.end();
-            } else if (answersRecords.get(curUser).getAnswersRecord().size() == blankNum || answersRecords.get(getEnemy(curUser)).getAnswersRecord().size() == blankNum) {
+            }
+            if (answersRecords.get(curUser).getAnswersRecord().size() == blankNum || answersRecords.get(getEnemy(curUser)).getAnswersRecord().size() == blankNum) {
+                //有一边完成所有空数了
+                isContinue = false;
                 this.end();
-            } else {
+            }
+            if(isContinue){
                 //比赛还没结束
                 //将双方血量响应回去
                 msg = new SocketMessage();

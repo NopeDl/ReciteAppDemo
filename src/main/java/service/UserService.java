@@ -73,4 +73,11 @@ public interface UserService {
      * @return
      */
     String WriteImageAsTxt(String base64, int useId);
+
+    /**
+     * 存头像
+     * @param request
+     * @return
+     */
+    Message saveImg(HttpServletRequest request);
 }

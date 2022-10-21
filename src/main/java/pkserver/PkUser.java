@@ -11,6 +11,7 @@ import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import pkserver.threads.UserMatchThread;
+import pojo.po.db.File;
 import pojo.po.db.Modle;
 import pojo.po.db.User;
 import pojo.vo.MatchInf;
@@ -64,7 +65,7 @@ public class PkUser {
             }
 
             ResponseUtil.send(this.session, msg);
-        } else if ("Ready".equals(operate)) {
+            } else if ("Ready".equals(operate)) {
             //说明匹配成功准备开始比赛了
             if (!pkRoom.isTimerAlive()) {
                 //如果计时器没打开则打开计时器
@@ -206,6 +207,19 @@ public class PkUser {
                     //匹配成功
                     //根据用户id查找用户信息
                     user = userdao.selectUserById(enemyUserId);
+                    String path = user.getImage();
+                    try {
+                        InputStream touxianginput = new FileInputStream(path);
+                        FileHandler fileHandler = FileHandlerFactory.getHandler("img",touxianginput);
+                        String base64pic = fileHandler.parseContent();
+                        user.setBase64(base64pic);
+                        input.close();
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
             }
             SocketMessage msg;

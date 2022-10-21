@@ -1,6 +1,7 @@
 package tools.handlers;
 
 import tools.handlers.impl.DocFileHandler;
+import tools.handlers.impl.ImageFileHandler;
 import tools.handlers.impl.PDFFileHandler;
 import tools.handlers.impl.TXTFileHandler;
 
@@ -18,6 +19,8 @@ public class FileHandlerFactory {
             return new DocFileHandler(input,FileType.DOCX);
         } else if ("doc".equals(fileType)) {
             return new DocFileHandler(input,FileType.DOC);
+        } else if ("img".equals(fileType)) {
+            return new ImageFileHandler(input,FileType.IMG);
         } else {
             return null;
         }

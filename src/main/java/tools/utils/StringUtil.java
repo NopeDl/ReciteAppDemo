@@ -17,6 +17,28 @@ import java.util.Random;
 
 public class StringUtil {
     /**
+     * 获取子串个数
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public static int subStrCount(String s1,String s2) {
+        int index,count=0;
+        if(!s1.contains(s2)){
+            return 0;
+        }
+        index=s1.indexOf(s2);
+        while (index!=-1) {
+            count++;
+            index=s1.indexOf(s2,index+1);//方法一：使用indexOf方法；
+
+            //s1=s1.substring(index+s2.length());//方法二：使用subString方法
+            //index=s1.indexOf(s2);
+        }
+        return count;
+    }
+
+    /**
      * 获取uri
      *
      * @param url 需要解析的url

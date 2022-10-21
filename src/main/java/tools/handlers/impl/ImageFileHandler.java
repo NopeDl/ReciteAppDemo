@@ -1,10 +1,14 @@
 package tools.handlers.impl;
 
+import sun.misc.BASE64Encoder;
 import tools.handlers.BaseFileHandler;
 import tools.handlers.FileType;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Base64;
+
+import static javax.xml.crypto.dsig.Transform.BASE64;
 
 /**
  * @author yeyeye
@@ -27,7 +31,15 @@ public class ImageFileHandler extends BaseFileHandler {
      */
     @Override
     public String parseContent(InputStream input) {
-        return null;
+        //将图片转成base64
+        byte[] bytes = null;
+        try {
+            bytes = new byte[input.available()];
+            input.read(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(bytes));
     }
 
     @Override
@@ -39,15 +51,19 @@ public class ImageFileHandler extends BaseFileHandler {
             }
             OutputStream out = Files.newOutputStream(file.toPath());
             InputStream input = getInput();
-            int len;
-            byte[] bytes = new byte[1024];
-            while ((len = input.read(bytes))!= -1){
-                out.write(bytes,0,len);
-            }
+            byte[] bytes = new byte[input.available()];
+            input.read(bytes);
+            out.write(bytes);
             out.close();
+//            int len;
+//            byte[] bytes = new byte[1024];
+//            while ((len = input.read(bytes))!= -1){
+//                out.write(bytes,0,len);
+//            }
+//            out.close();
         }catch (IOException e){
             e.printStackTrace();
         }
-        return null;
+        return filePath.substring(filePath.indexOf("ReciteMemory"));
     }
 }
