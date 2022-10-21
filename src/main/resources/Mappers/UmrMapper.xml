@@ -18,7 +18,7 @@
         insert into umr(userId,modleId,mStatus) values(#{userId},#{modleId},#{mStatus})
     </insert>
 
-    <delete id="cancelMOdleById" parameterType="pojo.po.Umr">
+    <delete id="cancelMOdleById" parameterType="pojo.po.db.Umr">
         delete from umr where userId=#{userId} and modleId=#{modleId} and mStatus=#{mStatus}
     </delete>
 
