@@ -114,7 +114,7 @@ public class PkUser {
     }
 
 
-    @OnClose    
+    @OnClose
     public synchronized void onClose(Session session) throws IOException {
         //清空三个池中的数据
         if (pkRoom != null){
