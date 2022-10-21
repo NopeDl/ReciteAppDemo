@@ -178,6 +178,7 @@ public class PkRoom {
      */
     public synchronized void end() {
         //将输赢信息封装
+        roomBroadcast(new SocketMessage(SocketMsgInf.MATCH_END));
         SocketMessage result = getWinner();
         roomBroadcast(result);
         //结束游戏,并关闭房间

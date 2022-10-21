@@ -17,7 +17,9 @@ public enum SocketMsgInf {
     MATCH_FAILED("MATCH_FAILED",false),
     NOT_MATCH("NOT_MATCH",false),
     JSON_ERROR("JSON_ERROR",false),
-    MATCH_INVALID("MATCH_INVALID",false);
+    MATCH_INVALID("MATCH_INVALID",false),
+
+    MATCH_END("MATCH_END",false);
 
 
 
