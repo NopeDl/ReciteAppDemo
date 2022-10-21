@@ -13,7 +13,7 @@ public class Community {
     private int coins;
     private int userId;
     private String nickName;
-    private String img;
+    private String base64;
 
     public Community() {
     }
@@ -75,12 +75,21 @@ public class Community {
         this.nickName = nickName;
     }
 
-    public String getImg() {
-        return img;
+//    public String getImg() {
+//        return img;
+//    }
+//
+//    public void setImg(String img) {
+//        this.img = img;
+//    }
+
+
+    public String getBase64() {
+        return base64;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 
     public int getCoins() {
@@ -112,7 +121,7 @@ public class Community {
                 ", coins=" + coins +
                 ", userId=" + userId +
                 ", nickName='" + nickName + '\'' +
-                ", img='" + img + '\'' +
+                ", img='" + base64 + '\'' +
                 '}';
     }
 }

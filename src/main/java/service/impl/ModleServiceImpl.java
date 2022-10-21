@@ -440,11 +440,12 @@ public class ModleServiceImpl implements ModleService {
 
             //返回一个Community类型（包含modle里面的 所有属性）
             List<Community> modleList = modleDao.selectModlesByTag(modle);
+            InputStream input;
             if (modleList.size() > 0) {
                 for (int i = 0; i < modleList.size(); i++) {
                     //根据路径读取文件内容
                     String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
-                    InputStream input;
+//                    InputStream input;
                     try {
                         input = new FileInputStream(modlePath);
                     } catch (FileNotFoundException e) {
@@ -461,11 +462,89 @@ public class ModleServiceImpl implements ModleService {
                     if(user!=null){
                         //传进来昵称和头像
                         modleList.get(i).setNickName(user.getNickName());
-                        modleList.get(i).setImg(user.getImage());
+//                        modleList.get(i).setImg(user.getImage());
+                        String imagepath = user.getImage();//获取用户头像的显示地址
+
+                        //从我开始
+                        if ("".equals(imagepath)) {
+                            //说明此时头像为默认头像，不需要重新读取
+                            //将响应的数据封装到message里
+                            user.setBase64("");
+                        } else {
+//                            //说明头像已经改变过了，需要重新读取
+//                            imagepath = user.getImage();//头像的存放路径
+//                            InputStream inputStream;
+                            try {
+//                                inputStream = new FileInputStream(imagepath);
+                                input = new FileInputStream(imagepath);
+//                                inputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //读取文本,这里表现为读取头像的base64路径
+                            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+                            String base64 = imgHandler.parseContent();
+                            modleList.get(i).setBase64(base64);
+                        }
+
                     }
+
+
+
+
+//            个Community类型（包含modle里面的 所有属性）
+//            List<Community> modleList = modleDao.selectModlesByTag(modle);
+//            if (modleList.size() > 0) {
+//                for (int i = 0; i < modleList.size(); i++) {
+//                    //根据路径读取文件内容
+//                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
+//                    InputStream input;
+//                    try {
+//                        input = new FileInputStream(modlePath);
+//
+//                    //读取文本
+//                    FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+//                    String content = txtFileHandler.parseContent();
+////                    modleList.get(i).setContent(content);
+//                    modleList.get(i).setContent(content);
+//                    modleList.get(i).setModlePath("");
+//
+//                    User user = userDao.selectNameImgById(modleList.get(i));
+//                    if(user!=null){
+//                        //传进来昵称和头像
+//                        modleList.get(i).setNickName(user.getNickName());
+////                        modleList.get(i).setImg(user.getImage());
+//                        String imagepath = user.getImage();//获取用户头像的显示地址\
+//
+//                        //从我开始
+//                        if ("".equals(user.getImage())) {
+//                            //说明此时头像为默认头像，不需要重新读取
+//                            //将响应的数据封装到message里
+//                            user.setBase64("");
+//                        } else {
+//                            //说明头像已经改变过了，需要重新读取
+//                            String imagePath = user.getImage();//头像的存放路径
+//                            InputStream inputStream;
+//
+//                                inputStream = new FileInputStream(imagePath);
+//                                inputStream.close();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            //读取文本,这里表现为读取头像的base64路径
+//                            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+//                            String base64 = imgHandler.parseContent();
+//                            modleList.get(i).setImg(base64);
+//                        }
+//
+//                    }
+
+
+            //从我结束
                     //不回显给前端路径
                     modleList.get(i).setModlePath(null);
                 }
+
 
 //                System.out.println(modleList.get(0));
                 //封装响应信息
@@ -481,7 +560,7 @@ public class ModleServiceImpl implements ModleService {
     }
 
     /**
-     * '
+     *
      * 给模板打赏
      *
      * @param request 请求
