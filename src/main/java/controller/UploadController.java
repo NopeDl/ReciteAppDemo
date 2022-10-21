@@ -29,6 +29,8 @@ public class UploadController extends HttpServlet {
         if ("parseContent".equals(uri)) {
             //获取PDF并解析内容
             msg = modleService.parseFile(request);
+        } else if ("uploadImg".equals(uri)) {
+            msg = null;
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
