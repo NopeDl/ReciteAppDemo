@@ -306,14 +306,18 @@ public class ModleServiceImpl implements ModleService {
 
         Umr umr=new Umr();
         umr.setModleId(modleId);
-        int deleteUmr = umrDao.deleteUMRByModleId(umr);
+//        int deleteUmr = umrDao.deleteUMRByModleId(umr);
+//        //查看在umr表中是否删除成功
+//        System.out.println("deleteUmr:"+deleteUmr);
 
         int deleteModle = modleDao.deleteModle(modleId);
+
         File file = new File(path);
         boolean deleteFile = file.delete();
         //没有用事务,可能会有bug
         Message msg;
-        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
+//        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
+        if (0 != deleteModle && deleteFile) {
             msg = new Message("删除成功");
             msg.addData("deleteSuccess", true);
         } else {
