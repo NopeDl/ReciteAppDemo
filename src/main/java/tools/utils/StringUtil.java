@@ -51,22 +51,24 @@ public class StringUtil {
             //获取文件内容
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
             String content = txtHandler.parseContent();
-            //去除所有用户自己挖空内容
-            //需要优化太耗时
-            content = content.replaceAll("<div>", "").replaceAll("</div>", "");
-
-            //根据模板字符数确定要挖的字数
-            int charNum = (int) Math.round(content.length() * ratio);
-            //计算需要挖的空数
-            //假定要挖的空为  charNum * ratio
-            int blankNum = getBlankNumByContentLength(charNum,ratio);
-            //挖空
-            List<Integer> charNums = new ArrayList<>();
-            Random random = new Random(System.currentTimeMillis());
-            for (int i = 0; i < blankNum; i++) {
-                charNums.add(random.nextInt(10) + 1);
-            }
-             return StringUtil.digBlank(content, charNums, blankNum);
+            return content;
+            /// 禁用自动挖空，有bug
+//            //去除所有用户自己挖空内容
+//            //需要优化太耗时
+//            content = content.replaceAll("<div>", "").replaceAll("</div>", "");
+//
+//            //根据模板字符数确定要挖的字数
+//            int charNum = (int) Math.round(content.length() * ratio);
+//            //计算需要挖的空数
+//            //假定要挖的空为  charNum * ratio
+//            int blankNum = getBlankNumByContentLength(charNum,ratio);
+//            //挖空
+//            List<Integer> charNums = new ArrayList<>();
+//            Random random = new Random(System.currentTimeMillis());
+//            for (int i = 0; i < blankNum; i++) {
+//                charNums.add(random.nextInt(10) + 1);
+//            }
+//             return StringUtil.digBlank(content, charNums, blankNum);
         }catch (IOException e){
             throw new RuntimeException("获取" + path + "流失败");
         }

@@ -57,7 +57,12 @@ public class PkUser {
         SocketMessage msg;
         if ("START".equals(operate)) {
             //开始匹配
-            msg = startMatch();
+            if (isValidMatch()){
+                msg = startMatch();
+            }else {
+                msg = new SocketMessage(SocketMsgInf.MATCH_INVALID);
+            }
+
             ResponseUtil.send(this.session, msg);
         } else if ("Ready".equals(operate)) {
             //说明匹配成功准备开始比赛了
@@ -109,8 +114,16 @@ public class PkUser {
     }
 
 
-    @OnClose
-    public void onClose(Session session) throws IOException {
+    @OnClose    
+    public synchronized void onClose(Session session) throws IOException {
+        //清空三个池中的数据
+        if (pkRoom != null){
+            //结束房间
+            pkRoom.end();
+        }else {
+            //清除匹配状态
+            StatusPool.MATCHING_POOL.remove(this.matchInf);
+        }
         //发送关闭消息
         SocketMessage smsg = new SocketMessage(SocketMsgInf.SERVER_CLOSE);
         ResponseUtil.send(this.session, smsg);
@@ -135,6 +148,18 @@ public class PkUser {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+
+    /**
+     * 检测当前用户匹配是否合法
+     * @return bool
+     */
+    private boolean isValidMatch(){
+        //遍历三个池
+        boolean b = StatusPool.MATCHING_POOL.containsKey(this.matchInf);
+        boolean b1 = StatusPool.MATCHED_POOL.containsKey(this.matchInf);
+        return !(b || b1);
     }
 
     /**

@@ -71,7 +71,7 @@ body {
 }
 .calendar_page {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   background-color: #f4f4f4;
   transition: all 0.3s ease-in-out;
@@ -91,7 +91,7 @@ body {
 .calendar_page .bcg {
   position: absolute;
   width: 100%;
-  height: 240px;
+  height: 60.75949367vw;
   background-color: #aea0d5;
 }
 .calendar_page .calendar {
@@ -227,7 +227,13 @@ body {
 .calendar_page .calendar .calendar_body .calendar_days div.curr_date:hover {
   color: #000;
   border-radius: 50%;
-  border: 1px solid #0000ff;
+  border: 1px solid #8465d8;
+}
+.calendar_page .calendar .calendar_body .calendar_days div.clock_in {
+  background-color: #aea0d5;
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
 }
 .calendar_page .calendar .calendar_body .calendar_days div.curr_date span {
   display: none;
@@ -311,7 +317,7 @@ body {
   background-color: #fdfdfd;
   padding: 5.06329114vw;
   grid-template-columns: repeat(3, auto);
-  gap: 5px;
+  gap: 1.26582278vw;
   display: grid;
   visibility: hidden;
   pointer-events: none;

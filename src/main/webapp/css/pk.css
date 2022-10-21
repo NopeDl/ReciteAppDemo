@@ -181,11 +181,10 @@ body {
 }
 .pk_page .main .competition_season .season_box .role {
   margin: 0  auto;
-  margin-top: 5.06329114vw;
-  width: 37.97468354vw;
+  margin-top: 3.79746835vw;
+  width: 26.58227848vw;
 }
 .pk_page .main .competition_season .season_box .role img {
-  margin-left: 5.06329114vw;
   width: 100%;
   height: 100%;
 }
@@ -219,11 +218,12 @@ body {
 .pk_page .main .ranking_list {
   z-index: 100;
   width: 100vw;
-  height: 168.86075949vw;
+  height: calc(100vh - 17vw);
   transition: all 0.2s;
   background-color: #fff;
-  border-radius: 6% 6% 0 0;
-  background-image: url(../images/pk/排行榜.png);
+  border-radius: 5.06329114vw;
+  overflow: scroll;
+  background: url(../images/pk/排行榜.png) no-repeat;
 }
 .pk_page .main .ranking_list .laiqu {
   width: 100%;

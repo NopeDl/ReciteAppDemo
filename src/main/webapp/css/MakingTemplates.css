@@ -122,8 +122,8 @@ a {
   font-size: 6.32911392vw;
   margin-right: 1.26582278vw;
 }
-.Making_page header .header_left .icon-gongxiangtubiaozhuangtaileicaozuolei37,
-.Making_page header .header_right .icon-gongxiangtubiaozhuangtaileicaozuolei37 {
+.Making_page header .header_left .icon,
+.Making_page header .header_right .icon {
   font-size: 5.82278481vw;
 }
 .Making_page .loading {
@@ -269,6 +269,7 @@ a {
   background-color: #eeedf5;
 }
 .Making_page .container .title .label {
+  position: relative;
   width: 25.3164557vw;
   height: 100%;
   text-align: center;
@@ -280,6 +281,23 @@ a {
 .Making_page .container .title .label .icon {
   font-size: 4.55696203vw;
   font-weight: 700;
+}
+.Making_page .container .title .label .label_menu {
+  position: absolute;
+  top: 10.12658228vw;
+  left: 0;
+  width: 19.36708861vw;
+  height: 22.78481013vw;
+  transition: all 0.3s;
+  transform: scale(0);
+  transform-origin: top center;
+}
+.Making_page .container .title .label .label_menu ul li {
+  width: 100%;
+  height: 7.59493671vw;
+  background-color: #cec2ff;
+  text-align: center;
+  line-height: 7.59493671vw;
 }
 .Making_page .container .title input {
   border-radius: 1.26582278vw;
@@ -294,14 +312,15 @@ a {
   background-color: #ffffff;
   margin: 5.06329114vw auto;
   width: 93.67088608vw;
-  height: 144.30379747vw;
+  height: 66vh;
   padding: 2.53164557vw;
   overflow: scroll;
   outline: none;
   font-size: 4.55696203vw;
   border-radius: 1.26582278vw;
   box-shadow: 0.50632911vw 0.50632911vw 2.53164557vw rgba(0, 0, 0, 0.349);
-  text-indent: 2rem;
+  line-height: 8.86075949vw;
+  letter-spacing: 0.15em;
 }
 .Making_page footer {
   position: fixed;

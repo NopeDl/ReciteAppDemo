@@ -66,9 +66,6 @@ a {
   font-style: normal;
   font-display: block;
 }
-body {
-  background-color: #f8f8f8;
-}
 .community {
   background-color: #f4f4f4;
   z-index: 1000;
@@ -76,8 +73,6 @@ body {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100vh;
-  overflow: scroll;
   transition: all 0.2s;
 }
 .community header {
@@ -86,20 +81,34 @@ body {
   left: 0;
   top: 0;
   width: 100%;
-  height: 12.8vw;
+  height: 24vw;
   background-color: #fff;
+  transition: all 0.2s;
+}
+.community header .search {
+  height: 12.8vw;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  padding: 0 4vw;
+  padding: 0 2.66666667vw;
   transition: all 0.2s;
+  font-size: 3.2vw;
+  text-align: center;
+  color: #5c4eaf;
+}
+.community header .search .upload .icon-zhongguohangtiantubiaoheji-weizhuanlunkuo- {
+  font-size: 6.93333333vw;
+}
+.community header .search .upload .sz {
+  font-weight: 700;
+  font-size: 3.2vw;
 }
 .community header .header_search {
   position: relative;
 }
 .community header .header_search input {
   padding: 0 2.66666667vw;
-  width: 80vw;
+  width: 74.66666667vw;
   height: 6.66666667vw;
   border-radius: 4vw;
   background-color: #ecedef;
@@ -127,38 +136,67 @@ body {
   text-align: center;
   line-height: 10.66666667vw;
 }
-.community main {
-  margin-top: 16vw;
+.community header .label {
+  height: 8vw;
+}
+.community header .label ul {
+  display: flex;
+  padding-bottom: 5.33333333vw;
+}
+.community header .label ul li {
+  text-align: center;
+  width: 8vw;
+  padding: 2.66666667vw 0;
+  flex: 1;
+}
+.community header .label ul .active {
+  border-bottom: 2px solid #ab97c9;
+}
+.community main .zhanwei {
+  width: 100%;
+  height: 26.66666667vw;
+}
+.community main .commutity_box {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
 }
 .community main .community_ul {
+  height: calc(100vh - 17vw);
   border-radius: 2.66666667vw;
+  overflow: scroll;
 }
 .community main .community_ul li {
   display: block;
+  padding: 0 2.66666667vw;
   border-radius: 2.66666667vw;
   margin-bottom: 5.33333333vw;
-  background-color: #ab97c9;
+  background-color: #f4f4f4;
   padding-bottom: 1.33333333vw;
 }
+.community main .community_ul li .modleId {
+  display: none;
+}
 .community main .community_ul li .color {
-  background-color: #ab97c9a2;
+  background-color: #fff;
   padding-top: 2.66666667vw;
+  box-shadow: 0.26666667vw 0.53333333vw 1.33333333vw 0.53333333vw rgba(159, 157, 157, 0.381);
 }
 .community main .community_ul li .color .upper {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 2.66666667vw;
+  padding: 0 5.33333333vw;
 }
 .community main .community_ul li .color .upper .head_portrait {
-  width: 12vw;
+  width: 10.66666667vw;
   border-radius: 100%;
 }
 .community main .community_ul li .color .upper .head_portrait img {
   border-radius: 100%;
 }
 .community main .community_ul li .color .upper .idname1 {
-  font-size: 4vw;
+  font-size: 3.73333333vw;
   margin-left: 2.66666667vw;
 }
 .community main .community_ul li .color .ellipsis {
@@ -170,10 +208,9 @@ body {
 }
 .community main .community_ul li .color .content {
   margin: 0 4vw;
-  margin-top: 4vw;
+  margin-top: 1.33333333vw;
   padding: 0 6.66666667vw;
   border-radius: 2.66666667vw;
-  background-color: #75599c7a;
 }
 .community main .community_ul li .color .content h4 {
   width: 48vw;
@@ -181,20 +218,37 @@ body {
   padding-top: 4vw;
   font-size: 4.8vw;
 }
-.community main .community_ul li .color .content .info_box {
-  height: 13.33333333vw;
-}
 .community main .community_ul li .color .content .info_box .info {
   font-size: 3.73333333vw;
-  line-height: 5.33333333vw;
+  line-height: 6.66666667vw;
 }
 .community main .community_ul .click {
   position: relative;
-  height: 8vw;
+  height: 13.33333333vw;
   line-height: 8vw;
-  margin-top: 1.33333333vw;
   padding: 0 5.33333333vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-align: right;
+}
+.community main .community_ul .click .label {
+  display: inline-block;
+  margin-top: 1.33333333vw;
+  height: 6.66666667vw;
+  width: auto;
+  border-radius: 5.33333333vw;
+  line-height: 6.66666667vw;
+  padding: 0 2.66666667vw;
+  text-align: left;
+  background-color: #ab97c974;
+}
+.community main .community_ul .click .label span {
+  color: #323232;
+  font-size: 3.2vw;
+}
+.community main .community_ul .click .label .icon-shuqianguanli {
+  font-size: 3.73333333vw;
 }
 .community main .community_ul .click i {
   text-align: center;
@@ -209,7 +263,7 @@ body {
 }
 .community main .community_ul .click .inter_box {
   position: absolute;
-  top: 0.53333333vw;
+  top: 3.2vw;
   right: 16vw;
   width: 0vw;
   overflow: hidden;
@@ -217,9 +271,12 @@ body {
 }
 .community main .community_ul .click .inter_box .interactive {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: center;
   width: 42.66666667vw;
+}
+.community main .community_ul .click .inter_box .interactive .hidden {
+  display: none !important;
 }
 .community main .community_ul .click .inter_box .interactive span {
   display: flex;
@@ -242,6 +299,10 @@ body {
 }
 .community main .community_ul .click .inter_box .interactive .yellow {
   color: rgba(254, 211, 20, 0.943);
+}
+.community main .footer {
+  width: 100%;
+  height: 18.66666667vw;
 }
 .community .community_footer {
   width: 100%;

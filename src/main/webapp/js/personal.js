@@ -5,15 +5,6 @@ $('.personal .exit').onclick = () => {
     location.href = './login.html';
 }
 
-// 随机排列数组
-let arr12 = ['qwe', '23e', 'q123', '32we', '423we', '3242']
-arr12.sort(function () {
-    return 0.5 - Math.random();
-})
-// 取数组随机排列后的前三个元素放在另一个数组，之后将这三个元素作为li的索引值
-let newArr = arr12.slice(0, 3);
-// console.log(newArr);
-
 let modifyNum = 0;
 let modifyArr = ['修改昵称', '修改手机号', '修改密码'];
 let modifyErrArr = ['昵称格式错误', '手机号格式错误', '密码格式错误']
@@ -36,15 +27,17 @@ $('.modify_title .left').onclick = () => {
 let nameReg = /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/;
 let phoneReg = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
 let passwordReg = /^[a-zA-Z0-9_]{6,16}$/;
-$('.modify .confirm').onclick = () => {
+$('.modify .confirm').onclick = (e) => {
     //保存修改的内容
     let modify_value = $('.Modify_interface input').value;
     //修改昵称
-
+    e.stopPropagation();
+    console.log(modifyNum);
     if (modifyNum == 0 && nameReg.test(modify_value)) {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?nickName=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
+            
             if (newstr.data.isSuccess) {
                 for (let x of $('.idname'))
                     x.innerHTML = modify_value;
@@ -58,12 +51,9 @@ $('.modify .confirm').onclick = () => {
             }
 
         }, true);
-    } else {
-        $('.modify_err').innerHTML = modifyErrArr[modifyNum];
-        $('.modify_err').style.opacity = '1';
     }
     //修改手机号
-    if (modifyNum == 1 && phoneReg.test(modify_value)) {
+    else if (modifyNum == 1 && phoneReg.test(modify_value)) {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?phone=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
@@ -79,16 +69,19 @@ $('.modify .confirm').onclick = () => {
             }
             
         }, true);
-    } else {
-        $('.modify_err').innerHTML = modifyErrArr[modifyNum];
-        $('.modify_err').style.opacity = '1';
     }
     //修改密码
-    if (modifyNum == 2 && passwordReg.test(modify_value)) {
+    else if (modifyNum == 2 && passwordReg.test(modify_value)) {
         ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?password=${modify_value}&userId=${curr.userId}`, 'get', '', (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr, modifyNum);
-
+            if(newstr.data.isSuccess){
+                $('.modify_title .left').onclick();
+                $('.modify_succ').classList.add('modify_succani');
+            }else{
+                $('.modify_err').innerHTML = '修改密码失败';
+                $('.modify_err').style.opacity = '1';
+            }
         }, true);
     } else {
         $('.modify_err').innerHTML = modifyErrArr[modifyNum];
@@ -98,4 +91,31 @@ $('.modify .confirm').onclick = () => {
 
 $('.modify').onclick = () => {
     $('.modify_err').style.opacity = '0';
+}
+
+//上传头像 
+
+$('.personal .head_portrait input').onchange = function (e) {
+    const fileList = e.target.files;
+
+    if (fileList.length) {
+        //通过window.URL.createObjectURL(files[0])获得一个http格式的url路径
+        imgUrl = window.URL.createObjectURL(fileList[0]);
+        //设置img中的src进行显示
+        $('.personal .head_portrait img').src = imgUrl;
+
+        var reader = new FileReader();
+        reader.readAsDataURL(fileList[0])   //将读取的文件转换成base64格式
+        
+        reader.onload = function (e) {
+            let base64Data = e.target.result;
+            // var newBase64 = base64Data.replace(/\+/g, "%2B");
+            let newBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
+            console.log(base64Data);
+            ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/ReMessage?userId=${curr.userId}`,'post',`base64=${newBase64}`,(str) => {
+                let newstr = JSON.parse(str).msg;
+                console.log(newstr);
+            },true);
+        }
+    }
 }

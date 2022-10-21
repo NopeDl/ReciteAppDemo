@@ -61,7 +61,7 @@
                 margin-right: (5 / @vw);
             }
 
-            .icon-gongxiangtubiaozhuangtaileicaozuolei37 {
+            .icon {
                 font-size: (23 / @vw);
             }
         }
@@ -227,6 +227,7 @@
             background-color: #eeedf5;
 
             .label {
+                position: relative;
                 width: (100 / @vw);
                 height: 100%;
                 text-align: center;
@@ -240,6 +241,27 @@
                     font-size: (18 / @vw);
                     font-weight: 700;
                 }
+                .label_menu {
+                    position: absolute;
+                    top: (40 / @vw);
+                    left: 0;
+                    width: (76.5 / @vw);
+                    height: (90 / @vw);
+                    transition: all .3s;
+                    transform: scale(0);
+                    transform-origin: top center;
+
+                    ul {
+                        li {
+                            width: 100%;
+                            height: (30 / @vw);
+                            background-color: #cec2ff;
+                            text-align: center;
+                            line-height: (30 / @vw);
+                        }
+                    }
+                }
+
             }
 
             input {
@@ -257,14 +279,15 @@
             background-color: rgb(255, 255, 255);
             margin: (20 / @vw) auto;
             width: (370 / @vw);
-            height: (570 / @vw);
+            height: 66vh;
             padding: (10 / @vw);
             overflow: scroll;
             outline: none;
             font-size: (18 / @vw);
             border-radius: (5 / @vw);
             box-shadow: (2 / @vw) (2 / @vw) (10 / @vw) rgba(0, 0, 0, 0.349);
-            text-indent: 2rem;
+            line-height: (35/@vw);
+            letter-spacing: 0.15em;
         }
     }
 

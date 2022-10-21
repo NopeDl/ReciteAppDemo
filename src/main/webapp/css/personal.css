@@ -75,12 +75,11 @@ body {
   left: 0;
   transition: all 0.2s;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  height: calc(100% - 17vw);
 }
 .personal .person_main {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: scroll;
 }
 .personal .person_main .modify_succ {
@@ -90,11 +89,10 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: 37.97468354vw;
-  height: 12.65822785vw;
-  border-radius: 2.53164557vw;
+  height: 10.12658228vw;
   background-color: #eae5ff;
   text-align: center;
-  line-height: 12.65822785vw;
+  line-height: 10.12658228vw;
   font-size: 5.06329114vw;
 }
 .personal .person_main .modify_succani {
@@ -116,17 +114,15 @@ body {
 }
 .personal .person_main .system_settings,
 .personal .person_main .personal_box {
-  margin-top: 3.79746835vw;
   background-color: #fff;
   padding: 0 7.59493671vw;
-  border-radius: 5%;
 }
 .personal .person_main .system_settings .head_portrait,
 .personal .person_main .personal_box .head_portrait {
   margin: 0 auto;
   position: relative;
-  width: 30.37974684vw;
-  height: 30.37974684vw;
+  width: 27.84810127vw;
+  height: 27.84810127vw;
   display: flex;
   justify-content: center;
 }
@@ -143,13 +139,13 @@ body {
 }
 .personal .person_main .system_settings .head_portrait img,
 .personal .person_main .personal_box .head_portrait img {
-  width: 30.37974684vw;
-  height: 30.37974684vw;
+  width: 27.84810127vw;
+  height: 27.84810127vw;
   border-radius: 100%;
 }
 .personal .person_main .system_settings .idname_box,
 .personal .person_main .personal_box .idname_box {
-  margin-top: 5.06329114vw;
+  margin-top: 3.79746835vw;
   display: flex;
   justify-content: space-between;
 }
@@ -182,35 +178,34 @@ body {
 }
 .personal .person_main .system_settings .common .title_box,
 .personal .person_main .personal_box .common .title_box {
-  height: 17.72151899vw;
-  line-height: 17.72151899vw;
+  height: 15.18987342vw;
+  line-height: 15.18987342vw;
 }
 .personal .person_main .system_settings .common .right,
 .personal .person_main .personal_box .common .right {
   display: flex;
   justify-content: space-between;
-  height: 17.72151899vw;
-  line-height: 17.72151899vw;
+  height: 15.18987342vw;
+  line-height: 15.18987342vw;
 }
 .personal .person_main .personal_box {
   padding-top: 5.06329114vw;
 }
+.personal .person_main .system_settings {
+  margin-top: 3.79746835vw;
+}
 .personal .person_main .exit {
   margin: 0 auto;
   margin-top: 5.06329114vw;
-  width: 63.29113924vw;
+  width: 60.75949367vw;
 }
 .personal .person_main .exit button {
   width: 63.29113924vw;
   height: 12.65822785vw;
-  background-color: rgba(248, 8, 8, 0.425);
+  background-color: rgba(248, 200, 8, 0.425);
   border: 0;
   font-size: 5.06329114vw;
   border-radius: 5%;
-}
-.personal .person_main .pm_footer {
-  width: 100%;
-  height: 25.3164557vw;
 }
 .personal .modify {
   z-index: 20000;

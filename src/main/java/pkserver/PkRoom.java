@@ -41,7 +41,7 @@ public class PkRoom {
     /**
      * 记录双方答题结果
      */
-    private final Map<PkUser,AnswersRecord> answersRecords = new HashMap<>();
+    private final Map<PkUser, AnswersRecord> answersRecords = new HashMap<>();
     /**
      * 挖空数
      */
@@ -59,14 +59,13 @@ public class PkRoom {
 
     private final Thread timer = new Thread(new TimeLimitThread(this));
 
-    public void startTimer(){
+    public void startTimer() {
         this.timer.start();
     }
 
-    public boolean isTimerAlive(){
+    public boolean isTimerAlive() {
         return timer.isAlive();
     }
-
 
 
     private PkRoom() {
@@ -98,7 +97,11 @@ public class PkRoom {
         int p2BlankNum = StringUtil.getBlankNumByContentLength(p2ModleNum, ratio);
         //获取两人挖空数的最小值
         //保存该房间挖空数
-        this.blankNum = Math.min(p1BlankNum, p2BlankNum);
+
+        //有bug，先写死
+//        this.blankNum = Math.min(p1BlankNum, p2BlankNum);
+        this.blankNum = 15;
+
         //根据难度和挖空数记录总时长
         //各个难度所对应每个空的时间不一样，先写死后续再优化！！！！！！
         //10s(easy),15s(normal),20s(hard)
@@ -117,10 +120,9 @@ public class PkRoom {
         //设置ID
         answersRecord02.setUserId(getPlayer02().getMatchInf().getUserId());
         //添加进总记录集合
-        answersRecords.put(this.player01,answersRecord01);
-        answersRecords.put(this.player02,answersRecord02);
+        answersRecords.put(this.player01, answersRecord01);
+        answersRecords.put(this.player02, answersRecord02);
     }
-
 
 
     /**
@@ -135,16 +137,16 @@ public class PkRoom {
             String answerName = (String) jsonObject.get("answerName");
             boolean isRight = (Boolean) jsonObject.get("answerValue");
             //封装答案信息
-            AnswerStatus answerStatus = new AnswerStatus(answerName,isRight);
+            AnswerStatus answerStatus = new AnswerStatus(answerName, isRight);
             //保存
-            saveRecord(curUser,answerStatus);
+            saveRecord(curUser, answerStatus);
             //如果是对的则需要扣对手的血量
             if (isRight) {
                 PkUser enemy = getEnemy(curUser);
                 //获取敌人当前血量
                 double hp = getHp(enemy);
                 //计算扣的血
-                hp -= (1.0 / this.blankNum) * 100;
+                hp -= 100.0 / this.blankNum;
                 //设置血量
                 setHp(enemy, hp);
             }
@@ -153,14 +155,16 @@ public class PkRoom {
             if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
                 //结束比赛
                 this.end();
+            } else if (answersRecords.get(curUser).getAnswersRecord().size() == blankNum || answersRecords.get(getEnemy(curUser)).getAnswersRecord().size() == blankNum) {
+                this.end();
             } else {
                 //比赛还没结束
                 //将双方血量响应回去
                 msg = new SocketMessage();
                 List<UserHp> hpLists = new ArrayList<>();
-                hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(),getHp(this.player01)));
-                hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(),getHp(this.player02)));
-                msg.addData("hpInf",hpLists);
+                hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(), getHp(this.player01)));
+                hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
+                msg.addData("hpInf", hpLists);
                 roomBroadcast(msg);
             }
         } else {
@@ -172,7 +176,7 @@ public class PkRoom {
     /**
      * 结束本房间游戏
      */
-    public void end() {
+    public synchronized void end() {
         //将输赢信息封装
         SocketMessage result = getWinner();
         roomBroadcast(result);
@@ -193,10 +197,11 @@ public class PkRoom {
 
     /**
      * 保存用户答案记录
-     * @param player 用户
+     *
+     * @param player       用户
      * @param answerStatus 封装的答案信息
      */
-    private void saveRecord(PkUser player,AnswerStatus answerStatus){
+    private void saveRecord(PkUser player, AnswerStatus answerStatus) {
         answersRecords.get(player).getAnswersRecord().add(answerStatus);
     }
 
@@ -240,7 +245,7 @@ public class PkRoom {
         List<AnswersRecord> answersRecordList = new ArrayList<>();
         answersRecordList.add(answersRecords.get(player01));
         answersRecordList.add(answersRecords.get(player02));
-        msg.addData("records",answersRecordList);
+        msg.addData("records", answersRecordList);
         return msg;
     }
 

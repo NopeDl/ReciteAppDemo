@@ -8,7 +8,7 @@ body{
 
 .calendar_page {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     position: absolute;
     background-color: #f4f4f4;
     transition: all .3s ease-in-out;
@@ -30,7 +30,7 @@ body{
     .bcg{
         position: absolute;
         width:100%; 
-        height: 240px;
+        height: (240/@vw);
         background-color:#aea0d5;
     }
     
@@ -175,11 +175,17 @@ body{
             
                     &.curr_date,
                     &.curr_date:hover {
-                        // background-color: #0000ff;
+                        //background-color: #0000ff;
                         color:  #000;
                         border-radius: 50%;
-                        border: 1px solid  #0000ff;
+                        border: 1px solid  #8465d8;
                     }
+                    &.clock_in{
+                        background-color:#aea0d5;
+                        border: 0;
+                        color:  #fff;
+                        border-radius: 50%;
+                    } 
             
                     &.curr_date span {
                         display: none;
@@ -286,7 +292,7 @@ body{
         background-color: #fdfdfd;
         padding: (20/@vw);
         grid-template-columns: repeat(3, auto);
-        gap: 5px;
+        gap: (5/@vw);
         display: grid;
         visibility: hidden;
         pointer-events: none;

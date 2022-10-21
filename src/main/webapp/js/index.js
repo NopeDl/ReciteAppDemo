@@ -1,3 +1,5 @@
+let curr = getData('current_user');
+
 //底部导航栏
 for (let i = 0; i < $('.footer_nav li').length; i++) {
     $('.footer_nav li')[i].onclick = () => {
@@ -18,7 +20,7 @@ for (let i = 0; i < $('.footer_nav li').length; i++) {
 
     }
 }
-
+$('.footer_nav li')[0].onclick();
 function pageReset(i) {
     $('.memory_base header').classList.add('scroll_top');
     $('.pk_page .pk_footer').classList.add('scroll_top');
@@ -27,22 +29,35 @@ function pageReset(i) {
         x.classList.add('scroll_top');
     }
     if (i == 0) {
-        if (document.querySelector('.my_base li')) {
-            for (let x of all('.my_base li'))
-                x.classList.add('baseLis_fadeIn');
-        } else {
-            $('.base_none_1').style.display = 'block';
-        }
+        resetbase();
         TP();
     }
 
+}
+// 刷新仓库
+function resetbase() {
+    if (document.querySelector('.my_base li')) {
+        for (let x of all('.my_base li'))
+            x.classList.add('baseLis_fadeIn');
+        $('.base_none_1').style.display = 'none';
+    } else {
+        $('.base_none_1').style.display = 'block';
+    }
+    if (document.querySelector('.collection_base li')) {
+        for (let x of all('.collection_base li'))
+            x.classList.add('baseLis_fadeIn');
+        $('.base_none_2').style.display = 'none';
+    } else {
+        $('.base_none_2').style.display = 'block';
+    }
 }
 //模板向左滑动出现按钮
 var title = null;
 var info = null;
 var modleId = null;
+var label = null;
 var flag_learn = false;
-
+var mStatus = 0;
 //为模板添加事件
 
 function TP() {
@@ -65,24 +80,31 @@ function TP() {
             x.parentNode.ontouchend = () => {
                 $('.learn_page .title_name').innerHTML = all('.tp_inner .title')[i].innerHTML;
                 $('.learn_page .text_box').innerHTML = all('.tp_inner .info')[i].innerHTML;
+                $('.learn_page .label').innerHTML = all('.tp_inner .label')[i].querySelectorAll('span')[1].innerHTML;
                 if (l == 0 && x.offsetLeft == '0') {
                     $('.learn_page').style.left = '0';
                     flag_learn = true;
                 }
-
             }
             //点击编辑进入编辑页面
             all('.template_btn .edit')[i].onclick = (e) => {
                 title = all('.tp_inner .title')[i];
                 info = all('.tp_inner .info')[i];
                 modleId = all('.tp_inner .modleId')[i];
+                label = all('.tp_inner .label')[i];
+                console.log(label);
+                if (all('.memory_base li')[i].parentNode.parentNode.classList.contains('collection_base'))
+                    mStatus = 1;
                 $('.edit_page .title_name').value = all('.tp_inner .title')[i].innerHTML;
                 $('.edit_page .text_page').innerHTML = all('.tp_inner .info')[i].innerHTML;
+                $('.edit_page .label_cont').innerHTML = all('.tp_inner .label')[i].querySelectorAll('span')[1].innerHTML;
                 $('.edit_page').style.left = '0';
                 e.stopPropagation();
             }
+
             //点击删除模板
             all('.template_btn .del')[i].onclick = (e) => {
+
                 x.parentNode.classList.add('baseLis_del');
                 e.stopPropagation();
                 if (all('.my_base li').length == all('.my_base .baseLis_del').length)
@@ -90,11 +112,24 @@ function TP() {
                 if (all('.collection_base li').length == all('.collection_base .baseLis_del').length)
                     $('.base_none_2').style.display = 'block';
                 let modleId = all('.modleId')[i].innerHTML;
-                console.log(modleId);
-                ajax(`http://8.134.104.234:8080/ReciteMemory/modle/deleteModle`, 'post', `modleId=${modleId}`, (str) => {
-                    let newstr = JSON.parse(str).msg;
-                    console.log(newstr);
-                }, true)
+                if (i < all('.my_base li').length) {
+                    ajax(`http://8.134.104.234:8080/ReciteMemory/modle/deleteModle`, 'post', `modleId=${modleId}`, (str) => {
+                        let newstr = JSON.parse(str).msg;
+                        console.log(newstr);
+                        x.parentNode.addEventListener('animationend', () => {
+                            $('.my_base ul').removeChild(x.parentNode);
+                        })
+                    }, true)
+                } else {
+                    
+                    ajax(`http://8.134.104.234:8080/ReciteMemory/modle/CancelCollet?userId=${curr.userId}&modleId=${all('.tp_inner')[i].querySelector('.modleId').innerHTML}&mStatus=0`, 'get','', (str) => {
+                        let newstr = JSON.parse(str).msg;
+                        console.log(newstr);
+                        x.parentNode.addEventListener('animationend', () => {
+                            $('.collection_base ul').removeChild(x.parentNode);
+                        })
+                    }, true)
+                }
             }
         }
     });
@@ -116,12 +151,21 @@ $('.icon_btn').onclick = () => {
         $('.base_none_2').style.display = 'block';
 
     timer = null;
-    for (let x of all('.collection_base li'))
-        x.classList.remove('baseLis_fadeIn');
-
-    for (let x of all('.my_base li'))
-        x.classList.toggle('baseLis_fadeIn');
-
+    if (document.querySelector('.my_base li')) {
+        for (let x of all('.my_base li'))
+            x.classList.add('baseLis_fadeIn');
+        $('.base_none_1').style.display = 'none';
+    } else {
+        $('.base_none_1').style.display = 'block';
+    }
+    if (document.querySelector('.collection_base li')) {
+        for (let x of all('.collection_base li'))
+            x.classList.add('baseLis_fadeIn');
+        $('.base_none_2').style.display = 'none';
+    } else {
+        $('.base_none_2').style.display = 'block';
+    }
+    TP();
     timer = setTimeout(() => {
         if ($('.icon_btn .icon').classList.contains('icon-shoucang')) {
             $('.icon_btn .icon').classList.add('icon-jiyi');
@@ -146,6 +190,8 @@ $('.icon_btn').onclick = () => {
 
     })
 }
+
+
 
 //点击返回隐藏学习页面
 $('.learn_page .header_left').onclick = () => {

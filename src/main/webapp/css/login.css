@@ -197,7 +197,11 @@ header .header_btn a {
   width: 100%;
   height: 100%;
 }
-.container {
+.mar_box {
+  width: 100%;
+  margin-top: calc((100vh - 165vw)/2);
+}
+.mar_box .container {
   position: relative;
   margin: 0 auto;
   width: 76.96202532vw;
@@ -209,25 +213,25 @@ header .header_btn a {
   opacity: 0;
   background-color: rgba(255, 255, 255, 0.526);
 }
-.container .register {
+.mar_box .container .register {
   width: 100%;
   height: 100%;
   padding-top: 7.08860759vw;
   transition: all 0.3s linear;
 }
-.container .register .logo {
+.mar_box .container .register .logo {
   width: 58.2278481vw;
   height: 10.88607595vw;
   background-size: cover;
   margin: 0 auto 5.06329114vw;
 }
-.container .register form {
+.mar_box .container .register form {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
-.container .register form .err {
+.mar_box .container .register form .err {
   opacity: 0;
   position: absolute;
   top: 78%;
@@ -235,10 +239,10 @@ header .header_btn a {
   color: red;
   transition: 0.2s;
 }
-.container .register form .show {
+.mar_box .container .register form .show {
   display: block;
 }
-.container .register form .captcha {
+.mar_box .container .register form .captcha {
   position: relative;
   height: 14.6835443vw;
   width: 62.78481013vw;
@@ -247,29 +251,29 @@ header .header_btn a {
   justify-content: space-between;
   color: #fac0e7;
 }
-.container .register form .captcha label {
+.mar_box .container .register form .captcha label {
   top: 4.05063291vw;
 }
-.container .register form .captcha .label_change {
+.mar_box .container .register form .captcha .label_change {
   transform: scale(0.8) translateY(-6.58227848vw);
 }
-.container .register form .captcha input {
+.mar_box .container .register form .captcha input {
   font-size: 4.05063291vw;
   width: 27.84810127vw;
   margin: 0;
 }
-.container .register form .captcha canvas {
+.mar_box .container .register form .captcha canvas {
   width: 48%;
   height: 12.15189873vw;
   background-color: #fff;
   border: 1px solid #000000;
 }
-.container .form_control {
+.mar_box .container .form_control {
   position: relative;
   font-size: 4.05063291vw;
   color: #000;
 }
-.container .form_control label {
+.mar_box .container .form_control label {
   position: absolute;
   top: 4.55696203vw;
   left: 0;
@@ -277,10 +281,10 @@ header .header_btn a {
   transform-origin: left top;
   pointer-events: none;
 }
-.container .form_control .label_change {
+.mar_box .container .form_control .label_change {
   transform: scale(0.8) translateY(-5.56962025vw);
 }
-.container .form_control input {
+.mar_box .container .form_control input {
   background-color: transparent !important;
   padding: 2.02531646vw 0;
   height: 12.15189873vw;
@@ -292,10 +296,10 @@ header .header_btn a {
   border-bottom: 0.25316456vw solid #000;
   transition: all 0.5s;
 }
-.container .form_control input:focus {
+.mar_box .container .form_control input:focus {
   border-bottom: 0.50632911vw solid #fac0e7;
 }
-.container button {
+.mar_box .container button {
   position: relative;
   cursor: pointer;
   margin-top: 6.58227848vw;
@@ -312,11 +316,11 @@ header .header_btn a {
   transition: all 0.1s;
   box-shadow: 0.75949367vw 0.75949367vw 1.51898734vw rgba(0, 0, 0, 0.526);
 }
-.container button span {
+.mar_box .container button span {
   position: absolute;
   display: block;
 }
-.container button span:nth-child(1) {
+.mar_box .container button span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;
@@ -324,7 +328,7 @@ header .header_btn a {
   background: linear-gradient(90deg, transparent, #3a7fff);
   animation: btn-anim1 1s linear infinite;
 }
-.container button span:nth-child(2) {
+.mar_box .container button span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 0.50632911vw;
@@ -333,7 +337,7 @@ header .header_btn a {
   animation: btn-anim2 1s linear infinite;
   animation-delay: 0.25s;
 }
-.container button span:nth-child(3) {
+.mar_box .container button span:nth-child(3) {
   bottom: 0;
   right: -100%;
   width: 100%;
@@ -342,7 +346,7 @@ header .header_btn a {
   animation: btn-anim3 1s linear infinite;
   animation-delay: 0.5s;
 }
-.container button span:nth-child(4) {
+.mar_box .container button span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 0.50632911vw;
@@ -351,10 +355,10 @@ header .header_btn a {
   animation: btn-anim4 1s linear infinite;
   animation-delay: 0.75s;
 }
-.container button:active {
+.mar_box .container button:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.526);
 }
-.container .login {
+.mar_box .container .login {
   z-index: 1000;
   background-color: #fff;
   position: absolute;
@@ -364,7 +368,7 @@ header .header_btn a {
   justify-content: center;
   transition: all 0.3s linear;
 }
-.container .login .change {
+.mar_box .container .login .change {
   font-size: 4.05063291vw;
   position: absolute;
   top: -8vw;
@@ -375,13 +379,13 @@ header .header_btn a {
   transition: all 0.4s linear;
   pointer-events: none;
 }
-.container .login .login_box .logo {
+.mar_box .container .login .login_box .logo {
   width: 58.2278481vw;
   height: 10.88607595vw;
   background-size: cover;
   margin: 0 auto 5.06329114vw;
 }
-.container .login .login_box form .err {
+.mar_box .container .login .login_box form .err {
   opacity: 0;
   position: absolute;
   top: 60%;
@@ -389,14 +393,14 @@ header .header_btn a {
   color: red;
   transition: 0.2s;
 }
-.container .login .login_box form button {
+.mar_box .container .login .login_box form button {
   margin: 10.37974684vw 0 5.06329114vw;
 }
-.container .login .login_box form .items {
+.mar_box .container .login .login_box form .items {
   height: 5.06329114vw;
   font-size: 3.5443038vw;
 }
-.container .login .login_box form .items .auto {
+.mar_box .container .login .login_box form .items .auto {
   vertical-align: middle;
   width: 6.07594937vw;
   height: 4.55696203vw;
@@ -404,7 +408,7 @@ header .header_btn a {
   text-align: center;
   border: 1px solid #bbbbbb;
 }
-.container .login::after {
+.mar_box .container .login::after {
   z-index: -1;
   position: absolute;
   top: -12.65822785vw;

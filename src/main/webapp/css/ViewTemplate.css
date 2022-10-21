@@ -1,0 +1,212 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+body {
+  background-color: #f4f4f4;
+}
+.viewTemplate {
+  background-color: #f4f4f4;
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.2s;
+}
+.viewTemplate .view_box {
+  width: 100%;
+}
+.viewTemplate .view_box header {
+  display: flex;
+  align-items: center;
+  padding: 0 3.79746835vw;
+  width: 100%;
+  height: 12.65822785vw;
+  background-color: #fff;
+}
+.viewTemplate .view_box header .icon-xiangzuojiantou {
+  font-weight: 700;
+}
+.viewTemplate .view_box header .user_box {
+  display: flex;
+  align-items: center;
+  margin-left: 5.06329114vw;
+}
+.viewTemplate .view_box header .user_box .head_portrait {
+  width: 7.59493671vw;
+  height: 7.59493671vw;
+}
+.viewTemplate .view_box header .user_box .head_portrait img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+.viewTemplate .view_box header .user_box .idname {
+  margin-left: 2.53164557vw;
+  font-size: 3.5443038vw;
+}
+.viewTemplate .view_box .template_box {
+  width: 100%;
+  height: 100vh;
+  margin-top: 2.53164557vw;
+  padding: 0 2.53164557vw;
+  padding-top: 2.53164557vw;
+  background-color: #fff;
+}
+.viewTemplate .view_box .template_box .label {
+  display: inline-block;
+  width: auto;
+  height: 6.32911392vw;
+  border-radius: 5.06329114vw;
+  padding: 0 2.53164557vw;
+  text-align: left;
+  background-color: #ab97c974;
+  line-height: 6.32911392vw;
+}
+.viewTemplate .view_box .template_box .label span {
+  color: #323232;
+  font-size: 3.03797468vw;
+}
+.viewTemplate .view_box .template_box .label .icon-shuqianguanli {
+  font-size: 3.5443038vw;
+}
+.viewTemplate .view_box .template_box .title {
+  margin-top: 2.53164557vw;
+  font-size: 4.55696203vw;
+  text-align: center;
+}
+.viewTemplate .view_box footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10.12658228vw;
+  transition: all 0.2s;
+}
+.viewTemplate .view_box footer .bcg {
+  width: 100%;
+  height: 1.26582278vw;
+  background-color: #f4f4f4;
+}
+.viewTemplate .view_box footer .interactive {
+  width: 100%;
+  height: 8.86075949vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5.06329114vw;
+  background-color: #fff;
+  color: #cdcccc;
+}
+.viewTemplate .view_box footer .interactive span {
+  padding: 10.12658228vw;
+  text-align: center;
+  color: #323232;
+}
+.viewTemplate .view_box footer .interactive span i {
+  font-style: normal;
+}
+.viewTemplate .view_box footer .interactive span .icon-shoucang {
+  color: #9c9c9c;
+}
+.viewTemplate .view_box footer .interactive span .yellow {
+  color: #ffae00;
+}
+.text_box {
+  padding: 2.53164557vw;
+  overflow: scroll;
+  font-size: 4.05063291vw;
+  line-height: 8.86075949vw;
+  letter-spacing: 0.15em;
+  height: 80%;
+}
+.text_box .highlight {
+  display: inline;
+  background: #f8cf04;
+  transition: all 0.3s;
+}
+.text_box .highlight::selection {
+  background: #eaff02 !important;
+}
+.text_box .input {
+  width: auto;
+  background-color: transparent !important;
+  color: rgba(188, 56, 244, 0.861) !important;
+  border-bottom: 0.50632911vw #000000 solid;
+  height: 7.59493671vw;
+  outline: none;
+  display: inline;
+}
+.text_box .recite {
+  height: 7.59493671vw;
+  background-color: darkgray !important;
+  color: darkgray !important;
+  border-radius: 1.26582278vw;
+  user-select: none;
+}

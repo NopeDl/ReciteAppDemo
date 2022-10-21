@@ -48,7 +48,7 @@ generateCalendar = (month, year) => {
             //                 <span></span>
             //                 <span></span>`
             if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
-                // day.classList.add('curr_date');
+                day.classList.add('curr_date');
                 Today = day;
             }
         }
@@ -107,5 +107,30 @@ document.querySelector('#next_year').onclick = () => {
 $('.calendar_footer .situation')[1].onclick = () => {
     $('.calendar_footer .situation')[0].innerHTML = '今日已打卡';
     $('.calendar_footer .situation')[1].innerHTML = '已签到';
-    Today.classList.add('curr_date');
+    let poststr = `userId=${curr.userId}&date=${dateFromat(currDate)}`
+    ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/clockIn`, 'post', poststr, (str) => {
+        let newstr = JSON.parse(str).msg;
+        console.log(newstr);
+        if (newstr.data.isSuccess) {
+            Today.classList.add('clock_in');
+        }
+    }, true);
 }
+
+// 1.定义格式化时间的方法
+function dateFromat(dtstr) {
+    const dt = new Date(dtstr);
+
+    const y = dt.getFullYear();
+    const m = padZero(dt.getMonth() + 1);
+    const d = padZero(dt.getDate());
+
+
+    return `${y}-${m}-${d}`
+}
+
+//定义补零的函数
+function padZero(n) {
+    return n > 9 ? n : '0' + n;
+}
+console.log(dateFromat(currDate));

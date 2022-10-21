@@ -1,0 +1,167 @@
+//out:../css/
+@import 'base';
+@vw: 3.95vw;
+body{
+    background-color: #f4f4f4;
+}
+
+.viewTemplate{
+    background-color: #f4f4f4;
+    width: 100%;
+    height: 100vh;
+    z-index: 10000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all .2s;
+
+
+    .view_box{
+        width: 100%;
+        header{
+            display: flex;
+            align-items: center;
+            padding: 0  (15/@vw);
+            width: 100%;
+            height: (50/@vw);
+            background-color: #fff;
+
+            .icon-xiangzuojiantou{
+                font-weight: 700;
+            }
+
+            .user_box{
+                display: flex;
+                align-items: center;
+                margin-left: (20/@vw);
+                .head_portrait{
+                    width: (30/@vw);
+                    height: (30/@vw);
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 100%;
+                    }
+                }
+
+                .idname{
+                    margin-left: (10/@vw);
+                    font-size: (14/@vw);
+                }
+            }
+        }
+
+        .template_box{
+            width: 100%;
+            height: 100vh;
+            margin-top: (10/@vw);
+            padding: 0 (10/@vw);
+            padding-top: (10/@vw);
+            background-color: #fff;
+
+            .label{
+                display: inline-block;
+                width: auto;
+                height: (25/@vw);
+                border-radius: (20/@vw);
+                padding: 0 (10/@vw);
+                text-align: left;
+                background-color:#ab97c974;
+                line-height: (25/@vw);
+                span{
+                    color: #323232;
+                    font-size: (12/@vw);
+                }
+
+                .icon-shuqianguanli{
+                    font-size: (14/@vw);
+                }
+            }
+
+            .title{
+                margin-top: (10/@vw);
+                font-size: (18/@vw);
+                text-align: center;
+            }
+        }
+        footer{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: (40/@vw);
+            transition: all .2s;
+            .bcg{
+                width: 100%;
+                height: (5/@vw);
+                background-color: #f4f4f4;
+    
+            }
+            .interactive{
+                width: 100%;
+                height: (35/@vw);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 (20/@vw);
+                background-color: #fff;
+                color: #cdcccc;
+                span{
+                    padding: (40/@vw);
+                    text-align: center;
+                    color: #323232;
+                    i{
+                        font-style: normal;
+                    }
+                    .icon-shoucang{
+                        color: #9c9c9c;
+                    }
+
+                    .yellow{
+                        color: rgb(255, 174, 0);
+                    }
+                }
+                
+            }
+        }
+    }
+}
+
+.text_box {
+    padding: (10 / @vw);
+    overflow: scroll;
+    font-size: (16 / @vw);
+    line-height: (35/@vw);
+    letter-spacing: 0.15em;
+    height: 80%;
+
+    .highlight {
+        display: inline;
+        background: rgb(248, 207, 4);
+        transition: all .3s;
+
+        &::selection {
+            background: rgb(234, 255, 2) !important;
+        }
+    }
+
+    .input {
+        width: auto;
+        background-color: transparent !important;
+        color: rgba(188, 56, 244, 0.861) !important;
+        border-bottom: (2 / @vw) rgb(0, 0, 0) solid;
+        height: (30 / @vw);
+        outline: none;
+        display: inline;
+        // -webkit-user-modify: read-write-plaintext-only;
+    }
+
+    .recite {
+        height: (30 / @vw);
+        background-color: darkgray !important;
+        color: darkgray !important;
+        border-radius: (5 / @vw);
+        user-select: none;
+    }
+}

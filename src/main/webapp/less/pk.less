@@ -131,10 +131,10 @@ body{
     
                 .role{
                     margin: 0  auto;
-                    margin-top: (20/@vw);
-                    width: (150/@vw);
+                    margin-top: (15/@vw);
+                    width: (105/@vw);
+                    // height: (105/@vw);
                     img{
-                        margin-left: (20/@vw);
                         width: 100%;
                         height: 100%;
                     }
@@ -176,12 +176,14 @@ body{
         .ranking_list{
             z-index: 100;
             width: 100vw;
-            height: (667 / @vw);     
+            height: calc(100vh - 17vw);     
             transition: all 0.2s;
             background-color: #fff;
-            border-radius: 6% 6% 0 0;
-            background-image: url(../images/pk/排行榜.png);
-    
+            // border-radius: 6% 6% 0 0;
+            border-radius: (20/@vw);
+            overflow: scroll;
+            background: url(../images/pk/排行榜.png) no-repeat;
+
             .laiqu {
                 width: 100%;
                 height: (40/@vw);
@@ -309,4 +311,7 @@ body{
         margin-top: (10/@vw);
     }
 }
+
+
+
 

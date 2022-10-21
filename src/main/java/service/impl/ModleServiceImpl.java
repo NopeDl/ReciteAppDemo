@@ -170,6 +170,7 @@ public class ModleServiceImpl implements ModleService {
                 System.out.println(context);
                 //将换行转换为前端html换行标签
                 context = context.replaceAll("\\r\\n", "<\\br>");
+
                 msg = new Message("文件解析成功");
                 msg.addData("context", context);
             } else {
