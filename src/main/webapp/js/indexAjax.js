@@ -11,7 +11,7 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/modle/UserMemory?userId=${curr.user
         let tparr = newstr.data.userModle;
         for (let x of tparr) {
             console.log(x);
-            let newcon = x.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            let newcon = x.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/<\/p>/g, '').replace(/<p>/g, '');
             if (x.MStatus == '0')
                 newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common,true);
             else
@@ -57,10 +57,10 @@ $('.Making_page .header_left input').onchange = function(e) {
             $('.Making_page .loading').style.display = 'none';
             let newstr = JSON.parse(str).msg;
             let context = newstr.data.context;
-            // let newcon = context.replace(/<\/p>/g, '').replace(/<p>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            let newcon = context.replace(/<\/p>/g, '').replace(/<p>/g, '');
             //将文件内容渲染到页面
             $('.Making_page .title input').value = file.name;
-            $('.Making_page .text_box').innerHTML = context;
+            $('.Making_page .text_box').innerHTML = newcon;
         }, false)
     }
 }

@@ -2,7 +2,8 @@ function reset() {
     for (let x of btns) {
         x.classList.remove('choice');
     }
-    $('.text_page').setAttribute('contenteditable', false);
+    $('.text_page').classList.remove('canwrite')
+    // $('.text_page').setAttribute('contenteditable', false);
     $('.text_page').classList.remove('del');
     flag = false;
     flag1 = false;
@@ -13,9 +14,9 @@ let btns = $('.edit_page .header_right li');
 btns[0].onclick = () => {
     console.log(title);
     reset();
-    $('.text_page').setAttribute('contenteditable', true);
+    // $('.text_page').setAttribute('contenteditable', true);
+    $('.text_page').classList.add('canwrite')
     btns[0].classList.add('choice');
-
 }
 
 //防止对已选中的文本进行多次挖空
@@ -31,7 +32,7 @@ btns[1].onclick = () => {
     btns[1].classList.add('choice');
     flag = true;
     //当长按屏幕触屏结束时，选中文本 
-    $('.text_page').onmouseup = (e) => {
+    $('.text_page').ontouchend = (e) => {
         //判断当前是否为挖空模式
         if (btns[1].classList.contains('choice')) {
             flag = true;

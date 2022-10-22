@@ -83,11 +83,11 @@ a {
   overflow: hidden;
 }
 .nav .logo {
-  width: 43.03797468vw;
+  width: 50.63291139vw;
   height: 20.25316456vw;
 }
 .nav .logo img {
-  width: 43.03797468vw;
+  width: 50.63291139vw;
   z-index: 2;
 }
 .nav .btn {
@@ -141,7 +141,7 @@ a {
   font-size: 4.55696203vw;
   font-weight: 400;
   color: #fff;
-  background-color: #7061d6;
+  background-color: #7460ab;
   margin-bottom: 5.06329114vw;
   border: 1px solid ;
 }
@@ -184,7 +184,7 @@ footer {
   width: 100%;
   height: 58.73417722vw;
   padding: 5.06329114vw;
-  background: #7061d6;
+  background-color: #7560aba5;
   overflow: hidden;
   color: #fff;
 }
@@ -221,14 +221,13 @@ footer .container .three_grid .column2 ul {
   text-align: center;
 }
 footer .container .three_grid .column2 ul a {
-  color: #007bff;
   text-decoration: none;
   background-color: transparent;
 }
 footer .container .three_grid .column2 ul a li {
   display: inline-block;
-  line-height: 12.65822785vw;
-  color: #b5b5c8;
+  line-height: 11.39240506vw;
+  color: #000000;
   margin: 0 2.53164557vw;
   font-size: 3.5443038vw;
 }

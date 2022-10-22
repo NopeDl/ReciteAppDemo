@@ -27,6 +27,7 @@ $('.start_game').onclick = () => {
         }
         img_box.classList.add("xz");
         // createWebSocket ();
+        resetPK();
         ConnectionClicked();
     }, 2200);
 }
@@ -43,7 +44,7 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/inf.get/rankingList`, 'get', ``, (s
         }
         if (x.nickName == curr.userInfo.nickName) {
             $('.ranking_list .mine .rank').innerHTML = `第${i+1}名`
-            $('.ranking_list .mine .score').innerHTML = `${x.stars}分`
+            $('.ranking_list .mine .score').innerHTML = `${x.stars}颗星`
         }
     })
 }, true);

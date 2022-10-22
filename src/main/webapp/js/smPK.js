@@ -39,14 +39,14 @@ function ConnectionClicked() {
                     Refresh_blook(res.hpInf);
                 }
 
-
                 if (res.MATCH_END) {
+                    $(".show_answer .answer").innerHTML = ``;
                     for (let x of answerArr) {
                         $(".show_answer .answer").innerHTML += `
                             <div class="an">${x}</div>
                             `;
                     }
-
+                    $(".show_answer .mine_an").innerHTML = ``;
                     for (let x of UserSelectArr) {
                         if (x == "right") {
                             $(".show_answer .mine_an").innerHTML += `
@@ -57,45 +57,44 @@ function ConnectionClicked() {
                                 <div class="cuo">×</div>`;
                         }
                     }
-                    if (res.records) {
-                        console.log(res.records);
-                        console.log(res.records[0].userId);
-                        if (res.records[0].userId != curr.userId) {
-                            let other_answer = res.records[0].answersRecord;
-                            console.log(other_answer);
-                            for (let i = 0; i < other_answer.length; i++) {
-                                if (other_answer[i].right) {
-                                    $(".show_answer .other_an").innerHTML += `
-                                    <div class="dui">√</div>
-                                    `;
-                                } else {
-                                    $(".show_answer .other_an").innerHTML += `
-                                        <div class="cuo">×</div>`;
-                                }
-                            }
-                        }
-                        console.log(res.records[1].userId);
-                        if (res.records[1].userId != curr.userId) {
-                            other_answer = res.records[1].answersRecord;
-                            console.log(other_answer);
-                            for (let i = 0; i < other_answer.length; i++) {
-                                if (other_answer[i].right) {
-                                    $(".show_answer .other_an").innerHTML += `
-                                    <div class="dui">√</div>
-                                    `;
-                                } else {
-                                    $(".show_answer .other_an").innerHTML += `
-                                        <div class="cuo">×</div>`;
-                                }
+                }
+
+                if (res.records) {
+                    console.log("2222");
+                    RefreshXing(res.winnerId);
+                    console.log(res.winnerId)
+                    if (res.records[0].userId != curr.userId) {
+                        let other_answer = res.records[0].answersRecord;
+                        console.log(other_answer);
+                        $(".show_answer .other_an").innerHTML = ``;
+                        for (let i = 0; i < other_answer.length; i++) {
+                            if (other_answer[i].right) {
+                                $(".show_answer .other_an").innerHTML += `
+                                <div class="dui">√</div>
+                                `;
+                            } else {
+                                $(".show_answer .other_an").innerHTML += `
+                                    <div class="cuo">×</div>`;
                             }
                         }
                     }
-
+                    if (res.records[1].userId != curr.userId) {
+                        other_answer = res.records[1].answersRecord;
+                        console.log(other_answer);
+                        $(".show_answer .other_an").innerHTML = ``;
+                        for (let i = 0; i < other_answer.length; i++) {
+                            if (other_answer[i].right) {
+                                $(".show_answer .other_an").innerHTML += `
+                                <div class="dui">√</div>
+                                `;
+                            } else {
+                                $(".show_answer .other_an").innerHTML += `
+                                    <div class="cuo">×</div>`;
+                            }
+                        }
+                    }
                 }
-
-
             }
-
         };
         ws.onclose = function(event) {
             animate_pkend();
@@ -109,19 +108,41 @@ function ConnectionClicked() {
     }
 };
 
+function resetPK() {
+    $('.enterPk .other .other_name').innerHTML = '??????';
+    $('.pk_interface .other .other_name').innerHTML = '??????';
+    $('.other .box .other_name').innerHTML = '??????';
 
+    $('.newwaitPK .other .head_portrait').innerHTML = `<div class="Unmatched">?</div>`
+    $('.pk_end .ohter_portrait').innerHTML = `<img src="./images/头像/头像-女学生2.png">`
+    $('.enterPk .other .head_portrait').innerHTML = `<img src="./images/头像/头像-女学生2.png">`
+
+    $('.enterPk .text_box').innerHTML = '';
+    $('.enterPk .text_box').scrollTop = '0';
+
+    $('.enterPk .mine .mine_blood_change').style.width = '38.13vw';
+    $('.enterPk .name_blood .mine_blook').innerHTML = '100%';
+    $('.enterPk .other .other_blood_change').style.width = '38.13vw';
+    $('.enterPk .name_blood .other_blook').innerHTML = '100%';
+}
+
+
+//刷新id
 function Refresh_id(data) {
     $('.enterPk .other .other_name').innerHTML = data;
     $('.pk_interface .other .other_name').innerHTML = data;
     $('.other .box .other_name').innerHTML = data;
 }
 
+//刷新头像
 function Refresh_img(data) {
     $('.newwaitPK .other .head_portrait').innerHTML = `<img src="${data.base64}">`
     $('.pk_end .ohter_portrait').innerHTML = `<img src="${data.base64}">`
     $('.enterPk .other .head_portrait').innerHTML = `<img src="${data.base64}">`
 }
 
+
+//刷新模板
 function Refresh_Template(data) {
     $('.enterPk .text_box').innerHTML = data;
     // console.log(all('.enterPk .text_box div'))
@@ -132,8 +153,7 @@ function Refresh_Template(data) {
     Refresh_answer();
 }
 
-
-
+//刷新答案
 function Refresh_answer() {
     //数组用来存放答案
     answerArr = [];
@@ -257,7 +277,7 @@ function Refresh_answer() {
     //pkend的界面渲染
 }
 
-
+//刷线血条和血量
 function Refresh_blook(data) {
     if (data[0].userId == curr.userId) {
         $('.enterPk .mine .mine_blood_change').style.width = (Math.round(data[0].hp) / 100) * 38.13 + 'vw';
@@ -281,16 +301,15 @@ function Refresh_blook(data) {
 //匹配成功之后的动画
 function animate_success() {
     setTimeout(function() {
+        $('.img_box img').style.opacity = '0';
         $('.enterPk').style.display = 'block';
         $('.enterPk').classList.add('appear');
-        img_box.classList.remove("xz");
-        img_box.classList.add("disappear_xz");
-        img_box.classList.add("animated");
+        $('.img_box').classList.remove("xz");
+        $('.img_box').classList.add("disappear_xz");
+        $('.img_box').classList.add("animated");
         $('.newwaitPK .mine').classList.add('disappearup')
         $('.newwaitPK .other').classList.add('disappearbottom')
-        $('.newwaitPK .mine').addEventListener('animationend', () => {
-            $('.newwaitPK').style.display = 'none';
-        })
+        setTimeout(() => $('.newwaitPK').style.display = 'none', 2000);
     }, 3000);
 }
 
@@ -299,6 +318,7 @@ function animate_success() {
 //匹配结束之后的动画
 function animate_pkend() {
     setTimeout(function() {
+
         $('.enterPk .head_nav_pk').classList.add('disappear');
         $('.enterPk .head_nav_pk').classList.add('animated');
         $('.enterPk .pk_blood .mine').classList.add('disLeft');
@@ -315,20 +335,53 @@ function animate_pkend() {
         $('.enterPk .option').classList.add('disappear');
     }, 3000);
 
-    // setTimeout(function() {
-    //     $('.enterPk').style.display = 'none';
-    // }, 4000);
-
     setTimeout(function() {
         $('.pk_end').style.display = 'block';
-    }, 4000);
+        setTimeout(() => {
+            $('.win_lose').style.display = "block";
+            $('.win_lose').classList.add('zoom');
+        }, 2800)
+    }, 1000);
 }
 
-//渲染pk结束页面
-// function pk_end(answer, mine_answer, other_answer) {
+//结束之后刷新星星和积分
+function RefreshXing(winnerId) {
+    if (winnerId == -1) {
+        $('.pk_page .mine_add_reduce').innerHTML = `+0`;
+        $('.pk_page .integral .cur').innerHTML = `+5`;
+        $('.pk_end .other_add_reduce').innerHTML = `+0`;
+    } else {
+        if (curr.userId == winnerId) {
+            $('.pk_end .mine_add_reduce').innerHTML = `+1`;
+            $('.pk_page .integral .cur').innerHTML = `10`;
+        } else {
+            $('.pk_end .mine_add_reduce').innerHTML = `-1`;
+            $('.pk_page .integral .cur').innerHTML = `5`;
+        }
+    }
+}
 
-// }
 $(".click_back").addEventListener('click', () => {
-    $('.pk_end').style.display = 'none';
+
+    $('.enterPk').classList.remove('appear');
+    img_box.classList.remove("disappear_xz");
+    // img_box.classList.remove("animated");
+    $('.newwaitPK .mine').classList.remove('disappearup')
+    $('.newwaitPK .other').classList.remove('disappearbottom')
+
+    $('.enterPk .head_nav_pk').classList.remove('disappear');
+    // $('.enterPk .head_nav_pk').classList.remove('animated');
+    $('.enterPk .pk_blood .mine').classList.remove('disLeft');
+    // $('.enterPk .pk_blood .mine').classList.remove('animated');
+    $('.enterPk .pk_blood .enter_vs').classList.remove('disappear');
+    // $('.enterPk .pk_blood .enter_vs').classList.remove('animated');
+    $('.enterPk .pk_blood .other').classList.remove('disRight');
+    // $('.enterPk .pk_blood .other').classList.remove('animated');
+    $('.enterPk .text_box').classList.remove('disappear');
+    // $('.enterPk .text_box').classList.remove('animated');
+    $('.enterPk .option').classList.remove('disappear');
+    // $('.enterPk .option').classList.remove('animated');
+
+    $('.enterPk').style.display = 'none';
     $('.pk_end').style.display = 'none';
 });

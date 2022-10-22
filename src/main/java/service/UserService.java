@@ -4,6 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import pojo.vo.Message;
 
 public interface UserService {
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    Message quit(HttpServletRequest request);
 
 
     /**

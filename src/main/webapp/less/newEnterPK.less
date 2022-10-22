@@ -15,7 +15,7 @@
     // height: (667/@vw);
     // overflow: hidden;
     .head_nav_pk{
-        margin-top: (10/@vw);
+        margin-top: (20/@vw);
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -62,12 +62,17 @@
             .head_portrait{
                 z-index: 100;
                 width: (50/@vw);
+                height: (50/@vw);
                 padding: (3/@vw);
                 margin-left: (5/@vw);
                 background-color: #fff;
                 border-radius: 100%;
                 img{
                     width: 100%;
+                    height: 100%
+                    
+                    
+                    ;
                     border-radius: 100%;
                 }
             }
@@ -374,10 +379,16 @@
             align-items: center;
             padding: 0 (15/@vw);
             width: 100%;
-            height: (5vh);
+            height: (6vh);
             background-color:#f8d63a;
             color: #fff;
             font-size: 700;
+
+            i{
+                width: (40/@vw);
+                height: (6vh);
+                line-height: (6vh);
+            }
         }
 
         .corrugated_box{
@@ -690,6 +701,7 @@
     }
 
     .back_bock{
+        margin-top: (5/@vw);
         display: flex;
         align-items: center;
         padding: 0 (15/@vw);
@@ -707,7 +719,7 @@
             margin-top: (20/@vw);
             // margin-right: (70/@vw);
             display: inline-block;
-            width: 50%;
+            width: 40%;
             // height: calc(100vh -  10.66vw);
             .my_box{
                 display: flex;
@@ -765,11 +777,38 @@
             }
         }
 
+        .win_lose{
+            
+            position: absolute;
+            top: (20/@vw);
+            left: 50%;
+            margin-left: (-60/@vw);
+            // margin-top: (-5/@vw);
+            // margin-left: (30/@vw);
+            width: (120/@vw);
+
+            .bgc{
+                position: absolute;
+                top: 2vh;
+                left: 1vh;
+                height: (90/@vw);
+            }
+
+            .win{
+                position: absolute;
+                top: 6vh;
+                left: 3vh;
+                width: (80/@vw);
+                height: auto;
+                // height: (90/@vw);
+            }
+        }
+
         .other{
-            width: 50%;
+            width: 40%;
             .other_box{
                 margin-top: (20/@vw);
-                margin-left: (70/@vw);
+                margin-left: (40/@vw);
                 display: flex;
                 align-items: center;
                 width: (120/@vw);
@@ -798,7 +837,7 @@
             }
     
             .other_name{text-align: right;
-                margin-left: (40/@vw);
+                margin-left: (20/@vw);
                 margin-top: (10/@vw);
                 width: (120/@vw);
                 // text-align: center;
@@ -807,7 +846,7 @@
             }
 
             .xingxing{
-                margin-left: (40/@vw);
+                // margin-left: (10/@vw);
                 margin-top: (10/@vw);
                 width: (120/@vw);
                 text-align: right;
@@ -1059,6 +1098,7 @@
     animation: xz 1s linear infinite;
 }
 
+
 //从上滑出动画
 // @keyframes appearup {
 //     0% {
@@ -1307,24 +1347,24 @@
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
     }
-    }
+}
       
     
     
-    //从左滑出动画
-    @keyframes appearLeft {
-        from {
-          opacity: 0;
-          -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0);
-        }
-      
-        to {
-          opacity: 1;
-          -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-        }
+//从左滑出动画
+@keyframes appearLeft {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
+    
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
 
 //从右滑出的动画
 @keyframes disRight {
@@ -1385,4 +1425,21 @@
     75% {
         transform: scale(1);
     }
+}
+
+//缩放动画
+
+@keyframes zoom {
+    0% {
+        -webkit-transform: scale(0.5);
+        opacity: 0
+    }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 1
+    }
+}
+
+.zoom {
+    -webkit-animation: zoom 0.5s linear;
 }

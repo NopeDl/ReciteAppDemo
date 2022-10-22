@@ -35,6 +35,19 @@ public class UserServiceImpl implements UserService {
     private final AccountDao accountDao = new AccountDaoImpl();
 
     /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @Override
+    public Message quit(HttpServletRequest request) {
+        request.getSession().removeAttribute("userId");
+        Message message = new Message("退出成功");
+        message.addData("quitSuccess",true);
+        return message;
+    }
+
+    /**
      * 注册用户
      *
      * @param request

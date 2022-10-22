@@ -53,6 +53,8 @@ public class UserController extends HttpServlet {
         } else if ("getClockInRecord".equals(requestURI)) {
             //获取打卡记录
             msg = userService.getClockInRecord(request);
+        } else if ("quit".equals(requestURI)) {
+            msg = userService.quit(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

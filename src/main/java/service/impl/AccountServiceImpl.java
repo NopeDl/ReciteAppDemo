@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
                 msg.addData("userId", account.getUserId());//将userid发送给前端储存
 
 //                登录成功后再session中设置用户id
-//                request.getSession().setAttribute("userId", account.getUserId());
+                request.getSession().setAttribute("userId", account.getUserId());
             }
         } else {
             msg = new Message("phone或者password参数不能为空");

@@ -94,7 +94,7 @@ function newTP(title, context, modleId, label,common, flag) {
 }
 
 //社区渲染
-function comTP(title, context, modleId, label, username,name_flag) {
+function comTP(title, context, modleId, label, base64, username,name_flag) {
     let interactive = '';
     if(name_flag){
         interactive = `<span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
@@ -110,7 +110,7 @@ function comTP(title, context, modleId, label, username,name_flag) {
                         <div class="color">
                             <div class="upper">
                                 <div class="head_portrait">
-                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                    <img src="${base64}" alt="">
                                 </div>
                                 <div class="idname1">${username}</div>
                             </div>

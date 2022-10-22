@@ -76,7 +76,7 @@ a {
   transition: all 0.2s;
 }
 .enterPk .head_nav_pk {
-  margin-top: 2.66666667vw;
+  margin-top: 5.33333333vw;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -123,6 +123,7 @@ a {
 .enterPk .pk_blood .mine .head_portrait {
   z-index: 100;
   width: 13.33333333vw;
+  height: 13.33333333vw;
   padding: 0.8vw;
   margin-left: 1.33333333vw;
   background-color: #fff;
@@ -131,6 +132,10 @@ a {
 .enterPk .pk_blood .other .head_portrait img,
 .enterPk .pk_blood .mine .head_portrait img {
   width: 100%;
+  height: 100%
+                    
+                    
+                    ;
   border-radius: 100%;
 }
 .enterPk .pk_blood .other .name_blood,
@@ -388,10 +393,15 @@ a {
   align-items: center;
   padding: 0 4vw;
   width: 100%;
-  height: 5vh;
+  height: 6vh;
   background-color: #f8d63a;
   color: #fff;
   font-size: 700;
+}
+.newwaitPK .mine .back_bock i {
+  width: 10.66666667vw;
+  height: 6vh;
+  line-height: 6vh;
 }
 .newwaitPK .mine .corrugated_box {
   background-color: #f8d63a;
@@ -634,6 +644,7 @@ a {
   font-weight: 700;
 }
 .pk_end .back_bock {
+  margin-top: 1.33333333vw;
   display: flex;
   align-items: center;
   padding: 0 4vw;
@@ -649,7 +660,7 @@ a {
 .pk_end .pk_interface .mine {
   margin-top: 5.33333333vw;
   display: inline-block;
-  width: 50%;
+  width: 40%;
 }
 .pk_end .pk_interface .mine .my_box {
   display: flex;
@@ -698,12 +709,32 @@ a {
   color: #f8d63a;
   font-size: 5.33333333vw;
 }
+.pk_end .pk_interface .win_lose {
+  position: absolute;
+  top: 5.33333333vw;
+  left: 50%;
+  margin-left: -16vw;
+  width: 32vw;
+}
+.pk_end .pk_interface .win_lose .bgc {
+  position: absolute;
+  top: 2vh;
+  left: 1vh;
+  height: 24vw;
+}
+.pk_end .pk_interface .win_lose .win {
+  position: absolute;
+  top: 6vh;
+  left: 3vh;
+  width: 21.33333333vw;
+  height: auto;
+}
 .pk_end .pk_interface .other {
-  width: 50%;
+  width: 40%;
 }
 .pk_end .pk_interface .other .other_box {
   margin-top: 5.33333333vw;
-  margin-left: 18.66666667vw;
+  margin-left: 10.66666667vw;
   display: flex;
   align-items: center;
   width: 32vw;
@@ -729,14 +760,13 @@ a {
 }
 .pk_end .pk_interface .other .other_name {
   text-align: right;
-  margin-left: 10.66666667vw;
+  margin-left: 5.33333333vw;
   margin-top: 2.66666667vw;
   width: 32vw;
   color: #fff;
   font-size: 3.73333333vw;
 }
 .pk_end .pk_interface .other .xingxing {
-  margin-left: 10.66666667vw;
   margin-top: 2.66666667vw;
   width: 32vw;
   text-align: right;
@@ -1153,4 +1183,17 @@ a {
   75% {
     transform: scale(1);
   }
+}
+@keyframes zoom {
+  0% {
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 1;
+  }
+}
+.zoom {
+  -webkit-animation: zoom 0.5s linear;
 }

@@ -1,14 +1,11 @@
 package tools.handlers.impl;
 
-import sun.misc.BASE64Encoder;
 import tools.handlers.BaseFileHandler;
 import tools.handlers.FileType;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Base64;
-
-import static javax.xml.crypto.dsig.Transform.BASE64;
 
 /**
  * @author yeyeye

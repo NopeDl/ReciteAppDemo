@@ -186,10 +186,12 @@ a {
   display: flex;
   align-items: center;
   width: 100%;
+  height: 11.2vw;
   padding: 0 5.33333333vw;
 }
 .community main .community_ul li .color .upper .head_portrait {
-  width: 10.66666667vw;
+  width: 11.2vw;
+  height: 11.2vw;
   border-radius: 100%;
 }
 .community main .community_ul li .color .upper .head_portrait img {
@@ -213,7 +215,6 @@ a {
   border-radius: 2.66666667vw;
 }
 .community main .community_ul li .color .content h4 {
-  width: 48vw;
   margin-bottom: 1.33333333vw;
   padding-top: 4vw;
   font-size: 4.8vw;
