@@ -30,10 +30,7 @@ public class StringUtil {
         index=s1.indexOf(s2);
         while (index!=-1) {
             count++;
-            index=s1.indexOf(s2,index+1);//方法一：使用indexOf方法；
-
-            //s1=s1.substring(index+s2.length());//方法二：使用subString方法
-            //index=s1.indexOf(s2);
+            index=s1.indexOf(s2,index+1);
         }
         return count;
     }

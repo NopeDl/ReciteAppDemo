@@ -11,7 +11,6 @@ import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import pkserver.threads.UserMatchThread;
-import pojo.po.db.File;
 import pojo.po.db.Modle;
 import pojo.po.db.User;
 import pojo.vo.MatchInf;
@@ -35,8 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @ServerEndpoint("/PK/{userId}/{modleId}/{difficulty}")
 public class PkUser {
 
-    private static final UserDao userdao = new UserDaoImpl();
-    private static final ModleDao modleDao = new ModleDaoImpl();
+    private static final UserDao USERDAO = new UserDaoImpl();
+    private static final ModleDao MODLE_DAO = new ModleDaoImpl();
     /**
      * 会话
      */
@@ -59,11 +58,11 @@ public class PkUser {
         if ("START".equals(operate)) {
             //开始匹配
             if (isValidMatch()){
+                //检验匹配是否合法（在匹配还）
                 msg = startMatch();
             }else {
                 msg = new SocketMessage(SocketMsgInf.MATCH_INVALID);
             }
-
             ResponseUtil.send(this.session, msg);
             } else if ("Ready".equals(operate)) {
             //说明匹配成功准备开始比赛了
@@ -168,7 +167,7 @@ public class PkUser {
      */
     private SocketMessage startMatch() {
         //补全匹配信息（模板字数，难度，内容）
-        Modle modle = modleDao.selectModleByModleId(this.matchInf.getModleId());
+        Modle modle = MODLE_DAO.selectModleByModleId(this.matchInf.getModleId());
         //根据路径获取内容
         InputStream input = null;
         try {
@@ -206,14 +205,18 @@ public class PkUser {
                 if (enemyUserId != null) {
                     //匹配成功
                     //根据用户id查找用户信息
-                    user = userdao.selectUserById(enemyUserId);
+                    user = USERDAO.selectUserById(enemyUserId);
                     String path = user.getImage();
                     try {
-                        InputStream touxianginput = new FileInputStream(path);
-                        FileHandler fileHandler = FileHandlerFactory.getHandler("img",touxianginput);
-                        String base64pic = fileHandler.parseContent();
-                        user.setBase64(base64pic);
-                        input.close();
+                        if (!"".equals(path)){
+                            InputStream touxianginput = new FileInputStream(path);
+                            FileHandler fileHandler = FileHandlerFactory.getHandler("img",touxianginput);
+                            String base64pic = fileHandler.parseContent();
+                            user.setBase64(base64pic);
+                            input.close();
+                        }else {
+                            user.setBase64("");
+                        }
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {
