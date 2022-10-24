@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         Message message;
         int userId = Integer.parseInt(request.getParameter("userId"));
         User user = userDao.selectUserById(userId);
-        if ("".equals(user.getImage())) {
+        if ("".equals(user.getImage()) || user.getImage() == null) {
             //说明此时头像为默认头像，不需要重新读取
             //将响应的数据封装到message里
             user.setBase64("");
