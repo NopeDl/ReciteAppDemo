@@ -122,11 +122,8 @@ public class PkUser {
             pkRoom.end();
         }else {
             //清除匹配状态
-            StatusPool.MATCHING_POOL.remove(this.matchInf);
+            StatusPool.quitMatchingPool(this.matchInf);
         }
-        //发送关闭消息
-        SocketMessage smsg = new SocketMessage(SocketMsgInf.SERVER_CLOSE);
-        ResponseUtil.send(this.session, smsg);
     }
 
     @OnError
@@ -181,7 +178,7 @@ public class PkUser {
         this.matchInf.setContent(content);
         this.matchInf.setModleNum(content.length());
         //将当前用户加入匹配池
-        StatusPool.MATCHING_POOL.put(this.matchInf, this);
+        StatusPool.enterMatchingPool(this.matchInf,this);
         //开始匹配
         Thread userMatchThread = new Thread(new UserMatchThread(this.matchInf));
         userMatchThread.start();
@@ -217,8 +214,6 @@ public class PkUser {
                         }else {
                             user.setBase64("");
                         }
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

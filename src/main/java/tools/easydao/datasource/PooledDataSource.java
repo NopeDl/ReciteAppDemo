@@ -1,10 +1,13 @@
 package tools.easydao.datasource;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class PooledDataSource implements DataSource {
@@ -14,15 +17,33 @@ public class PooledDataSource implements DataSource {
 
     private String password;
 
+    private final DataSource dataSource;
+
     public PooledDataSource(String driver, String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
 
-        //注册驱动
+        Properties properties = new Properties();
+        //设置驱动名字
+        properties.setProperty("driverClassName", driver);
+        //url
+        properties.setProperty("url", url);
+        //用户名
+        properties.setProperty("username", username);
+        //密码
+        properties.setProperty("password", password);
+        //初始连接数
+        properties.setProperty("initialSize", "5");
+        //最大连接数
+        properties.setProperty("maxActive", "10");
+        //设置最大等待时间
+        properties.setProperty("maxWait", "3000");
+        properties.setProperty("minIdle", "3");
+
         try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException e) {
+            this.dataSource = DruidDataSourceFactory.createDataSource(properties);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -53,7 +74,7 @@ public class PooledDataSource implements DataSource {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return null;
+        return dataSource.getConnection();
     }
 
     @Override

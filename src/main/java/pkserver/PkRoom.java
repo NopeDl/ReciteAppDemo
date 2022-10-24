@@ -1,6 +1,8 @@
 package pkserver;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import enums.SocketMsgInf;
 import pkserver.threads.TimeLimitThread;
 import pojo.po.pk.AnswerStatus;
@@ -24,6 +26,8 @@ import java.util.*;
  * @Date 2022/10/20 15:07
  */
 public class PkRoom {
+    private static final Logger logger = LoggerFactory.getLogger(PkRoom.class);
+
     /**
      * 玩家一
      */
@@ -79,6 +83,7 @@ public class PkRoom {
      * @param player02 玩家二
      */
     public PkRoom(PkUser player01, PkUser player02) {
+
         this.player01 = player01;
         this.player02 = player02;
         //获取双方匹配信息
@@ -103,7 +108,7 @@ public class PkRoom {
         // <div>
         String matchStr = "</div>";
         String content = p1Inf.getContent();
-        this.blankNum = StringUtil.subStrCount(content,matchStr);
+        this.blankNum = StringUtil.subStrCount(content, matchStr);
 
         //根据难度和挖空数记录总时长
         //各个难度所对应每个空的时间不一样，先写死后续再优化！！！！！！
@@ -125,6 +130,8 @@ public class PkRoom {
         //添加进总记录集合
         answersRecords.put(this.player01, answersRecord01);
         answersRecords.put(this.player02, answersRecord02);
+        //输出日志
+        logger.debug(p1Inf.getUserId() + " and " + p2Inf.getUserId() + "create pk room");
     }
 
 
@@ -132,6 +139,7 @@ public class PkRoom {
      * 开始本房间比赛
      */
     public void excute(String json, PkUser curUser) {
+        logger.debug(this + " pk room excute: " + json);
         //获取json数据
         JSONObject jsonObject = JSONObject.parseObject(json);
         if (jsonObject != null) {
@@ -167,7 +175,7 @@ public class PkRoom {
                 isContinue = false;
                 this.end();
             }
-            if(isContinue){
+            if (isContinue) {
                 //比赛还没结束
                 //将双方血量响应回去
                 msg = new SocketMessage();
@@ -187,6 +195,7 @@ public class PkRoom {
      * 结束本房间游戏
      */
     public synchronized void end() {
+        logger.debug(this + " pk room closed ");
         //将输赢信息封装
         roomBroadcast(new SocketMessage(SocketMsgInf.MATCH_END));
         SocketMessage result = getWinner();
