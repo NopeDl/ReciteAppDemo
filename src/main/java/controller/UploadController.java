@@ -28,7 +28,7 @@ public class UploadController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String uri = StringUtil.parseURI(request.getRequestURI());
+        String uri = StringUtil.parseUri(request.getRequestURI());
         Message msg;
         if ("parseContent".equals(uri)) {
             //获取PDF并解析内容

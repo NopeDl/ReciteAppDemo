@@ -23,7 +23,7 @@ public class ModleController extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String requestURI = StringUtil.parseURI(request.getRequestURI());
+        String requestURI = StringUtil.parseUri(request.getRequestURI());
         Message msg;
         if ("MakeModle".equals(requestURI)) {
             //用户制作模板，三种情况:一种是空模板cv,一种是选择已有的模板再制作，一种是选择本地文件进行创作

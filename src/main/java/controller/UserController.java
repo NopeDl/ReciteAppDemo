@@ -29,7 +29,7 @@ public class UserController extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //获取URI
-        String requestURI = StringUtil.parseURI(request.getRequestURI());
+        String requestURI = StringUtil.parseUri(request.getRequestURI());
         //根据URI类型执行对应方法
         Message msg = null;
         if ("Login".equals(requestURI)) {

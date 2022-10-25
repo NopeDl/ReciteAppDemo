@@ -30,7 +30,7 @@ public class InfController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String uri = StringUtil.parseURI(request.getRequestURI());
+        String uri = StringUtil.parseUri(request.getRequestURI());
         Message msg;
         if ("checkUsedNumber".equals(uri)) {
             //检查手机号是否存在
