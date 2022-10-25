@@ -228,7 +228,9 @@ public class PkUser {
                 msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
                 msg.addData("enemyInf", user);
                 //还需将内容自动挖空响应
-                String context = StringUtil.autoDig(this.matchInf.getModleId(), this.matchInf.getDifficulty());
+                    //获取房间挖空数，并将两边挖同样数量的空
+                int blankNum = this.getPkRoom().getBlankNum();
+                String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
                 msg.addData("context", context);
             } else {
                 msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);

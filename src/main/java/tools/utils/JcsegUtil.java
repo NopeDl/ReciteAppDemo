@@ -30,19 +30,18 @@ public class JcsegUtil {
      * @return 分词结果，封装在List集合中
      */
     public static List<String> getSegments(String content){
+        //分词实现
+        List<String> res = new ArrayList<>();
         try {
-            //分词实现
-            List<String> res = new ArrayList<>();
             SEGMENT.reset(new StringReader(content));
             IWord iWord;
             while ((iWord = SEGMENT.next())!=null){
                 res.add(iWord.getValue());
             }
-            return res;
         } catch (IOException e) {
             e.printStackTrace();
         }
         //若分词失败则返回NULL
-        return null;
+        return res;
     }
 }

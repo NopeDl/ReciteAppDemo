@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class StringUtil {
@@ -48,6 +49,7 @@ public class StringUtil {
 
     /**
      * 获取临时URL
+     *
      * @param fileName
      * @return
      */
@@ -57,6 +59,7 @@ public class StringUtil {
 
     /**
      * 段落处理
+     *
      * @param content 内容
      * @return 处理好段落的内容
      */
@@ -71,7 +74,8 @@ public class StringUtil {
 
     /**
      * 自动挖空
-     * @param modleId 需要挖空的模板ID
+     *
+     * @param modleId    需要挖空的模板ID
      * @param difficulty 难度
      * @return 挖好空的模板内容
      */
@@ -87,11 +91,39 @@ public class StringUtil {
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
             String content = txtHandler.parseContent();
             //去除用户挖空
-            content = content.replaceAll("<div>", "").replaceAll("</div>", "");
+            content = content.replaceAll("<(?!br).*?>", "").replaceAll("<br>", "\n").trim();
             //统计文本字数
             int charNums = content.length();
             //获取挖空数量
             int blankNum = getBlankNumByContentLength(charNums, ratio);
+            //开挖
+            content = digBlank(content, blankNum);
+            return content;
+        } catch (IOException e) {
+            throw new RuntimeException("获取" + path + "流失败");
+        }
+    }
+
+    /**
+     * 已知模板数量直接挖
+     *
+     * @param modleId
+     * @param blankNum
+     * @return
+     */
+    public static String autoDig(int modleId, int blankNum) {
+        //查询模板地址
+        String path = (new ModleDaoImpl()).selectPathByModleId(modleId);
+        //根据地址获取文件字节输入流
+        try {
+            InputStream inputStream = Files.newInputStream(Paths.get(path));
+            //获取文件内容
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
+            String content = txtHandler.parseContent();
+            //去除用户挖空
+            content = content.replaceAll("<(?!br).*?>", "").replaceAll("<br>", "\n").trim();
+            //统计文本字数
+            int charNums = content.length();
             //开挖
             content = digBlank(content, blankNum);
             return content;
@@ -108,7 +140,7 @@ public class StringUtil {
      * @return 挖空数量
      */
     public static int getBlankNumByContentLength(int charNum, double ratio) {
-        return (int) Math.round(charNum * ratio);
+        return (int) Math.round(charNum * ratio) / 7;
     }
 
     /**
@@ -118,7 +150,7 @@ public class StringUtil {
      * @param blankNum 需要挖空的数量
      * @return 挖好的内容(div)
      */
-    public static String digBlank(String content, int blankNum) {
+    public static synchronized String digBlank(String content, int blankNum) {
         //将文本根据空数均匀分段
         //获取每段长度
         int step = content.length() / blankNum;
@@ -131,13 +163,48 @@ public class StringUtil {
         //最后一部分也要加进去
         strList.add(content.substring(beginIndex));
         //中文分词
+        //记录分词后结果
+        StringBuilder result = new StringBuilder();
         for (String src : strList) {
             //获取分词结果
             List<String> segments = JcsegUtil.getSegments(src);
-            //获取分词结果中最长的那个用于挖空
-
-
+            if (segments.size() != 0) {
+                //如果该子串挖空失败则循环至挖空成功为止
+                boolean isDig = false;
+                while (!isDig) {
+                    //随机获取一个不是标点符号分词
+                    Random random = new Random(System.currentTimeMillis());
+                    int randomIndex = random.nextInt(segments.size());
+                    String word = segments.get(randomIndex);
+                    int cnt = 0;
+                    while (word.length() == 1 && cnt < 10) {
+                        randomIndex = random.nextInt(segments.size());
+                        word = segments.get(randomIndex);
+                        //限制次数，防止死循环
+                        cnt++;
+                    }
+                    //将分的词左右加上<div></div>
+                    StringBuilder sb = new StringBuilder(src);
+                    int begin = sb.indexOf(word);
+                    if (begin == -1) {
+                        //没找到
+                        //跳过本轮
+                        continue;
+                    }
+                    //找的到就挖
+                    sb.insert(begin, "<div>");
+                    begin = sb.indexOf(word) + word.length();
+                    sb.insert(begin, "</div>");
+                    //拼接
+                    result.append(sb);
+                    //该子串挖空成功
+                    isDig = true;
+                }
+            } else {
+                //如果没有分出词则直接拼回去
+                result.append(src);
+            }
         }
-        return null;
+        return result.toString();
     }
 }

@@ -102,13 +102,11 @@ public class PkRoom {
         int p2BlankNum = StringUtil.getBlankNumByContentLength(p2ModleNum, ratio);
         //获取两人挖空数的最小值
         //保存该房间挖空数
-
-        //有bug，先写死
-//        this.blankNum = Math.min(p1BlankNum, p2BlankNum);
-        // <div>
-        String matchStr = "</div>";
-        String content = p1Inf.getContent();
-        this.blankNum = StringUtil.subStrCount(content, matchStr);
+        this.blankNum = Math.min(p1BlankNum, p2BlankNum);
+//        // <div>
+//        String matchStr = "</div>";
+//        String content = p1Inf.getContent();
+//        this.blankNum = StringUtil.subStrCount(content, matchStr);
 
         //根据难度和挖空数记录总时长
         //各个难度所对应每个空的时间不一样，先写死后续再优化！！！！！！
