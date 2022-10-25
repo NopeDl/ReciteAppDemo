@@ -169,6 +169,7 @@ public class StringUtil {
             //获取分词结果
             List<String> segments = JcsegUtil.getSegments(src);
             if (segments.size() != 0) {
+                //有bug
                 //如果该子串挖空失败则循环至挖空成功为止
                 boolean isDig = false;
                 while (!isDig) {
@@ -188,7 +189,6 @@ public class StringUtil {
                     int begin = sb.indexOf(word);
                     if (begin == -1) {
                         //没找到
-                        //跳过本轮
                         continue;
                     }
                     //找的到就挖
@@ -205,6 +205,6 @@ public class StringUtil {
                 result.append(src);
             }
         }
-        return result.toString().replaceAll("\r\n","<br>");
+        return result.toString().replaceAll("\r\n", "<br>");
     }
 }
