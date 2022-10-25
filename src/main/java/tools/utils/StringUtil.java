@@ -205,6 +205,6 @@ public class StringUtil {
                 result.append(src);
             }
         }
-        return result.toString();
+        return result.toString().replaceAll("\n","<br>");
     }
 }
