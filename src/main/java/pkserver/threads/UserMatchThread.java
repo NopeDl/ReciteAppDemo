@@ -54,6 +54,7 @@ public class UserMatchThread implements Runnable {
                     }
                 } else {
                     //被别人匹配到了
+                    //或者已经断开连接
                     //结束匹配
                     flag = false;
                 }

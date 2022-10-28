@@ -22,7 +22,7 @@ public class StatusPool {
     /**
      * 将互相匹配到的人放在一起
      */
-    public static final Map<Integer,Integer> PK=new ConcurrentHashMap<>();
+    public static final Map<Integer,Integer> PK = new ConcurrentHashMap<>();
 
     /**
      * 比赛池

@@ -223,10 +223,14 @@ public class UserServiceImpl implements UserService {
     public Message userRanking(HttpServletRequest request) {
         Message msg;
         int userId = Integer.parseInt(request.getParameter("userId"));
-        Integer userRanking = userDao.selectUserRanking(userId);//查询用户排名
-        User user = userDao.selectUserById(userId);//查询用户信息
-        Map<String, Object> res = new HashMap<>();//封装数据
+        //查询用户排名
+        Integer userRanking = userDao.selectUserRanking(userId);
+        //查询用户信息
+        User user = userDao.selectUserById(userId);
+        //封装数据
+        Map<String, Object> res = new HashMap<>();
         res.put("userRanking", userRanking);
+        user.setImage(null);
         res.put("user", user);
         msg = new Message("获取成功");
         msg.addData("userData", res);
@@ -252,8 +256,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取打卡记录
      *
-     * @param request
-     * @return
+     * @param request 1
+     * @return 1
      */
     @Override
     public Message getClockInRecord(HttpServletRequest request) {

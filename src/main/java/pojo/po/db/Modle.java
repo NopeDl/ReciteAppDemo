@@ -1,5 +1,8 @@
 package pojo.po.db;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Modle {
     private int modleId;
     private String modleTitle;
@@ -10,10 +13,22 @@ public class Modle {
     private Integer mStatus;
 
     private String content;
+
+    private LocalDate createTime;
+
     /**
      * 模板是否上传到社区
      */
     private int common;
+
+    public LocalDate getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDate createTime) {
+        this.createTime = createTime;
+    }
+
     public Integer getmStatus() {
         return mStatus;
     }
@@ -30,6 +45,8 @@ public class Modle {
     public void setContent(String content) {
         this.content = content;
     }
+
+
 
     public Integer getMStatus() {
         return mStatus;

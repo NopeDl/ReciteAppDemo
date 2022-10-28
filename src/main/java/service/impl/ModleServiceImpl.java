@@ -27,6 +27,8 @@ import service.ModleService;
 import tools.utils.StringUtil;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class ModleServiceImpl implements ModleService {
@@ -394,9 +396,9 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 修改模板内容,根据传进来的modleId查找modlePath，从而修改文本
-     * @param context
-     * @param modleId
-     * @return
+     * @param context 内容
+     * @param modleId 模板ID
+     * @return 返回
      */
     @Override
     public boolean replaceContext(String context, int modleId) {
@@ -419,8 +421,8 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 获取标签下所有模板
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 返回
      */
     @Override
     public Message getModlesByTag(HttpServletRequest request) {
@@ -444,8 +446,8 @@ public class ModleServiceImpl implements ModleService {
             if (modleList.size() > 0) {
                 for (int i = 0; i < modleList.size(); i++) {
                     //根据路径读取文件内容
-                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
-//                    InputStream input;
+                    //获取改模板的路径；根据路径读取文件内容
+                    String modlePath = modleList.get(i).getModlePath();
                     try {
                         input = new FileInputStream(modlePath);
                     } catch (FileNotFoundException e) {
@@ -454,7 +456,6 @@ public class ModleServiceImpl implements ModleService {
                     //读取文本
                     FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                     String content = txtFileHandler.parseContent();
-//                    modleList.get(i).setContent(content);
                     modleList.get(i).setContent(content);
                     modleList.get(i).setModlePath("");
 
@@ -462,8 +463,8 @@ public class ModleServiceImpl implements ModleService {
                     if(user!=null){
                         //传进来昵称和头像
                         modleList.get(i).setNickName(user.getNickName());
-//                        modleList.get(i).setImg(user.getImage());
-                        String imagepath = user.getImage();//获取用户头像的显示地址
+                        //获取用户头像的显示地址
+                        String imagepath = user.getImage();
 
                         //从我开始
                         if ("".equals(imagepath)) {
@@ -472,12 +473,9 @@ public class ModleServiceImpl implements ModleService {
                             user.setBase64("");
                         } else {
 //                            //说明头像已经改变过了，需要重新读取
-//                            imagepath = user.getImage();//头像的存放路径
-//                            InputStream inputStream;
                             try {
 //                                inputStream = new FileInputStream(imagepath);
-                                input = new FileInputStream(imagepath);
-//                                inputStream.close();
+                                input = Files.newInputStream(Paths.get(imagepath));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -675,15 +673,15 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public Message autoDig(HttpServletRequest request) {
-        String ratioStr = request.getParameter("ratio");
+        String difficultyStr = request.getParameter("difficulty");
         String modleIdStr = request.getParameter("modleId");
         Message msg;
-        if (ratioStr != null && modleIdStr != null) {
+        if (difficultyStr != null && modleIdStr != null) {
             //获取挖空比例
-            Difficulty difficulty = Difficulty.getRatio(ratioStr);
+            Difficulty difficulty = Difficulty.getRatio(difficultyStr);
             //获取模板ID
             int modleId = Integer.parseInt(modleIdStr);
-
+            //挖空好的内容
             String content = StringUtil.autoDig(modleId, difficulty);
 
             msg = new Message("挖空成功");

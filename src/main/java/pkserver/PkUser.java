@@ -117,10 +117,20 @@ public class PkUser {
     @OnClose
     public synchronized void onClose(Session session) throws IOException {
         //清空三个池中的数据
-        if (pkRoom != null){
+        if (StatusPool.PK_ROOM_LIST.contains(this.pkRoom)){
+            //说明已经匹配成功了但有人中途退出
+            PkUser enemyUser = this.pkRoom.getPlayer01() == this ? this.pkRoom.getPlayer02() : this.getPkRoom().getPlayer01();
+            //移除池中相关信息
+            StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
+            StatusPool.MATCHED_POOL.remove(this.getMatchInf());
+            StatusPool.MATCHED_POOL.remove(enemyUser.getMatchInf());
+            StatusPool.PK.remove(this.getMatchInf().getUserId());
+            StatusPool.PK.remove(enemyUser.getMatchInf().getUserId());
             //结束房间
-            pkRoom.end();
-        }else {
+            enemyUser.getSession().getBasicRemote().sendText("对方已退出游戏");
+            enemyUser.getSession().close();
+        }else{
+            //说明是取消匹配
             //清除匹配状态
             StatusPool.quitMatchingPool(this.matchInf);
         }
@@ -183,23 +193,27 @@ public class PkUser {
         Thread userMatchThread = new Thread(new UserMatchThread(this.matchInf));
         userMatchThread.start();
         try {
-            userMatchThread.join();//等待匹配完毕再执行下面逻辑
+            //等待匹配完毕再执行下面逻辑
+            userMatchThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         //匹配结束后用户会在PK池和比赛池中存在
-        //查找对方的用户信息响应给客户端
-        User user = null;
         //获取PK池
         Map<Integer, Integer> pkPool = StatusPool.PK;
+        //查找对方的用户信息响应给客户端
+        User user;
+
         Lock lock = new ReentrantLock();
         lock.lock();
         try {
+            boolean matchSuccess = false;
             if (pkPool.containsKey(this.matchInf.getUserId())) {
                 //说明是自己先匹配到的，自己的信息作为键，对方信息为值
                 //获取对方的信息
                 Integer enemyUserId = pkPool.get(this.matchInf.getUserId());
                 if (enemyUserId != null) {
+                    SocketMessage msg;
                     //匹配成功
                     //根据用户id查找用户信息
                     user = USERDAO.selectUserById(enemyUserId);
@@ -214,28 +228,24 @@ public class PkUser {
                         }else {
                             user.setBase64("");
                         }
+                        //将用户加入房间
+                        PkRoom.joinRoom(this);
+                        //真的匹配成功了！
+                        msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
+                        msg.addData("enemyInf", user);
+                        //还需将内容自动挖空响应
+                        //获取房间挖空数，并将两边挖同样数量的空
+                        int blankNum = this.getPkRoom().getBlankNum();
+                        String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
+                        msg.addData("context", context);
+                        return msg;
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
-
                 }
             }
-            SocketMessage msg;
-            if (user != null) {
-                //将用户加入房间
-                PkRoom.joinRoom(this);
-                //真的匹配成功了！
-                msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
-                msg.addData("enemyInf", user);
-                //还需将内容自动挖空响应
-                    //获取房间挖空数，并将两边挖同样数量的空
-                int blankNum = this.getPkRoom().getBlankNum();
-                String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
-                msg.addData("context", context);
-            } else {
-                msg = new SocketMessage(SocketMsgInf.MATCH_FAILED);
-            }
-            return msg;
+            //说明匹配失败了
+            return new SocketMessage(SocketMsgInf.MATCH_FAILED);
         } finally {
             lock.unlock();
         }

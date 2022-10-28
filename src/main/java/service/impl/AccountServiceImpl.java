@@ -34,7 +34,8 @@ public class AccountServiceImpl implements AccountService {
                 //验证成功
                 msg = new Message("登陆成功");
                 msg.addData("isSuccess", true);
-                msg.addData("userId", account.getUserId());//将userid发送给前端储存
+                //将userid发送给前端储存
+                msg.addData("userId", account.getUserId());
 
 //                登录成功后再session中设置用户id
                 request.getSession().setAttribute("userId", account.getUserId());

@@ -122,8 +122,6 @@ public class StringUtil {
             String content = txtHandler.parseContent();
             //去除用户挖空
             content = content.replaceAll("<(?!br).*?>", "").replaceAll("<br>", "\n").trim();
-            //统计文本字数
-            int charNums = content.length();
             //开挖
             content = digBlank(content, blankNum);
             return content;
