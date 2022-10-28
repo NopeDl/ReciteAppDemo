@@ -1,0 +1,238 @@
+//out:../css/
+@import 'base';
+@vw: 3.95vw;
+
+.wrapper{
+    width: 100%;
+    background-color: rgb(168, 121, 168);
+    border-radius: 0 0 50% 50% / 4%;
+    overflow: hidden;
+
+    nav{
+        //ms开头的这些属性用于兼容
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+
+        .logo{
+            font-size: (32/@vw);
+            letter-spacing: (4/@vw);
+            position: relative;
+            top: (-2/@vw);
+            font-weight: 500;
+        }
+        .usericon{
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .icon-biaoqianA01_wode-265{
+            font-size: (32/@vw);
+        }
+
+        .white{
+            color: #fff;
+        }
+    }
+
+    .container {
+        width: 100%;
+        padding-right: (15/@vw);
+        padding-left: (15/@vw);
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+}
+
+.collapse{
+    width: (70/@vw);
+    height: 0rem;
+    right: (8/@vw);
+    position: absolute;
+    top: (58/@vw);
+    overflow: hidden;
+    display: inline-block;
+    transition: height 1s;
+    z-index: 10;
+
+    .box_icon{
+        display: block;
+        width: (70/@vw);
+        margin-top: -3.5rem;
+        height: 3.5rem;
+        background: #fff;
+        box-shadow: 0px 0px 3px 3px rgb(0 0 0 / 20%);
+        overflow: hidden;
+        transition: margin-top 1s;
+
+        
+        .box_contain{
+            margin-top: (5/@vw);
+            height: 3.5rem;
+            .login{
+                margin-left: (5/@vw);
+                width: (60/@vw);
+                height: (20/@vw);
+                line-height: (20/@vw);
+                display: inline-block;
+                text-align: center;
+                color: #fff;
+                font-size: (14/@vw);
+    
+                a{
+                    display: inline-block;
+                }
+            }
+            .register{
+                margin-left: (5/@vw);
+                margin-top: (5/@vw);
+                width: (60/@vw);
+                height: (20/@vw);
+                line-height: (20/@vw);
+                display: inline-block;
+                text-align: center;
+                color: #000;
+                font-size: (14/@vw);
+    
+                a{
+                    display: inline-block;
+                }
+            }
+        }
+        
+    }
+}
+
+//主要文字段的介绍
+.main_troduction{
+    width: 100%;
+    padding-right: (15/@vw);
+    padding-left: (15/@vw);
+    margin-top: (30/@vw);
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+
+    .littlepage{
+        width: 100%;
+        font-size: (14/@vw);
+        text-align: center;
+        color: #fff;
+        margin-top: (30/@vw);
+        margin-bottom: (30/@vw);
+        line-height: 2em;
+    }
+       
+      
+}
+
+
+.animated {
+    -webkit-animation-duration: 1s;//表示开始动画以前的延时
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    &.infinite {
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+    }
+}
+
+
+.boxtext{
+    text-align: center;
+}
+
+//动画类名
+
+.appearRight {
+    -webkit-animation-name: appearRight;
+    animation-name: appearRight;
+}
+
+.appearLeft {
+    -webkit-animation-name: appearLeft;
+    animation-name: appearLeft;
+}
+
+.slideleft{
+    visibility: visible; 
+    animation-delay: 0.22s;//实现秒数
+    animation-name: appearLeft;
+}
+
+.appearP{
+    visibility: visible; 
+    animation-delay: 0.67s; 
+    animation-name: appear;
+}
+
+.appearh1{
+    visibility: visible; 
+    animation-delay: 0.4s; 
+    animation-name: appear;
+}
+
+//从右滑出的动画
+@keyframes appearRight {
+from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+}
+
+to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+}
+  
+
+
+//从左滑出动画
+@keyframes appearLeft {
+    from {
+      opacity: 0;
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+  
+    to {
+      opacity: 1;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+}
+  
+//出现动画
+@-webkit-keyframes appear {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+}
+
+
+

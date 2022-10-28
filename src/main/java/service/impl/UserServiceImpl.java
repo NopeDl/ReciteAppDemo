@@ -65,7 +65,8 @@ public class UserServiceImpl implements UserService {
             int userId = user.getUserId();
             message = new Message(MsgInf.OK);
             message.addData("isSuccess", true);
-            message.addData("userId", userId);//将id发送给前端
+            //将id发送给前端
+            message.addData("userId", userId);
         } else {
             message = new Message("用户创建失败");
             message.addData("isSuccess", false);
@@ -73,8 +74,10 @@ public class UserServiceImpl implements UserService {
         return message;
     }
 
+    /**
+     * 通过userId来查找用户资料
+     */
     @Override
-    //通过userId来查找用户资料
     public Message selectUserMsg(HttpServletRequest request) {
 
         Message message;
@@ -86,7 +89,8 @@ public class UserServiceImpl implements UserService {
             user.setBase64("");
         } else {
             //说明头像已经改变过了，需要重新读取
-            String imagePath = user.getImage();//头像的存放路径
+            //头像的存放路径
+            String imagePath = user.getImage();
             InputStream input;
             try {
                 input = new FileInputStream(imagePath);
@@ -99,6 +103,7 @@ public class UserServiceImpl implements UserService {
 //            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
 //            String base64 = txtFileHandler.parseContent();//读取出来base64
             user.setBase64(base64);
+            user.setImage(null);
         }
         //将响应的数据封装到message里
         message = new Message(MsgInf.OK);

@@ -10,6 +10,7 @@ import enums.SocketMsgInf;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import pkserver.listeners.BasicStatusPoolListener;
 import pkserver.threads.UserMatchThread;
 import pojo.po.db.Modle;
 import pojo.po.db.User;
@@ -33,6 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @ServerEndpoint("/PK/{userId}/{modleId}/{difficulty}")
 public class PkUser {
+    private final StatusPool statusPool = new StatusPool();
+
 
     private static final UserDao USERDAO = new UserDaoImpl();
     private static final ModleDao MODLE_DAO = new ModleDaoImpl();
@@ -57,14 +60,14 @@ public class PkUser {
         SocketMessage msg;
         if ("START".equals(operate)) {
             //开始匹配
-            if (isValidMatch()){
+            if (isValidMatch()) {
                 //检验匹配是否合法（在匹配还）
-                msg = startMatch();
-            }else {
+                startMatch();
+            } else {
                 msg = new SocketMessage(SocketMsgInf.MATCH_INVALID);
+                ResponseUtil.send(this.session, msg);
             }
-            ResponseUtil.send(this.session, msg);
-            } else if ("Ready".equals(operate)) {
+        } else if ("READY".equals(operate)) {
             //说明匹配成功准备开始比赛了
             if (!pkRoom.isTimerAlive()) {
                 //如果计时器没打开则打开计时器
@@ -75,14 +78,13 @@ public class PkUser {
             msg.addData("isReady", true);
             ResponseUtil.send(this.session, msg);
         } else if (JSONObject.isValid(operate)) {
-            //锁上防止并发异常
-            Lock lock = new ReentrantLock();
-            lock.lock();
-            try {
-                //如果是json则执行扣血等操作
-                this.pkRoom.excute(operate, this);
-            } finally {
-                lock.unlock();
+            //如果是json则执行扣血等操作
+            this.pkRoom.excute(operate, this);
+        } else if ("AGAIN".equals(operate)) {
+            //循环获取挖空
+            if (this.pkRoom != null){
+                msg = this.pkRoom.againDig(this);
+                ResponseUtil.send(this.session, msg);
             }
         } else {
             msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
@@ -109,6 +111,22 @@ public class PkUser {
         matchInf.setUserId(Integer.parseInt(userId));
         matchInf.setModleId(Integer.parseInt(modleId));
         matchInf.setDifficulty(Difficulty.getRatio(difficulty));
+        //注册监听器
+        statusPool.listenerRegisty(new BasicStatusPoolListener(this){
+            @Override
+            public void pkPoolAdded(PkUser user) {
+                if (user == this.getPkUser()){
+                    //如果pk池中新增用户是自己
+                    //说明匹配成功了
+                    SocketMessage socketMessage = matchSuccess();
+                    try {
+                        ResponseUtil.send(user.getSession(),socketMessage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         //发送连接成功信息
         ResponseUtil.send(this.session, new SocketMessage());
     }
@@ -117,22 +135,22 @@ public class PkUser {
     @OnClose
     public synchronized void onClose(Session session) throws IOException {
         //清空三个池中的数据
-        if (StatusPool.PK_ROOM_LIST.contains(this.pkRoom)){
+        if (StatusPool.PK_ROOM_LIST.contains(this.pkRoom)) {
             //说明已经匹配成功了但有人中途退出
             PkUser enemyUser = this.pkRoom.getPlayer01() == this ? this.pkRoom.getPlayer02() : this.getPkRoom().getPlayer01();
             //移除池中相关信息
             StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
-            StatusPool.MATCHED_POOL.remove(this.getMatchInf());
-            StatusPool.MATCHED_POOL.remove(enemyUser.getMatchInf());
-            StatusPool.PK.remove(this.getMatchInf().getUserId());
-            StatusPool.PK.remove(enemyUser.getMatchInf().getUserId());
+            this.statusPool.quitMatchedPool(this.getMatchInf());
+            this.statusPool.quitMatchedPool(enemyUser.getMatchInf());
+            this.statusPool.quitPkPool(this);
+            this.statusPool.quitPkPool(enemyUser);
             //结束房间
             enemyUser.getSession().getBasicRemote().sendText("对方已退出游戏");
             enemyUser.getSession().close();
-        }else{
+        } else {
             //说明是取消匹配
             //清除匹配状态
-            StatusPool.quitMatchingPool(this.matchInf);
+            this.statusPool.quitMatchingPool(this.matchInf);
         }
     }
 
@@ -160,9 +178,10 @@ public class PkUser {
 
     /**
      * 检测当前用户匹配是否合法
+     *
      * @return bool
      */
-    private boolean isValidMatch(){
+    private boolean isValidMatch() {
         //遍历三个池
         boolean b = StatusPool.MATCHING_POOL.containsKey(this.matchInf);
         boolean b1 = StatusPool.MATCHED_POOL.containsKey(this.matchInf);
@@ -172,84 +191,77 @@ public class PkUser {
     /**
      * 执行开始匹配方法
      */
-    private SocketMessage startMatch() {
+    private void startMatch() {
         //补全匹配信息（模板字数，难度，内容）
         Modle modle = MODLE_DAO.selectModleByModleId(this.matchInf.getModleId());
         //根据路径获取内容
-        InputStream input = null;
+        InputStream input;
+        String content = null;
         try {
             input = new FileInputStream(modle.getModlePath());
-        } catch (FileNotFoundException e) {
+            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+            content = txtFileHandler.parseContent();
+            input.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-        String content = txtFileHandler.parseContent();
         //将内容封装
         this.matchInf.setContent(content);
         this.matchInf.setModleNum(content.length());
         //将当前用户加入匹配池
-        StatusPool.enterMatchingPool(this.matchInf,this);
+        this.statusPool.enterMatchingPool(this.matchInf, this);
         //开始匹配
-        Thread userMatchThread = new Thread(new UserMatchThread(this.matchInf));
+        Thread userMatchThread = new Thread(new UserMatchThread(this.matchInf,this.statusPool));
         userMatchThread.start();
-        try {
-            //等待匹配完毕再执行下面逻辑
-            userMatchThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
+
+    /**
+     * 匹配成功后执行
+     */
+    public synchronized SocketMessage matchSuccess(){
         //匹配结束后用户会在PK池和比赛池中存在
         //获取PK池
         Map<Integer, Integer> pkPool = StatusPool.PK;
         //查找对方的用户信息响应给客户端
         User user;
-
-        Lock lock = new ReentrantLock();
-        lock.lock();
-        try {
-            boolean matchSuccess = false;
-            if (pkPool.containsKey(this.matchInf.getUserId())) {
-                //说明是自己先匹配到的，自己的信息作为键，对方信息为值
-                //获取对方的信息
-                Integer enemyUserId = pkPool.get(this.matchInf.getUserId());
-                if (enemyUserId != null) {
-                    SocketMessage msg;
-                    //匹配成功
-                    //根据用户id查找用户信息
-                    user = USERDAO.selectUserById(enemyUserId);
-                    String path = user.getImage();
-                    try {
-                        if (!"".equals(path)){
-                            InputStream touxianginput = new FileInputStream(path);
-                            FileHandler fileHandler = FileHandlerFactory.getHandler("img",touxianginput);
-                            String base64pic = fileHandler.parseContent();
-                            user.setBase64(base64pic);
-                            input.close();
-                        }else {
-                            user.setBase64("");
-                        }
-                        //将用户加入房间
-                        PkRoom.joinRoom(this);
-                        //真的匹配成功了！
-                        msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
-                        msg.addData("enemyInf", user);
-                        //还需将内容自动挖空响应
-                        //获取房间挖空数，并将两边挖同样数量的空
-                        int blankNum = this.getPkRoom().getBlankNum();
-                        String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
-                        msg.addData("context", context);
-                        return msg;
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if (pkPool.containsKey(this.matchInf.getUserId())) {
+            //说明是自己先匹配到的，自己的信息作为键，对方信息为值
+            //获取对方的信息
+            Integer enemyUserId = pkPool.get(this.matchInf.getUserId());
+            if (enemyUserId != null) {
+                SocketMessage msg;
+                //匹配成功
+                //根据用户id查找用户信息
+                user = USERDAO.selectUserById(enemyUserId);
+                String path = user.getImage();
+                try {
+                    if (!"".equals(path)) {
+                        InputStream touxianginput = new FileInputStream(path);
+                        FileHandler fileHandler = FileHandlerFactory.getHandler("img", touxianginput);
+                        String base64pic = fileHandler.parseContent();
+                        user.setBase64(base64pic);
+                        touxianginput.close();
+                    } else {
+                        user.setBase64("");
                     }
+                    //将用户加入房间
+                    PkRoom.joinRoom(this);
+                    //真的匹配成功了！
+                    msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
+                    msg.addData("enemyInf", user);
+                    //还需将内容自动挖空响应
+                    //获取房间挖空数，并将两边挖同样数量的空
+                    int blankNum = this.getPkRoom().getBlankNum();
+                    String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
+                    msg.addData("context", context);
+                    return msg;
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            //说明匹配失败了
-            return new SocketMessage(SocketMsgInf.MATCH_FAILED);
-        } finally {
-            lock.unlock();
         }
-
+        //说明匹配失败了
+        return new SocketMessage(SocketMsgInf.MATCH_FAILED);
     }
 
     public PkRoom getPkRoom() {

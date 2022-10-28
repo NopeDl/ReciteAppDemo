@@ -1,0 +1,282 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+body {
+  height: 100%;
+  background: linear-gradient(to right, #d9d0e6 50%, #f6f6f6 50%) fixed;
+}
+header {
+  z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: left 0.2s;
+  width: 100vw;
+  height: 15.46666667vw;
+  background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4vw;
+}
+header .header_search {
+  display: flex;
+  align-items: center;
+  padding: 0 2.66666667vw;
+  width: 58.66666667vw;
+  height: 8vw;
+  border-radius: 4vw;
+  background-color: #ecedef;
+}
+header .header_search input {
+  padding: 0 1.33333333vw;
+  width: 53.33333333vw;
+  height: 8vw;
+  border-radius: 4vw;
+  background-color: #ecedef;
+  border: 0;
+}
+header .header_search button {
+  width: 8vw;
+  height: 8vw;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+}
+header .header_search button .icon {
+  font-size: 5.33333333vw;
+}
+.container {
+  position: relative;
+  width: 100vw;
+  margin-top: 15.46666667vw;
+}
+.container .collection_base,
+.container .my_base {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  transition: all 0.01s;
+}
+.container .collection_base ul,
+.container .my_base ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container .collection_base .baseLis_fadeIn,
+.container .my_base .baseLis_fadeIn {
+  margin-top: 3vw;
+  opacity: 1;
+}
+.container .collection_base .baseLis_del,
+.container .my_base .baseLis_del {
+  animation: baseLis_del 0.5s forwards;
+}
+@keyframes baseLis_del {
+  0% {
+    height: 26.66666667vw;
+  }
+  99% {
+    margin-top: 0;
+    height: 0;
+  }
+  100% {
+    margin-top: 0;
+    height: 0;
+    display: none;
+  }
+}
+.container .collection_base li,
+.container .my_base li {
+  overflow: hidden;
+  position: relative;
+  margin-top: 10vw;
+  width: 97.33333333vw;
+  height: 26.66666667vw;
+  border-radius: 2.66666667vw;
+  box-shadow: 0.8vw 0.8vw 1.33333333vw rgba(0, 0, 0, 0.381);
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  transition-delay: 0.3s;
+}
+.container .collection_base li .tp_inner,
+.container .my_base li .tp_inner {
+  position: absolute;
+  left: 0;
+  background-color: #fff;
+  width: 140vw;
+  height: 100%;
+  padding-left: 4vw;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+.container .collection_base li .tp_inner .common,
+.container .my_base li .tp_inner .common,
+.container .collection_base li .tp_inner .modleId,
+.container .my_base li .tp_inner .modleId {
+  display: none;
+}
+.container .collection_base li .content,
+.container .my_base li .content {
+  width: 64vw;
+}
+.container .collection_base li .content h3,
+.container .my_base li .content h3 {
+  width: 48vw;
+  margin-bottom: 5.33333333vw;
+  font-size: 5.33333333vw;
+}
+.container .collection_base li .content .info,
+.container .my_base li .content .info {
+  font-size: 3.73333333vw;
+  width: 58.66666667vw;
+  height: 4.8vw;
+}
+.container .collection_base li .tip,
+.container .my_base li .tip {
+  width: 26.66666667vw;
+}
+.container .collection_base li .tip .date,
+.container .my_base li .tip .date {
+  display: none;
+}
+.container .collection_base li .tip .label,
+.container .my_base li .tip .label {
+  width: auto;
+  border-radius: 5.33333333vw;
+  line-height: 6.66666667vw;
+  padding: 0 2.66666667vw;
+  text-align: center;
+  font-size: 5.33333333vw;
+  background-color: #ab97c974;
+}
+.container .collection_base li .tip .label span,
+.container .my_base li .tip .label span {
+  color: #323232;
+  font-size: 3.73333333vw;
+}
+.container .collection_base li .tip .label .icon-shuqianguanli,
+.container .my_base li .tip .label .icon-shuqianguanli {
+  font-size: 3.73333333vw;
+}
+.container .collection_base li .template_btn,
+.container .my_base li .template_btn {
+  margin-left: 2.66666667vw;
+  width: 43.2vw;
+  height: 100%;
+  display: flex;
+}
+.container .collection_base li .template_btn .tp_btn,
+.container .my_base li .template_btn .tp_btn {
+  width: 21.6vw;
+  height: 100%;
+  font-size: 5.86666667vw;
+  text-align: center;
+  line-height: 26.66666667vw;
+}
+.container .collection_base li .template_btn .del,
+.container .my_base li .template_btn .del {
+  background-color: #fc5b5bcf;
+}
+.container .collection_base li .template_btn .edit,
+.container .my_base li .template_btn .edit {
+  background-color: #a89cd4;
+}
+.container .collection_base .base_none_1,
+.container .my_base .base_none_1,
+.container .collection_base .base_none_2,
+.container .my_base .base_none_2 {
+  display: none;
+  width: 100%;
+  margin-top: calc(100vh - (400 / 3.75vw));
+  height: 106.66666667vw;
+  background-image: url(../images/空/空空如也.png);
+  background-size: cover;
+}
+.container .collection_base .base_none_2,
+.container .my_base .base_none_2 {
+  background-image: url(../images/空/收藏夹空空如也.png);
+}
+.container .base_bottom {
+  height: 21.33333333vw;
+  width: 100%;
+}
+.container .collection_base {
+  transform: scale(0);
+  clip-path: circle(7.06666667vw at 90vw -10vw);
+  transition: all 0.5s;
+}
+.container .collection_base li {
+  transition: all 0.3s ease-in-out;
+}
+.container .clip_path_change {
+  clip-path: circle(100%);
+}

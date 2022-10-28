@@ -12,8 +12,11 @@ import java.util.Map;
 public class UserMatchThread implements Runnable {
     private MatchInf matchInf = null;
 
-    public UserMatchThread(MatchInf matchInf) {
+    private StatusPool statusPool;
+
+    public UserMatchThread(MatchInf matchInf,StatusPool statusPool) {
         this.matchInf = matchInf;
+        this.statusPool = statusPool;
     }
 
     @Override
@@ -26,7 +29,6 @@ public class UserMatchThread implements Runnable {
             while (flag) {
 
                 Map<MatchInf, PkUser> matchingPool = StatusPool.MATCHING_POOL;
-                Map<MatchInf, PkUser> matchedPool = StatusPool.MATCHED_POOL;
                 //判断以下用户是否还在池子里
                 if (matchingPool.containsKey(matchInf)) {
                     for (MatchInf key : matchingPool.keySet()) {
@@ -39,14 +41,14 @@ public class UserMatchThread implements Runnable {
                             if (matchInf.getUserId() != key.getUserId()) {
                                 //匹配的不是自己
                                 //先将他放在比赛池中
-                                matchedPool.put(key, matchingPool.get(key));
-                                matchedPool.put(matchInf, matchingPool.get(matchInf));
+                                statusPool.enterMatchedPool(key, matchingPool.get(key));
+                                statusPool.enterMatchedPool(matchInf, matchingPool.get(matchInf));
                                 //将匹配的两个人凡在map里面
-                                StatusPool.PK.put(matchInf.getUserId(), key.getUserId());
-                                StatusPool.PK.put(key.getUserId(), matchInf.getUserId());
+                                statusPool.enterPkPool(matchingPool.get(matchInf), matchingPool.get(key));
+                                statusPool.enterPkPool(matchingPool.get(key), matchingPool.get(matchInf));
                                 //匹配到的不是自己，应该移除自己和匹配到的对象，进入比赛的池子
-                                matchingPool.remove(key);
-                                matchingPool.remove(matchInf);
+                                statusPool.quitMatchingPool(key);
+                                statusPool.quitMatchingPool(matchInf);
                                 flag = false;
                                 break;
                             }

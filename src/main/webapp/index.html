@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <link rel="manifest" href="./json/manifest.json">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/calendar.css">
+    <link rel="stylesheet" href="./css/pk.css">
+    <link rel="stylesheet" href="./css/MakingTemplates.css">
+    <link rel="stylesheet" href="./css/personal.css">
+    <link rel="stylesheet" href="./css/community.css">
+    <link rel="stylesheet" href="./css/newEnterPK.css">
+    <link rel="stylesheet" href="./css/ViewTemplate.css">
+</head>
+
+<body>
+    <div class="scroll_box">
+        <!-- 记忆库 -->
+        <div class="memory_base main_page">
+            <header>
+                <div class="header_top">
+                    <div class="header_left">
+                        <span class="icon iconfont icon-a-riqirili"></span>
+                    </div>
+                    <div class="header_search">
+                        <input type="text" id="header_search_memory">
+                        <button>
+                            <span class="icon iconfont icon-sousuo3"></span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="header_bottom">
+                    <div class="today_plan_btn hb_btn btn_line">
+                        今日计划
+                    </div>
+                    <div class="base_btn hb_btn">
+                        记忆库
+
+                    </div>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="container_scroll">
+                    <div class="today_plan">
+
+                        <div class="review_list">
+                            <span>复习列表</span>
+                            <span>4篇</span>
+                        </div>
+                        <div class="review_container">
+                            <div class="today_review">
+                                <div class="tr_top">
+                                    <h2>
+                                        今日复习任务
+                                        <span>0/1</span>
+                                    </h2>
+                                    <div class="rule">查看生成规则</div>
+                                </div>
+                                <div class="tr_bottom">
+                                    <div class="review_line"></div>
+                                    <span class="icon iconfont icon-xianshi_xuanze"></span>
+                                </div>
+                            </div>
+                            <div class="review_cycle">
+                                <div class="cycle_1">
+                                    <div class="cycle_title">
+                                        <span>复习周期一</span>
+                                    </div>
+                                    <ul>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="record_box">
+                            <div class="box">
+                                <div class="com time">
+                                    <div class="com_title"> <i class="iconfont icon-shijian"></i> 学习时长</div>
+                                    <div class="data">28min</div>
+                                </div>
+                                <div class="com  page">
+                                    <div class="com_title"> <i class="iconfont icon-tongji1"></i> 学习篇数</div>
+                                    <div class="data">2篇</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="me_base">
+                        <div class="my_base">
+                            <ul class="base_lis">
+                                <li>
+                                    <div class="tp_inner">
+                                        <div class="modleId">${modleId}</div>
+                                        <div class="content">
+                                            <h4 class="title ellipsis">哈哈哈</h4>
+                                            <div class="info ellipsis">哈哈嘿嘿哈哈</div>
+                                        </div>
+                                        <div class="tip">
+                                            <div class="label">
+                                                <span class="iconfont icon-shuqianguanli"></span>
+                                                <span>通识课</span>
+                                            </div>
+                                            <div class="learning">
+                                                <span>未学习</span>
+                                                <!-- <span class="iconfont icon-xianshi_xuanze"></span> -->
+                                            </div>
+                                        </div>
+                                        <div class="common">${common}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tp_inner">
+                                        <div class="modleId">${modleId}</div>
+                                        <div class="content">
+                                            <h4 class="title ellipsis">哈哈哈</h4>
+                                            <div class="info ellipsis">哈哈嘿嘿哈哈</div>
+                                        </div>
+                                        <div class="tip">
+                                            <div class="label">
+                                                <span class="iconfont icon-shuqianguanli"></span>
+                                                <span>通识课</span>
+                                            </div>
+                                            <div class="learning startlearn">
+                                                <span>学习中</span>
+                                                <!-- <span class="iconfont icon-xianshi_xuanze"></span> -->
+                                            </div>
+                                        </div>
+                                        <div class="common">${common}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tp_inner">
+                                        <div class="modleId">${modleId}</div>
+                                        <div class="content">
+                                            <h4 class="title ellipsis">哈哈哈</h4>
+                                            <div class="info ellipsis">哈哈嘿嘿哈哈</div>
+                                        </div>
+                                        <div class="tip">
+                                            <div class="label">
+                                                <span class="iconfont icon-shuqianguanli"></span>
+                                                <span>通识课</span>
+                                            </div>
+                                            <div class="learning learned">
+                                                <span>已学习</span>
+                                                <!-- <span class="iconfont icon-xianshi_xuanze"></span> -->
+                                            </div>
+                                        </div>
+                                        <div class="common">${common}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tp_inner">
+                                        <div class="modleId">${modleId}</div>
+                                        <div class="content">
+                                            <h4 class="title ellipsis">哈哈哈</h4>
+                                            <div class="info ellipsis">哈哈嘿嘿哈哈</div>
+                                        </div>
+                                        <div class="tip">
+                                            <div class="label">
+                                                <span class="iconfont icon-shuqianguanli"></span>
+                                                <span>通识课</span>
+                                            </div>
+                                            <div class="learning">
+                                                <span>未学习</span>
+                                                <!-- <span class="iconfont icon-xianshi_xuanze"></span> -->
+                                            </div>
+                                        </div>
+                                        <div class="common">${common}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tp_inner">
+                                        <div class="modleId">${modleId}</div>
+                                        <div class="content">
+                                            <h4 class="title ellipsis">哈哈哈</h4>
+                                            <div class="info ellipsis">哈哈嘿嘿哈哈</div>
+                                        </div>
+                                        <div class="tip">
+                                            <div class="label">
+                                                <span class="iconfont icon-shuqianguanli"></span>
+                                                <span>通识课</span>
+                                            </div>
+                                            <div class="learning">
+                                                <span>未学习</span>
+                                                <!-- <span class="iconfont icon-xianshi_xuanze"></span> -->
+                                            </div>
+                                        </div>
+                                        <div class="common">${common}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="base_none_1"></div>
+                            <div class="base_bottom"></div>
+                        </div>
+                        <div class="collection_base">
+                            <ul class="base_lis">
+
+                            </ul>
+                            <div class="base_none_2"></div>
+                            <div class="base_bottom"></div>
+                        </div>
+                        <div class="icon_btn">
+                            <span class="icon iconfont icon-shoucang"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- 学习页面 -->
+        <div class="learn_page">
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-xiangzuojiantou"></span>
+                </div>
+                <div class="title ellipsis">标题标题标题标题标题标题标题标题标题标题</div>
+                <div class="header_right">
+                    <div class="label">
+                        <span>通识课</span>
+                    </div>
+                </div>
+                <!-- <div class="header_right">
+                    <ul>
+                        <li>
+                            <span class="icon iconfont icon-tijiao"></span>
+                            <div class="name">提交</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-zhinengmoxie"></span>
+                            <div class="name">默写</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-biyanjing"></span>
+                            <div class="name">背诵</div>
+                        </li>
+                    </ul>
+                </div> -->
+            </header>
+            <div class="popup">
+                <div class="popup_box">
+                </div>
+            </div>
+            <div class="container">
+                <div class="text_box">
+
+                </div>
+            </div>
+            <footer></footer>
+        </div>
+        <!-- 再编辑页面 -->
+        <div class="edit_page">
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-fanhui"></span>
+                </div>
+                <div class="header_right">
+                    <ul>
+                        <li>
+                            <span class="icon iconfont icon-tiku"></span>
+                            <div class="name">编辑</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-huabi"></span>
+                            <div class="name">挖空</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-xuanze"></span>
+                            <div class="name">选择</div>
+                        </li>
+                        <li>
+                            <span class="icon iconfont icon-gongxiangtubiaozhuangtaileicaozuolei37"></span>
+                            <div class="name">保存</div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <div class="popup">
+                <div class="popup_box">
+                </div>
+            </div>
+            <div class="container">
+                <div class="title">
+                    <div class="label">
+                        <div class="label_cont">
+                            <span>标签</span>
+                        </div>
+                        <div class="label_menu">
+                            <ul>
+                                <li>考研</li>
+                                <li>教资</li>
+                                <li>通识课</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text" class="title_name">
+                </div>
+                <div class="text_box">
+                    <div class="text_page" id="text_page">
+                        阿三大苏打实打实的京哈十九点和教案设计的撒娇的贺卡收到哈师大卡手机卡的贺卡收到尽快哈是客户对接哈师大计划经济舒服就好开好房间后即可黑暗圣经贷记卡活动教案或开始就电话卡是进口的哈抠脚大汉啊手机客户端看教案设计肯定会骄傲开始的空间哈萨克和打开哈萨克结婚登记喀什觉得和健康撒谎看到哈萨克就和大家哈数据库的哈萨克和大家暗黑世界大会金卡时间后端今安徽觉得哈和大家撒谎就和
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 打卡页面 -->
+        <div class="calendar_page">
+            <div class="left">
+                <span class="icon iconfont icon-fanhui"></span>
+            </div>
+            <!-- 背景紫色 -->
+            <div class="bcg"></div>
+            <div class="calendar">
+                <div class="calendar_header">
+                    <span class="month_picker" id="month_picker">February</span>
+                    <div class="year_picker">
+                        <span class="year_change" id="prev_year">
+                            <pre><</pre>
+                        </span>
+                        <span id="year">2021</span>
+                        <span class="year_change" id="next_year">
+                            <pre>></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="calendar_body">
+                    <div class="calendar_week_day">
+                        <div>周日</div>
+                        <div>周一</div>
+                        <div>周二</div>
+                        <div>周三</div>
+                        <div>周四</div>
+                        <div>周五</div>
+                        <div>周六</div>
+                    </div>
+                    <!-- 存放日期 -->
+                    <div class="calendar_days"></div>
+                </div>
+                <div class="month_list" id="month_list"></div>
+                <div class="calendar_footer">
+                    <div class="clock">
+                        <div class="situation">今日还未打卡</div>
+                        <button class="situation">签到</button>
+                    </div>
+                    <div class="title">今日学习数据</div>
+                    <div class="record_box">
+                        <div class="box">
+                            <div class="com time">
+                                <div class="com_title"> <i class="iconfont icon-shijian"></i> 学习时长</div>
+                                <div class="data">28min</div>
+                            </div>
+                            <div class="com  page">
+                                <div class="com_title"> <i class="iconfont icon-tongji1"></i> 学习篇数</div>
+                                <div class="data">2篇</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- pk页面 -->
+        <div class="pk_page main_page scroll_top">
+            <div class="main">
+                <div class="header">
+                    <div class="head_portrait">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="com idname">发际线与我作队</div>
+                        <div class="com integral">
+                            <i class="iconfont icon-bonus-line"></i> <i class="cur">0</i> <i class="fixed"> / 120</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="competition_season">
+                    <div class="season_title"> <i>S1</i> 赛季</div>
+                    <div class="season_box">
+                        <div class="rank">
+                            <div class="season_name">初级学士</div>
+                            <div class="start">
+                                <i class="active iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                                <i class="iconfont icon-shoucang
+                                "></i>
+                            </div>
+                        </div>
+                        <div class="role">
+                            <img src="./images/段位/1.png" class="loading_icon">
+                        </div>
+                        <div class="start_game">
+                            <input type="submit" value="开始匹配">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="pk_footer_bg"></div> -->
+                <div class="pk_footer scroll_top">
+                    <div class="ranking_list" id="ranking_list">
+                        <div class="laiqu" id="laiqu">一</div>
+                        <div class="title_nav">
+                            <div class="rank_title">
+                                <i class="iconfont icon-paihangbang_paiming
+                                "></i> 排行榜公示
+                            </div>
+                            <div class="rank_pic">
+                                <!-- <img src="" alt=""> -->
+                            </div>
+                        </div>
+                        <div class="mine">
+                            <div class="com mine_title">
+                                <p>我的</p>
+                                <p>成绩</p>
+                            </div>
+                            <div class="head_portrait">
+                                <img src="./images/头像/头像-女学生2.png" alt="">
+                            </div>
+                            <div class="idname">发际线与我作队</div>
+                            <div class="com rank">第1名</div>
+                            <div class="com score">100分</div>
+                        </div>
+                        <div class="others">
+                            <div class="others_nav">
+                                <div class="left one">
+                                    <span class="rank"><img src="./images/pk/金牌 .png"></img></span
+                                        class="name"><span>队名</span>
+                                </div>
+                                <div class="right one">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><img src="./images/pk/银牌.png"></img></span
+                                        class="name"><span>hahah</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><img class="tong" src="./images/pk/铜牌.png"></img></span
+                                        class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>4</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>5</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>6</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>7</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>8</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i>9</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                            <div class="others_nav others_infor">
+                                <div class="left">
+                                    <span class="rank"><i class="ten">10</i></span class="name"><span>队名</span>
+                                </div>
+                                <div class="right">xx分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 开始匹配 -->
+        <div class="newwaitPK">
+            <div class="vs_title img_box appear_xz  animated "><img src="./images/xz4.png" alt=""></div>
+            <!-- <div class="vs_title liti appear animated">v s</div> -->
+            <div class="mine appearup animated">
+                <div class="back_bock">
+                    <i class="iconfont icon-xiangzuojiantou"></i>
+                </div>
+
+                <div class="corrugated_box">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="head_portrait">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                </div>
+                <div class="idname">发际线与我作队</div>
+                <div class="bgc">
+                    <div class="triangle"></div>
+                </div>
+            </div>
+            <div class="other appearbottom animated">
+                <div class="bgc">
+                    <div class="triangle"></div>
+                </div>
+                <div class="corrugated_box">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="head_portrait">
+                        <div class="Unmatched">?</div>
+                        <!-- <img src="./images/头像/头像-女学生2.png" alt=""> -->
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="other_name">??????</div>
+                    <div class="search">
+                        <span>正在匹配.....</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 进入PK页面 -->
+        <div class="enterPk" style="display: none;">
+            <div class="head_nav_pk">
+                <span class="back iconfont icon-xiangzuojiantou">
+                </span>
+                <span>对战</span>
+            </div>
+            <div class="pk_blood">
+                <div class="mine">
+                    <div class="blook_change mine_blood_change">
+                    </div>
+                    <div class="head_portrait">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                    <div class="name_blood">
+                        <div class="idname">发际线与我作队</div>
+                        <div class="blook mine_blook">100%</div>
+                    </div>
+                </div>
+                <div class="enter_vs ">vs</div>
+                <!-- <div class="time">
+                    <div class="outercir1">
+                        <div class="outercir2">
+                            <div class="outercir3">
+                                <div class="innercir">10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="other">
+                    <div class="blook_change other_blood_change">
+                    </div>
+                    <div class="name_blood">
+                        <div class="idname other_name">haha</div>
+                        <div class="blook other_blook">100%</div>
+                    </div>
+                    <div class="head_portrait">
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="text_box">
+                <!-- 一、世界观与哲学的基本问题
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;1、世界观与哲学的基本问题
+                <div class="highlight">世界观</div>是人们对世界关系的根本观点。
+                <div class="highlight">方法论</div> 是人们认识和改造世界所遵循的根本方法。 只有系统化·理论化的世界观才是哲学·哲学既是世界观又是方法论。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;2、哲学的重大基本问题，是思维和存在矣系的问题。 思维和存在谁是第一性的问题·这是划分唯物主义和唯心主义哲学的基本依据· <br>&nbsp;&nbsp;&nbsp;&nbsp;3·哲学又可以划分为可知论和不可知论 ①可知论：
+                <div class="highlight">主世界</div>是可以认识的，包括唯物主义可知论和唯心主义可知论。 ②
+                <div class="highlight">不可知论</div>：主世界是不可以认识的，只有少数唯心论是不可知论· -->
+
+            </div>
+            <div class="option">
+                <div class="com">
+                    <span class="en">A</span>
+                    <span class="answer">世界观世界观世界观世</span>
+                </div>
+                <div class="com">
+                    <span class="en">B</span>
+                    <span class="answer">方法论</span>
+                </div>
+                <div class="com">
+                    <span class="en">C</span>
+                    <span class="answer">玛卡巴卡晚安</span>
+                </div>
+                <div class="com">
+                    <span class="en">D</span>
+                    <span class="answer">哈哈嘿嘿哈哈</span>
+                </div>
+            </div>
+        </div>
+        <!-- 结束PK页面 -->
+        <div class="pk_end" style="display: none;">
+            <div class="ani appear animated">
+                <div class="vs_title end_pk">vs</div>
+                <div class="back_bock" style="opacity: 0;">
+                    <i class="iconfont icon-xiangzuojiantou"></i>
+                </div>
+                <!-- <div class="pk_interface2">
+                    <div class="win_lose">
+                        <div class="circle">
+        
+                        </div>
+                        <div class="lose">失败了</div>
+                    </div>
+                    <span class="mine">
+                        <div class="head_portrait">
+                            <img src="./images/头像/头像-女学生2.png" alt="">
+                        </div>
+                        <div class="idname">发际线与我作队</div>
+                    </span>
+                    <span class="blood">
+                        <span class="mine_blood">80%</span> :
+                    <span class="other_blood">80%</span>
+                    </span>
+                    <span class="other">
+                        <div class="ohter_portrait">
+                            <img src="./images/头像/头像-女学生2.png" alt="">
+                        </div>
+                        <div class="other_name">hahahah</div>
+                    </span>
+                </div> -->
+                <div class="pk_interface">
+                    <span class="mine ">
+                        <div class="my_box">
+                            <div class="head_portrait">
+                                <img src="./images/头像/头像-女学生2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="idname">发际线与我作队</div>
+                        <div class="xingxing">
+                            <i class="add_reduce mine_add_reduce">+1</i> <i class="active iconfont icon-shoucang
+                            "></i>
+                        </div>
+                    </span>
+                    <span class="win_lose ">
+                        <img class="bgc animated" style="display:none ;" src="./images/pk/win_bgc.png" alt="">
+                        <img class="win animated" style="display:none ;" src="./images/pk/win.png" alt="">
+                    </span>
+                    <span class="other">
+                        <div class="other_box">
+                            <div class="ohter_portrait">
+                                <img src="./images/头像/头像-女学生2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="other_name">hahahah</div>
+                        <div class="xingxing">
+                            <i class="add_reduce other_add_reduce">-1</i> <i class="active iconfont icon-shoucang
+                            "></i>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="show_answer">
+                    <div class="mine_an">
+                        <!-- <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div> -->
+                    </div>
+                    <div class="answer">
+                        <!-- <div class="an">世界观</div>
+                        <div class="an">睡觉</div>
+                        <div class="an">睡觉</div>
+                        <div class="an">世界观</div>
+                        <div class="an">价值观</div>
+                        <div class="an">睡觉</div>
+                        <div class="an">世界观</div>
+                        <div class="an">价值观</div>
+                        <div class="an">睡觉</div>
+                        <div class="an">世界观</div>
+                        <div class="an">价值观</div>
+                        <div class="an">价值观</div>
+                        <div class="an">睡觉</div>
+                        <div class="an">世界观</div>
+                        <div class="an">价值观</div> -->
+                    </div>
+                    <div class="other_an">
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                        <div class="dui">√</div>
+                        <div class="cuo">×</div>
+                    </div>
+                </div>
+
+                <button class="click_back">
+                    点击返回
+                </button>
+            </div>
+        </div>
+        <!-- 编辑页面 -->
+        <div class="Making_page main_page scroll_top">
+            <div class="bg"></div>
+            <header>
+                <div class="header_left">
+                    <span class="icon iconfont icon-daoru"></span>
+                    <div class="name">导入</div>
+                    <form class="upload_form">
+                        <input type="file" accept="application/msword, application/pdf" name="upLoadFile">
+                    </form>
+                </div>
+                <!-- enctype="multipart/form-data" -->
+                <div class="header_right">
+                    <span class="icon iconfont icon-gongxiangtubiaozhuangtaileicaozuolei37"></span>
+                    <div class="name">保存</div>
+                </div>
+            </header>
+            <div class="loading">
+                <div class="spinner"></div>
+                <div class="text">上传文件中</div>
+            </div>
+
+            <div class="popup">
+                <div class="popup_box">
+                    <button>直接保存</button>
+                    <button>进入编辑</button>
+                </div>
+            </div>
+            <div class="popup2">
+                <div class="popup_box">标题不能与记忆库的模板重复</div>
+            </div>
+            <div class="container">
+                <div class="title">
+                    <div class="label">
+                        <div class="label_cont">
+                            <span>标签</span>
+                            <span class="icon iconfont icon-xiangxiajiantou"></span>
+                        </div>
+                        <div class="label_menu">
+                            <ul>
+                                <li>考研</li>
+                                <li>教资</li>
+                                <li>通识课</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <input type="text">
+                </div>
+                <div class="text_box" contenteditable="true">
+                </div>
+            </div>
+        </div>
+        <!-- 社区页面 -->
+        <div class="community main_page scroll_top">
+            <header class="scroll_top">
+                <div class="search">
+                    <div class="upload">
+                        <div class="iconfont icon-zhongguohangtiantubiaoheji-weizhuanlunkuo-
+                        "></div>
+                        <div class="sc">上传</div>
+                    </div>
+                    <div class="header_search">
+                        <input type="text">
+                        <button>
+                            <span class="icon iconfont icon-sousuo3"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="label">
+                    <ul>
+                        <li class="active"><span>系统模板</span></li>
+                        <li><span>考研</span></li>
+                        <li><span>教资</span></li>
+                        <li><span>通识课</span></li>
+                    </ul>
+                </div>
+            </header>
+
+            <main>
+                <div class="zhanwei"></div>
+                <!-- <div class="commutity_box"> -->
+
+                <ul class="community_ul">
+                    <!-- <li>
+                        <div class="modleId">112</div>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
+
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                            <div class="click">
+                                <div class="label">
+                                    <span class="iconfont icon-shuqianguanli"></span>
+                                    <span>考研资料</span>
+                                </div>
+                                <div class="inter_box" id="interactive">
+                                    <div class="interactive">
+                                        <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                        <span class="jifen iconfont icon-jifenhuiyuan
+                                            "> &nbsp;<i>打赏</i></span>
+                                    </div>
+                                </div>
+                                <i class=" menu iconfont icon-shixincaidan"></i>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="modleId">112</div>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
+
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                            <div class="click">
+                                <div class="label">
+                                    <span class="iconfont icon-shuqianguanli"></span>
+                                    <span>考研资料</span>
+                                </div>
+                                <div class="inter_box" id="interactive">
+                                    <div class="interactive">
+                                        <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                        <span class="jifen iconfont icon-jifenhuiyuan
+                                            "> &nbsp;<i>打赏</i></span>
+                                    </div>
+                                </div>
+                                <i class=" menu iconfont icon-shixincaidan"></i>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="modleId">112</div>
+                        <div class="color">
+                            <div class="upper">
+                                <div class="head_portrait">
+                                    <img src="./images/头像/头像-女学生2.png" alt="">
+                                </div>
+                                <div class="idname1">发际线与我作队</div>
+                            </div>
+
+                            <div class="content">
+                                <h4 class="title ellipsis">马原基础原理</h4>
+                                <div class="info_box">
+                                    <div class="info ellipsis">内容内容很多内容文本jashdjask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容ask hhsajh hask 内容内容文容内容文容内容文容内容文本</div>
+                                </div>
+                            </div>
+                            <div class="click">
+                                <div class="label">
+                                    <span class="iconfont icon-shuqianguanli"></span>
+                                    <span>考研资料</span>
+                                </div>
+                                <div class="inter_box" id="interactive">
+                                    <div class="interactive">
+                                        <span class="dainzan  iconfont icon-shoucang">&nbsp;&nbsp; <i>收藏</i></span>
+                                        <span class="jifen iconfont icon-jifenhuiyuan
+                                            "> &nbsp;<i>打赏</i></span>
+                                    </div>
+                                </div>
+                                <i class=" menu iconfont icon-shixincaidan"></i>
+                            </div>
+                        </div>
+                    </li> -->
+                    <li class="footer"></li>
+                </ul>
+                <!-- </div> -->
+
+            </main>
+        </div>
+        <!-- 上传页面 -->
+        <div class="upload_page scroll_top">
+            <header>
+                <div class="back iconfont icon-xiangzuojiantou"></div>
+                <div class="uploadMP selected">上传</div>
+            </header>
+
+            <div class="container">
+                <ul>
+
+                </ul>
+                <footer></footer>
+            </div>
+
+        </div>
+        <!-- 社区模板页面 -->
+        <div class="viewTemplate scroll_top">
+            <div class="view_box">
+                <header>
+                    <div class="back iconfont icon-xiangzuojiantou"></div>
+                    <div class="user_box">
+                        <div class="head_portrait">
+                            <img src="./images/头像/头像-女学生2.png" alt="">
+                        </div>
+                        <div class="idname">发际线与我作队 </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="template_box">
+                        <div class="label">
+                            <span class="iconfont icon-shuqianguanli"></span>
+                            <span>考研</span>
+                        </div>
+
+                        <div class="title">
+                            <h3>马克思主义原理</h3>
+                        </div>
+                        <div class="text_box">
+                            一、世界观与哲学的基本问题
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;1、世界观与哲学的基本问题
+                            <div class="highlight">世界观</div>是人们对世界关系的根本观点。
+                            <div class="highlight">方法论</div> 是人们认识和改造世界所遵循的根本方法。 只有系统化·理论化的世界观才是哲学·哲学既是世界观又是方法论。
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;2、哲学的重大基本问题，是思维和存在矣系的问题。 思维和存在谁是第一性的问题·这是划分唯物主义和唯心主义哲学的基本依据·
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;3·哲学又可以划分为可知论和不可知论 ①可知论：主世界是可以认识的，包括唯物主义可知论和唯心主义可知论。 ②不可知论：主世界是不可以认识的，只有少数唯心论是不可知论·
+                            <div class="highlight"></div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="scroll_top">
+                    <div class="bcg"></div>
+                    <div class="interactive">
+                        <span class="dainzan"><i class="iconfont icon-shoucang"></i>&nbsp;&nbsp; <i>收藏</i></span> |
+                        <span class="jifen 
+                        "><i class="iconfont icon-jifenhuiyuan"></i>&nbsp;&nbsp;<i>打赏</i></span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!-- 个人页面 -->
+        <div class="personal main_page scroll_top">
+            <div class="person_main" style="display:block ;">
+                <div class="modify_succ">修改成功</div>
+                <div class="personal_box">
+                    <div class="head_portrait">
+                        <form class="img_form">
+                            <input type="file" accept=".jpg" name="image">
+                        </form>
+                        <img src="./images/头像/头像-女学生2.png" alt="">
+                    </div>
+                    <div class="idname_box modify_lis">
+                        <div class="nicheng">昵称</div>
+                        <div class="right">
+                            <div class="idname modify_value">发际线与我作队 </div>
+                            <i class="iconfont icon-xiangyoujiantou"></i>
+                        </div>
+                    </div>
+                    <div class="common mail_box modify_lis">
+                        <div class="title_box">修改手机号</div>
+                        <div class="right">
+                            <div class="phone modify_value"></div>
+                            <i class="right iconfont icon-xiangyoujiantou"></i>
+                        </div>
+
+
+                    </div>
+                    <div class="common modify_lis">
+                        <div class="title_box">修改密码</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                </div>
+                <div class="system_settings">
+                    <div class="common">
+                        <div class="title_box">新手教程</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <div class="common">
+                        <div class="title_box">显示设置</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                    <div class="common">
+                        <div class="title_box">关于我们</div>
+                        <i class="right iconfont icon-xiangyoujiantou"></i>
+                    </div>
+                </div>
+                <div class="exit">
+                    <button>退出登录</button>
+                </div>
+            </div>
+
+            <div class="modify">
+                <div class="modify_box">
+                    <div class="modify_title">
+                        <div class="left">
+                            <i class="iconfont icon-xiangzuojiantou"></i>
+                        </div>
+                        <div class="modify_what">修改昵称</div>
+                    </div>
+                </div>
+
+                <div class="Modify_interface">
+                    <input type="text" name="" id="">
+                    <div class="modify_err">格式错误</div>
+                    <div class="confirm">
+                        <button>确认修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 底栏 -->
+        <div class="footer_nav">
+            <footer>
+                <ul>
+                    <li>
+                        <span class="icon iconfont icon-tiku1"></span>
+                        <div class="name">学习</div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-PK1"></span>
+                        <div class="name">
+                            PK
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-tianjia1"></span>
+                        <div class="name"></div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-ziyuangongxiang"></span>
+                        <div class="name">
+                            社区
+                        </div>
+                    </li>
+                    <li>
+                        <span class="icon iconfont icon-yonghu"></span>
+                        <div class="name">
+                            我的
+                        </div>
+                    </li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+
+
+</body>
+<script src="./js/swregister.js"></script>
+<script src="./js/base.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/indexAjax.js"></script>
+<script src="./js/edit.js"></script>
+<script src="./js/learning.js"></script>
+<script src="./js/calendar.js"></script>
+<script src="./js/pk.js"></script>
+<script src="./js/MakingTemplates.js"></script>
+<script src="./js/personal.js"></script>
+<script src="./js/community.js"></script>
+<!-- <script src="./js/enterPK.js"></script> -->
+<!-- <script src="./js/pking.js"></script> -->
+<script src="./js/smPK.js"></script>
+
+
+</html>

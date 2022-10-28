@@ -136,7 +136,7 @@ public class PkRoom {
     /**
      * 开始本房间比赛
      */
-    public void excute(String json, PkUser curUser) {
+    public synchronized void excute(String json, PkUser curUser) {
         logger.debug(this + " pk room excute: " + json);
         //获取json数据
         JSONObject jsonObject = JSONObject.parseObject(json);
@@ -168,11 +168,6 @@ public class PkRoom {
                 isContinue = false;
                 this.end();
             }
-            if (answersRecords.get(curUser).getAnswersRecord().size() == blankNum || answersRecords.get(getEnemy(curUser)).getAnswersRecord().size() == blankNum) {
-                //有一边完成所有空数了
-                isContinue = false;
-                this.end();
-            }
             if (isContinue) {
                 //比赛还没结束
                 //将双方血量响应回去
@@ -186,6 +181,28 @@ public class PkRoom {
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);
         }
+    }
+
+    /**
+     * 重复挖空
+     * @param player 需要重复挖空的用户
+     * @return 挖好的内容
+     */
+    public synchronized SocketMessage againDig(PkUser player){
+        SocketMessage msg;
+        if (player == player01 || player == player02){
+            //验证该用户是否合法
+            //为需要循环挖空的玩家挖空
+            String content = player.getMatchInf().getContent();
+            String handledContent = StringUtil.digBlank(content, this.blankNum);
+            msg = new SocketMessage(SocketMsgInf.OPERATE_SUCCESS);
+            msg.addData("digedContent",handledContent);
+        }else {
+            //用户不存在该房间内
+            //非法请求
+            msg = new SocketMessage(SocketMsgInf.SERVER_ERROR);
+        }
+        return msg;
     }
 
 

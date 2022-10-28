@@ -1,0 +1,85 @@
+//out:../css/
+@import 'base';
+@vw: 3.95vw;
+
+
+.CaptureBox{
+    position: relative;
+    width: (100vw);
+    height: (100vh);
+    overflow: hidden;
+
+    .canvas_img,
+    .canvas,
+    .canvas_div,
+    .canvas_btn,
+    .canvas_bg {
+        position: absolute;
+    }
+
+    .canvas_div,
+    .canvas_bg {
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .canvas_img {
+        left: 50%;
+        top: 50%;
+        width: auto;
+        height: (250/@vw);
+        margin-top: (-125/@vw);
+        margin-left: (-125/@vw);
+        z-index: 1;
+    }
+    
+    .canvas_bg {
+         background-color: rgba(0, 0, 0, .6);
+        z-index: 2;
+    }
+
+    .canvas {
+        left: 50%;
+        border: 1px solid #fff;
+        top: 50%;
+        width: (250/@vw);
+        height: (250/@vw);
+        margin-top: (-125/@vw);
+        margin-left: (-125/@vw);
+        z-index: 10;
+    }
+    
+    .canvas_div {
+        z-index: 100;
+    }
+
+    .canvas_btn {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: (60/@vw);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 (20/@vw);
+        background-color: #333;
+        z-index: 1000;
+
+        a {
+            color: #fff;
+            width: (60/@vw);
+            height: (30/@vw);
+            line-height: (30/@vw);
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .canvas_ok {
+            height: (30/@vw);
+            background-color: purple;
+            border-radius: (8/@vw);
+        }
+    }
+}

@@ -13,6 +13,7 @@ public enum SocketMsgInf {
     SERVER_ERROR("SERVER_ERROR",false),
     SERVER_CLOSE("ALIVE",false),
     OPERATE_NOTFOUND("OPERATE",false),
+    OPERATE_SUCCESS("OPERATE",true),
     MATCH_SUCCESS("MATCH_SUCCESS",true),
     MATCH_FAILED("MATCH_FAILED",false),
     NOT_MATCH("NOT_MATCH",false),

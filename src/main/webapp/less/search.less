@@ -1,0 +1,267 @@
+//out:../css/
+@import 'base';
+@vw: 3.75vw;
+body{
+    height: 100%;
+    background:linear-gradient(
+        to right,
+        #d9d0e6 50%,
+        #f6f6f6 50%
+    ) fixed;
+
+    
+}
+header{
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transition: left .2s;
+    width: 100vw;
+    height: (58 / @vw);
+    background-color: #f8f8f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 (15 / @vw);
+
+    .header_search {
+        display: flex;
+        align-items: center;
+        
+        padding: 0 (10 / @vw);
+        width: (220 / @vw);
+        height: (30 / @vw);
+        border-radius: (15 / @vw);
+        background-color: #ecedef;
+    
+        input {
+            padding: 0 (5 / @vw);
+            width: (200 / @vw);
+            height: (30 / @vw);
+            border-radius: (15 / @vw);
+            background-color: #ecedef;
+            // border: (1 / @vw) solid #000;
+            border: 0;
+        }
+    
+        button {
+            width: (30 / @vw);
+            height: (30 / @vw);
+            border-radius: 50%;
+            border: none;
+            background-color: transparent;
+    
+            .icon {
+                font-size: (20 / @vw);
+            }
+        }
+    }
+}
+
+
+// .container{
+//     width: 90vmin;
+//     background-color: #fff;
+//     padding: (20/@vw) (10/@vw);
+//     position: absolute;
+//     transform: translate(-50%,-50%);
+//     top: 50%;
+//     left: 50%;
+//     border-radius: (5/@vw);
+//     box-shadow: 0 (20/@vw) (35/@vw) rgba(60, 60, 60, 0.2);
+
+
+//     div{
+//         line-height: (35/@vw);
+//         text-align: justify;
+
+//         mark{
+//             background-color: #ffd161;
+//         }
+//     }
+// }
+
+
+.container {
+    // overflow: hidden;
+    // width: 100%;
+    // height: (598 / @vw);
+    // margin-bottom: (70 / @vw);
+    position: relative;
+    width: 100vw;
+    margin-top: (58 / @vw);
+
+    .collection_base,
+    .my_base {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        transition: all .01s;
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .baseLis_fadeIn {
+            margin-top: 3vw;
+            opacity: 1;
+        }
+
+        .baseLis_del {
+            animation: baseLis_del .5s forwards;
+        }
+
+        @keyframes baseLis_del {
+            0% {
+                height: (100 / @vw);
+            }
+
+            99% {
+                margin-top: 0;
+                height: 0;
+            }
+
+            100% {
+                margin-top: 0;
+                height: 0;
+                display: none;
+            }
+        }
+
+        li {
+            overflow: hidden;
+            position: relative;
+            margin-top: 10vw;
+            width: (365 / @vw);
+            height: (100 / @vw);
+            border-radius: (10 / @vw);
+            box-shadow: (3 / @vw) (3 / @vw) (5 / @vw) rgba(0, 0, 0, 0.381);
+            transition: all .5s ease-in-out;
+            opacity: 0;
+            transition-delay: .3s;
+
+            .tp_inner {
+                position: absolute;
+                left: 0;
+                background-color: #fff;
+                width: (525 / @vw);
+                height: 100%;
+                padding-left: (15 / @vw);
+                display: flex;
+                align-items: center;
+                transition: all .3s ease-in-out;
+
+                .common,
+                .modleId {
+                    display: none;
+                }
+            }
+
+            .content {
+                width: (240 / @vw);
+
+                h3 {
+                    width: (180 / @vw);
+                    margin-bottom: (20 / @vw);
+                    font-size: (20 / @vw);
+                }
+
+                .info {
+                    font-size: (14 / @vw);
+                    width: (220 / @vw);
+                    height: (18 / @vw);
+                }
+            }
+
+            .tip {
+                width: (100 / @vw);
+
+                .date {
+                    display: none;
+                    // margin-bottom: (25 / @vw);
+                }
+
+                .label {
+                    width: auto;
+                    border-radius: (20/@vw);
+                    line-height: (25/@vw);
+                    padding: 0 (10/@vw);
+                    text-align: center;
+                    font-size: (20 / @vw);
+                    background-color: #ab97c974;
+
+                    span {
+                        color: #323232;
+                        font-size: (14/@vw);
+                    }
+
+                    .icon-shuqianguanli {
+                        font-size: (14/@vw);
+                    }
+                }
+            }
+
+            .template_btn {
+                margin-left: (10 / @vw);
+                width: (162 / @vw);
+                height: 100%;
+                display: flex;
+
+                .tp_btn {
+                    width: (81 / @vw);
+                    height: 100%;
+                    font-size: (22 / @vw);
+                    text-align: center;
+                    line-height: (100 / @vw);
+                }
+
+                .del {
+                    background-color: #fc5b5bcf;
+                }
+
+                .edit {
+                    background-color: #a89cd4;
+                }
+            }
+        }
+
+        .base_none_1,
+        .base_none_2 {
+            display: none;
+            width: 100%;
+            margin-top: calc((100vh - (400 / @vw)));
+            height: (400 / @vw);
+            background-image: url(../images/空/空空如也.png);
+            background-size: cover;
+        }
+
+        .base_none_2 {
+            background-image: url(../images/空/收藏夹空空如也.png);
+        }
+    }
+
+    .base_bottom {
+        height: (80 / @vw);
+        width: 100%;
+    }
+
+    .collection_base {
+        transform: scale(0);
+        clip-path: circle((26.5 / @vw) at 90vw -10vw);
+        transition: all .5s;
+
+        li {
+            transition: all .3s ease-in-out;
+        }
+
+    }
+
+    .clip_path_change {
+        clip-path: circle(100%);
+    }
+
+}

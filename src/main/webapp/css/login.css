@@ -1,0 +1,457 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+* {
+  /* 初始化 */
+  margin: 0;
+  padding: 0;
+}
+body {
+  /* 100%窗口高度 */
+  height: 100vh;
+  /* 弹性布局 居中 */
+  /* 渐变背景 */
+  background: linear-gradient(to top, #e3c5eb, #a9c1ed, #e3c5eb);
+}
+.bg {
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+ul li {
+  position: absolute;
+  border: 1px solid #fff;
+  background-color: #fff;
+  width: 30px;
+  height: 30px;
+  list-style: none;
+  opacity: 0;
+}
+.square li {
+  top: 40vh;
+  left: 60vw;
+  /* 执行动画：动画名 时长 线性的 无限次播放 */
+  animation: square 10s linear infinite;
+}
+.square li:nth-child(2) {
+  top: 80vh;
+  left: 10vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 2s;
+}
+.square li:nth-child(3) {
+  top: 80vh;
+  left: 85vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 4s;
+}
+.square li:nth-child(4) {
+  top: 10vh;
+  left: 70vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 6s;
+}
+.square li:nth-child(5) {
+  top: 10vh;
+  left: 10vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 8s;
+}
+.circle li {
+  bottom: 0;
+  left: 15vw;
+  /* 执行动画 */
+  animation: circle 10s linear infinite;
+}
+.circle li:nth-child(2) {
+  left: 35vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 2s;
+}
+.circle li:nth-child(3) {
+  left: 55vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 6s;
+}
+.circle li:nth-child(4) {
+  left: 75vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 4s;
+}
+.circle li:nth-child(5) {
+  left: 90vw;
+  /* 设置动画延迟时间 */
+  animation-delay: 8s;
+}
+/* 定义动画 */
+@keyframes square {
+  0% {
+    transform: scale(0) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(5) rotateY(1000deg);
+    opacity: 0;
+  }
+}
+@keyframes circle {
+  0% {
+    transform: scale(0) rotateY(0deg);
+    opacity: 1;
+    bottom: 0;
+    border-radius: 0;
+  }
+  100% {
+    transform: scale(5) rotateY(1000deg);
+    opacity: 0;
+    bottom: 90vh;
+    border-radius: 50%;
+  }
+}
+header {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 15.18987342vw;
+  width: 100%;
+  padding: 2.53164557vw;
+}
+header .header_btn {
+  width: 10.12658228vw;
+  height: 10.12658228vw;
+  background-color: rgba(255, 255, 255, 0.681);
+  border-radius: 50%;
+  font-size: 3.5443038vw;
+}
+header .header_btn a {
+  text-align: center;
+  line-height: 10.12658228vw;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+.mar_box {
+  width: 100%;
+  margin-top: calc((100vh - 165vw)/2);
+}
+.mar_box .container {
+  position: relative;
+  margin: 0 auto;
+  width: 76.96202532vw;
+  height: 145.3164557vw;
+  border-radius: 1.26582278vw;
+  box-shadow: 1.26582278vw 1.26582278vw 5.06329114vw rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.5s linear;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.526);
+}
+.mar_box .container .register {
+  width: 100%;
+  height: 100%;
+  padding-top: 7.08860759vw;
+  transition: all 0.3s linear;
+}
+.mar_box .container .register .logo {
+  width: 58.2278481vw;
+  height: 10.88607595vw;
+  background-size: cover;
+  margin: 0 auto 5.06329114vw;
+}
+.mar_box .container .register form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.mar_box .container .register form .err {
+  opacity: 0;
+  position: absolute;
+  top: 78%;
+  left: 10%;
+  color: red;
+  transition: 0.2s;
+}
+.mar_box .container .register form .show {
+  display: block;
+}
+.mar_box .container .register form .captcha {
+  position: relative;
+  height: 14.6835443vw;
+  width: 62.78481013vw;
+  margin: 5.06329114vw 0 0;
+  display: flex;
+  justify-content: space-between;
+  color: #fac0e7;
+}
+.mar_box .container .register form .captcha label {
+  top: 4.05063291vw;
+}
+.mar_box .container .register form .captcha .label_change {
+  transform: scale(0.8) translateY(-6.58227848vw);
+}
+.mar_box .container .register form .captcha input {
+  font-size: 4.05063291vw;
+  width: 27.84810127vw;
+  margin: 0;
+}
+.mar_box .container .register form .captcha canvas {
+  width: 48%;
+  height: 12.15189873vw;
+  background-color: #fff;
+  border: 1px solid #000000;
+}
+.mar_box .container .form_control {
+  position: relative;
+  font-size: 4.05063291vw;
+  color: #000;
+}
+.mar_box .container .form_control label {
+  position: absolute;
+  top: 4.55696203vw;
+  left: 0;
+  transition: all 0.5s;
+  transform-origin: left top;
+  pointer-events: none;
+}
+.mar_box .container .form_control .label_change {
+  transform: scale(0.8) translateY(-5.56962025vw);
+}
+.mar_box .container .form_control input {
+  background-color: transparent !important;
+  padding: 2.02531646vw 0;
+  height: 12.15189873vw;
+  width: 62.78481013vw;
+  margin: 1.51898734vw 0;
+  font-size: 4.05063291vw;
+  border: none;
+  color: #000;
+  border-bottom: 0.25316456vw solid #000;
+  transition: all 0.5s;
+}
+.mar_box .container .form_control input:focus {
+  border-bottom: 0.50632911vw solid #fac0e7;
+}
+.mar_box .container button {
+  position: relative;
+  cursor: pointer;
+  margin-top: 6.58227848vw;
+  font-size: 5.06329114vw;
+  height: 14.6835443vw;
+  width: 62.78481013vw;
+  text-align: center;
+  line-height: 14.6835443vw;
+  font-weight: bolder;
+  border: 0;
+  overflow: hidden;
+  background-image: linear-gradient(200deg, #e3c5eb, #a9c1ed, #e3c5eb);
+  color: #000;
+  transition: all 0.1s;
+  box-shadow: 0.75949367vw 0.75949367vw 1.51898734vw rgba(0, 0, 0, 0.526);
+}
+.mar_box .container button span {
+  position: absolute;
+  display: block;
+}
+.mar_box .container button span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 0.50632911vw;
+  background: linear-gradient(90deg, transparent, #3a7fff);
+  animation: btn-anim1 1s linear infinite;
+}
+.mar_box .container button span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 0.50632911vw;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #3a7fff);
+  animation: btn-anim2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+.mar_box .container button span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 0.50632911vw;
+  background: linear-gradient(270deg, transparent, #3a7fff);
+  animation: btn-anim3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+.mar_box .container button span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 0.50632911vw;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #3a7fff);
+  animation: btn-anim4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+.mar_box .container button:active {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.526);
+}
+.mar_box .container .login {
+  z-index: 1000;
+  background-color: #fff;
+  position: absolute;
+  top: 164vw;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s linear;
+}
+.mar_box .container .login .change {
+  font-size: 4.05063291vw;
+  position: absolute;
+  top: -8vw;
+  height: 6.07594937vw;
+  line-height: 6.07594937vw;
+  font-size: 3.5443038vw;
+  color: #101010;
+  transition: all 0.4s linear;
+  pointer-events: none;
+}
+.mar_box .container .login .login_box .logo {
+  width: 58.2278481vw;
+  height: 10.88607595vw;
+  background-size: cover;
+  margin: 0 auto 5.06329114vw;
+}
+.mar_box .container .login .login_box form .err {
+  opacity: 0;
+  position: absolute;
+  top: 60%;
+  left: 10%;
+  color: red;
+  transition: 0.2s;
+}
+.mar_box .container .login .login_box form button {
+  margin: 10.37974684vw 0 5.06329114vw;
+}
+.mar_box .container .login .login_box form .items {
+  height: 5.06329114vw;
+  font-size: 3.5443038vw;
+}
+.mar_box .container .login .login_box form .items .auto {
+  vertical-align: middle;
+  width: 6.07594937vw;
+  height: 4.55696203vw;
+  background-color: #ffffff;
+  text-align: center;
+  border: 1px solid #bbbbbb;
+}
+.mar_box .container .login::after {
+  z-index: -1;
+  position: absolute;
+  top: -12.65822785vw;
+  content: '';
+  width: 177.21518987vw;
+  height: 126.58227848vw;
+  border-radius: 50%;
+  background-color: aliceblue;
+  transition: all 0.4s linear;
+}
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,
+  100% {
+    right: 100%;
+  }
+}
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}

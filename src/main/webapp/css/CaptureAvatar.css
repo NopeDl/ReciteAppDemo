@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rbga(0, 0, 0, 0);
+}
+body {
+  font-family: '微软雅黑';
+  background-size: cover;
+}
+img {
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+}
+ol,
+ul {
+  list-style: none;
+}
+input,
+button,
+select,
+textarea {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+/*禁用了文本的拖拉，尤其在谷歌下*/
+textarea {
+  resize: none;
+}
+/*为了使文本段落左右两边对齐*/
+p {
+  text-align: justify;
+  text-justify: distribute;
+}
+/*======== Link ========*/
+a {
+  color: #333;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/*清空浮动的代码-start*/
+.clr:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.clr {
+  *zoom: 1;
+}
+/*清空浮动的代码-end*/
+/* 页面元素初始化和常用样式定义-end */
+@font-face {
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?19tb89');
+  src: url('../fonts/icomoon.eot?19tb89#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?19tb89') format('truetype'), url('../fonts/icomoon.woff?19tb89') format('woff'), url('../fonts/icomoon.svg?19tb89#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+.CaptureBox {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.CaptureBox .canvas_img,
+.CaptureBox .canvas,
+.CaptureBox .canvas_div,
+.CaptureBox .canvas_btn,
+.CaptureBox .canvas_bg {
+  position: absolute;
+}
+.CaptureBox .canvas_div,
+.CaptureBox .canvas_bg {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+.CaptureBox .canvas_img {
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: 63.29113924vw;
+  margin-top: -31.64556962vw;
+  margin-left: -31.64556962vw;
+  z-index: 1;
+}
+.CaptureBox .canvas_bg {
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+.CaptureBox .canvas {
+  left: 50%;
+  border: 1px solid #fff;
+  top: 50%;
+  width: 63.29113924vw;
+  height: 63.29113924vw;
+  margin-top: -31.64556962vw;
+  margin-left: -31.64556962vw;
+  z-index: 10;
+}
+.CaptureBox .canvas_div {
+  z-index: 100;
+}
+.CaptureBox .canvas_btn {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15.18987342vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5.06329114vw;
+  background-color: #333;
+  z-index: 1000;
+}
+.CaptureBox .canvas_btn a {
+  color: #fff;
+  width: 15.18987342vw;
+  height: 7.59493671vw;
+  line-height: 7.59493671vw;
+  text-decoration: none;
+  text-align: center;
+}
+.CaptureBox .canvas_btn .canvas_ok {
+  height: 7.59493671vw;
+  background-color: purple;
+  border-radius: 2.02531646vw;
+}
