@@ -34,9 +34,9 @@ public class PooledDataSource implements DataSource {
         //密码
         properties.setProperty("password", password);
         //初始连接数
-        properties.setProperty("initialSize", "5");
+        properties.setProperty("initialSize", "10");
         //最大连接数
-        properties.setProperty("maxActive", "10");
+        properties.setProperty("maxActive", "50");
         //设置最大等待时间
         properties.setProperty("maxWait", "3000");
         properties.setProperty("minIdle", "3");

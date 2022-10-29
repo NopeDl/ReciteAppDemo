@@ -37,7 +37,7 @@ function ConnectionClicked() {
                     Refresh_id(res.enemyInf.nickName);
                     Refresh_img(res.enemyInf);
                     Refresh_Template(res.context);
-                    ws.send("Ready");
+                    ws.send("READY");
                     console.log("已经向服务器发送Ready信号！");
                 }
                 //判断匹配是否成功，成功后渲染挖空内容和答题的答案,当isReady为true即可进入pk界面

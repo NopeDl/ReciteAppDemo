@@ -1,5 +1,7 @@
 package pojo.vo;
 
+import java.time.LocalDate;
+
 /**
  * 返回模板社区的内容
  */
@@ -8,12 +10,26 @@ public class Community {
     private String modleTitle;
     private String modlePath;
     private int modleLabel;
-    private String content;//模板内容
-    private int common;
+    /**
+     * 模板内容
+     */
+    private String content;
     private int coins;
     private int userId;
     private String nickName;
     private String base64;
+
+    private int common;
+
+    private LocalDate createTime;
+
+    public LocalDate getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDate createTime) {
+        this.createTime = createTime;
+    }
 
     public Community() {
     }

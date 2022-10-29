@@ -248,6 +248,7 @@ public class PkUser {
                     PkRoom.joinRoom(this);
                     //真的匹配成功了！
                     msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
+                    user.setImage(null);
                     msg.addData("enemyInf", user);
                     //还需将内容自动挖空响应
                     //获取房间挖空数，并将两边挖同样数量的空
