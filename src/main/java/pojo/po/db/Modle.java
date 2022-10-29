@@ -11,10 +11,11 @@ public class Modle {
     private int modleLabel;
     private int coins;
     private Integer mStatus;
-
     private String content;
 
     private LocalDate createTime;
+    //存储学习状态
+    private String studyStatus;
 
     /**
      * 模板是否上传到社区
@@ -72,6 +73,15 @@ public class Modle {
 
     public void setCommon(int common) {
         this.common = common;
+    }
+
+
+    public String getStudyStatus() {
+        return studyStatus;
+    }
+
+    public void setStudyStatus(String studyStatus) {
+        this.studyStatus = studyStatus;
     }
 
     /**
@@ -159,6 +169,8 @@ public class Modle {
                 ", coins=" + coins +
                 ", mStatus=" + mStatus +
                 ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                ", studyStatus='" + studyStatus + '\'' +
                 ", common=" + common +
                 ", reward=" + reward +
                 ", pageIndex=" + pageIndex +

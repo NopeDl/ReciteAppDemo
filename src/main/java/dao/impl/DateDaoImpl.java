@@ -21,10 +21,10 @@ public class DateDaoImpl implements DateDao {
      * @return
      */
     @Override
-    public int  insertDateByUserId(int userId, LocalDate date) {
+    public int  insertDateByUserId(int userId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UDate uDate = new UDate();
-        uDate.setDate(date);
+//        uDate.setDate(date);
         uDate.setUserId(userId);
         int insert = sqlSession.insert("DateMapper.insertDate", uDate);
         if (insert > 0) {
@@ -55,8 +55,6 @@ public class DateDaoImpl implements DateDao {
         List<Object> objects = sqlSession.selectList("DateMapper.selectDates", uDate);
         sqlSession.close();
         if (objects.size() > 0) {
-            //好搞笑
-            System.out.println("我是真的大于0");
             List<String> dateList = new ArrayList<>();
             for (Object object : objects) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

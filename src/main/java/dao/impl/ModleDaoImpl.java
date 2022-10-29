@@ -1,5 +1,6 @@
 package dao.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import pojo.po.db.*;
 import pojo.vo.Community;
@@ -83,6 +84,24 @@ public class ModleDaoImpl implements ModleDao {
 //        sqlSession.close();
 //        return result;
 //    }
+
+    /**
+     * 更新模板的学习状态
+     * @param modle
+     * @return
+     */
+    @Override
+    public int updateStudyStatus(Modle modle) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.insert("ModleMapper.updateStudyStatus", modle);
+        if(update>0){
+            sqlSession.commit();
+        }else{
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
 
     /**
      * 用户收藏别人的模板
@@ -225,6 +244,7 @@ public class ModleDaoImpl implements ModleDao {
         List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modle);
         sqlSession.close();
         if (resultList.size() > 0) {
+            System.out.println((Modle)resultList.get(0));
             return (Modle) resultList.get(0);
         } else {
             return null;

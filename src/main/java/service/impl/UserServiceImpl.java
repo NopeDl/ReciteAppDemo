@@ -245,8 +245,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message clockIn(HttpServletRequest request) {
         int userId = Integer.parseInt(request.getParameter("userId"));
-        LocalDate date = LocalDate.parse(request.getParameter("date"));
-        int i = dateDao.insertDateByUserId(userId, date);
+//        LocalDate date = LocalDate.parse(request.getParameter("date"));
+//        int i = dateDao.insertDateByUserId(userId, date);
+        int i = dateDao.insertDateByUserId(userId);
         Message msg;
         if (i > 0) {
             msg = new Message("打卡成功");

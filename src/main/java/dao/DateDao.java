@@ -10,7 +10,7 @@ public interface DateDao {
      * @param userId
      * @return
      */
-    int insertDateByUserId(int userId, LocalDate date);
+    int insertDateByUserId(int userId);
 
     /**
      * 查询打卡记录

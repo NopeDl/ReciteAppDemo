@@ -2,7 +2,7 @@
 <!DOCTYPE mapper>
 <mapper namespace="DateMapper">
     <insert id="insertDate">
-        insert into t_date (date,userId) values (#{date},#{userId})
+        insert into t_date (userId) values (#{userId})
     </insert>
 
     <select id="selectDates" parameterType="pojo.po.db.UDate" resultType="pojo.po.db.UDate">
