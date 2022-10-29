@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper>
+<mapper namespace="ReviewMapper">
+<!--   <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">-->
+<!--       insert into review(modleId) values(#{modleId})-->
+<!--   </insert>-->
+    <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">
+        insert into review(modleId) values(#{modleId})
+    </insert>
+
+</mapper>

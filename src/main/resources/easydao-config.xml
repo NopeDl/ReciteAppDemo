@@ -8,7 +8,7 @@
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/recitedb"/>
                 <property name="username" value="root"/>
-                <property name="password" value="030429"/>
+                <property name="password" value="123456"/>
             </dataSource>
         </environment>
     </environments>
@@ -19,5 +19,6 @@
         <mapper resource="Mappers/UmrMapper.xml"/>
         <mapper resource="Mappers/DateMapper.xml"/>
         <mapper resource="Mappers/LabelMapper.xml"/>
+        <mapper resource="Mappers/ReviewMapper.xml"/>
     </mappers>
 </configuration>

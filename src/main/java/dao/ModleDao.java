@@ -21,6 +21,14 @@ public interface ModleDao {
 //
 
     /**
+     * 更新模板学习状态
+     * @param modle
+     * @return
+     */
+    int updateStudyStatus(Modle modle);
+
+
+    /**
      * 收藏模板
      * 讲收藏的模板写进表umr中
      * @return

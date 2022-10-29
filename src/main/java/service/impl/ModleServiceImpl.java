@@ -1,15 +1,9 @@
 package service.impl;
 
-import dao.LabelDao;
-import dao.ModleDao;
-import dao.UMRDao;
-import dao.UserDao;
-import dao.impl.LabelDaoImp;
-import dao.impl.ModleDaoImpl;
-import dao.impl.UMRDaoImpl;
+import dao.*;
+import dao.impl.*;
 import enums.Difficulty;
-import dao.impl.UserDaoImpl;
-import pojo.po.db.User;
+import pojo.po.db.*;
 import pojo.vo.Community;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
@@ -18,17 +12,18 @@ import tools.handlers.FileHandlerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
-import pojo.po.db.Label;
-import pojo.po.db.Modle;
-import pojo.po.db.Umr;
 import pojo.vo.Message;
 import pojo.vo.ShowModle;
 import service.ModleService;
 import tools.utils.StringUtil;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class ModleServiceImpl implements ModleService {
@@ -37,6 +32,7 @@ public class ModleServiceImpl implements ModleService {
     private final UMRDao umrDao = new UMRDaoImpl();
     private final LabelDao labelDao=new LabelDaoImp();
     private final UserDao userDao=new UserDaoImpl();
+    private final ReviewDao reviewDao=new ReviewDaoImpl();
 
 //    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
@@ -69,7 +65,7 @@ public class ModleServiceImpl implements ModleService {
 //
 //    }
 
-    //好困好困好困好困好困好困好困好困好困好困
+
     @Override
     public Message collectModle(HttpServletRequest request) {
         Message message;
@@ -216,7 +212,8 @@ public class ModleServiceImpl implements ModleService {
         modle.setModleTitle(modleTitle);
         //设置模板标签
         modle.setModleLabel(Integer.parseInt(modleLabel));
-
+       //设置模板的学习状态
+        modle.setStudyStatus("未学习");
         //先看标题有没有重复的
         //覆盖值为1，不覆盖值为0
         String overWrite = request.getParameter("overWrite");

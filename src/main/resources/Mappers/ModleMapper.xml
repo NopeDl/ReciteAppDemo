@@ -80,5 +80,8 @@
         select count(userId) as number from modle where userId=#{userId} and modleId=#{modleId}
     </select>
 
+    <update id="updateStudyStatus" parameterType="pojo.po.db.Modle">
+        update modle set studyStatus=#{studyStatus} where modleId=#{modleId}
+    </update>
 
 </mapper>
