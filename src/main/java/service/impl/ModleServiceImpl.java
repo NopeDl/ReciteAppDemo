@@ -301,29 +301,49 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public Message deleteModle(HttpServletRequest request) {
+        Message msg;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         String path = modleDao.selectPathByModleId(modleId);
 
-        Umr umr=new Umr();
-        umr.setModleId(modleId);
+//        Umr umr=new Umr();
+//        umr.setModleId(modleId);
 //        int deleteUmr = umrDao.deleteUMRByModleId(umr);
 //        //查看在umr表中是否删除成功
 //        System.out.println("deleteUmr:"+deleteUmr);
 
-        int deleteModle = modleDao.deleteModle(modleId);
+        //先查询该模板是否存在计划表中
+        Review review=new Review();
+        review.setModleId(modleId);
+        boolean b = reviewDao.selectModle(review);
 
-        File file = new File(path);
-        boolean deleteFile = file.delete();
-        //没有用事务,可能会有bug
-        Message msg;
-//        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
-        if (0 != deleteModle && deleteFile) {
+        if(b){
+            //，如果存在，从计划表中删除
+            int i = reviewDao.removeModle(review);
+        }
+        int deleteModle = modleDao.deleteModle(modleId);
+        if(deleteModle>0){
+            File file = new File(path);
+            boolean deleteFile = file.delete();
             msg = new Message("删除成功");
             msg.addData("deleteSuccess", true);
-        } else {
-            msg = new Message("删除失败");
-            msg.addData("deleteSuccess", false);
+            return msg;
         }
+//        int deleteModle = modleDao.deleteModle(modleId);
+//
+//        File file = new File(path);
+//        boolean deleteFile = file.delete();
+//        //没有用事务,可能会有bug
+//        Message msg;
+////        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
+//        if (0 != deleteModle && deleteFile) {
+//            msg = new Message("删除成功");
+//            msg.addData("deleteSuccess", true);
+//        } else {
+//            msg = new Message("删除失败");
+//            msg.addData("deleteSuccess", false);
+//        }
+        msg = new Message("删除失败");
+        msg.addData("deleteSuccess", false);
         return msg;
     }
 
