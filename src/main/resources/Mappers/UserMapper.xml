@@ -44,6 +44,14 @@
     <update id="updatePhoneByUserID">
         update account set number = #{number} where userId = #{userId}
     </update>
+    <!-- 修改星星 -->
+    <update id="updateStarsByUserID">
+        update user set stars = #{stars} where userId = #{userId}
+    </update>
+    <!-- 修改积分数 -->
+    <update id="updatePointsByUserID">
+        update user set points = #{points} where userId = #{userId}
+    </update>
     <!--selectNameImgById-->
     <select id="selectNameImgById" parameterType="pojo.vo.Community" resultType="pojo.po.db.User">
         select nickName,image from user where userId=#{userId}

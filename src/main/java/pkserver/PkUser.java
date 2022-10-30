@@ -139,14 +139,10 @@ public class PkUser {
             //说明已经匹配成功了但有人中途退出
             PkUser enemyUser = this.pkRoom.getPlayer01() == this ? this.pkRoom.getPlayer02() : this.getPkRoom().getPlayer01();
             //移除池中相关信息
-            StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
             this.statusPool.quitMatchedPool(this.getMatchInf());
-            this.statusPool.quitMatchedPool(enemyUser.getMatchInf());
             this.statusPool.quitPkPool(this);
-            this.statusPool.quitPkPool(enemyUser);
             //结束房间
             enemyUser.getSession().getBasicRemote().sendText("对方已退出游戏");
-            enemyUser.getSession().close();
         } else {
             //说明是取消匹配
             //清除匹配状态

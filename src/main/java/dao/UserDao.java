@@ -51,11 +51,27 @@ public interface UserDao {
 
     /**
      * 修改头像
-     * @param userId
-     * @param image
-     * @return
+     * @param userId 用户ID
+     * @param image 头像
+     * @return 记录数目
      */
     int updateImageByUserID(int userId,String image);
+
+    /**
+     * 更新星星数据
+     * @param userId  用户ID
+     * @param totalStars 星星总数
+     * @return 记录数目
+     */
+    int updateStarsByUserId(int userId,int totalStars);
+
+    /**
+     * 更新用户积分
+     * @param userId 用户积分
+     * @param totalPoint 积分总数
+     * @return 记录数目
+     */
+    int updatePointByUserId(int userId,int totalPoint);
 
     /**
      * 修改电话

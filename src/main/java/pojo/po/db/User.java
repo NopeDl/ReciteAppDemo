@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * 用户个人信息封装类
+ * @author yeyeye
  */
 public class User {
     private int userId;
@@ -12,9 +13,6 @@ public class User {
     private Date birthday;
     private int points;
     private String image;
-    private int cityId;
-    private String school;
-
     private int stars;
 
     private String rank;
@@ -45,19 +43,7 @@ public class User {
         this.rank = rank;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", nickName='" + nickName + '\'' +
-                ", sex='" + sex + '\'' +
-                ", birthday=" + birthday +
-                ", points=" + points +
-                ", image='" + image + '\'' +
-                ", cityId=" + cityId +
-                ", school='" + school + '\'' +
-                '}';
-    }
+
 
     public int getUserId() {
         return userId;
@@ -105,21 +91,5 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public int getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
     }
 }

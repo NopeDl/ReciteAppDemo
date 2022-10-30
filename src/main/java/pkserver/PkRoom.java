@@ -1,20 +1,28 @@
 package pkserver;
 
 import com.alibaba.fastjson.JSONObject;
+import dao.UserDao;
+import dao.impl.UserDaoImpl;
+import enums.Difficulty;
 import enums.SocketMsgInf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pkserver.threads.TimeLimitThread;
+import pojo.po.db.User;
 import pojo.po.pk.AnswerStatus;
 import pojo.po.pk.AnswersRecord;
 import pojo.po.pk.UserHp;
 import pojo.vo.MatchInf;
 import pojo.vo.SocketMessage;
+import tools.easydao.utils.Resources;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Pk房间
@@ -185,19 +193,20 @@ public class PkRoom {
 
     /**
      * 重复挖空
+     *
      * @param player 需要重复挖空的用户
      * @return 挖好的内容
      */
-    public synchronized SocketMessage againDig(PkUser player){
+    public synchronized SocketMessage againDig(PkUser player) {
         SocketMessage msg;
-        if (player == player01 || player == player02){
+        if (player == player01 || player == player02) {
             //验证该用户是否合法
             //为需要循环挖空的玩家挖空
             String content = player.getMatchInf().getContent();
             String handledContent = StringUtil.digBlank(content, this.blankNum);
             msg = new SocketMessage(SocketMsgInf.OPERATE_SUCCESS);
-            msg.addData("digedContent",handledContent);
-        }else {
+            msg.addData("digedContent", handledContent);
+        } else {
             //用户不存在该房间内
             //非法请求
             msg = new SocketMessage(SocketMsgInf.SERVER_ERROR);
@@ -282,6 +291,92 @@ public class PkRoom {
         answersRecordList.add(answersRecords.get(player02));
         msg.addData("records", answersRecordList);
         return msg;
+    }
+
+    /**
+     * 获取段位信息
+     * 只会读取所以使用普通HashMap即可
+     */
+    private static final Map<String, Integer> rankInfos = new HashMap<>();
+
+    static {
+        InputStream input = Resources.getResourceAsStream("rankInfos.properties");
+        try {
+            Properties properties = new Properties();
+            properties.load(input);
+            String stars = (String) properties.get("stars");
+            String easyPoint = (String) properties.get("easyPoint");
+            String normalPoint = (String) properties.get("normalPoint");
+            String difficultPoint = (String) properties.get("difficultPoint");
+            String maxPoints = (String) properties.get("maxPoints");
+            rankInfos.put(stars, Integer.parseInt(stars));
+            rankInfos.put(easyPoint, Integer.parseInt(easyPoint));
+            rankInfos.put(normalPoint, Integer.parseInt(normalPoint));
+            rankInfos.put(difficultPoint, Integer.parseInt(difficultPoint));
+            rankInfos.put(maxPoints, Integer.parseInt(maxPoints));
+        } catch (IOException e) {
+            throw new RuntimeException("读取段位配置信息失败");
+        }
+    }
+
+    private final UserDao userDao = new UserDaoImpl();
+
+    /**
+     * 更新段位
+     */
+    private void updateRank(int userId, boolean isWin) {
+        User user = userDao.selectUserById(userId);
+        int userStars = user.getStars();
+        Integer stars = rankInfos.get("stars");
+
+        //首先处理积分
+        int userPoints = user.getPoints();
+        Difficulty difficulty = this.player01.getMatchInf().getDifficulty();
+        //根据难度获取不同的积分加成
+        Integer points;
+        if (difficulty == Difficulty.EASY) {
+            points = rankInfos.get("easyPoint");
+        } else if (difficulty == Difficulty.NORMAL) {
+            points = rankInfos.get("normalPoint");
+        } else {
+            points = rankInfos.get("difficultPoint");
+        }
+        //计算总积分积分
+        int totalPoints = userPoints + points;
+        //计算根据积分需要额外增加的星星数量
+        Integer maxPoints = rankInfos.get("maxPoints");
+        int extraStars = totalPoints / maxPoints;
+        totalPoints -= extraStars * maxPoints;
+        //计算当前可用星星数量
+        userStars += extraStars;
+        int totalStars;
+        if (isWin) {
+            //成功了
+            //增加星星数量和积分数量
+            //星星数量 = 初始星星数 + 获胜获得星星数 + 积分额外星星数
+            totalStars = userStars + stars;
+            int i = userDao.updateStarsByUserId(userId, totalStars);
+            i = userDao.updatePointByUserId(userId, totalPoints);
+            if (i > 0) {
+                System.out.println("更新 " + userId + " 星星和积分数量成功");
+            } else {
+                System.out.println("更新 " + userId + " 星星和积分数量失败");
+            }
+        } else if (userStars - stars >= 0){
+            //失败了扣星星
+            //如果还有星星可以扣
+            totalStars = userStars - stars;
+        }else {
+            System.out.println("没有星星扣了");
+            return;
+        }
+        int i = userDao.updateStarsByUserId(userId, totalStars);
+        i = userDao.updatePointByUserId(userId, totalPoints);
+        if (i > 0) {
+            System.out.println("更新 " + userId + " 星星和积分数量成功");
+        } else {
+            System.out.println("更新 " + userId + " 星星和积分数量失败");
+        }
     }
 
     /**

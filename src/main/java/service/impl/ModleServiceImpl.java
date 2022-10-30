@@ -17,13 +17,10 @@ import pojo.vo.ShowModle;
 import service.ModleService;
 import tools.utils.StringUtil;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class ModleServiceImpl implements ModleService {
@@ -221,7 +218,8 @@ public class ModleServiceImpl implements ModleService {
             //此时为覆盖的情况下
             //获取原模板的id
             int modleId = Integer.parseInt(request.getParameter("modleId"));
-            modle.setModleId(modleId);//设置模板的id
+            //设置模板的id
+            modle.setModleId(modleId);
 
             //这时候只需要将原模板里面的东西替换成context就行
             //标题分为两种情况，一种是改了名字的，一种是没改的
@@ -278,13 +276,16 @@ public class ModleServiceImpl implements ModleService {
                 Umr umr = new Umr();
                 umr.setUserId(userId);
                 umr.setModleId(modleId);
-                umr.setMStatus(0);//自己创建是0，收藏是1
+                //自己创建是0，收藏是1
+                umr.setMStatus(0);
                 int i = umrDao.insertUMR(umr);
                 //可能存在并发问题，需要事务
                 if (result > 0 && i > 0) {
                     //说明此时插入成功
                     message = new Message("生成新模板成功");
-                    message.addData("modle", modle);//？需不需要返回模板对象
+                    //？需不需要返回模板对象
+                    modle.setModlePath(null);
+                    message.addData("modle", modle);
                 } else {
                     message = new Message("生成新模板失败");
                 }

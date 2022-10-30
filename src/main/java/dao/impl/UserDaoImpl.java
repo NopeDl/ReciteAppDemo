@@ -232,4 +232,48 @@ public class UserDaoImpl implements UserDao {
         sqlSession.close();
         return update;
     }
+
+    /**
+     * 更新星星数
+     * @param userId  用户ID
+     * @param totalStars 星星总数
+     * @return update
+     */
+    @Override
+    public int updateStarsByUserId(int userId, int totalStars) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setStars(totalStars);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("UserMapper.updateStarsByUserID", user);
+        if (update > 0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
+
+    /**
+     * 更新用户积分
+     * @param userId 用户积分
+     * @param totalPoint 积分总数
+     * @return update
+     */
+    @Override
+    public int updatePointByUserId(int userId, int totalPoint) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setPoints(totalPoint);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int update = sqlSession.update("UserMapper.updatePointsByUserID", user);
+        if (update > 0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
 }
