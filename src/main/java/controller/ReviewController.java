@@ -27,6 +27,9 @@ public class ReviewController extends HttpServlet {
         if ("JoinThePlane".equals(requestURI)) {
             //将学习好的模板加入复习计划
            msg = reviewService.joinThePlan(request);
+        }else if("removeFromPlan".equals(requestURI)){
+            //将模板从学习计划
+            msg=reviewService.removeFromPlan(request);
         }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

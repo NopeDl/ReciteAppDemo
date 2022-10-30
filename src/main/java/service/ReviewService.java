@@ -11,4 +11,11 @@ public interface ReviewService {
      * @return
      */
     Message joinThePlan(HttpServletRequest request);
+
+    /**
+     * 将模板移除个人计划
+     * @param request
+     * @return
+     */
+    Message removeFromPlan(HttpServletRequest request);
 }

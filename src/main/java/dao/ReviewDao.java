@@ -13,4 +13,19 @@ public interface ReviewDao {
      * @return
      */
     int joinIntoPlan(Review review);
+
+
+    /**
+     * 将模板从计划表中移除
+     * @param review
+     * @return
+     */
+    int removeModle(Review review);
+
+    /**
+     * 查询计划表中是否存在该模板
+     * @param review
+     * @return
+     */
+    boolean selectModle(Review review);
 }

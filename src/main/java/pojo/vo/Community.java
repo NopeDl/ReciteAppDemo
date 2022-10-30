@@ -23,13 +23,8 @@ public class Community {
 
     private LocalDate createTime;
 
-    public LocalDate getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(LocalDate createTime) {
-        this.createTime = createTime;
-    }
+    private String studyStatus;
 
     public Community() {
     }
@@ -91,7 +86,15 @@ public class Community {
         this.nickName = nickName;
     }
 
-//    public String getImg() {
+    public LocalDate getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDate createTime) {
+        this.createTime = createTime;
+    }
+
+    //    public String getImg() {
 //        return img;
 //    }
 //
@@ -123,6 +126,14 @@ public class Community {
 
     public void setCommon(int common) {
         this.common = common;
+    }
+
+    public String getStudyStatus() {
+        return studyStatus;
+    }
+
+    public void setStudyStatus(String studyStatus) {
+        this.studyStatus = studyStatus;
     }
 
     @Override

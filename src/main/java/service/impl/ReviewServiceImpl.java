@@ -11,6 +11,7 @@ import pojo.vo.Message;
 import service.ModleService;
 import service.ReviewService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,6 +52,39 @@ public class ReviewServiceImpl implements ReviewService {
             }
         }else{
             message=new Message("加入复习计划失败，请重新添加");
+        }
+        return message;
+    }
+
+    /**
+     * 移除模板计划
+     * @param request
+     * @return
+     */
+    @Override
+    public Message removeFromPlan(HttpServletRequest request) {
+        Message message=null;
+        String userId = request.getParameter("userId");
+        String modleId = request.getParameter("modleId");
+        String studyStatus = request.getParameter("studyStatus");
+
+        //先从计划表中移除
+        Review review=new Review();
+        review.setModleId(Integer.parseInt(modleId));
+        int delete = reviewDao.removeModle(review);
+        if(delete>0){
+            //移除成功，改学习状态
+            Modle modle=new Modle();
+            modle.setModleId(review.getModleId());
+            modle.setUserId(Integer.parseInt(userId));
+            modle.setStudyStatus(studyStatus);
+            int update = modleDao.updateStudyStatus(modle);
+            if(update>0){
+                //更新模板成功
+                message=new Message("移除成功");
+            }else {
+                message=new Message("移除失败，请重新尝试");
+            }
         }
         return message;
     }

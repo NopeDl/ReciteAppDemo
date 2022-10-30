@@ -8,4 +8,13 @@
         insert into review(modleId) values(#{modleId})
     </insert>
 
+    <!--移除模板-->
+    <delete id="removeModle" parameterType="pojo.po.db.Review">
+        delete from review where modleId=#{modleId}
+    </delete>
+
+    <select id="selectModle" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
+        select * from review where modleId=#{modleId}
+    </select>
+
 </mapper>
