@@ -151,4 +151,12 @@ public interface ModleDao {
      * @return
      */
     Integer selectIfContain(Umr umr);
+
+
+    /**
+     * 查询模板是否属于用户
+     * @param modle
+     * @return
+     */
+    boolean ifModleBelongUser(Modle modle);
 }

@@ -49,6 +49,9 @@ public class ModleController extends HttpServlet {
         } else if("Collection".equals(requestURI)){
             //用户收藏模板还是取消模板
             msg=modleService.collectModle(request);
+        }else if("UpdateModleStatus".equals(requestURI)){
+            //更新模板的学习状态，只包括：未学习-->学习中 ,已学习-->学习中
+            msg=modleService.updateModleStatus(request);
         }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

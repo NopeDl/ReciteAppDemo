@@ -20,6 +20,25 @@ public class ModleDaoImpl implements ModleDao {
 
 
     /**
+     *  查询模板是否属于该用户
+     * @param modle
+     * @return
+     */
+    @Override
+    public boolean ifModleBelongUser(Modle modle) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        boolean flag=false;
+        List<Object> objects = sqlSession.selectList("ModleMapper.ifModleBelongUser", modle);
+        if(objects.size()>0){
+            //说明用户存在该模板
+            flag=true;
+        }
+        return flag;
+    }
+
+
+
+    /**
      * 收藏前先查看用户要收藏的模板是不是自己模板
      * 在modle表查询
      * @param umr
@@ -38,6 +57,8 @@ public class ModleDaoImpl implements ModleDao {
             return (((Count) userId.get(0)).getNumber()).intValue();
         }
     }
+
+
 
 
     /**
