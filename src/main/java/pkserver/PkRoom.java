@@ -34,6 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Date 2022/10/20 15:07
  */
 public class PkRoom {
+    private int playerNum;
+
     private static final Logger logger = LoggerFactory.getLogger(PkRoom.class);
 
     /**
@@ -94,6 +96,8 @@ public class PkRoom {
 
         this.player01 = player01;
         this.player02 = player02;
+
+        playerNum = 2;
         //获取双方匹配信息
         MatchInf p1Inf = player01.getMatchInf();
         MatchInf p2Inf = player02.getMatchInf();
@@ -151,6 +155,7 @@ public class PkRoom {
         if (jsonObject != null) {
             //处理Json数据
             //获取答案对错
+            //{"answerName":"1111","answerValue":true}
             String answerName = (String) jsonObject.get("answerName");
             boolean isRight = (Boolean) jsonObject.get("answerValue");
             //封装答案信息
@@ -219,6 +224,7 @@ public class PkRoom {
      * 结束本房间游戏
      */
     public synchronized void end() {
+
         logger.debug(this + " pk room closed ");
         //将输赢信息封装
         roomBroadcast(new SocketMessage(SocketMsgInf.MATCH_END));
@@ -275,9 +281,13 @@ public class PkRoom {
         if (player01Hp < player02Hp) {
             //玩家2赢
             winnerId = player02.getMatchInf().getUserId();
+            updateRank(winnerId,true);
+            updateRank(player01.getMatchInf().getUserId(),false);
         } else if (player02Hp < player01Hp) {
             //玩家1赢
             winnerId = player01.getMatchInf().getUserId();
+            updateRank(winnerId,true);
+            updateRank(player02.getMatchInf().getUserId(),false);
         } else {
             //平局
             winnerId = -1;
@@ -309,11 +319,11 @@ public class PkRoom {
             String normalPoint = (String) properties.get("normalPoint");
             String difficultPoint = (String) properties.get("difficultPoint");
             String maxPoints = (String) properties.get("maxPoints");
-            rankInfos.put(stars, Integer.parseInt(stars));
-            rankInfos.put(easyPoint, Integer.parseInt(easyPoint));
-            rankInfos.put(normalPoint, Integer.parseInt(normalPoint));
-            rankInfos.put(difficultPoint, Integer.parseInt(difficultPoint));
-            rankInfos.put(maxPoints, Integer.parseInt(maxPoints));
+            rankInfos.put("stars", Integer.parseInt(stars));
+            rankInfos.put("easyPoint", Integer.parseInt(easyPoint));
+            rankInfos.put("normalPoint", Integer.parseInt(normalPoint));
+            rankInfos.put("difficultPoint", Integer.parseInt(difficultPoint));
+            rankInfos.put("maxPoints", Integer.parseInt(maxPoints));
         } catch (IOException e) {
             throw new RuntimeException("读取段位配置信息失败");
         }
@@ -349,27 +359,20 @@ public class PkRoom {
         totalPoints -= extraStars * maxPoints;
         //计算当前可用星星数量
         userStars += extraStars;
-        int totalStars;
+        int totalStars = 0;
         if (isWin) {
             //成功了
             //增加星星数量和积分数量
             //星星数量 = 初始星星数 + 获胜获得星星数 + 积分额外星星数
             totalStars = userStars + stars;
-            int i = userDao.updateStarsByUserId(userId, totalStars);
-            i = userDao.updatePointByUserId(userId, totalPoints);
-            if (i > 0) {
-                System.out.println("更新 " + userId + " 星星和积分数量成功");
-            } else {
-                System.out.println("更新 " + userId + " 星星和积分数量失败");
-            }
         } else if (userStars - stars >= 0){
             //失败了扣星星
             //如果还有星星可以扣
             totalStars = userStars - stars;
         }else {
             System.out.println("没有星星扣了");
-            return;
         }
+        //更新用户星星和积分
         int i = userDao.updateStarsByUserId(userId, totalStars);
         i = userDao.updatePointByUserId(userId, totalPoints);
         if (i > 0) {
@@ -502,5 +505,13 @@ public class PkRoom {
 
     public void setResponseMessage(SocketMessage responseMessage) {
         this.responseMessage = responseMessage;
+    }
+
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
     }
 }

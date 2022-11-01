@@ -74,6 +74,7 @@ public class PkUser {
                 pkRoom.startTimer();
             }
             msg = new SocketMessage();
+
             //响应服务器准备成功的信息
             msg.addData("isReady", true);
             ResponseUtil.send(this.session, msg);
@@ -115,6 +116,7 @@ public class PkUser {
         statusPool.listenerRegisty(new BasicStatusPoolListener(this){
             @Override
             public void pkPoolAdded(PkUser user) {
+                //监听PK池
                 if (user == this.getPkUser()){
                     //如果pk池中新增用户是自己
                     //说明匹配成功了
@@ -141,8 +143,15 @@ public class PkUser {
             //移除池中相关信息
             this.statusPool.quitMatchedPool(this.getMatchInf());
             this.statusPool.quitPkPool(this);
-            //结束房间
-            enemyUser.getSession().getBasicRemote().sendText("对方已退出游戏");
+            //设置房间内人数
+            this.pkRoom.setPlayerNum(this.pkRoom.getPlayerNum() - 1);
+            if(this.pkRoom.getPlayerNum() <= 0){
+                //说明两个人都退了，房间内没有参赛人员
+                StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
+            }else {
+                //向对手发送自己已经退出的消息
+                enemyUser.getSession().getBasicRemote().sendText("对方已退出游戏");
+            }
         } else {
             //说明是取消匹配
             //清除匹配状态
@@ -250,7 +259,10 @@ public class PkUser {
                     //获取房间挖空数，并将两边挖同样数量的空
                     int blankNum = this.getPkRoom().getBlankNum();
                     String context = StringUtil.autoDig(this.matchInf.getModleId(), blankNum);
+                    //添加挖好空的内容
                     msg.addData("context", context);
+                    //添加总时间限制
+                    msg.addData("timeLimits",this.pkRoom.getTimeLimits());
                     return msg;
                 } catch (IOException e) {
                     e.printStackTrace();

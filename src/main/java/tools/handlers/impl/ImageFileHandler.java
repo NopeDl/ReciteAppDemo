@@ -52,12 +52,6 @@ public class ImageFileHandler extends BaseFileHandler {
             input.read(bytes);
             out.write(bytes);
             out.close();
-//            int len;
-//            byte[] bytes = new byte[1024];
-//            while ((len = input.read(bytes))!= -1){
-//                out.write(bytes,0,len);
-//            }
-//            out.close();
         }catch (IOException e){
             e.printStackTrace();
         }

@@ -2,12 +2,22 @@ package pojo.po.db;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+/**
+ *
+ * @author isDucka
+ */
 public class Review {
     private int modleId;
-    private LocalDate reTime;//进入复习的时间
-    private int period;//复习周期
+
+    /**
+     * 进入复习的时间
+     */
+    private LocalDate reTime;
+    /**
+     * 复习周期
+     */
+    private int period;
 
 
     public Review() {
