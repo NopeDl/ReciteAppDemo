@@ -18,10 +18,14 @@ public enum ReviewPeriod {
     EIGHTH(8,180);
 
 
-    //存储周期，一共八个周期
+    /**
+     * 存储周期，一共八个周期
+     */
     private int period;
 
-    //存储周期变化所需要的时间
+    /**
+     * 存储周期变化所需要的时间
+     */
     private int date;
 
     ReviewPeriod() {
