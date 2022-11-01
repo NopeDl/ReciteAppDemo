@@ -741,7 +741,7 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public Message toCommunity(HttpServletRequest request) {
         Message msg;
-        ;
+
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int common = Integer.parseInt(request.getParameter("common"));
         if (common == 1) {
@@ -769,4 +769,24 @@ public class ModleServiceImpl implements ModleService {
         return msg;
     }
 
+
+    @Override
+    public Message updateModleStatus(HttpServletRequest request) {
+        Message message=null;
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        String studyStatus = request.getParameter("studyStatus");
+
+        Modle modle=new Modle();
+        modle.setModleId(modleId);
+        modle.setStudyStatus(studyStatus);
+
+        int update = modleDao.updateStudyStatus(modle);
+        if(update>0){
+            //更新成功
+            message=new Message("学习状态更新成功");
+        }else {
+            message=new Message("更新失败，请先完成模板学习");
+        }
+        return message;
+    }
 }

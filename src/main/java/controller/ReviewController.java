@@ -27,9 +27,18 @@ public class ReviewController extends HttpServlet {
         if ("JoinThePlane".equals(requestURI)) {
             //将学习好的模板加入复习计划
            msg = reviewService.joinThePlan(request);
-        }else if("removeFromPlan".equals(requestURI)){
-            //将模板从学习计划
+        }else if("RemoveFromPlan".equals(requestURI)){
+            //将模板从学习计划中移除
             msg=reviewService.removeFromPlan(request);
+        }else if("GetPeriodModle".equals(requestURI)){
+            //获取复习周期下的模板
+            msg = reviewService.getModleByPeriod(request);
+        }else if("FinishOnceReview".equals(requestURI)){
+            //完成某一周期的复习
+            msg=reviewService.updatePeriod(request);
+        }else if("GetUserReviewPlan".equals(requestURI)){
+            //获取用户的复习计划列表
+            msg=reviewService.getReviewPlan(request);
         }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

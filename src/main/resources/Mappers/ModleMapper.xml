@@ -83,5 +83,9 @@
     <update id="updateStudyStatus" parameterType="pojo.po.db.Modle">
         update modle set studyStatus=#{studyStatus} where modleId=#{modleId}
     </update>
+    <!--查询某个模板是否属于该用户-->
+    <select id="ifModleBelongUser" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Umr">
+        select modleId from umr where modleId=#{modleId} and userId=#{userId}
+    </select>
 
 </mapper>

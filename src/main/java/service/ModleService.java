@@ -110,4 +110,14 @@ public interface ModleService {
      * @return
      */
     Message toCommunity(HttpServletRequest request);
+
+    /**
+     * 更改学习计划
+     * @param request
+     * @return
+     */
+    Message updateModleStatus(HttpServletRequest request);
+
+
+
 }
