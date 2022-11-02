@@ -20,6 +20,7 @@ public class JcsegUtil {
 
     static {
         SegmenterConfig config = new SegmenterConfig();
+        config.setClearStopwords(true);
         ADictionary dictionary = DictionaryFactory.createSingletonDictionary(config);
         SEGMENT = ISegment.COMPLEX.factory.create(config,dictionary);
     }

@@ -489,6 +489,7 @@ public class ModleServiceImpl implements ModleService {
                             //说明此时头像为默认头像，不需要重新读取
                             //将响应的数据封装到message里
                             user.setBase64("");
+                            modleList.get(i).setBase64("");
                         } else {
 //                            //说明头像已经改变过了，需要重新读取
                             try {
