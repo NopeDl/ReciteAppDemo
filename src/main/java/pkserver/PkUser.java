@@ -22,12 +22,9 @@ import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author yeyeye
@@ -115,7 +112,7 @@ public class PkUser {
         //注册监听器
         statusPool.listenerRegisty(new BasicStatusPoolListener(this){
             @Override
-            public void pkPoolAdded(PkUser user) {
+            public synchronized void pkPoolAdded(PkUser user) {
                 //监听PK池
                 if (user == this.getPkUser()){
                     //如果pk池中新增用户是自己
