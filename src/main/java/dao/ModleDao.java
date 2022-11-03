@@ -2,6 +2,7 @@ package dao;
 
 import pojo.po.db.Label;
 import pojo.po.db.Modle;
+import pojo.po.db.Review;
 import pojo.po.db.Umr;
 import pojo.vo.Community;
 
@@ -20,12 +21,20 @@ public interface ModleDao {
 //    int cancelMOdleById(int userId,int modleId,int mStatus);
 //
 
+
     /**
-     * 更新模板学习状态
-     * @param modle
+     * 更新umr表的reviewId字段
+     * @param review
      * @return
      */
-    int updateStudyStatus(Modle modle);
+    boolean updateReviewId(Review review);
+
+    /**
+     * 更新模板学习状态
+     * @param umr
+     * @return
+     */
+    int updateStudyStatus(Umr umr);
 
 
     /**
@@ -152,11 +161,18 @@ public interface ModleDao {
      */
     Integer selectIfContain(Umr umr);
 
+//
+//    /**
+//     * 查询模板是否属于用户
+//     * @param umr
+//     * @return
+//     */
+//    boolean ifModleBelongUser(Umr umr);
 
     /**
-     * 查询模板是否属于用户
-     * @param modle
+     * 根据模板的id和用户的id在umr表中查询模板的情况
+     * @param umr
      * @return
      */
-    boolean ifModleBelongUser(Modle modle);
+    Umr selectModleByIds(Umr umr);
 }

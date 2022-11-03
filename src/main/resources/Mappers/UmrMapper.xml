@@ -6,7 +6,7 @@
         select * from umr where userId=#{userId}
     </select>
 
-    <insert id="insertUMR">
+    <insert id="insertUMR" parameterType="pojo.po.db.Umr">
         insert into umr (userId,modleId,mStatus) values (#{userId},#{modleId},#{mStatus})
     </insert>
 
@@ -18,13 +18,22 @@
         insert into umr(userId,modleId,mStatus) values(#{userId},#{modleId},#{mStatus})
     </insert>
 
-<!--    <delete id="cancelMOdleById" parameterType="pojo.po.db.Umr">-->
-<!--        delete from umr where userId=#{userId} and modleId=#{modleId} and mStatus=#{mStatus}-->
-<!--    </delete>-->
+
 
     <!--slelectIfCollect-->
     <select id="slelectIfCollect" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Count">
         select count(mstatus) as number from umr where userId=#{userId} and modleId=#{modleId}
     </select>
 
+<!--    <select id="ifModleBelongUser" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Umr">-->
+<!--        select modleId from umr where modleId=#{modleId} and userId=#{userId}-->
+<!--    </select>-->
+
+    <select id="selectModleByIds" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Umr">
+        select * from umr where userId=#{userId} and modleId=#{modleId}
+    </select>
+
+    <update id="updateStudyStatus" parameterType="pojo.po.db.Umr">
+        update umr set studyStatus=#{studyStatus} where modleId=#{modleId} and userId=#{userId}
+    </update>
 </mapper>

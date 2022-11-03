@@ -69,6 +69,7 @@ public class ModleServiceImpl implements ModleService {
         //用户收藏非自己的模板
         int userId = Integer.parseInt(request.getParameter("userId"));
         int modleId = Integer.parseInt(request.getParameter("modleId"));
+        //收藏状态，1为收藏，否则为取消收藏
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
         Umr umr=new Umr();
         umr.setUserId(userId);
@@ -90,7 +91,6 @@ public class ModleServiceImpl implements ModleService {
             int integer = umrDao.slelectIfCollect(umr);
 
             //大于0为有这条记录
-            System.out.println(integer);
             //第一种，用户自己收藏过
             if (integer > 0) {
                 //umr 表中已经有对应的数据，说明此时已经是收藏了的
@@ -112,7 +112,6 @@ public class ModleServiceImpl implements ModleService {
             } else {
                 //用户想要收藏
                 if (mStatus == 1) {
-                    System.out.println("我来啦");
                     //说明此时用户想要收藏
                     int i = umrDao.insertUMR(umr);
                     if (i > 0) {
@@ -210,7 +209,9 @@ public class ModleServiceImpl implements ModleService {
         //设置模板标签
         modle.setModleLabel(Integer.parseInt(modleLabel));
        //设置模板的学习状态
-        modle.setStudyStatus("未学习");
+
+//        modle.setStudyStatus("未学习");
+
         //先看标题有没有重复的
         //覆盖值为1，不覆盖值为0
         String overWrite = request.getParameter("overWrite");
@@ -257,7 +258,8 @@ public class ModleServiceImpl implements ModleService {
 
 
         } else {
-            //对比该模板制作者的作于模板标题，不允许有有重复的标题
+            //生成新模板
+            //对比该模板制作者的其他模板标题，不允许有有重复的标题
             int sum = modleDao.selectNumByTitle(modle);
             if (sum > 0) {
                 //说明此时已有名字叫xx的模板,此时生成模板失败，因为名称重复
@@ -281,10 +283,12 @@ public class ModleServiceImpl implements ModleService {
                 int i = umrDao.insertUMR(umr);
                 //可能存在并发问题，需要事务
                 if (result > 0 && i > 0) {
-                    //说明此时插入成功
-                    message = new Message("生成新模板成功");
+
                     //？需不需要返回模板对象
                     modle.setModlePath(null);
+//                    modle.setStudyStatus("未学习");
+                    //说明此时插入成功
+                    message = new Message("生成新模板成功");
                     message.addData("modle", modle);
                 } else {
                     message = new Message("生成新模板失败");
@@ -489,6 +493,7 @@ public class ModleServiceImpl implements ModleService {
                             //说明此时头像为默认头像，不需要重新读取
                             //将响应的数据封装到message里
                             user.setBase64("");
+                            modleList.get(i).setBase64("");
                         } else {
 //                            //说明头像已经改变过了，需要重新读取
                             try {
@@ -638,6 +643,7 @@ public class ModleServiceImpl implements ModleService {
                 tempMod.setModleId(modleIdTemp);
                 //封装查询的modle数据
                 Modle modle = modleDao.selectModleByModleId(modleIdTemp);
+                modle.setStudyStatus(value.getStudyStatus());
                 modle.setMStatus(value.getMStatus());
                 //获取模板内容
                 //下面内容考虑下封装
@@ -773,14 +779,20 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public Message updateModleStatus(HttpServletRequest request) {
         Message message=null;
+        //更新模板的学习状态需要根据userId和modleId在umr表中进行修改
+        int userId = Integer.parseInt(request.getParameter("userId"));
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         String studyStatus = request.getParameter("studyStatus");
 
-        Modle modle=new Modle();
-        modle.setModleId(modleId);
-        modle.setStudyStatus(studyStatus);
+//        Modle modle=new Modle();
+//        modle.setModleId(modleId);
+//        modle.setStudyStatus(studyStatus);
+        Umr umr=new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);
+        umr.setStudyStatus(studyStatus);
 
-        int update = modleDao.updateStudyStatus(modle);
+        int update = modleDao.updateStudyStatus(umr);
         if(update>0){
             //更新成功
             message=new Message("学习状态更新成功");

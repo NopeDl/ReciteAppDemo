@@ -19,24 +19,39 @@ public class ModleDaoImpl implements ModleDao {
     }
 
 
-    /**
-     *  查询模板是否属于该用户
-     * @param modle
-     * @return
-     */
+//    /**
+//     *  查询模板是否属于该用户
+//     * @param umr
+//     * @return
+//     */
+//    @Override
+//    public boolean ifModleBelongUser(Umr umr) {
+//        SqlSession sqlSession=sqlSessionFactory.openSession();
+//        boolean flag=false;
+//        List<Object> objects = sqlSession.selectList("UmrMapper.ifModleBelongUser", umr);
+//        if(objects.size()>0){
+//            //说明用户存在该模板
+//            flag=true;
+//        }
+//        return flag;
+//    }
+
+
     @Override
-    public boolean ifModleBelongUser(Modle modle) {
-        SqlSession sqlSession=sqlSessionFactory.openSession();
+    public boolean updateReviewId(Review review) {
         boolean flag=false;
-        List<Object> objects = sqlSession.selectList("ModleMapper.ifModleBelongUser", modle);
-        if(objects.size()>0){
-            //说明用户存在该模板
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        int update = sqlSession.update("ModleMapper.updateReviewId", review);
+        if(update>0){
             flag=true;
+            sqlSession.commit();
+        }else{
+            sqlSession.rollBack();
         }
+
+        sqlSession.close();
         return flag;
     }
-
-
 
     /**
      * 收藏前先查看用户要收藏的模板是不是自己模板
@@ -108,13 +123,13 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 更新模板的学习状态
-     * @param modle
+     * @param umr
      * @return
      */
     @Override
-    public int updateStudyStatus(Modle modle) {
+    public int updateStudyStatus(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int update = sqlSession.insert("ModleMapper.updateStudyStatus", modle);
+        int update = sqlSession.insert("UmrMapper.updateStudyStatus", umr);
         if(update>0){
             sqlSession.commit();
         }else{
@@ -439,6 +454,19 @@ public class ModleDaoImpl implements ModleDao {
         return update;
     }
 
-
-
+    /**
+     * 根据模板id和用户id查询模板的情况，重点包括模板的学习状态
+     * @param umr
+     * @return
+     */
+    @Override
+    public Umr selectModleByIds(Umr umr) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("UmrMapper.selectModleByIds", umr);
+        sqlSession.close();
+        if(objects.size()>0){
+            return (Umr) objects.get(0);
+        }
+        return null;
+    }
 }

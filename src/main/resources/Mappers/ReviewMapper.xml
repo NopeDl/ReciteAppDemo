@@ -4,13 +4,13 @@
 <!--   <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">-->
 <!--       insert into review(modleId) values(#{modleId})-->
 <!--   </insert>-->
-    <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">
-        insert into review(modleId) values(#{modleId})
+    <insert id="joinIntoPlan" parameterType="pojo.po.db.Umr">
+        insert into review(modleId,userId) values(#{modleId},#{userId})
     </insert>
 
     <!--移除模板-->
     <delete id="removeModle" parameterType="pojo.po.db.Review">
-        delete from review where modleId=#{modleId}
+        delete from review where modleId=#{modleId} and userId=#{userId}
     </delete>
 
     <select id="selectModle" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
@@ -19,29 +19,33 @@
 
     <!--根据周期查询模板-->
     <select id="selectModleByPeriod" parameterType="pojo.po.db.Review" resultType="pojo.vo.Community">
-         select modleId,modleTitle,modlePath,modleLabel from modle where modleId in
-        (select modleId from review where period=#{period} and (DATEDIFF(CURRENT_DATE,reTime))>=#{days}) and userId=#{userId}
+         select modleId,modleTitle,modleLabel from modle where modleId in
+        (select modleId from review where period=#{period} and (DATEDIFF(CURRENT_DATE,reTime))>=#{days} and userId=#{userId})
     </select>
 
     <!--查询模板是否已经加入复习计划-->
-    <select id="selectModleIsReview" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Review">
+    <select id="selectModleIsReview" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Review">
         select modleId from review where modleId=#{modleId}
     </select>
 
     <!--考虑和上面的语句并在一起-->
     <!--selectModlePeriod根据id查询模板的周期-->
     <select id="selectModlePeriod" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
-        select * from review where modleId=#{modleId}
+        select * from review where modleId=#{modleId} and userId=#{userId}
     </select>
 
     <!--updatePeriodAndDate更新周期和日期-->
     <update id="updatePeriodAndDate" parameterType="pojo.po.db.Review" >
-        update review set period=period+1,reTime=#{reTime} where modleId=#{modleId}
+        update review set period=period+1,reTime=#{reTime} where userId=#{userId} and modleId=#{modleId}
     </update>
 
     <!--getReviewPlan 获取用户复习的模板-->
     <select id="selectReviewPlan" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
-        select modleId,modleTitle,modlePath,modleLabel from modle
-        where userId=#{userId} and studyStatus=#{studyStatus}
+        select modleId,modleTitle,modlePath,modleLabel from modle where modleId in
+        (select modleId from umr where  userId=#{userId} and studyStatus=#{studyStatus})
+
     </select>
+
+
+
 </mapper>
