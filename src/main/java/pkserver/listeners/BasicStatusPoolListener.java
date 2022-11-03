@@ -17,16 +17,6 @@ public class BasicStatusPoolListener implements StatusPoolListener{
     }
 
     @Override
-    public void pkPoolAdded(PkUser user) {
-
-    }
-
-    @Override
-    public void pkPoolRemoved() {
-
-    }
-
-    @Override
     public void matchedPoolAdded(PkUser user) {
 
     }
@@ -46,11 +36,17 @@ public class BasicStatusPoolListener implements StatusPoolListener{
 
     }
 
-    public PkUser getPkUser() {
-        return pkUser;
+    @Override
+    public void cancelMatchingPoolAdded() {
+
     }
 
-    public void setPkUser(PkUser pkUser) {
-        this.pkUser = pkUser;
+    @Override
+    public void cancelMatchingPoolRemoved() {
+
+    }
+
+    public PkUser getPkUser() {
+        return pkUser;
     }
 }
