@@ -274,10 +274,13 @@ public class UserServiceImpl implements UserService {
         List<String> list = dateDao.selectDateByUserId(userId, month, year);
         Message msg;
         if (list != null) {
+            Set<String> dateSet = new HashSet<>(list);
             msg = new Message("查找成功");
-            msg.addData("dateList", list);
+            msg.addData("searchSuccess",true);
+            msg.addData("dateList", dateSet);
         } else {
-            msg = new Message("查找失败");
+            msg = new Message("无数据");
+            msg.addData("searchSuccess",false);
         }
         return msg;
     }

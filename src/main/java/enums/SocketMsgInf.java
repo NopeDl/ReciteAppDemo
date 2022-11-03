@@ -20,7 +20,8 @@ public enum SocketMsgInf {
     JSON_ERROR("JSON_ERROR",false),
     MATCH_INVALID("MATCH_INVALID",false),
 
-    MATCH_END("MATCH_END",true);
+    MATCH_END("MATCH_END",true),
+    ENEMY_EXIT("ENEMY_EXIT",true);
 
 
 

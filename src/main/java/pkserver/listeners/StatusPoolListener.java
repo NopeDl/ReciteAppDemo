@@ -8,17 +8,8 @@ import pkserver.PkUser;
  */
 public interface StatusPoolListener {
     /**
-     * 监听pk池新增
-     */
-    void pkPoolAdded(PkUser user);
-
-    /**
-     * 监听离开pk池
-     */
-    void pkPoolRemoved();
-
-    /**
      * 监听匹配完成池新增
+     * @param user user
      */
     void matchedPoolAdded(PkUser user);
 
@@ -29,6 +20,7 @@ public interface StatusPoolListener {
 
     /**
      * 监听匹配池新增
+     * @param user user
      */
     void matchingPoolAdded(PkUser user);
 
@@ -36,4 +28,14 @@ public interface StatusPoolListener {
      * 监听离开匹配池
      */
     void matchingPoolRemoved();
+
+    /**
+     * 监听进入取消匹配池
+     */
+    void cancelMatchingPoolAdded();
+
+    /**
+     * 监听离开取消匹配池
+     */
+    void cancelMatchingPoolRemoved();
 }

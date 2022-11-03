@@ -1,6 +1,5 @@
 package dao.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ReviewDao;
 import pojo.po.db.Modle;
 import pojo.po.db.Review;

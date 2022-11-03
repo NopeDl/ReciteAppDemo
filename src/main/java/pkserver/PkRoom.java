@@ -141,7 +141,7 @@ public class PkRoom {
         answersRecords.put(this.player01, answersRecord01);
         answersRecords.put(this.player02, answersRecord02);
         //输出日志
-        logger.debug(p1Inf.getUserId() + " and " + p2Inf.getUserId() + "create pk room");
+        System.out.println(p1Inf.getUserId() + " and " + p2Inf.getUserId() + "create pk room");
     }
 
 
@@ -149,7 +149,7 @@ public class PkRoom {
      * 开始本房间比赛
      */
     public synchronized void excute(String json, PkUser curUser) {
-        logger.debug(this + " pk room excute: " + json);
+        System.out.println(this + " pk room excute: " + json);
         //获取json数据
         JSONObject jsonObject = JSONObject.parseObject(json);
         if (jsonObject != null) {
@@ -168,7 +168,7 @@ public class PkRoom {
                 //获取敌人当前血量
                 double hp = getHp(enemy);
                 //计算扣的血
-                hp -= 100.0 / this.blankNum;
+                hp -= Math.round(100.0 / this.blankNum);
                 //设置血量
                 setHp(enemy, hp);
             }
@@ -225,7 +225,7 @@ public class PkRoom {
      */
     public synchronized void end() {
 
-        logger.debug(this + " pk room closed ");
+        System.out.println(this + " pk room closed ");
         //将输赢信息封装
         roomBroadcast(new SocketMessage(SocketMsgInf.MATCH_END));
         SocketMessage result = getWinner();
@@ -236,10 +236,8 @@ public class PkRoom {
             player02.getSession().close();
             //移除池中相关信息
             StatusPool.PK_ROOM_LIST.remove(this);
-            StatusPool.MATCHED_POOL.remove(player01.getMatchInf());
-            StatusPool.MATCHED_POOL.remove(player02.getMatchInf());
-            StatusPool.PK.remove(player01.getMatchInf().getUserId());
-            StatusPool.PK.remove(player02.getMatchInf().getUserId());
+            StatusPool.MATCHED_POOL.remove(player01);
+            StatusPool.MATCHED_POOL.remove(player02);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -389,7 +387,7 @@ public class PkRoom {
      * @return bool值
      */
     private boolean containPlayer(PkUser player) {
-        return player01.equals(player) || player02.equals(player);
+        return player01 == player || player02 == player;
     }
 
     /**
@@ -439,17 +437,8 @@ public class PkRoom {
         if (!findSuccess) {
             //没找到则创建房间，并把他们两个都扔进去
             //获取对手对象
-            //先获取对手id
-            int enemyId = StatusPool.PK.get(curPlayer.getMatchInf().getUserId());
-            //根据对手ID获取对手对象
-            PkUser enemy = null;
-            Map<MatchInf, PkUser> matchedPool = StatusPool.MATCHED_POOL;
-            for (MatchInf enemyInf : matchedPool.keySet()) {
-                if (enemyInf.getUserId() == enemyId) {
-                    enemy = matchedPool.get(enemyInf);
-                    break;
-                }
-            }
+            Map<PkUser, PkUser> matchedPool = StatusPool.MATCHED_POOL;
+            PkUser enemy = matchedPool.get(curPlayer);
             if (enemy != null) {
                 //将自己和对手创建房间并添加进房间列表中
                 PkRoom pkRoom = new PkRoom(curPlayer, enemy);
@@ -467,45 +456,20 @@ public class PkRoom {
         return player01;
     }
 
-    public void setPlayer01(PkUser player01) {
-        this.player01 = player01;
-    }
-
     public PkUser getPlayer02() {
         return player02;
     }
 
-    public void setPlayer02(PkUser player02) {
-        this.player02 = player02;
-    }
 
     public int getBlankNum() {
         return blankNum;
     }
 
-    public void setBlankNum(int blankNum) {
-        this.blankNum = blankNum;
-    }
 
     public long getTimeLimits() {
         return timeLimits;
     }
 
-    public void setTimeLimits(long timeLimits) {
-        this.timeLimits = timeLimits;
-    }
-
-    public Map<PkUser, Double> getHpMap() {
-        return hpMap;
-    }
-
-    public SocketMessage getResponseMessage() {
-        return responseMessage;
-    }
-
-    public void setResponseMessage(SocketMessage responseMessage) {
-        this.responseMessage = responseMessage;
-    }
 
     public int getPlayerNum() {
         return playerNum;

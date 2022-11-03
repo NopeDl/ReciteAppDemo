@@ -120,8 +120,6 @@ public class StringUtil {
             //获取文件内容
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", inputStream);
             String content = txtHandler.parseContent();
-            //去除用户挖空
-            content = content.replaceAll("<(?!br).*?>", "").replaceAll("<br>", "\n").trim();
             //开挖
             content = digBlank(content, blankNum);
             return content;
@@ -149,6 +147,8 @@ public class StringUtil {
      * @return 挖好的内容(div)
      */
     public static synchronized String digBlank(String content, int blankNum) {
+        //去除用户挖空
+        content = content.replaceAll("<(?!br).*?>", "").replaceAll("<br>", "\n").trim();
         //将文本根据空数均匀分段
         //获取每段长度
         int step = content.length() / blankNum;
