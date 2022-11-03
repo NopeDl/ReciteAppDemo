@@ -33,12 +33,12 @@ public interface ReviewService {
      */
     Message updatePeriod(HttpServletRequest request);
 
-    /**
-     * 获取用户复习计划里的所有内容
-     * @param request
-     * @return
-     */
-    Message getReviewPlan(HttpServletRequest request);
+//    /**
+//     * 获取用户复习计划里的所有内容
+//     * @param request
+//     * @return
+//     */
+//    Message getReviewPlan(HttpServletRequest request);
 
 
 }

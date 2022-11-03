@@ -2,6 +2,7 @@ package dao;
 
 import pojo.po.db.Modle;
 import pojo.po.db.Review;
+import pojo.po.db.Umr;
 import pojo.vo.Community;
 
 import java.util.List;
@@ -12,10 +13,10 @@ import java.util.List;
 public interface ReviewDao {
     /**
      * 将要复习的模板写进review表中
-     * @param review
+     * @param umr
      * @return
      */
-    int joinIntoPlan(Review review);
+    int joinIntoPlan(Umr umr);
 
 
     /**
@@ -41,10 +42,10 @@ public interface ReviewDao {
 
     /**
      * 查询该模板是否已经加入复习计划
-     * @param modle
+     * @param umr
      * @return
      */
-    boolean selectModleIsReview(Modle modle);
+    boolean selectModleIsReview(Umr umr);
 
     /**
      *根据模板id查询模板的周期情况
@@ -66,4 +67,16 @@ public interface ReviewDao {
      * @return
      */
     List<Community> selectReviewPlan(Modle modle);
+//
+//    /**
+//     * 获取刚插入的reviewId
+//     * @return
+//     */
+//    int selectReviewId();
+//
+//    /**
+//     * 计算reviewId的个数，从而得到下一条插入的reviewId应该是多少
+//     * @return
+//     */
+//    long countReviewId(Review review);
 }

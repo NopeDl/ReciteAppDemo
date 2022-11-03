@@ -1,8 +1,10 @@
 package dao.impl;
 
 import dao.ReviewDao;
+import pojo.po.db.Count;
 import pojo.po.db.Modle;
 import pojo.po.db.Review;
+import pojo.po.db.Umr;
 import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
@@ -23,13 +25,13 @@ public class ReviewDaoImpl implements ReviewDao {
 
     /**
      * 插入复习计划表
-     * @param review
+     * @param umr
      * @return
      */
     @Override
-    public int joinIntoPlan(Review review) {
+    public int joinIntoPlan(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int insert = sqlSession.insert("ReviewMapper.joinIntoPlan", review);
+        int insert = sqlSession.insert("ReviewMapper.joinIntoPlan", umr);
         if(insert>0){
             sqlSession.commit();
         }else{
@@ -100,14 +102,15 @@ public class ReviewDaoImpl implements ReviewDao {
 
     /**
      * 查询该模板是否已经加入复习计划
-     * @param modle
+     * @param umr
      * @return
      */
     @Override
-    public boolean selectModleIsReview(Modle modle) {
+    public boolean selectModleIsReview(Umr umr) {
         SqlSession sqlSession=sqlSessionFactory.openSession();
         boolean flag=false;
-        List<Object> objects = sqlSession.selectList("ReviewMapper.selectModleIsReview", modle);
+        List<Object> objects = sqlSession.selectList("ReviewMapper.selectModleIsReview", umr);
+        sqlSession.close();
         if(objects.size()>0){
             flag=true;
         }
@@ -123,6 +126,7 @@ public class ReviewDaoImpl implements ReviewDao {
     public Review selectModlePeriod(Review review) {
         SqlSession sqlSession=sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ReviewMapper.selectModlePeriod", review);
+        sqlSession.close();
         if(objects.size()>0){
             //成功查询
             return (Review) objects.get(0);
@@ -158,6 +162,7 @@ public class ReviewDaoImpl implements ReviewDao {
         SqlSession sqlSession=sqlSessionFactory.openSession();
         List<Community> communities=new ArrayList<>();
         List<Object> objects = sqlSession.selectList("ReviewMapper.selectReviewPlan", modle);
+        sqlSession.close();
         if(objects.size()>0){
             //说明有加入复习的东西
             //存为Community类型的list
@@ -168,4 +173,32 @@ public class ReviewDaoImpl implements ReviewDao {
 
         return communities;
     }
+
+//    @Override
+//    public int selectReviewId() {
+//        SqlSession sqlSession=sqlSessionFactory.openSession();
+//        List<Object> objects = sqlSession.selectList("ReviewMapper.selectReviewId", null);
+//        sqlSession.close();
+//        if(objects.size()>0){
+//            return ((Review)objects.get(0)).getReviewId();
+//        }
+//
+//        return 0;
+//    }
+
+//    /**、
+//     * 查询reviewId的个数，由此可以得出下一条reviewId 是多少
+//     * @return 参数只是走个形式，不参与使用
+//     */
+//    @Override
+//    public long countReviewId(Review review) {
+//        SqlSession sqlSession=sqlSessionFactory.openSession();
+//        List<Object> objects = sqlSession.selectList("ReviewMapper.countReviewId", review);
+//        if(objects.size()>0){
+//            Long number = ((Count) objects.get(0)).getNumber();
+//            return number;
+//        }
+//        return 0;
+//
+//    }
 }
