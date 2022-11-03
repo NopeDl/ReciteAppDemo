@@ -10,9 +10,10 @@ import java.io.InputStream;
 public class DaoUtil {
     private static final SqlSessionFactoryBuilder sqlSessionFactoryBuilder;
 
+    private static SqlSessionFactory sqlSessionFactory = null;
+
     static {
         sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
-
     }
 
     /**
@@ -21,12 +22,14 @@ public class DaoUtil {
      * @return SqlSessionFactory对象
      */
     public static SqlSessionFactory getSqlSessionFactory() {
-        InputStream input = Resources.getResourceAsStream("easydao-config.xml");
-        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(input);
-        try {
-            input.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (sqlSessionFactory == null){
+            InputStream input = Resources.getResourceAsStream("easydao-config.xml");
+            sqlSessionFactory = sqlSessionFactoryBuilder.build(input);
+            try {
+                input.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return sqlSessionFactory;
     }
