@@ -47,7 +47,10 @@ public class InfController extends HttpServlet {
         } else if ("rankingList".equals(uri)) {
             //获取排行榜前十信息
             msg = userService.rankingList(request);
-        }  else {
+        } else if ("studyData".equals(uri)) {
+            //获取用户日常学习信息： 学习篇数和学习时长
+            msg = userService.getUserDailyStudyData(request);
+        } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

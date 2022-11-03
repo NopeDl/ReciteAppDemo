@@ -170,26 +170,28 @@ public class PkRoom {
                 //计算扣的血
                 hp -= Math.round(100.0 / this.blankNum);
                 //设置血量
+                if (hp < 0){
+                    hp = 0;
+                }
                 setHp(enemy, hp);
             }
             //检查双方输赢状态
-            SocketMessage msg;
             boolean isContinue = true;
             if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
                 //有一边没血了
                 //结束比赛
                 isContinue = false;
-                this.end();
             }
-            if (isContinue) {
-                //比赛还没结束
-                //将双方血量响应回去
-                msg = new SocketMessage();
-                List<UserHp> hpLists = new ArrayList<>();
-                hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(), getHp(this.player01)));
-                hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
-                msg.addData("hpInf", hpLists);
-                roomBroadcast(msg);
+            //将双方血量响应回去
+            SocketMessage msg = new SocketMessage();
+            List<UserHp> hpLists = new ArrayList<>();
+            hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(), getHp(this.player01)));
+            hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
+            msg.addData("hpInf", hpLists);
+            roomBroadcast(msg);
+            if (!isContinue) {
+                //比赛结束
+                this.end();
             }
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);

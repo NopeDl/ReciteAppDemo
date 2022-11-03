@@ -11,8 +11,6 @@ import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import pkserver.listeners.BasicStatusPoolListener;
-import pkserver.threads.MatchThread;
-import pkserver.threads.UserMatchThread;
 import pojo.po.db.Modle;
 import pojo.po.db.User;
 import pojo.vo.MatchInf;
@@ -26,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author yeyeye
@@ -173,16 +173,6 @@ public class PkUser {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
 
     /**
      * 检测当前用户匹配是否合法
@@ -191,8 +181,22 @@ public class PkUser {
      */
     private boolean isValidMatch() {
         //遍历两个个池
-        boolean b = StatusPool.MATCHING_POOL.contains(this);
-        boolean b1 = StatusPool.MATCHED_POOL.containsKey(this);
+        boolean b = false;
+        List<PkUser> matchingPool = StatusPool.MATCHING_POOL;
+        for (PkUser pkUser : matchingPool) {
+            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()){
+                b = true;
+                break;
+            }
+        }
+        boolean b1 = false;
+        Map<PkUser, PkUser> matchedPool = StatusPool.MATCHED_POOL;
+        for (PkUser pkUser : matchedPool.keySet()) {
+            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()){
+                b1 = true;
+                break;
+            }
+        }
         return !(b || b1);
     }
 
@@ -218,9 +222,6 @@ public class PkUser {
         //将当前用户加入匹配池
         this.statusPool.enterMatchingPool(this);
         //开始匹配
-        //method 1
-//        Thread userMatchThread = new Thread(new UserMatchThread(this));
-//        userMatchThread.start();
     }
 
     /**

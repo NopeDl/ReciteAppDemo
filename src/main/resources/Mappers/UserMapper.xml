@@ -31,6 +31,14 @@
     <insert id="insertUserByNickName">
         insert into user (nickName) values(#{nickName})
     </insert>
+    <!-- 插入用户日常学习数据：学习时长和学习篇数 -->
+    <insert id="insertDailyStudyByUserId">
+        insert into dailystudy (userId,studyNums,studyTime) values(#{userId},#{studyNums},#{studyTime})
+    </insert>
+    <!-- 查询用户日常学习数据 -->
+    <select id="selectDailyStudyByUserId" resultType="pojo.po.db.DailyStudy">
+        select studyNums,studyTime from dailystudy where userId = #{userId} order by storeTime desc limit 0,1
+    </select>
 
     <!--  修改昵称  -->
     <update id="updateNickNameByUserID">

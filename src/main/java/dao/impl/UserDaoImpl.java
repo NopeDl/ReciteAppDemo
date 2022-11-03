@@ -1,5 +1,6 @@
 package dao.impl;
 
+import pojo.po.db.DailyStudy;
 import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
@@ -115,8 +116,8 @@ public class UserDaoImpl implements UserDao {
     /**
      * 获取用户名
      *
-     * @param nickName
-     * @return
+     * @param nickName 昵称
+     * @return 执行条数
      */
     @Override
     public String selectNickName(String nickName) {
@@ -154,8 +155,8 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 获取用户榜单排名
-     * @param userId
-     * @return
+     * @param userId 用户ID
+     * @return 返回值
      */
     @Override
     public Integer selectUserRanking(int userId) {
@@ -169,9 +170,9 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 修改用户名
-     * @param userId
-     * @param nickName
-     * @return
+     * @param userId 用户ID
+     * @param nickName 昵称
+     * @return 执行成功条数
      */
     @Override
     public int updateNickNameByUserID(int userId, String nickName) {
@@ -190,10 +191,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * 修改头
-     * @param userId
-     * @param image
-     * @return
+     * 修改头像
+     * @param userId 用户ID
+     * @param image 头像
+     * @return 返回值
      */
     @Override
     public int updateImageByUserID(int userId, String image) {
@@ -213,9 +214,9 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 修改手机号
-     * @param userId
-     * @param number
-     * @return
+     * @param userId 用户ID
+     * @param number 手机号
+     * @return 返回值
      */
     @Override
     public int updatePhoneByUserID(int userId, String number) {
@@ -275,5 +276,41 @@ public class UserDaoImpl implements UserDao {
         }
         sqlSession.close();
         return update;
+    }
+
+    @Override
+    public int insertDailyStudyData(int userId, int studyNums, int studyTimes) {
+        DailyStudy dailyStudy = new DailyStudy();
+        dailyStudy.setUserId(userId);
+        dailyStudy.setStudyNums(studyNums);
+        dailyStudy.setStudyTime(studyTimes);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int insert = sqlSession.insert("UserMapper.insertDailyStudyByUserId", dailyStudy);
+        if (insert > 0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return insert;
+    }
+
+    /**
+     * 查询用户日常学习数据
+     * @param userId 用户ID
+     * @return 封装好的数据
+     */
+    @Override
+    public DailyStudy selectDailyStudyDataByUserId(int userId) {
+        DailyStudy dailyStudy = new DailyStudy();
+        dailyStudy.setUserId(userId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("UserMapper.selectDailyStudyByUserId", dailyStudy);
+        sqlSession.close();
+        if (objects.size()>0){
+            return (DailyStudy) objects.get(0);
+        }else {
+            return null;
+        }
     }
 }

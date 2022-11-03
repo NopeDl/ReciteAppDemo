@@ -14,6 +14,7 @@ import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
+import pojo.po.db.DailyStudy;
 import pojo.po.db.User;
 import pojo.vo.Message;
 import service.UserService;
@@ -245,8 +246,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message clockIn(HttpServletRequest request) {
         int userId = Integer.parseInt(request.getParameter("userId"));
-//        LocalDate date = LocalDate.parse(request.getParameter("date"));
-//        int i = dateDao.insertDateByUserId(userId, date);
         int i = dateDao.insertDateByUserId(userId);
         Message msg;
         if (i > 0) {
@@ -288,9 +287,9 @@ public class UserServiceImpl implements UserService {
     /**
      * 将头像的base64形式存static/imgPath下的txt文件,返回base64的存储路径
      *
-     * @param base64
-     * @param useId
-     * @return
+     * @param base64 头像
+     * @param useId 用户ID
+     * @return 储存路径
      */
     @Override
     public String WriteImageAsTxt(String base64, int useId) {
@@ -312,8 +311,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 保存头像
-     * @param request
-     * @return
+     * @param request r
+     * @return r
      */
     @Override
     public Message saveImg(HttpServletRequest request){
@@ -333,10 +332,51 @@ public class UserServiceImpl implements UserService {
             }else {
                 msg.addData("uploadSuccess",false);
             }
-        } catch (IOException e) {
+        } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
+        }
+        return msg;
+    }
+
+    /**
+     * 保存日常数据
+     * @param request req
+     * @return r
+     */
+    @Override
+    public Message saveDailyData(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        int studyNums = Integer.parseInt(request.getParameter("studyNums"));
+        int studyTimes = Integer.parseInt(request.getParameter("studyTimes"));
+        int i = userDao.insertDailyStudyData(userId, studyNums, studyTimes);
+        Message msg;
+        if (i > 0){
+            msg = new Message("保存成功");
+            msg.addData("saveSuccess",true);
+        }else {
+            msg = new Message("保存失败");
+            msg.addData("saveSuccess",false);
+        }
+        return msg;
+    }
+
+    /**
+     * 获取用户日常学习信息： 学习篇数和学习时长
+     * @param request req
+     * @return ret
+     */
+    @Override
+    public Message getUserDailyStudyData(HttpServletRequest request) {
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+        Message msg;
+        if (dailyStudy !=null){
+            msg = new Message("获取成功");
+            msg.addData("getSuccess",true);
+            msg.addData("studyData",dailyStudy);
+        }else {
+            msg = new Message("获取失败");
+            msg.addData("getSuccess",false);
         }
         return msg;
     }

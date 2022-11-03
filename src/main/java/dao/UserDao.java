@@ -1,5 +1,6 @@
 package dao;
 
+import pojo.po.db.DailyStudy;
 import pojo.po.db.User;
 import pojo.vo.Community;
 
@@ -93,8 +94,26 @@ public interface UserDao {
 
     /**
      * 获取用户榜单排名
-     * @param userId
-     * @return
+     * @param userId 用户ID
+     * @return 榜单上的排名
      */
     Integer selectUserRanking(int userId);
+
+
+    /**
+     * 插入日常学习数据
+     * @param userId 用户ID
+     * @param studyNums 学习篇数
+     * @param studyTimes 学习时长
+     * @return 返回插入条数
+     */
+    int insertDailyStudyData(int userId,int studyNums,int studyTimes);
+
+    /**
+     * 查询用户日常学习数据
+     * @param userId 用户ID
+     * @return 封装好的学习数据
+     */
+    DailyStudy selectDailyStudyDataByUserId(int userId);
+
 }
