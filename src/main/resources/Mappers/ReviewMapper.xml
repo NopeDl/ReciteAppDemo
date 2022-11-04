@@ -19,7 +19,7 @@
 
     <!--根据周期查询模板-->
     <select id="selectModleByPeriod" parameterType="pojo.po.db.Review" resultType="pojo.vo.Community">
-         select modleId,modleTitle,modleLabel from modle where modleId in
+         select modleId,modleTitle,modlePath,modleLabel from modle where modleId in
         (select modleId from review where period=#{period} and (DATEDIFF(CURRENT_DATE,reTime))>=#{days} and userId=#{userId})
     </select>
 

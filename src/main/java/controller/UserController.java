@@ -54,7 +54,7 @@ public class UserController extends HttpServlet {
             //获取打卡记录
             msg = userService.getClockInRecord(request);
         } else if ("storeDSSD".equals(requestURI)) {
-            //储存 日常学习记录，包括当天学习篇数和当天学习时长
+            //储存 日常学习记录，包括当天学习篇数和当天学习时长,当日复习篇数
             msg = userService.saveDailyData(request);
         } else if ("quit".equals(requestURI)) {
             msg = userService.quit(request);

@@ -2,14 +2,8 @@ package service.impl;
 
 
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import dao.AccountDao;
-import dao.DateDao;
-import dao.ModleDao;
-import dao.UserDao;
-import dao.impl.AccountDaoImpl;
-import dao.impl.DateDaoImpl;
-import dao.impl.ModleDaoImpl;
-import dao.impl.UserDaoImpl;
+import dao.*;
+import dao.impl.*;
 import enums.MsgInf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

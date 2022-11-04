@@ -3,22 +3,32 @@ package service.impl;
 
 import dao.ModleDao;
 import dao.ReviewDao;
+import dao.UserDao;
 import dao.impl.ModleDaoImpl;
 import dao.impl.ReviewDaoImpl;
+import dao.impl.UserDaoImpl;
 import enums.ReviewPeriod;
 import jakarta.servlet.http.HttpServletRequest;
+import pojo.po.db.DailyStudy;
+import pojo.po.db.Modle;
 import pojo.po.db.Review;
 import pojo.po.db.Umr;
 import pojo.vo.Community;
 import pojo.vo.Message;
 import service.ReviewService;
+import tools.handlers.FileHandler;
+import tools.handlers.FileHandlerFactory;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 
 public class ReviewServiceImpl implements ReviewService {
     private final ModleDao modleDao = new ModleDaoImpl();
     private final ReviewDao reviewDao = new ReviewDaoImpl();
+    private final UserDao userDao=new UserDaoImpl();
 
     /**
      * 用户将某个模板加入学习计划
@@ -138,7 +148,7 @@ public class ReviewServiceImpl implements ReviewService {
             ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
             review.setDays(reviewPeriod.getDate());
             List<Community> communities = reviewDao.selectModleByPeriod(review);
-            if (communities.size() > 0) {
+      if (communities.size() > 0) {
 
 //                for (int j = 0; j < communities.size(); j++) {
 //                    String modlePath = communities.get(j).getModlePath();
@@ -198,68 +208,47 @@ public class ReviewServiceImpl implements ReviewService {
                 umr.setUserId(userId);
                 umr.setModleId(result.getModleId());
                 int update = modleDao.updateStudyStatus(umr);
-                if (update > 0) {
-                    message = new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
-                    message.addData("todayFinish", 1);
+                if(update>0){
+                    DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+                    if(dailyStudy!=null){
+                        //说明已有改数据，只需要进行更新
+                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums(),dailyStudy.getStudyTime(),
+                                dailyStudy.getReviewNums()+1);
+                    }else{
+                        //创建并更新
+                        userDao.insertDailyStudyData(userId,0,0,1);
+                    }
+
+
+                    message=new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
+                    message.addData("todayFinish",1);
                 }
             }
-        } else {
+        }else{
             //继续周期性学习，周期+1，日期重置
-//            Date date=new Date();
-//            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//            System.out.println(formatter.format(date))
             review.setReTime(LocalDate.now());
             System.out.println(LocalDate.now());
             int i = reviewDao.updatePeriodAndDate(review);
-            if (i > 0) {
+            if(i>0){
+                //复习完毕，今日复习篇数同步更新
+                DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+                if(dailyStudy!=null){
+                    //说明已有改数据，只需要进行更新
+                    userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums(),dailyStudy.getStudyTime(),
+                            dailyStudy.getReviewNums()+1);
+                }else{
+                    //创建并更新
+                    userDao.insertDailyStudyData(userId,0,0,1);
+                }
                 //更新周期和时间成功
-                message = new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
-                message.addData("todayFinish", 1);
+                message=new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
+                message.addData("todayFinish",1);
             }
         }
         return message;
     }
 
-//
-//    /**
-//     *获取用户所有的复习列表
-//     * @param request
-//     * @return
-//     */
-//    @Override
-//    public Message getReviewPlan(HttpServletRequest request) {
-//        Message message=null;
-//        int userId = Integer.parseInt(request.getParameter("userId"));
-//        Modle modle=new Modle();
-//        modle.setUserId(userId);
-//        //在计划中的模板状态均为复习中，所以只需要查询用户模板中处于“复习中”状态的就能查询到相对应的复习计划
-//        modle.setStudyStatus("复习中");
-//        List<Community> communities = reviewDao.selectReviewPlan(modle);
-//        if(communities.size()>0){
-//            //非空说明有正在复习的模板
-//            //处理下模板的内容和路径问题
-//            //以下部分出现重复率三次或者以上，考虑封装
-//            for (int j = 0; j < communities.size(); j++) {
-//                String modlePath = communities.get(j).getModlePath();
-//                InputStream input;
-//                try {
-//                    input = new FileInputStream(modlePath);
-//                } catch (FileNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                //读取文本
-//                FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-//                String content = txtFileHandler.parseContent();
-//                communities.get(j).setContent(content);
-//                communities.get(j).setModlePath("");
-//            }
-//
-//            message=new Message("获取复习列表成功");
-//            message.addData("reviewPlan",communities);
-//        }else{
-//            message=new Message("您的复习列表里还是空的呢，赶快选择一个模板进行学习吧");
-//        }
-//        return message;
-//    }
+
+
 
 }

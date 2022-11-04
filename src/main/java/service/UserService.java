@@ -88,7 +88,7 @@ public interface UserService {
     Message saveImg(HttpServletRequest request);
 
     /**
-     * 存日常学习数据： 学习篇数和学习时长
+     * 存日常学习数据： 学习篇数和学习时长,复习篇数
      * @param request req
      * @return msg
      */

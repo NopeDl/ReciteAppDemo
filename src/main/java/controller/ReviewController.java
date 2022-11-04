@@ -36,10 +36,12 @@ public class ReviewController extends HttpServlet {
         }else if("FinishOnceReview".equals(requestURI)){
             //完成某一周期的复习
             msg=reviewService.updatePeriod(request);
-//        }else if("GetUserReviewPlan".equals(requestURI)){
+//        }else if("GetUserReviewrvice.Plan".equals(requestURI)){
 //            //获取用户的复习计划列表
 //            msg=reviewService.getReviewPlan(request);
-        } else {
+//        } else if("GetReviewNums".equals(requestURI)){
+////            msg=reviewService.getReviewNums(request);
+        }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

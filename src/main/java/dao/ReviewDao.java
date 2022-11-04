@@ -1,8 +1,6 @@
 package dao;
 
-import pojo.po.db.Modle;
-import pojo.po.db.Review;
-import pojo.po.db.Umr;
+import pojo.po.db.*;
 import pojo.vo.Community;
 
 import java.util.List;

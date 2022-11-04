@@ -1,15 +1,13 @@
 package dao.impl;
 
 import dao.ReviewDao;
-import pojo.po.db.Count;
-import pojo.po.db.Modle;
-import pojo.po.db.Review;
-import pojo.po.db.Umr;
+import pojo.po.db.*;
 import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
 import tools.easydao.core.SqlSessionFactory;
 import tools.utils.DaoUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,31 +172,5 @@ public class ReviewDaoImpl implements ReviewDao {
         return communities;
     }
 
-//    @Override
-//    public int selectReviewId() {
-//        SqlSession sqlSession=sqlSessionFactory.openSession();
-//        List<Object> objects = sqlSession.selectList("ReviewMapper.selectReviewId", null);
-//        sqlSession.close();
-//        if(objects.size()>0){
-//            return ((Review)objects.get(0)).getReviewId();
-//        }
-//
-//        return 0;
-//    }
 
-//    /**、
-//     * 查询reviewId的个数，由此可以得出下一条reviewId 是多少
-//     * @return 参数只是走个形式，不参与使用
-//     */
-//    @Override
-//    public long countReviewId(Review review) {
-//        SqlSession sqlSession=sqlSessionFactory.openSession();
-//        List<Object> objects = sqlSession.selectList("ReviewMapper.countReviewId", review);
-//        if(objects.size()>0){
-//            Long number = ((Count) objects.get(0)).getNumber();
-//            return number;
-//        }
-//        return 0;
-//
-//    }
 }
