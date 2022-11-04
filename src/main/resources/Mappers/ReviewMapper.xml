@@ -14,7 +14,7 @@
     </delete>
 
     <select id="selectModle" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
-        select * from review where modleId=#{modleId}
+        select * from review where modleId=#{modleId} and userId=#{userId}
     </select>
 
     <!--根据周期查询模板-->
