@@ -323,7 +323,7 @@ public class UserDaoImpl implements UserDao {
         dailyStudy.setUserId(userId);
         dailyStudy.setReviewNums(reviewNums);
         dailyStudy.setStudyNums(studyNums);
-        dailyStudy.setStudyTime(studyNums);
+        dailyStudy.setStudyTime(studyTimes);
         dailyStudy.setStoreTime(LocalDate.now());
         int update = sqlSession.update("UserMapper.updateDailyStudyByIdAndTime", dailyStudy);
         if(update>0){

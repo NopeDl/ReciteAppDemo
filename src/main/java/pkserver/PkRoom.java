@@ -34,6 +34,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Date 2022/10/20 15:07
  */
 public class PkRoom {
+    /**
+     * 延迟秒数
+     */
+    private static final int DELAY = 2;
+
     private int playerNum;
     /**
      * 玩家一
@@ -130,7 +135,7 @@ public class PkRoom {
         //根据难度获取每个空需要的时间
         int blankTimeLimits = p1Inf.getDifficulty().getTimeLimits();
         //设置该房间总时间限制
-        this.timeLimits = (long) this.blankNum * blankTimeLimits;
+        this.timeLimits = (long) this.blankNum * blankTimeLimits + DELAY;
         //初始化answers集合
         //初始化玩家1战绩集合
         AnswersRecord answersRecord01 = new AnswersRecord();
