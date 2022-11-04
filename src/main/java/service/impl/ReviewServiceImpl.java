@@ -150,20 +150,20 @@ public class ReviewServiceImpl implements ReviewService {
             List<Community> communities = reviewDao.selectModleByPeriod(review);
       if (communities.size() > 0) {
 
-//                for (int j = 0; j < communities.size(); j++) {
-//                    String modlePath = communities.get(j).getModlePath();
-//                    InputStream input;
-//                    try {
-//                        input = new FileInputStream(modlePath);
-//                    } catch (FileNotFoundException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    //读取文本
-//                    FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-//                    String content = txtFileHandler.parseContent();
-//                    communities.get(j).setContent(content);
-//                    communities.get(j).setModlePath("");
-//                }
+                for (int j = 0; j < communities.size(); j++) {
+                    String modlePath = communities.get(j).getModlePath();
+                    InputStream input;
+                    try {
+                        input = new FileInputStream(modlePath);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //读取文本
+                    FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
+                    String content = txtFileHandler.parseContent();
+                    communities.get(j).setContent(content);
+                    communities.get(j).setModlePath("");
+                }
             }
 //            map.put("周期" + (i), communities);用这个的排序为21436587？
 //            map.put("第"+i+"周期",communities);

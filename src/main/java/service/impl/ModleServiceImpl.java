@@ -307,22 +307,17 @@ public class ModleServiceImpl implements ModleService {
     public Message deleteModle(HttpServletRequest request) {
         Message msg;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
+        int userId =Integer.parseInt(request.getParameter("userId"));
         String path = modleDao.selectPathByModleId(modleId);
-
-//        Umr umr=new Umr();
-//        umr.setModleId(modleId);
-//        int deleteUmr = umrDao.deleteUMRByModleId(umr);
-//        //查看在umr表中是否删除成功
-//        System.out.println("deleteUmr:"+deleteUmr);
-
         //先查询该模板是否存在计划表中
         Review review=new Review();
         review.setModleId(modleId);
+        review.setUserId(userId);
         boolean b = reviewDao.selectModle(review);
 
         if(b){
             //，如果存在，从计划表中删除
-            int i = reviewDao.removeModle(review);
+            reviewDao.removeModle(review);
         }
         int deleteModle = modleDao.deleteModle(modleId);
         if(deleteModle>0){
