@@ -23,8 +23,8 @@ public class UserDaoImpl implements UserDao {
 
     /**
      * 用户根据userId来查找用户昵称和头像
-     * @param community
-     * @return
+     * @param community community对象
+     * @return 用户
      */
     @Override
     public User selectNameImgById(Community community) {
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
      * 通过用户id获取该用户
      *
      * @param userId 需要查找的用户id
-     * @return
+     * @return 用户
      */
     @Override
     public synchronized User selectUserById(int userId) {
@@ -53,7 +53,6 @@ public class UserDaoImpl implements UserDao {
         List<Object> objectList = sqlSession.selectList("UserMapper.selectUserById", user);
         sqlSession.close();
         return objectList.size() == 0 ? null : (User) objectList.get(0);
-
     }
 
     /**
@@ -75,10 +74,10 @@ public class UserDaoImpl implements UserDao {
     /**
      * 创建新用户
      *
-     * @param number
-     * @param password
-     * @param nickName
-     * @return
+     * @param number 手机号
+     * @param password 密码
+     * @param nickName 昵称
+     * @return 执行sql条数
      */
     @Override
     public int createUserByNumber(String number, String password, String nickName) {

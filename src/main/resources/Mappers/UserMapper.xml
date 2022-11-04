@@ -13,7 +13,7 @@
     </select>
     <!--  查询榜单前十  -->
     <select id="selectTopTen" resultType="pojo.po.db.User">
-        select nickName,stars from user order by stars desc
+        select nickName,stars from user order by stars desc limit 0,10
     </select>
 
     <!--  查询当前用户排名  -->

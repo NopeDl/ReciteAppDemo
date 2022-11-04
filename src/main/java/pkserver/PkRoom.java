@@ -103,7 +103,10 @@ public class PkRoom {
         hpMap.put(player02, 100.0);
         //获取双方文章字数
         int p1ModleNum = p1Inf.getModleNum();
+        System.out.println("p1模板字数：" + p1ModleNum);
         int p2ModleNum = p2Inf.getModleNum();
+        System.out.println("p2模板字数：" + p2ModleNum);
+
         //获取双方挖空数
         //获取难度，因为匹配双方的难度都是一样的所以只用获取p1的就可以
         double ratio = p1Inf.getDifficulty().getRatio();
@@ -112,6 +115,10 @@ public class PkRoom {
         //获取两人挖空数的最小值
         //保存该房间挖空数
         this.blankNum = Math.min(p1BlankNum, p2BlankNum);
+        if (this.blankNum <= 0){
+            blankNum = 1;
+        }
+        System.out.println("房间：" + this + " 挖空数为：" + this.blankNum);
 //        // <div>
 //        String matchStr = "</div>";
 //        String content = p1Inf.getContent();

@@ -348,7 +348,15 @@ public class UserServiceImpl implements UserService {
         int userId = Integer.parseInt(request.getParameter("userId"));
         int studyNums = Integer.parseInt(request.getParameter("studyNums"));
         int studyTime = Integer.parseInt(request.getParameter("studyTime"));
-        int i = userDao.insertDailyStudyData(userId, studyNums, studyTime);
+        DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+        int i = 0;
+        if (dailyStudy == null){
+            //如果用户当天没有学习记录
+            //则创建一个
+            i = userDao.insertDailyStudyData(userId,studyNums,studyTime,0);
+        }else {
+            i = userDao.updateDailyStudyByIdAndTime(userId,studyNums,studyTime,dailyStudy.getReviewNums());
+        }
         Message msg;
         if (i > 0){
             msg = new Message("保存成功");
@@ -367,6 +375,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message getUserDailyStudyData(HttpServletRequest request) {
+
         int userId = Integer.parseInt(request.getParameter("userId"));
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
         Message msg;

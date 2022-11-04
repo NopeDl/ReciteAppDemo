@@ -45,4 +45,26 @@ public class JcsegUtil {
         //若分词失败则返回NULL
         return res;
     }
+
+    /**'
+     * 字数统计
+     * @param content 需要统计的内容
+     * @return 返回字数
+     */
+    public static int wordCount(String content) {
+        if (content == null) {
+            return 0;
+        }
+        String englishString = content.replaceAll("[\u4e00-\u9fa5]", "");
+        String[] englishWords = englishString.split("[\\p{P}\\p{S}\\p{Z}\\s]+");
+        int chineseWordCount = content.length() - englishString.length();
+        int otherWordCount = englishWords.length;
+        if (englishWords.length > 0 && englishWords[0].length() < 1) {
+            otherWordCount--;
+        }
+        if (englishWords.length > 1 && englishWords[englishWords.length - 1].length() < 1) {
+            otherWordCount--;
+        }
+        return chineseWordCount + otherWordCount;
+    }
 }

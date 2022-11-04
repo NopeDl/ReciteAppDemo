@@ -17,6 +17,7 @@ import pojo.vo.MatchInf;
 import pojo.vo.SocketMessage;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
+import tools.utils.JcsegUtil;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
 
@@ -53,7 +54,7 @@ public class PkUser {
 
 
     @OnMessage
-    public void onMessage(String operate) throws IOException {
+    public synchronized void onMessage(String operate) throws IOException {
         SocketMessage msg;
         if ("START".equals(operate)) {
             //开始匹配
@@ -218,7 +219,7 @@ public class PkUser {
         input.close();
         //将内容封装
         this.matchInf.setContent(content);
-        this.matchInf.setModleNum(content.length());
+        this.matchInf.setModleNum(JcsegUtil.wordCount(content));
         //将当前用户加入匹配池
         this.statusPool.enterMatchingPool(this);
         //开始匹配
