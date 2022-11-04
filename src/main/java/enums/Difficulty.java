@@ -10,9 +10,9 @@ public enum Difficulty {
     /**
      * 难度
      */
-    EASY(25,10),
-    NORMAL(45,15),
-    HARD(50,20);
+    EASY(25,5),
+    NORMAL(45,7),
+    HARD(50,10);
 
     /**
      * 难度比例
