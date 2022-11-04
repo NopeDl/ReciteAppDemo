@@ -33,11 +33,11 @@
     </insert>
     <!-- 插入用户日常学习数据：学习时长和学习篇数 -->
     <insert id="insertDailyStudyByUserId">
-        insert into dailystudy (userId,studyNums,studyTime) values(#{userId},#{studyNums},#{studyTime})
+        insert into dailystudy (userId,studyNums,studyTime,reviewNums) values(#{userId},#{studyNums},#{studyTime},#{reviewNums})
     </insert>
     <!-- 查询用户日常学习数据 -->
     <select id="selectDailyStudyByUserId" resultType="pojo.po.db.DailyStudy">
-        select studyNums,studyTime from dailystudy where userId = #{userId} order by storeTime desc limit 0,1
+        SELECT * FROM dailystudy WHERE TO_DAYS(storeTime) = TO_DAYS(#{storeTime}) and userId=#{userId};
     </select>
 
     <!--  修改昵称  -->
@@ -64,4 +64,9 @@
     <select id="selectNameImgById" parameterType="pojo.vo.Community" resultType="pojo.po.db.User">
         select nickName,image from user where userId=#{userId}
     </select>
+
+    <update id="updateDailyStudyByIdAndTime" >
+        update dailystudy set studyNums=#{studyNums},studyTime=#{studyTime},reviewNums=#{reviewNums}
+        where userId=#{userId} and TO_DAYS(storeTime) = TO_DAYS(#{storeTime})
+    </update>
 </mapper>

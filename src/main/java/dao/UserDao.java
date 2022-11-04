@@ -107,7 +107,7 @@ public interface UserDao {
      * @param studyTimes 学习时长
      * @return 返回插入条数
      */
-    int insertDailyStudyData(int userId,int studyNums,int studyTimes);
+    int insertDailyStudyData(int userId,int studyNums,int studyTimes,int reviewNums);
 
     /**
      * 查询用户日常学习数据
@@ -115,5 +115,15 @@ public interface UserDao {
      * @return 封装好的学习数据
      */
     DailyStudy selectDailyStudyDataByUserId(int userId);
+
+    /**
+     * 根据userId和storeTime插入最新的消息
+     * @param userId 用户id
+     * @param studyNums 学习篇数
+     * @param studyTimes 学习时长
+     * @param reviewNums 复习篇数
+     * @return 返回int
+     */
+    int updateDailyStudyByIdAndTime(int userId,int studyNums,int studyTimes,int reviewNums);
 
 }

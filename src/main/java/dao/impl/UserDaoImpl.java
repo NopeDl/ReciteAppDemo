@@ -10,6 +10,7 @@ import pojo.po.db.Count;
 import pojo.po.db.User;
 import tools.utils.DaoUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -279,11 +280,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public int insertDailyStudyData(int userId, int studyNums, int studyTimes) {
+    public int insertDailyStudyData(int userId, int studyNums, int studyTimes,int reviewNums) {
         DailyStudy dailyStudy = new DailyStudy();
         dailyStudy.setUserId(userId);
         dailyStudy.setStudyNums(studyNums);
         dailyStudy.setStudyTime(studyTimes);
+        dailyStudy.setReviewNums(reviewNums);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int insert = sqlSession.insert("UserMapper.insertDailyStudyByUserId", dailyStudy);
         if (insert > 0){
@@ -304,6 +306,7 @@ public class UserDaoImpl implements UserDao {
     public DailyStudy selectDailyStudyDataByUserId(int userId) {
         DailyStudy dailyStudy = new DailyStudy();
         dailyStudy.setUserId(userId);
+        dailyStudy.setStoreTime(LocalDate.now());
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("UserMapper.selectDailyStudyByUserId", dailyStudy);
         sqlSession.close();
@@ -312,5 +315,24 @@ public class UserDaoImpl implements UserDao {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public int updateDailyStudyByIdAndTime(int userId, int studyNums, int studyTimes,int reviewNums) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        DailyStudy dailyStudy=new DailyStudy();
+        dailyStudy.setUserId(userId);
+        dailyStudy.setReviewNums(reviewNums);
+        dailyStudy.setStudyNums(studyNums);
+        dailyStudy.setStudyTime(studyNums);
+        dailyStudy.setStoreTime(LocalDate.now());
+        int update = sqlSession.update("UserMapper.updateDailyStudyByIdAndTime", dailyStudy);
+        if(update>0){
+            sqlSession.commit();
+        }else {
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
     }
 }
