@@ -35,9 +35,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class PkRoom {
     private int playerNum;
-
-    private static final Logger logger = LoggerFactory.getLogger(PkRoom.class);
-
     /**
      * 玩家一
      */

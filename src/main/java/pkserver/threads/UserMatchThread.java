@@ -12,6 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author yeyeye and isDucka
  */
+
+@Deprecated
 public class UserMatchThread implements Runnable {
     private final PkUser curPlayer;
 

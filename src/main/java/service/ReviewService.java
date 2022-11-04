@@ -7,29 +7,29 @@ public interface ReviewService {
 
     /**
      * 将某个模板加入学习计划
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message joinThePlan(HttpServletRequest request);
 
     /**
      * 将模板移除个人计划
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message removeFromPlan(HttpServletRequest request);
 
     /**
      * 根据周期获取模板
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message getModleByPeriod(HttpServletRequest request);
 
     /**
      * 将学习完的模板更新周期
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message updatePeriod(HttpServletRequest request);
 

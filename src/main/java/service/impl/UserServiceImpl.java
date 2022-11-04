@@ -347,8 +347,8 @@ public class UserServiceImpl implements UserService {
     public Message saveDailyData(HttpServletRequest request) {
         int userId = Integer.parseInt(request.getParameter("userId"));
         int studyNums = Integer.parseInt(request.getParameter("studyNums"));
-        int studyTimes = Integer.parseInt(request.getParameter("studyTimes"));
-        int i = userDao.insertDailyStudyData(userId, studyNums, studyTimes);
+        int studyTime = Integer.parseInt(request.getParameter("studyTime"));
+        int i = userDao.insertDailyStudyData(userId, studyNums, studyTime);
         Message msg;
         if (i > 0){
             msg = new Message("保存成功");
