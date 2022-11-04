@@ -2,17 +2,21 @@ package pojo.po.db;
 
 import java.time.LocalDate;
 
-public class Dailystudy {
+/**
+ * @author yeyeye
+ * @Date 2022/11/4 16:39
+ */
+public class DailyStudy {
     private int userId;
     private int studyNums;
     private int studyTime;
     private int reviewNums;
     private LocalDate storeTime;
 
-    public Dailystudy() {
+    public DailyStudy() {
     }
 
-    public Dailystudy(int userId, int studyNums, int studyTime, int reviewNums, LocalDate storeTime) {
+    public DailyStudy(int userId, int studyNums, int studyTime, int reviewNums, LocalDate storeTime) {
         this.userId = userId;
         this.studyNums = studyNums;
         this.studyTime = studyTime;
@@ -70,4 +74,5 @@ public class Dailystudy {
                 ", storeTime=" + storeTime +
                 '}';
     }
+
 }
