@@ -345,24 +345,26 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message saveDailyData(HttpServletRequest request) {
-        String sn = request.getParameter("studyNums");
+//        String sn = request.getParameter("studyNums");
         String st = request.getParameter("studyTime");
 
         int userId = Integer.parseInt(request.getParameter("userId"));
         //处理null
-        int studyNums = (sn != null ? Integer.parseInt(sn) : 0);
+//        int studyNums = (sn != null ? Integer.parseInt(sn) : 0);
         int studyTime = (st != null ? Integer.parseInt(st) : 0);
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
         int i;
         if (dailyStudy == null) {
             //如果用户当天没有学习记录
             //则创建一个
-            i = userDao.insertDailyStudyData(userId, studyNums, studyTime, 0);
+//            i = userDao.insertDailyStudyData(userId, studyNums, studyTime, 0);
+            i = userDao.insertDailyStudyData(userId, 0, studyTime, 0);
         } else {
             //有则更新数据
-            studyNums = Math.max(studyNums,dailyStudy.getStudyNums());
+//            studyNums = Math.max(studyNums,dailyStudy.getStudyNums());
             studyTime = Math.max(studyTime,dailyStudy.getStudyTime());
-            i = userDao.updateDailyStudyByIdAndTime(userId, studyNums, studyTime, dailyStudy.getReviewNums());
+//            i = userDao.updateDailyStudyByIdAndTime(userId, studyNums, studyTime, dailyStudy.getReviewNums());
+            i = userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums(), studyTime, dailyStudy.getReviewNums());
         }
         Message msg;
         if (i > 0) {
@@ -383,21 +385,22 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message getUserDailyStudyData(HttpServletRequest request) {
-
+        Message msg;
         int userId = Integer.parseInt(request.getParameter("userId"));
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-        int totalReviewNums=0;
-        //再获取该用户总的复习篇数
-       //循环八次
-        for (int i = 1; i <=8 ; i++) {
-            ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
-            //分别传userId，周期，显示需要的天数
-           totalReviewNums += reviewDao.getTotalReviewNums(userId, i, reviewPeriod.getDate());
 
-        }
-        dailyStudy.setTotalReviewNums(totalReviewNums);
-        Message msg;
         if (dailyStudy != null) {
+            int totalReviewNums=0;
+            //再获取该用户总的复习篇数
+            //循环八次
+            for (int i = 1; i <=8 ; i++) {
+                ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
+                //分别传userId，周期，显示需要的天数
+                totalReviewNums += reviewDao.getTotalReviewNums(userId, i, reviewPeriod.getDate());
+
+            }
+            dailyStudy.setTotalReviewNums(totalReviewNums);
+
             msg = new Message("获取成功");
             msg.addData("getSuccess", true);
             msg.addData("studyData", dailyStudy);

@@ -66,10 +66,20 @@ public class ReviewServiceImpl implements ReviewService {
                 if (i > 0) {
                     //将模板插入review中
                     int insert = reviewDao.joinIntoPlan(resultUmr);
+                    //学习中————>复习中，dailyStudy表中的studyNums要加1；
+                    //先查询是否有该条记录
+                    DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+                    if(dailyStudy!=null){
+                        //说明有该数据，只需要进行更新
+                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,
+                                dailyStudy.getStudyTime(),dailyStudy.getReviewNums());
+                    }else{
+                        //说明没有数据，要执行插入语句
+                        userDao.insertDailyStudyData(userId,1,0,0);
+                    }
+
                     if (insert > 0) {
                         message = new Message("成功加入复习计划");
-
-
                     } else {
                         message = new Message("加入复习计划失败，请重新添加");
                     }
@@ -212,11 +222,11 @@ public class ReviewServiceImpl implements ReviewService {
                     DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
                     if(dailyStudy!=null){
                         //说明已有改数据，只需要进行更新
-                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums(),dailyStudy.getStudyTime(),
+                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,dailyStudy.getStudyTime(),
                                 dailyStudy.getReviewNums()+1);
                     }else{
                         //创建并更新
-                        userDao.insertDailyStudyData(userId,0,0,1);
+                        userDao.insertDailyStudyData(userId,1,0,1);
                     }
 
 
@@ -234,7 +244,7 @@ public class ReviewServiceImpl implements ReviewService {
                 DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
                 if(dailyStudy!=null){
                     //说明已有改数据，只需要进行更新
-                    userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums(),dailyStudy.getStudyTime(),
+                    userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,dailyStudy.getStudyTime(),
                             dailyStudy.getReviewNums()+1);
                 }else{
                     //创建并更新
