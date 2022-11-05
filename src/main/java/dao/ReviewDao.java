@@ -77,4 +77,11 @@ public interface ReviewDao {
 //     * @return
 //     */
 //    long countReviewId(Review review);
+
+    /**
+     * 获取该用户总的复习篇数
+     * @param userId
+     * @return
+     */
+    int  getTotalReviewNums(int userId, int period, int days);
 }

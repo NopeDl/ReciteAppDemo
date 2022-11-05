@@ -172,5 +172,19 @@ public class ReviewDaoImpl implements ReviewDao {
         return communities;
     }
 
-
+    @Override
+    public int getTotalReviewNums(int userId,int period,int days) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        int number=0;
+        Review review=new Review();
+        review.setUserId(userId);
+        review.setPeriod(period);
+        review.setDays(days);
+        List<Object> result = sqlSession.selectList("ReviewMapper.getTotalReviewNums", review);
+        if(result.size()>0){
+            number=Math.toIntExact(((Count) result.get(0)).getNumber());
+            return number;
+        }
+        return number;
+    }
 }

@@ -57,6 +57,7 @@ public class UserController extends HttpServlet {
             //储存 日常学习记录，包括当天学习篇数和当天学习时长,当日复习篇数
             msg = userService.saveDailyData(request);
         } else if ("quit".equals(requestURI)) {
+            //退出登录
             msg = userService.quit(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
