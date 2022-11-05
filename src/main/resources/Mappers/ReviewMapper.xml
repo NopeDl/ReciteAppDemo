@@ -47,5 +47,8 @@
     </select>
 
 
+    <select id="getTotalReviewNums" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Count">
+        select count(*) as number  from review where userId=#{userId} and period=#{period} and (DATEDIFF(CURRENT_DATE,reTime))>=#{days}
+    </select>
 
 </mapper>

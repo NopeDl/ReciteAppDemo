@@ -5,10 +5,12 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dao.*;
 import dao.impl.*;
 import enums.MsgInf;
+import enums.ReviewPeriod;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import pojo.po.db.DailyStudy;
+import pojo.po.db.Review;
 import pojo.po.db.User;
 import pojo.vo.Message;
 import service.UserService;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final ModleDao modleDao = new ModleDaoImpl();
     private final DateDao dateDao = new DateDaoImpl();
     private final AccountDao accountDao = new AccountDaoImpl();
+    private final ReviewDao reviewDao=new ReviewDaoImpl();
 
     /**
      * 退出登录
@@ -372,6 +375,16 @@ public class UserServiceImpl implements UserService {
 
         int userId = Integer.parseInt(request.getParameter("userId"));
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+        int totalReviewNums=0;
+        //再获取该用户总的复习篇数
+       //循环八次
+        for (int i = 1; i <=8 ; i++) {
+            ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
+            //分别传userId，周期，显示需要的天数
+           totalReviewNums += reviewDao.getTotalReviewNums(userId, i, reviewPeriod.getDate());
+
+        }
+        dailyStudy.setTotalReviewNums(totalReviewNums);
         Message msg;
         if (dailyStudy !=null){
             msg = new Message("获取成功");
