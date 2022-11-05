@@ -2,26 +2,24 @@ package pojo.po.db;
 
 import java.time.LocalDate;
 
-/**
- * @author yeyeye
- * @Date 2022/11/4 16:39
- */
 public class DailyStudy {
     private int userId;
     private int studyNums;
     private int studyTime;
     private int reviewNums;
     private LocalDate storeTime;
+    private int totalReviewNums;
 
     public DailyStudy() {
     }
 
-    public DailyStudy(int userId, int studyNums, int studyTime, int reviewNums, LocalDate storeTime) {
+    public DailyStudy(int userId, int studyNums, int studyTime, int reviewNums, LocalDate storeTime, int totalReviewNums) {
         this.userId = userId;
         this.studyNums = studyNums;
         this.studyTime = studyTime;
         this.reviewNums = reviewNums;
         this.storeTime = storeTime;
+        this.totalReviewNums = totalReviewNums;
     }
 
     public int getUserId() {
@@ -64,15 +62,23 @@ public class DailyStudy {
         this.storeTime = storeTime;
     }
 
+    public int getTotalReviewNums() {
+        return totalReviewNums;
+    }
+
+    public void setTotalReviewNums(int totalReviewNums) {
+        this.totalReviewNums = totalReviewNums;
+    }
+
     @Override
     public String toString() {
-        return "Dailystudy{" +
+        return "DailyStudy{" +
                 "userId=" + userId +
                 ", studyNums=" + studyNums +
                 ", studyTime=" + studyTime +
                 ", reviewNums=" + reviewNums +
                 ", storeTime=" + storeTime +
+                ", totalReviewNums=" + totalReviewNums +
                 '}';
     }
-
 }
