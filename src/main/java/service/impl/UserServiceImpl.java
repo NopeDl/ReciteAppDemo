@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 退出登录
+     *
      * @param request
      * @return
      */
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     public Message quit(HttpServletRequest request) {
         request.getSession().removeAttribute("userId");
         Message message = new Message("退出成功");
-        message.addData("quitSuccess",true);
+        message.addData("quitSuccess", true);
         return message;
     }
 
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException(e);
             }
             //读取文本,这里表现为读取头像的base64路径
-            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+            FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
             String base64 = imgHandler.parseContent();
 //            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
 //            String base64 = txtFileHandler.parseContent();//读取出来base64
@@ -269,11 +270,11 @@ public class UserServiceImpl implements UserService {
         if (list != null) {
             Set<String> dateSet = new HashSet<>(list);
             msg = new Message("查找成功");
-            msg.addData("searchSuccess",true);
+            msg.addData("searchSuccess", true);
             msg.addData("dateList", dateSet);
         } else {
             msg = new Message("无数据");
-            msg.addData("searchSuccess",false);
+            msg.addData("searchSuccess", false);
         }
         return msg;
     }
@@ -282,7 +283,7 @@ public class UserServiceImpl implements UserService {
      * 将头像的base64形式存static/imgPath下的txt文件,返回base64的存储路径
      *
      * @param base64 头像
-     * @param useId 用户ID
+     * @param useId  用户ID
      * @return 储存路径
      */
     @Override
@@ -305,26 +306,27 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 保存头像
+     *
      * @param request r
      * @return r
      */
     @Override
-    public Message saveImg(HttpServletRequest request){
+    public Message saveImg(HttpServletRequest request) {
         Message msg = new Message();
         try {
             //获取USERID
             int userId = Integer.parseInt(request.getParameter("userId"));
             Part image = request.getPart("image");
-            FileHandler imgFileHandler = FileHandlerFactory.getHandler("img",image.getInputStream());
+            FileHandler imgFileHandler = FileHandlerFactory.getHandler("img", image.getInputStream());
             String filePath = Resources.getResource("static/images/") + System.currentTimeMillis() + image.getSubmittedFileName();
             //获取ReciteMemory/.......
             //拼接图像路径
-            imgFileHandler.saveFile(filePath,null);
-            int i = userDao.updateImageByUserID(userId,filePath);
-            if (i>0){
-                msg.addData("uploadSuccess",true);
-            }else {
-                msg.addData("uploadSuccess",false);
+            imgFileHandler.saveFile(filePath, null);
+            int i = userDao.updateImageByUserID(userId, filePath);
+            if (i > 0) {
+                msg.addData("uploadSuccess", true);
+            } else {
+                msg.addData("uploadSuccess", false);
             }
         } catch (IOException | ServletException e) {
             throw new RuntimeException(e);
@@ -334,36 +336,45 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 保存日常数据
+     *
      * @param request req
      * @return r
      */
     @Override
     public Message saveDailyData(HttpServletRequest request) {
+        String sn = request.getParameter("studyNums");
+        String st = request.getParameter("studyTime");
+
         int userId = Integer.parseInt(request.getParameter("userId"));
-        int studyNums = Integer.parseInt(request.getParameter("studyNums"));
-        int studyTime = Integer.parseInt(request.getParameter("studyTime"));
+        //处理null
+        int studyNums = (sn != null ? Integer.parseInt(sn) : 0);
+        int studyTime = (st != null ? Integer.parseInt(st) : 0);
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-        int i = 0;
-        if (dailyStudy == null){
+        int i;
+        if (dailyStudy == null) {
             //如果用户当天没有学习记录
             //则创建一个
-            i = userDao.insertDailyStudyData(userId,studyNums,studyTime,0);
-        }else {
-            i = userDao.updateDailyStudyByIdAndTime(userId,studyNums,studyTime,dailyStudy.getReviewNums());
+            i = userDao.insertDailyStudyData(userId, studyNums, studyTime, 0);
+        } else {
+            //有则更新数据
+            studyNums = Math.max(studyNums,dailyStudy.getStudyNums());
+            studyTime = Math.max(studyTime,dailyStudy.getStudyTime());
+            i = userDao.updateDailyStudyByIdAndTime(userId, studyNums, studyTime, dailyStudy.getReviewNums());
         }
         Message msg;
-        if (i > 0){
+        if (i > 0) {
             msg = new Message("保存成功");
-            msg.addData("saveSuccess",true);
-        }else {
+            msg.addData("saveSuccess", true);
+        } else {
             msg = new Message("保存失败");
-            msg.addData("saveSuccess",false);
+            msg.addData("saveSuccess", false);
         }
         return msg;
     }
 
     /**
      * 获取用户日常学习信息： 学习篇数和学习时长
+     *
      * @param request req
      * @return ret
      */
@@ -373,13 +384,13 @@ public class UserServiceImpl implements UserService {
         int userId = Integer.parseInt(request.getParameter("userId"));
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
         Message msg;
-        if (dailyStudy !=null){
+        if (dailyStudy != null) {
             msg = new Message("获取成功");
-            msg.addData("getSuccess",true);
-            msg.addData("studyData",dailyStudy);
-        }else {
+            msg.addData("getSuccess", true);
+            msg.addData("studyData", dailyStudy);
+        } else {
             msg = new Message("获取失败");
-            msg.addData("getSuccess",false);
+            msg.addData("getSuccess", false);
         }
         return msg;
     }
