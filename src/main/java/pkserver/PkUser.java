@@ -91,7 +91,7 @@ public class PkUser {
                 msg = this.pkRoom.againDig(this);
                 ResponseUtil.send(this.session, msg);
             }
-        } else {
+        }  else {
             msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
             ResponseUtil.send(this.session, msg);
         }
@@ -154,12 +154,14 @@ public class PkUser {
             }else {
                 //向对手发送自己已经退出的消息
                 ResponseUtil.send(enemyUser.getSession(), new SocketMessage(SocketMsgInf.ENEMY_EXIT));
+                this.session.close();
             }
         } else {
             //说明是取消匹配
             //清除匹配状态
             this.statusPool.enterCancelMatchingList(this);
             this.statusPool.quitMatchingPool(this);
+            this.session.close();
         }
     }
 

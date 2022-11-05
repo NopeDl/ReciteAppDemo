@@ -5,8 +5,6 @@ import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import enums.Difficulty;
 import enums.SocketMsgInf;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pkserver.threads.TimeLimitThread;
 import pojo.po.db.User;
 import pojo.po.pk.AnswerStatus;
@@ -21,8 +19,6 @@ import tools.utils.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Pk房间
@@ -37,7 +33,7 @@ public class PkRoom {
     /**
      * 延迟秒数
      */
-    private static final int DELAY = 2;
+    private static final int DELAY = 4;
 
     private int playerNum;
     /**
@@ -185,12 +181,12 @@ public class PkRoom {
                 setHp(enemy, hp);
             }
             //检查双方输赢状态
-            boolean isContinue = true;
-            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
-                //有一边没血了
-                //结束比赛
-                isContinue = false;
-            }
+//            boolean isContinue = true;
+//            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
+//                //有一边没血了
+//                //结束比赛
+//                isContinue = false;
+//            }
             //将双方血量响应回去
             SocketMessage msg = new SocketMessage();
             List<UserHp> hpLists = new ArrayList<>();
@@ -198,10 +194,10 @@ public class PkRoom {
             hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
             msg.addData("hpInf", hpLists);
             roomBroadcast(msg);
-            if (!isContinue) {
-                //比赛结束
-                this.end();
-            }
+//            if (!isContinue) {
+//                //比赛结束
+//                this.end();
+//            }
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);
         }
@@ -273,8 +269,12 @@ public class PkRoom {
     private void roomBroadcast(SocketMessage msg) {
         //给房间内两位玩家发送结果
         try {
-            ResponseUtil.send(player01.getSession(), msg);
-            ResponseUtil.send(player02.getSession(), msg);
+            if (player01.getSession().isOpen()){
+                ResponseUtil.send(player01.getSession(), msg);
+            }
+            if (player02.getSession().isOpen()){
+                ResponseUtil.send(player02.getSession(), msg);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
