@@ -178,7 +178,7 @@ public class LikesServiceImpl implements LikesService {
             Set<Integer> modleIdOfUlike = Cache.CACHE_USER_DISLIKE.get(userId);
             //将总缓存里点赞的取消
 
-            System.out.println("要被取消点赞的模板id"+modleIdOfUlike);
+//            System.out.println("要被取消点赞的模板id"+modleIdOfUlike);
             deleteUSER_LIKE(userId,modleIdOfUlike);
             for(int modleId:modleIdOfUlike){
                 int i = likesDao.deleteLikes(userId, modleId);
@@ -308,6 +308,24 @@ public class LikesServiceImpl implements LikesService {
             }
         }
 
+    }
 
+    @Override
+    public boolean ifUserLike(int userId, int modleId) {
+        boolean isLike=false;
+        //只需要寻找返回是true的情况
+        //先查询临时缓存中是否有访问过
+        if(Cache.CACHE_USER_LIKE.containsKey(userId)){
+            if(Cache.CACHE_USER_LIKE.get(userId).contains(modleId)){
+                //说明在暂时缓存里有，那就一定是点赞过的
+                isLike=true;
+            }
+        }else if(Cache.USER_LIKE.containsKey(userId)&&
+        !Cache.CACHE_USER_DISLIKE.containsKey(userId)){
+            if(Cache.USER_LIKE.get(userId).contains(modleId)){
+                isLike=true;
+            }
+        }
+        return isLike;
     }
 }
