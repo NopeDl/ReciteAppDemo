@@ -5,10 +5,12 @@ import dao.ModleDao;
 import dao.impl.LikesDaoImp;
 import dao.impl.ModleDaoImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import pojo.po.db.Likes;
 import pojo.vo.Message;
 import service.LikesService;
 import tools.utils.Cache;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LikesServiceImpl implements LikesService {
@@ -280,6 +282,31 @@ public class LikesServiceImpl implements LikesService {
      */
     @Override
     public void initCaChe() {
+        List<Likes> likes = likesDao.selectLikes();
+
+        for(Likes temp:likes) {
+            int userId = temp.getUserId();
+            int modleId = temp.getModleId();
+            if (!Cache.CACHE_USER_LIKE.containsKey(userId)){
+                HashSet<Integer> modleSet = new HashSet<>();
+                modleSet.add(modleId);
+                Cache.CACHE_USER_LIKE.put(userId,modleSet);
+            }else {
+                Set<Integer> modleSet = Cache.CACHE_USER_LIKE.get(userId);
+                modleSet.add(modleId);
+                Cache.USER_LIKE.put(userId,modleSet);
+            }
+
+
+            if(!Cache.MODLE_LIKE.containsKey(modleId)){
+                int i=1;
+                Cache.MODLE_LIKE.put(modleId,i);
+            }else{
+                Integer integer = Cache.MODLE_LIKE.get(modleId);
+                Cache.MODLE_LIKE.put(modleId,integer+1);
+            }
+        }
+
 
     }
 }

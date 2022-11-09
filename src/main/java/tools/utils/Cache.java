@@ -46,15 +46,15 @@ public class Cache {
             scheduler.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("*********************************");
-                    System.out.println("缓存区userId-modleId的关系"+Cache.CACHE_USER_LIKE);
-                    System.out.println("super缓存区userId-modleId的关系"+Cache.USER_LIKE);
-                    System.out.println("缓存区内userId——modleId 不喜欢的关系"+Cache.CACHE_USER_DISLIKE);
-
-                    System.out.println("缓存区内modle的点赞量"+Cache.CACHE_MODLE_LIKE);
-                    System.out.println("super缓存区内modle的点赞量"+Cache.MODLE_LIKE);
+//                    System.out.println("*********************************");
+//                    System.out.println("缓存区userId-modleId的关系"+Cache.CACHE_USER_LIKE);
+//                    System.out.println("super缓存区userId-modleId的关系"+Cache.USER_LIKE);
+//                    System.out.println("缓存区内userId——modleId 不喜欢的关系"+Cache.CACHE_USER_DISLIKE);
+//
+//                    System.out.println("缓存区内modle的点赞量"+Cache.CACHE_MODLE_LIKE);
+//                    System.out.println("super缓存区内modle的点赞量"+Cache.MODLE_LIKE);
                     likesService.updateLikes();
-                    System.out.println("执行时间" + LocalDate.now());
+//                    System.out.println("执行时间" + LocalDate.now());
 //                    try {
 ////                        Thread.sleep(1000);
 //                    } catch (InterruptedException e) {

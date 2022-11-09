@@ -26,6 +26,8 @@ public class Community {
 
     private String studyStatus;
 
+    //这个参数没什么用
+    private int great;
     //判断用户是否点赞过改条帖子
     private boolean likeStatus;
 
@@ -158,6 +160,15 @@ public class Community {
 
     public void setLikeNum(int likeNum) {
         this.likeNum = likeNum;
+    }
+
+
+    public int getGreat() {
+        return great;
+    }
+
+    public void setGreat(int great) {
+        this.great = great;
     }
 
     @Override
