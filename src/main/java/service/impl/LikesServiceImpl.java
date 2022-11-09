@@ -28,7 +28,8 @@ public class LikesServiceImpl implements LikesService {
     @Override
     public Message likeOrDisLike(HttpServletRequest request) {
         Message message=null;
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int  modleId = Integer.parseInt(request.getParameter("modleId"));
         Boolean likeStatus = Boolean.parseBoolean(request.getParameter("likeStatus"));
         if(likeStatus){

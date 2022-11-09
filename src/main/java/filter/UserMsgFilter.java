@@ -14,13 +14,13 @@ import java.io.IOException;
  * 拦截需要UserId但又没有的非法请求
  * @author y and i
  */
-@WebFilter({
-"/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD",
-"/inf.get/studyData",
-"/modle/MakeModle","/modle/deleteModle","/modle/UserMemory","/modle/Collection","/modle/UpdateModleStatus",
-"/upload/uploadImg",
-"/review/JoinThePlane","/review/RemoveFromPlan","/review/GetPeriodModle","/review/FinishOnceReview"
-})
+//@WebFilter({
+//"/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD",
+//"/inf.get/studyData",
+//"/modle/MakeModle","/modle/deleteModle","/modle/UserMemory","/modle/Collection","/modle/UpdateModleStatus",
+//"/upload/uploadImg",
+//"/review/JoinThePlane","/review/RemoveFromPlan","/review/GetPeriodModle","/review/FinishOnceReview"
+//})
 public class UserMsgFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

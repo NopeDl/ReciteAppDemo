@@ -42,7 +42,8 @@ public class ReviewServiceImpl implements ReviewService {
     public Message joinThePlan(HttpServletRequest request) {
         Message message = null;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         //学习状态
         String studyStatus = request.getParameter("studyStatus");
 
@@ -102,7 +103,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Message removeFromPlan(HttpServletRequest request) {
         Message message = null;
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int modleId = Integer.parseInt(request.getParameter("modleId"));
 //        int reviewId= Integer.parseInt(request.getParameter("reviewId"));
         String studyStatus = request.getParameter("studyStatus");
@@ -145,7 +147,8 @@ public class ReviewServiceImpl implements ReviewService {
         //存储返回的模板内容
 //        Map<String ,List<Community>> map=new HashMap<>();
         List<Community>[] lists = new List[8];
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         Review review = new Review();
         review.setUserId(userId);
 
@@ -197,7 +200,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Message updatePeriod(HttpServletRequest request) {
         Message message = null;
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int modleId = Integer.parseInt(request.getParameter("modleId"));
 //        int reviewId=Integer.parseInt(request.getParameter("reviewId"));
         Review review = new Review();

@@ -69,7 +69,8 @@ public class ModleServiceImpl implements ModleService {
     public Message collectModle(HttpServletRequest request) {
         Message message;
         //用户收藏非自己的模板
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         //收藏状态，1为收藏，否则为取消收藏
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
@@ -199,7 +200,8 @@ public class ModleServiceImpl implements ModleService {
         Modle modle = new Modle();
         //只需要获取文本内容和模板制作者，为该模板起名的标题即可
         String context = request.getParameter("context");
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         String modleTitle = request.getParameter("modleTitle");
         //获取标签id
         String modleLabel = request.getParameter("modleLabel");
@@ -309,7 +311,8 @@ public class ModleServiceImpl implements ModleService {
     public Message deleteModle(HttpServletRequest request) {
         Message msg;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
-        int userId =Integer.parseInt(request.getParameter("userId"));
+//        int userId =Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         String path = modleDao.selectPathByModleId(modleId);
         //先查询该模板是否存在计划表中
         Review review=new Review();
@@ -578,7 +581,8 @@ public class ModleServiceImpl implements ModleService {
         Message message;
 
         //获取用户的id,从而获取用户的模板
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         Umr umr = new Umr();
         umr.setUserId(userId);
 
@@ -738,7 +742,8 @@ public class ModleServiceImpl implements ModleService {
     public Message updateModleStatus(HttpServletRequest request) {
         Message message=null;
         //更新模板的学习状态需要根据userId和modleId在umr表中进行修改
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         String studyStatus = request.getParameter("studyStatus");
 

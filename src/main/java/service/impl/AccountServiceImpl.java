@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import dao.AccountDao;
 import dao.impl.AccountDaoImpl;
 import enums.MsgInf;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import pojo.po.db.Account;
@@ -43,8 +44,10 @@ public class AccountServiceImpl implements AccountService {
                 calendar.add(Calendar.DAY_OF_WEEK,7);
                 String tocken = JWT.create().withHeader(new HashMap<>()).withClaim("userId",account.getUserId()).withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256("!34ADAS"));
                 msg.addData("token",tocken);
+                Cookie cookie = new Cookie("token",tocken);
+                response.addCookie(cookie);
 //                登录成功后再session中设置用户id
-                request.getSession().setAttribute("userId", account.getUserId());
+//                request.getSession().setAttribute("userId", account.getUserId());
             }
         } else {
             msg = new Message("phone或者password参数不能为空");

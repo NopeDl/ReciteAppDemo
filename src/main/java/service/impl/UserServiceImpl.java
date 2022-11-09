@@ -77,7 +77,8 @@ public class UserServiceImpl implements UserService {
     public Message selectUserMsg(HttpServletRequest request) {
 
         Message message;
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         User user = userDao.selectUserById(userId);
         if ("".equals(user.getImage()) || user.getImage() == null) {
             //说明此时头像为默认头像，不需要重新读取
@@ -118,7 +119,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message ReMsgById(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         String phone = request.getParameter("phone");
         String nickName = request.getParameter("nickName");
         String newPassword = request.getParameter("password");
@@ -225,7 +227,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message userRanking(HttpServletRequest request) {
         Message msg;
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         //查询用户排名
         Integer userRanking = userDao.selectUserRanking(userId);
         //查询用户信息
@@ -242,7 +245,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Message clockIn(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         int i = dateDao.insertDateByUserId(userId);
         Message msg;
         if (i > 0) {
@@ -263,7 +267,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message getClockInRecord(HttpServletRequest request) {
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         String month = request.getParameter("month");
         String year = request.getParameter("year");
 
@@ -319,7 +324,8 @@ public class UserServiceImpl implements UserService {
         Message msg = new Message();
         try {
             //获取USERID
-            int userId = Integer.parseInt(request.getParameter("userId"));
+//            int userId = Integer.parseInt(request.getParameter("userId"));
+            int userId = (Integer) request.getAttribute("userId");
             Part image = request.getPart("image");
             FileHandler imgFileHandler = FileHandlerFactory.getHandler("img", image.getInputStream());
             String filePath = Resources.getResource("static/images/") + System.currentTimeMillis() + image.getSubmittedFileName() + ".jpg";
@@ -351,7 +357,8 @@ public class UserServiceImpl implements UserService {
     public Message saveDailyData(HttpServletRequest request) {
         String st = request.getParameter("studyTime");
 
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         //处理null
         int studyTime = (st != null ? Integer.parseInt(st) : 0);
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
@@ -385,7 +392,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Message getUserDailyStudyData(HttpServletRequest request) {
 
-        int userId = Integer.parseInt(request.getParameter("userId"));
+//        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (Integer) request.getAttribute("userId");
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
         Message msg;
         if (dailyStudy != null) {
