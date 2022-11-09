@@ -5,6 +5,7 @@ import dao.impl.*;
 import enums.Difficulty;
 import pojo.po.db.*;
 import pojo.vo.Community;
+import service.LikesService;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
