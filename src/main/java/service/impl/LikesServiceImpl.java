@@ -34,7 +34,9 @@ public class LikesServiceImpl implements LikesService {
         Boolean likeStatus = Boolean.parseBoolean(request.getParameter("likeStatus"));
         if(likeStatus){
             like(userId,modleId);
+            int likeNums = getLikeNumsByModleId(modleId);
             message=new Message("点赞成功");
+            message.addData("likeNum",likeNums);
         }else{
             disLike(userId,modleId);
             message=new Message("取消点赞");
