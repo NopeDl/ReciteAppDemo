@@ -1,0 +1,19 @@
+<!DOCTYPE mapper>
+<mapper namespace="LikesMapper">
+    <!--selectLike 查询like表中的所有内容-->
+    <select id="selectLikes"  resultType="pojo.po.db.Likes">
+        select * from likes
+    </select>
+
+    <insert id="insetIntoLikes" parameterType="pojo.po.db.Likes">
+        insert into likes (userId,modleId) values(#{userId},#{modleId})
+    </insert>
+
+    <delete id="deleteLikes" parameterType="pojo.po.db.Likes" >
+        delete from likes where userId=#{userId} and modleId=#{modleId}
+    </delete>
+
+    <select id="selectifUserLike" parameterType="pojo.po.db.Likes" resultType="pojo.po.db.Likes">
+        select * from likes where userId=#{userId} and modleId=#{modleId}
+    </select>
+</mapper>

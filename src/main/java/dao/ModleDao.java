@@ -175,4 +175,11 @@ public interface ModleDao {
      * @return
      */
     Umr selectModleByIds(Umr umr);
+
+    /**
+     * 更新点赞数量
+     * @param modleId
+     * @return
+     */
+    int updateLikeNum(int modleId,int great);
 }

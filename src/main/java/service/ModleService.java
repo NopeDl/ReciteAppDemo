@@ -72,14 +72,14 @@ public interface ModleService {
      */
     Message getModlesByTag(HttpServletRequest request);
 
-
-    /**
-     * 给模板打赏
-     *
-     * @param request
-     * @return
-     */
-    Message reward(HttpServletRequest request);
+//
+//    /**
+//     * 给模板打赏
+//     *
+//     * @param request
+//     * @return
+//     */
+//    Message reward(HttpServletRequest request);
 
 
     /**

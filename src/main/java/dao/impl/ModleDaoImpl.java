@@ -468,4 +468,25 @@ public class ModleDaoImpl implements ModleDao {
         }
         return null;
     }
+
+    /**
+     * 更新模板的点赞数量
+     * @param modleId
+     * @return
+     */
+    @Override
+    public int updateLikeNum(int modleId,int great) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        Modle modle=new Modle();
+        modle.setModleId(modleId);
+        modle.setGreat(great);
+        int update = sqlSession.update("ModleMapper.UpdateLikeNum", modle);
+        if(update>0){
+            sqlSession.commit();
+        }else{
+            sqlSession.rollBack();
+        }
+        sqlSession.close();
+        return update;
+    }
 }

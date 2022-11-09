@@ -5,6 +5,7 @@ import dao.impl.*;
 import enums.Difficulty;
 import pojo.po.db.*;
 import pojo.vo.Community;
+import service.LikesService;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
@@ -30,7 +31,8 @@ public class ModleServiceImpl implements ModleService {
     private final LabelDao labelDao=new LabelDaoImp();
     private final UserDao userDao=new UserDaoImpl();
     private final ReviewDao reviewDao=new ReviewDaoImpl();
-
+    private final LikesDao likesDao=new LikesDaoImp();
+    private final LikesService likesService=new LikesServiceImpl();
 //    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
 //
@@ -457,7 +459,7 @@ public class ModleServiceImpl implements ModleService {
 
             //获得查询信息
 
-            //返回一个Community类型（包含modle里面的 所有属性）
+            //返回一个Community类型（包含modle里面的所有属性）
             List<Community> modleList = modleDao.selectModlesByTag(modle);
             InputStream input;
             if (modleList.size() > 0) {
@@ -503,62 +505,20 @@ public class ModleServiceImpl implements ModleService {
                             modleList.get(i).setBase64(base64);
                         }
 
+
                     }
 
-
-
-
-//            个Community类型（包含modle里面的 所有属性）
-//            List<Community> modleList = modleDao.selectModlesByTag(modle);
-//            if (modleList.size() > 0) {
-//                for (int i = 0; i < modleList.size(); i++) {
-//                    //根据路径读取文件内容
-//                    String modlePath = modleList.get(i).getModlePath();//获取改模板的路径；根据路径读取文件内容
-//                    InputStream input;
-//                    try {
-//                        input = new FileInputStream(modlePath);
-//
-//                    //读取文本
-//                    FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-//                    String content = txtFileHandler.parseContent();
-////                    modleList.get(i).setContent(content);
-//                    modleList.get(i).setContent(content);
-//                    modleList.get(i).setModlePath("");
-//
-//                    User user = userDao.selectNameImgById(modleList.get(i));
-//                    if(user!=null){
-//                        //传进来昵称和头像
-//                        modleList.get(i).setNickName(user.getNickName());
-////                        modleList.get(i).setImg(user.getImage());
-//                        String imagepath = user.getImage();//获取用户头像的显示地址\
-//
-//                        //从我开始
-//                        if ("".equals(user.getImage())) {
-//                            //说明此时头像为默认头像，不需要重新读取
-//                            //将响应的数据封装到message里
-//                            user.setBase64("");
-//                        } else {
-//                            //说明头像已经改变过了，需要重新读取
-//                            String imagePath = user.getImage();//头像的存放路径
-//                            InputStream inputStream;
-//
-//                                inputStream = new FileInputStream(imagePath);
-//                                inputStream.close();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            //读取文本,这里表现为读取头像的base64路径
-//                            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
-//                            String base64 = imgHandler.parseContent();
-//                            modleList.get(i).setImg(base64);
-//                        }
-//
-//                    }
-
-
-            //从我结束
                     //不回显给前端路径
                     modleList.get(i).setModlePath(null);
+
+                    //下面解决点赞问题
+                    //先判断用户对该帖子的点赞情况
+                    boolean b = likesDao.selectifUserLike(modleList.get(i).getUserId(), modleList.get(i).getModleId());
+                    modleList.get(i).setLikeStatus(b);
+                    //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
+                    int totalLike = likesService.getLikeNumsByModleId(modleList.get(i).getModleId());
+                    modleList.get(i).setLikeNum(totalLike);
+
                 }
 
 
@@ -575,40 +535,40 @@ public class ModleServiceImpl implements ModleService {
         return msg;
     }
 
-    /**
-     *
-     * 给模板打赏
-     *
-     * @param request 请求
-     * @return 响应
-     */
-    @Override
-    public Message reward(HttpServletRequest request) {
-        String coinsStr = request.getParameter("coins");
-        String modleIdStr = request.getParameter("modleId");
-        Message msg;
-        if (coinsStr != null && modleIdStr != null) {
-            int coins = Integer.parseInt(coinsStr);
-            int modleId = Integer.parseInt(modleIdStr);
-            //封装修改数据
-            Modle modle = new Modle();
-            modle.setModleId(modleId);
-            modle.setCoins(coins);
-            //执行修改
-            int success = modleDao.updateModleCoins(modle);
-            if (success > 0) {
-                msg = new Message("打赏成功");
-                msg.addData("rewardSuccess", true);
-            } else {
-                msg = new Message("打赏失败");
-                msg.addData("rewardSuccess", false);
-            }
-        } else {
-            msg = new Message("操作失败,参数不能为空");
-            msg.addData("rewardSuccess", false);
-        }
-        return msg;
-    }
+//    /**
+//     *
+//     * 给模板打赏
+//     *
+//     * @param request 请求
+//     * @return 响应
+//     */
+//    @Override
+//    public Message reward(HttpServletRequest request) {
+//        String coinsStr = request.getParameter("coins");
+//        String modleIdStr = request.getParameter("modleId");
+//        Message msg;
+//        if (coinsStr != null && modleIdStr != null) {
+//            int coins = Integer.parseInt(coinsStr);
+//            int modleId = Integer.parseInt(modleIdStr);
+//            //封装修改数据
+//            Modle modle = new Modle();
+//            modle.setModleId(modleId);
+//            modle.setCoins(coins);
+//            //执行修改
+//            int success = modleDao.updateModleCoins(modle);
+//            if (success > 0) {
+//                msg = new Message("打赏成功");
+//                msg.addData("rewardSuccess", true);
+//            } else {
+//                msg = new Message("打赏失败");
+//                msg.addData("rewardSuccess", false);
+//            }
+//        } else {
+//            msg = new Message("操作失败,参数不能为空");
+//            msg.addData("rewardSuccess", false);
+//        }
+//        return msg;
+//    }
 
     @Override
     public Message getUserMemory(HttpServletRequest request) {

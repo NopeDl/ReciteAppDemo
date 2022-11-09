@@ -9,7 +9,7 @@ public class Modle {
     private String modlePath;
     private int userId;
     private int modleLabel;
-    private int coins;
+    private int great;
     private Integer mStatus;
     private String content;
 
@@ -97,12 +97,12 @@ public class Modle {
         this.pageIndex = pageIndex;
     }
 
-    public int getCoins() {
-        return coins;
+    public int getGreat() {
+        return great;
     }
 
-    public void setCoins(int coins) {
-        this.coins = coins;
+    public void setGreat(int great) {
+        this.great = great;
     }
 
     public Modle() {
@@ -166,7 +166,7 @@ public class Modle {
                 ", modlePath='" + modlePath + '\'' +
                 ", userId=" + userId +
                 ", modleLabel=" + modleLabel +
-                ", coins=" + coins +
+                ", great=" + great +
                 ", mStatus=" + mStatus +
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +

@@ -26,6 +26,13 @@ public class Community {
 
     private String studyStatus;
 
+    //判断用户是否点赞过改条帖子
+    private boolean likeStatus;
+
+    //该帖子获赞数量
+    private int likeNum;
+
+
     public Community() {
     }
 
@@ -136,6 +143,23 @@ public class Community {
         this.studyStatus = studyStatus;
     }
 
+
+    public boolean isLikeStatus() {
+        return likeStatus;
+    }
+
+    public void setLikeStatus(boolean likeStatus) {
+        this.likeStatus = likeStatus;
+    }
+
+    public int getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
+
     @Override
     public String toString() {
         return "Community{" +
@@ -144,11 +168,15 @@ public class Community {
                 ", modlePath='" + modlePath + '\'' +
                 ", modleLabel=" + modleLabel +
                 ", content='" + content + '\'' +
-                ", common=" + common +
                 ", coins=" + coins +
                 ", userId=" + userId +
                 ", nickName='" + nickName + '\'' +
-                ", img='" + base64 + '\'' +
+                ", base64='" + base64 + '\'' +
+                ", common=" + common +
+                ", createTime=" + createTime +
+                ", studyStatus='" + studyStatus + '\'' +
+                ", likeStatus=" + likeStatus +
+                ", likeNum=" + likeNum +
                 '}';
     }
 }

@@ -85,4 +85,9 @@
     <update id="updateReviewId" parameterType="pojo.po.db.Review">
          update umr set reviewId=#{reviewId} where userId=#{userId} and modleId=#{modleId}
     </update>
+
+
+    <update id="UpdateLikeNum">
+        update modle set great=great+(#{great}) where modleId=#{modleId}
+    </update>
 </mapper>

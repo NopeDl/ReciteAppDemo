@@ -7,13 +7,13 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tools.utils.Cache;
+
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @WebFilter("/*")
 public class EncodingFilter extends HttpFilter {
@@ -67,6 +67,14 @@ public class EncodingFilter extends HttpFilter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        //定时将点赞数量存到数据库里
+        //服务器开启前应该先查找对应的数据放到总缓存里
+        try {
+            Cache.tiemrTask();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         chain.doFilter(request, response);
     }
 }
