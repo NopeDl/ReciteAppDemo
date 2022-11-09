@@ -21,6 +21,7 @@ import tools.utils.JcsegUtil;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -62,7 +63,7 @@ public class PkUser {
                 //检验匹配是否合法（在匹配还）
                 try {
                     startMatch();
-                }catch (IOException e){
+                } catch (IOException e) {
                     msg = new SocketMessage(SocketMsgInf.MATCH_INVALID);
                     ResponseUtil.send(this.session, msg);
                     e.printStackTrace();
@@ -87,11 +88,11 @@ public class PkUser {
             this.pkRoom.excute(operate, this);
         } else if ("AGAIN".equals(operate)) {
             //循环获取挖空
-            if (this.pkRoom != null){
+            if (this.pkRoom != null) {
                 msg = this.pkRoom.againDig(this);
                 ResponseUtil.send(this.session, msg);
             }
-        }  else {
+        } else {
             msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
             ResponseUtil.send(this.session, msg);
         }
@@ -117,16 +118,16 @@ public class PkUser {
         matchInf.setModleId(Integer.parseInt(modleId));
         matchInf.setDifficulty(Difficulty.getRatio(difficulty));
         //注册监听器
-        statusPool.listenerRegisty(new BasicStatusPoolListener(this){
+        statusPool.listenerRegisty(new BasicStatusPoolListener(this) {
             @Override
             public void matchedPoolAdded(PkUser user) {
                 //监听匹配完成池
-                if (user == this.getPkUser()){
+                if (user == this.getPkUser()) {
                     //如果池中新增用户是自己
                     //说明匹配成功了
                     SocketMessage socketMessage = matchSuccess();
                     try {
-                        ResponseUtil.send(user.getSession(),socketMessage);
+                        ResponseUtil.send(user.getSession(), socketMessage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -148,10 +149,10 @@ public class PkUser {
             this.statusPool.quitMatchedPool(this);
             //设置房间内人数
             this.pkRoom.setPlayerNum(this.pkRoom.getPlayerNum() - 1);
-            if(this.pkRoom.getPlayerNum() <= 0){
+            if (this.pkRoom.getPlayerNum() <= 0) {
                 //说明两个人都退了，房间内没有参赛人员
                 StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
-            }else {
+            } else {
                 //向对手发送自己已经退出的消息
                 ResponseUtil.send(enemyUser.getSession(), new SocketMessage(SocketMsgInf.ENEMY_EXIT));
                 this.session.close();
@@ -187,7 +188,7 @@ public class PkUser {
         boolean b = false;
         List<PkUser> matchingPool = StatusPool.MATCHING_POOL;
         for (PkUser pkUser : matchingPool) {
-            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()){
+            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()) {
                 b = true;
                 break;
             }
@@ -195,7 +196,7 @@ public class PkUser {
         boolean b1 = false;
         Map<PkUser, PkUser> matchedPool = StatusPool.MATCHED_POOL;
         for (PkUser pkUser : matchedPool.keySet()) {
-            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()){
+            if (pkUser.getMatchInf().getUserId() == this.getMatchInf().getUserId()) {
                 b1 = true;
                 break;
             }
@@ -214,7 +215,7 @@ public class PkUser {
         String content;
         input = Files.newInputStream(Paths.get(modle.getModlePath()));
         FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-        if (txtFileHandler == null){
+        if (txtFileHandler == null) {
             throw new IOException("解析txt文本失败");
         }
         content = txtFileHandler.parseContent();
@@ -230,7 +231,7 @@ public class PkUser {
     /**
      * 匹配成功后执行
      */
-    public synchronized SocketMessage matchSuccess(){
+    public synchronized SocketMessage matchSuccess() {
         //匹配结束后用户会在比赛池中存在
         //查找对方的用户信息响应给客户端
         Map<PkUser, PkUser> matchedPool = StatusPool.MATCHED_POOL;
@@ -244,10 +245,10 @@ public class PkUser {
             user = USERDAO.selectUserById(enemyUserId);
             String path = user.getImage();
             try {
-                if (!"".equals(path)) {
-                    InputStream touxianginput = Files.newInputStream(Paths.get(path));
+                if (!"".equals(path) && path != null) {
+                    InputStream touxianginput = new FileInputStream(path);
                     FileHandler fileHandler = FileHandlerFactory.getHandler("img", touxianginput);
-                    if (fileHandler == null){
+                    if (fileHandler == null) {
                         throw new IOException("解析头像失败");
                     }
                     String base64pic = fileHandler.parseContent();
@@ -259,7 +260,7 @@ public class PkUser {
                 //将用户加入房间
 
                 PkRoom.joinRoom(this);
-                System.out.println(this + " join "+ this.pkRoom +" room");
+                System.out.println(this + " join " + this.pkRoom + " room");
                 //真的匹配成功了！
                 msg = new SocketMessage(SocketMsgInf.MATCH_SUCCESS);
                 user.setImage(null);
@@ -271,7 +272,7 @@ public class PkUser {
                 //添加挖好空的内容
                 msg.addData("context", context);
                 //添加总时间限制
-                msg.addData("timeLimits",this.pkRoom.getTimeLimits());
+                msg.addData("timeLimits", this.pkRoom.getTimeLimits());
                 return msg;
             } catch (IOException e) {
                 e.printStackTrace();

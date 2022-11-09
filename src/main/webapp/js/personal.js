@@ -94,29 +94,49 @@ $('.modify').onclick = () => {
 }
 
 //上传头像 
-
 $('.personal .head_portrait input').onchange = function (e) {
     const fileList = e.target.files;
-    let fd = new FormData($('.img_form'));
+
     if (fileList.length) {
         //通过window.URL.createObjectURL(files[0])获得一个http格式的url路径
-        imgUrl = window.URL.createObjectURL(fileList[0]);
-        //设置img中的src进行显示
-        $('.personal .head_portrait img').src = imgUrl;
-        // var reader = new FileReader();
-        // reader.readAsDataURL(fileList[0])   //将读取的文件转换成base64格式
+        // imgUrl = window.URL.createObjectURL(fileList[0]); 
 
-        // reader.onload = function (e) {
-        //     let base64Data = e.target.result;
-        //     // var newBase64 = base64Data.replace(/\+/g, "%2B");
-        //     let newBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
-        //     console.log(base64Data);
+        let fd = new FormData();
+        var reader = new FileReader();
+        reader.readAsDataURL(fileList[0]);
+        reader.onloadend = function (e) {
+            $("#canvas_img").src = e.target.result;
+            
+            $('.CaptureAvatar_page').style.display = 'block';
+            setTimeout(() => {
+                loadCapture();
+            }, 50);
+        };
 
-        // }
-
-        ajax(`http://8.134.104.234:8080/ReciteMemory/upload/uploadImg?userId=${curr.userId}`, 'post', fd, (str) => {
-            let newstr = JSON.parse(str).msg;
-            console.log(newstr);
-        }, false);
+        //点击确认裁剪头像
+        $('.canvas_ok').onclick = () => {
+            let base64 = $('#canvas').toDataURL('image/jpeg', 1 || 0.8);
+            let tofile = dataURLtoFile(base64, 'image', 'image/jpeg')
+            for (let x of $('.head_portrait img')) {
+                x.src = base64;
+            }
+            fd.append("image", tofile);
+            ajax(`http://8.134.104.234:8080/ReciteMemory/upload/uploadImg?userId=${curr.userId}`, 'post', fd, (str) => {
+                let newstr = JSON.parse(str).msg;
+                console.log(newstr);
+                $('.CaptureAvatar_page').style.display = 'none';
+            }, false);
+        }
     }
 }
+
+//将base64转换成文件
+function dataURLtoFile(dataURL, fileName, fileType) {
+    let arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], fileName, { type: fileType || 'image/jpg' });
+}
+

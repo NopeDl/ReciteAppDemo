@@ -117,9 +117,4 @@ public class UMRDaoImpl implements UMRDao {
             return (((Count) userId.get(0)).getNumber()).intValue();
         }
     }
-
-
-
-
-
 }

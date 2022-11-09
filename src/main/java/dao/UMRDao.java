@@ -36,9 +36,8 @@ public interface UMRDao {
 
     /**
      * 根据传进来的userId和modleId查看某个模板是否被已被收藏
-     * @param umr
-     * @return
+     * @param umr umr
+     * @return r
      */
     Integer slelectIfCollect(Umr umr);
-
 }

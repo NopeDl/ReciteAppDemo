@@ -63,24 +63,37 @@ Array.prototype.remove = function(val) {
 };
 
 //新建模板到仓库
-function newTP(title, context, modleId, label, common, flag) {
+function newTP(title, context, modleId, label, common, studyStatus, flag) {
     let li = document.createElement('li');
+    let studyS = `<div class="learning">
+                    <span>${studyStatus}</span>
+                </div>`
+    if (studyStatus == '学习中') {
+        studyS = `<div class="learning startlearn">
+                    <span>${studyStatus}</span>
+                </div>`
+    } else if (studyStatus == '复习中') {
+        studyS = `<div class="learning reviewing">
+                    <span>${studyStatus}</span>
+                </div>`
+    } else if (studyStatus == '已学习') {
+        studyS = `<div class="learning learned">
+                    <span>${studyStatus}</span>
+                </div>`
+    }
     li.innerHTML = `<div class="tp_inner">
                         <div class="modleId">${modleId}</div>
                         <div class="content">
-                            <h3 class="title ellipsis">${title}</h3>
+                            <h4 class="title ellipsis">${title}</h4>
                             <div class="info ellipsis">${context}</div>
                         </div>
+                        <div class="select"><i class="iconfont icon-xuanze1"></i></div>
                         <div class="tip">
-                            <div class="date">2022-10-15</div>
                             <div class="label">
                                 <span class="iconfont icon-shuqianguanli"></span>
-                                <span>${label}</span>
+                                <span class="label_title">${label}</span>
                             </div>
-                        </div>
-                        <div class="template_btn">
-                            <div class="tp_btn edit">编辑</div>
-                            <div class="tp_btn del">删除</div>
+                            ${studyS}
                         </div>
                         <div class="common">${common}</div>
                     </div>`
@@ -114,7 +127,7 @@ function comTP(title, context, modleId, label, base64, username, name_flag) {
                         <div class="color">
                             <div class="upper">
                                 <div class="head_portrait">
-                                    <img src="${base64}" alt="">
+                                    <img src="${img}" alt="">
                                 </div>
                                 <div class="idname1">${username}</div>
                             </div>
@@ -128,7 +141,7 @@ function comTP(title, context, modleId, label, base64, username, name_flag) {
                             <div class="click">
                                 <div class="label">
                                     <span class="iconfont icon-shuqianguanli"></span>
-                                    <span>${labelId2(label)}</span>
+                                    <span class="label_title">${labelId2(label)}</span>
                                 </div>
                                 <div class="inter_box" id="interactive">
                                     <div class="interactive">

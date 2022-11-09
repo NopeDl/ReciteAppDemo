@@ -69,6 +69,188 @@ a {
 body {
   background-color: #f4f4f4;
 }
+.select_dif_temp {
+  padding-top: 2.53164557vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75.94936709vw;
+  height: 96.20253165vw;
+  z-index: 10000;
+  border-radius: 5.06329114vw;
+  background-color: #fdfffc;
+}
+.select_dif_temp .select_dif {
+  padding: 2.53164557vw 3.79746835vw;
+}
+.select_dif_temp .select_dif .tips {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select_dif_temp .select_dif .tips span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.select_dif_temp .select_dif .tips .icon-guanbi {
+  color: #d3d5d2;
+  font-size: 5.82278481vw;
+}
+.select_dif_temp .select_dif .tips .icon-cuowu {
+  color: red;
+}
+.select_dif_temp .select_card {
+  padding: 3.79746835vw 2.53164557vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.select_dif_temp .select_card .button {
+  display: inline-block;
+  width: 15.18987342vw;
+  height: 7.59493671vw;
+  padding: 1.26582278vw 1.26582278vw;
+  font-size: 3.5443038vw;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #5f4fb8a4;
+  border: none;
+  border-radius: 3.79746835vw;
+  box-shadow: 0 0.75949367vw rgba(153, 153, 153, 0.707);
+}
+.select_dif_temp .select_card .active {
+  background-color: #5f4fb8c8;
+}
+.select_dif_temp .select_card .button:active {
+  background-color: #5f4fb8c8;
+  box-shadow: 0 0.75949367vw rgba(120, 120, 120, 0.753);
+  transform: translateY(3px);
+}
+.select_dif_temp .select_temp {
+  padding: 0 1.26582278vw;
+}
+.select_dif_temp .select_temp .tips {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 2.53164557vw;
+  padding-bottom: 2.53164557vw;
+}
+.select_dif_temp .select_temp .tips span {
+  text-align: center;
+}
+.select_dif_temp .select_temp .tips .icon-cuowu {
+  color: red;
+}
+.select_dif_temp .select_temp ul {
+  width: 100%;
+  height: 44.30379747vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.select_dif_temp .select_temp li {
+  margin-top: 2.53164557vw;
+  background-color: #f5f4f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.26582278vw;
+  padding-left: 2.53164557vw;
+  border-bottom: 0.25316456vw solid #959595;
+  border-radius: 2.53164557vw;
+}
+.select_dif_temp .select_temp li .modleId {
+  display: none;
+}
+.select_dif_temp .select_temp li .content {
+  padding: 2.53164557vw 0;
+}
+.select_dif_temp .select_temp li .content h3 {
+  font-size: 3.5443038vw;
+}
+.select_dif_temp .select_temp li .content .title_label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50.63291139vw;
+  padding-right: 2.53164557vw;
+}
+.select_dif_temp .select_temp li .content .title_label .title {
+  width: 30.37974684vw;
+}
+.select_dif_temp .select_temp li .content .title_label .label {
+  height: 5.56962025vw;
+  line-height: 5.56962025vw;
+  padding: 0 2.02531646vw;
+  font-size: 3.03797468vw;
+  border-radius: 2.53164557vw;
+  color: #fff;
+  background-color: #aba3cac6;
+}
+.select_dif_temp .select_temp li .select {
+  padding-left: 2.53164557vw;
+  padding-right: 1.26582278vw;
+  height: 7.59493671vw;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-left: 1.5px solid #e5e5e5;
+}
+.select_dif_temp .select_temp li .select .circle {
+  width: 5.56962025vw;
+  height: 5.56962025vw;
+  line-height: 5.56962025vw;
+  text-align: center;
+  color: transparent;
+  border: 1px solid #afafaf;
+  border-radius: 100%;
+}
+.select_dif_temp .select_temp li .select .selected {
+  background-color: #5f4fb8a4;
+  color: #fff;
+  border: 0;
+}
+.select_dif_temp .select_temp .active {
+  border: 1px solid #5f4fb8a4;
+}
+.select_dif_temp .determine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 13.92405063vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5f4fb8a4;
+  border-radius: 0 0 5.06329114vw 5.06329114vw;
+}
+.select_dif_temp .determine .queding {
+  padding: 0 5.06329114vw;
+  height: 8.86075949vw;
+  line-height: 8.86075949vw;
+  text-align: center;
+  font-size: 3.79746835vw;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5.06329114vw;
+  background-color: #978ed0;
+}
+.select_dif_temp .determine .queding:hover {
+  background-color: #8378cc;
+}
+.select_dif_temp .determine .queding:active {
+  background-color: #8378cc;
+  transform: translateY(2.5px);
+}
 .pk_page {
   background-color: #f4f4f4;
   z-index: 1000;
@@ -78,6 +260,13 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: scroll;
+}
+.pk_page .bgc {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #5251516f;
+  z-index: 1000;
 }
 .pk_page .main {
   font-size: 4.05063291vw;
@@ -139,7 +328,7 @@ body {
   width: 81.01265823vw;
   margin-top: 7.59493671vw;
   border-radius: 5%;
-  background-color: rgba(152, 116, 180, 0.798);
+  background-color: #4d24ac8e;
   box-shadow: 0.25316456vw 0.50632911vw 1.26582278vw 0.50632911vw rgba(159, 157, 157, 0.381);
 }
 .pk_page .main .competition_season .season_title {
@@ -156,7 +345,7 @@ body {
   width: 82.02531646vw;
   border-radius: 5%;
   background-color: #fff;
-  border: 5px solid #b5a9e1;
+  border: 3px solid #b5a9e1;
 }
 .pk_page .main .competition_season .season_box .rank {
   margin: 0  auto;
@@ -191,11 +380,12 @@ body {
   margin-bottom: 5.06329114vw;
   width: 45.56962025vw;
 }
-.pk_page .main .competition_season .season_box .start_game input {
+.pk_page .main .competition_season .season_box .start_game button {
   display: inline-block;
   width: 100%;
   height: 11.39240506vw;
   font-size: 5.06329114vw;
+  text-align: center;
   border: 0;
   background-color: #ffd161;
 }
@@ -218,7 +408,7 @@ body {
   height: calc(100vh - 17vw);
   transition: all 0.2s;
   background-color: #fff;
-  border-radius: 5.06329114vw;
+  border-radius: 5.06329114vw 5.06329114vw 0 0;
   overflow: scroll;
   background: url(../images/pk/排行榜.png) no-repeat;
 }

@@ -85,4 +85,12 @@
     <update id="updateReviewId" parameterType="pojo.po.db.Review">
          update umr set reviewId=#{reviewId} where userId=#{userId} and modleId=#{modleId}
     </update>
+
+    <select id="search" resultType="pojo.po.db.Modle">
+        SELECT modle.modleId,modleTitle,modlePath,modleLabel,modle.userId,coins,common FROM umr , modle
+        WHERE umr.modleId = modle.modleId AND
+        umr.userId = #{userId} AND
+        modleTitle like #{patten}
+    </select>
+
 </mapper>

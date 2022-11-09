@@ -220,7 +220,6 @@ body {
 .personal .modify .modify_box {
   background-color: #fff;
   padding: 0 13.92405063vw 0 3.79746835vw;
-  border-radius: 10%;
 }
 .personal .modify .modify_box .modify_title {
   display: flex;
@@ -246,10 +245,12 @@ body {
   padding: 0 7.59493671vw;
 }
 .personal .modify .Modify_interface input {
+  padding: 0 5.06329114vw;
   display: block;
   width: 100%;
   height: 15.18987342vw;
-  font-size: 6.32911392vw;
+  line-height: 15.18987342vw;
+  font-size: 5.06329114vw;
   border: 0;
   border-bottom: 1px solid #aeacac;
 }
@@ -262,7 +263,7 @@ body {
 }
 .personal .modify .Modify_interface .confirm {
   margin: 0 auto;
-  margin-top: 5.06329114vw;
+  margin-top: 2.53164557vw;
   width: 63.29113924vw;
 }
 .personal .modify .Modify_interface .confirm button {
@@ -271,5 +272,5 @@ body {
   background-color: #ffd161;
   border: 0;
   font-size: 5.06329114vw;
-  border-radius: 5%;
+  border-radius: 1.26582278vw;
 }

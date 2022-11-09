@@ -31,38 +31,6 @@ public class ModleServiceImpl implements ModleService {
     private final UserDao userDao=new UserDaoImpl();
     private final ReviewDao reviewDao=new ReviewDaoImpl();
 
-//    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
-
-//
-//    /**
-//     * 取消用户收藏的模板
-//     * @return
-//     */
-//    @Override
-//    public Message cancelModleCollect(HttpServletRequest request) {
-//        Message message;
-//        int userId = Integer.parseInt(request.getParameter("userId"));
-//        int modleId = Integer.parseInt(request.getParameter("modleId"));
-////        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
-//        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
-//
-//        if(1==mStatus){
-//            message = new Message("取消失败");
-//        }
-//        else {
-//            int i = modleDao.collectModleById(userId, modleId, mStatus);
-//            if (i > 0) {
-//                //说明此时成功
-//                message = new Message("取消收藏成功");
-//            } else {
-//                message = new Message("取消失败");
-//            }
-//        }
-//        return message;
-//
-//    }
-
-
     @Override
     public Message collectModle(HttpServletRequest request) {
         Message message;
@@ -87,7 +55,6 @@ public class ModleServiceImpl implements ModleService {
 
             //先查看下该模板是否已被该用户所收藏了
             //是为umr有该条表，说明此时已经收藏成功
-//        boolean b = umrDao.slelectIfCollect(umr);
             int integer = umrDao.slelectIfCollect(umr);
 
             //大于0为有这条记录
@@ -126,16 +93,6 @@ public class ModleServiceImpl implements ModleService {
                 }
             }
         }
-
-//        //调用modleDao来将收藏的东西insert
-//        int i = modleDao.collectModleById(userId, modleId,mStatus);
-//        if(i>0){
-//            //成功插入
-//            message=new Message("收藏成功");
-//        }else{
-//            message=new Message("收藏失败");
-//        }
-//        return message;
         return message;
     }
 
@@ -144,8 +101,8 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 解析文件
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message parseFile(HttpServletRequest request) {
@@ -160,13 +117,16 @@ public class ModleServiceImpl implements ModleService {
                 //根据文件类型获得文件处理器
                 fileType = fileType.substring(fileType.indexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
-                String context = handler.parseContent();
-                System.out.println(context);
-                //将换行转换为前端html换行标签
-                context = context.replaceAll("\\r\\n", "<\\br>");
-
-                msg = new Message("文件解析成功");
-                msg.addData("context", context);
+                if (handler != null){
+                    String context = handler.parseContent();
+                    System.out.println(context);
+                    //将换行转换为前端html换行标签
+                    context = context.replaceAll("\\r\\n", "<\\br>");
+                    msg = new Message("文件解析成功");
+                    msg.addData("context", context);
+                }else {
+                    msg = new Message("文件上传失败");
+                }
             } else {
                 msg = new Message("文件上传失败");
             }
@@ -300,8 +260,8 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 删除模板
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message deleteModle(HttpServletRequest request) {
@@ -320,27 +280,15 @@ public class ModleServiceImpl implements ModleService {
             reviewDao.removeModle(review);
         }
         int deleteModle = modleDao.deleteModle(modleId);
-        if(deleteModle>0){
+        if(deleteModle > 0){
             File file = new File(path);
             boolean deleteFile = file.delete();
-            msg = new Message("删除成功");
-            msg.addData("deleteSuccess", true);
-            return msg;
+            if(deleteFile){
+                msg = new Message("删除成功");
+                msg.addData("deleteSuccess", true);
+                return msg;
+            }
         }
-//        int deleteModle = modleDao.deleteModle(modleId);
-//
-//        File file = new File(path);
-//        boolean deleteFile = file.delete();
-//        //没有用事务,可能会有bug
-//        Message msg;
-////        if (deleteUmr != 0 && 0 != deleteModle && deleteFile) {
-//        if (0 != deleteModle && deleteFile) {
-//            msg = new Message("删除成功");
-//            msg.addData("deleteSuccess", true);
-//        } else {
-//            msg = new Message("删除失败");
-//            msg.addData("deleteSuccess", false);
-//        }
         msg = new Message("删除失败");
         msg.addData("deleteSuccess", false);
         return msg;
@@ -349,13 +297,14 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 根据获取的模板id,来读取txt文本
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message reTxt(HttpServletRequest request) {
         Message message;
-        String modleId = request.getParameter("modleId");//获取模板id
+        //获取模板id
+        String modleId = request.getParameter("modleId");
         //获取模板路径
         String modlePath = modleDao.selectPathByModleId(Integer.parseInt(modleId));
         Modle modle = modleDao.selectPathTitlAndTag(Integer.parseInt(modleId));
@@ -368,19 +317,23 @@ public class ModleServiceImpl implements ModleService {
             //解析文件内容
             String context = txtHandler.parseContent();
             ShowModle showModle = new ShowModle();
-            showModle.setContext(context);//存模板内容
-            showModle.setTitle(modle.getModleTitle());//存模板标题
+            //存模板内容
+            showModle.setContext(context);
+            //存模板标题
+            showModle.setTitle(modle.getModleTitle());
 
             //查找模板的标签名字,并且封装
             int modleLabel = modle.getModleLabel();
-            showModle.setLabelValue(modleLabel);//将模板标签编号存进去
+            //将模板标签编号存进去
+            showModle.setLabelValue(modleLabel);
 
             //将模板标签名字存进去
             String lableName = labelDao.selectLableName(modleLabel);
             showModle.setLabelName(lableName);
 
             message = new Message("读取模板内容成功");
-            message.addData("modleContext", showModle);//返回响应数据，模板内容
+            //返回响应数据，模板内容
+            message.addData("modleContext", showModle);
         } catch (FileNotFoundException e) {
             message = new Message(MsgInf.SERVER_ERROR);
         }
@@ -390,9 +343,9 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 将String类型的字符串存为txt文本，并且返回文件的地址
      *
-     * @param context
-     * @param modleTitle
-     * @return
+     * @param context 内容
+     * @param modleTitle 标题
+     * @return 文件地址
      */
     @Override
     public String WriteAsTxt(String context, String modleTitle) {
@@ -400,11 +353,13 @@ public class ModleServiceImpl implements ModleService {
         try {
             File file = new File(filePath);
             if (!file.exists()) {
-                file.createNewFile();
+               boolean b = file.createNewFile();
+                System.out.println("创建文件：" + b);
             }
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", null);
-            String path = txtHandler.saveFile(filePath, context);
-            return path;
+            if (txtHandler != null){
+                return txtHandler.saveFile(filePath, context);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -461,10 +416,10 @@ public class ModleServiceImpl implements ModleService {
             List<Community> modleList = modleDao.selectModlesByTag(modle);
             InputStream input;
             if (modleList.size() > 0) {
-                for (int i = 0; i < modleList.size(); i++) {
+                for (Community community : modleList) {
                     //根据路径读取文件内容
                     //获取改模板的路径；根据路径读取文件内容
-                    String modlePath = modleList.get(i).getModlePath();
+                    String modlePath = community.getModlePath();
                     try {
                         input = new FileInputStream(modlePath);
                     } catch (FileNotFoundException e) {
@@ -473,22 +428,22 @@ public class ModleServiceImpl implements ModleService {
                     //读取文本
                     FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                     String content = txtFileHandler.parseContent();
-                    modleList.get(i).setContent(content);
-                    modleList.get(i).setModlePath("");
+                    community.setContent(content);
+                    community.setModlePath("");
 
-                    User user = userDao.selectNameImgById(modleList.get(i));
-                    if(user!=null){
+                    User user = userDao.selectNameImgById(community);
+                    if (user != null) {
                         //传进来昵称和头像
-                        modleList.get(i).setNickName(user.getNickName());
+                        community.setNickName(user.getNickName());
                         //获取用户头像的显示地址
                         String imagepath = user.getImage();
 
                         //从我开始
-                        if ("".equals(imagepath)) {
+                        if ("".equals(imagepath) || imagepath == null) {
                             //说明此时头像为默认头像，不需要重新读取
                             //将响应的数据封装到message里
                             user.setBase64("");
-                            modleList.get(i).setBase64("");
+                            community.setBase64("");
                         } else {
 //                            //说明头像已经改变过了，需要重新读取
                             try {
@@ -498,14 +453,12 @@ public class ModleServiceImpl implements ModleService {
                                 e.printStackTrace();
                             }
                             //读取文本,这里表现为读取头像的base64路径
-                            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+                            FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
                             String base64 = imgHandler.parseContent();
-                            modleList.get(i).setBase64(base64);
+                            community.setBase64(base64);
                         }
 
                     }
-
-
 
 
 //            个Community类型（包含modle里面的 所有属性）
@@ -556,9 +509,9 @@ public class ModleServiceImpl implements ModleService {
 //                    }
 
 
-            //从我结束
+                    //从我结束
                     //不回显给前端路径
-                    modleList.get(i).setModlePath(null);
+                    community.setModlePath(null);
                 }
 
 

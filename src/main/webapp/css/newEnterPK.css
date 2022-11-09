@@ -75,6 +75,17 @@ a {
   background-color: #bba5dd;
   transition: all 0.2s;
 }
+.enterPk .exit_pop_up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -13.33333333vw;
+  margin-left: -26.66666667vw;
+  width: 53.33333333vw;
+  height: 26.66666667vw;
+  background-color: red;
+  z-index: 1000;
+}
 .enterPk .head_nav_pk {
   margin-top: 5.33333333vw;
   display: flex;
@@ -97,6 +108,7 @@ a {
   padding: 4vw 0;
   width: 93.33333333vw;
   height: 21.33333333vw;
+  position: relative;
 }
 .enterPk .pk_blood .other,
 .enterPk .pk_blood .mine {
@@ -216,6 +228,18 @@ a {
   line-height: 9.33333333vw;
   color: #fff;
   font-size: 4.26666667vw;
+}
+.enterPk .pk_blood .runle {
+  z-index: 1000;
+  width: 26.66666667vw;
+  height: 6.66666667vw;
+  position: absolute;
+  top: -3.2vw;
+  right: 0;
+  text-align: end;
+  line-height: 6.66666667vw;
+  font-size: 3.73333333vw;
+  display: none;
 }
 .enterPk .text_box {
   margin: 2.66666667vw auto;
@@ -642,6 +666,7 @@ a {
   color: #ffffff39;
   font-size: 53.33333333vw;
   font-weight: 700;
+  z-index: -1;
 }
 .pk_end .back_bock {
   margin-top: 1.33333333vw;
@@ -881,9 +906,15 @@ a {
   line-height: 8vw;
   font-size: 4.8vw;
 }
+.pk_end .show_answer .mine_an div {
+  text-align: center;
+}
 .pk_end .show_answer .answer {
-  flex: 5;
+  flex: 1;
   line-height: 8vw;
+}
+.pk_end .show_answer .an {
+  text-align: center;
 }
 .pk_end .show_answer .other_an {
   text-align: right;
@@ -955,6 +986,11 @@ a {
 .appear {
   visibility: visible;
   animation-delay: 1.8s;
+  animation-name: appear;
+}
+.appear_img {
+  visibility: visible;
+  animation-delay: 1s;
   animation-name: appear;
 }
 .disappear {
