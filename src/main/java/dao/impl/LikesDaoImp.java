@@ -75,26 +75,26 @@ public class LikesDaoImp implements LikesDao {
         return delete;
     }
 
-    /**
-     * 查询用户对模板的点赞情况
-     * @param userId 用户id
-     * @param modleId 社区的帖子
-     * @return 点过赞返回true，否则返回false
-     */
-    @Override
-    public boolean selectifUserLike(int userId, int modleId) {
-        Likes likes=new Likes();
-        likes.setModleId(modleId);
-        likes.setUserId(userId);
-        boolean isLike=false;
-        SqlSession sqlSession=sqlSessionFactory.openSession();
-        List<Object> objects = sqlSession.selectList("LikesMapper.selectifUserLike", likes);
-        sqlSession.close();
-        if(objects.size()>0){
-            //说明有点赞过
-            isLike=true;
-        }
-
-        return isLike;
-    }
+//    /**
+//     * 查询用户对模板的点赞情况
+//     * @param userId 用户id
+//     * @param modleId 社区的帖子
+//     * @return 点过赞返回true，否则返回false
+//     */
+//    @Override
+//    public boolean selectifUserLike(int userId, int modleId) {
+//        Likes likes=new Likes();
+//        likes.setModleId(modleId);
+//        likes.setUserId(userId);
+//        boolean isLike=false;
+//        SqlSession sqlSession=sqlSessionFactory.openSession();
+//        List<Object> objects = sqlSession.selectList("LikesMapper.selectifUserLike", likes);
+//        sqlSession.close();
+//        if(objects.size()>0){
+//            //说明有点赞过
+//            isLike=true;
+//        }
+//
+//        return isLike;
+//    }
 }

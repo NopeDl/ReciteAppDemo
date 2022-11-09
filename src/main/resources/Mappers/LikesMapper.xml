@@ -13,7 +13,7 @@
         delete from likes where userId=#{userId} and modleId=#{modleId}
     </delete>
 
-    <select id="selectifUserLike" parameterType="pojo.po.db.Likes" resultType="pojo.po.db.Likes">
-        select * from likes where userId=#{userId} and modleId=#{modleId}
-    </select>
+<!--    <select id="selectifUserLike" parameterType="pojo.po.db.Likes" resultType="pojo.po.db.Likes">-->
+<!--        select * from likes where userId=#{userId} and modleId=#{modleId}-->
+<!--    </select>-->
 </mapper>

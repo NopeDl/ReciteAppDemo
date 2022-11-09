@@ -28,13 +28,13 @@ public interface LikesDao {
     int deleteLikes(int userId,int modleId);
 
 
-    /**
-     * 查询用户是否对某个帖子点过赞
-     * @param userId 用户id
-     * @param modleId 社区发布的模板id
-     * @return 点赞过返回true 否则返回false
-     */
-    boolean selectifUserLike(int userId,int modleId);
+//    /**
+//     * 查询用户是否对某个帖子点过赞
+//     * @param userId 用户id
+//     * @param modleId 社区发布的模板id
+//     * @return 点赞过返回true 否则返回false
+//     */
+//    boolean selectifUserLike(int userId,int modleId);
 
 
 

@@ -49,6 +49,16 @@ public class EncodingFilter extends HttpFilter {
 //            e.printStackTrace();
 //            throw new RuntimeException("获取段位名称失败");
 //        }
+
+        //定时将点赞数量存到数据库里
+        //服务器开启前应该先查找对应的数据放到总缓存里
+        LikesService likesService=new LikesServiceImpl();
+        try {
+            likesService.initCaChe();
+            Cache.tiemrTask();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,15 +81,6 @@ public class EncodingFilter extends HttpFilter {
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        //定时将点赞数量存到数据库里
-        //服务器开启前应该先查找对应的数据放到总缓存里
-        LikesService likesService=new LikesServiceImpl();
-        try {
-            likesService.initCaChe();
-            Cache.tiemrTask();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         chain.doFilter(request, response);
     }
 }

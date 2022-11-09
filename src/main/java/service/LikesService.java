@@ -24,7 +24,7 @@ public interface LikesService {
 
     /**
      * 用户执行点赞或者取消点赞
-     * @param request
+     * @param request request
      */
     Message likeOrDisLike(HttpServletRequest request);
 
@@ -38,16 +38,16 @@ public interface LikesService {
 
     /**
      * 点赞
-     * @param userId
-     * @param modleId
+     * @param userId 执行操作的用户id
+     * @param modleId 点赞的模板
      */
     void like(int userId,int modleId);
 
 
     /**
      * 取消点赞
-     * @param userId
-     * @param modleId
+     * @param userId 执行取消点赞的用户
+     * @param modleId 被取消点赞的模板
      */
     void disLike(int userId,int modleId);
 
@@ -68,24 +68,32 @@ public interface LikesService {
 
     /**
      * 执行取消点赞后的关系，其中USER_LIKE肯定包含userId的键
-     * @param userId
-     * @param set
+     * @param userId 取消点赞后，删除总缓存里某个用户的点赞
+     * @param set 用户取消点赞的模板id
      */
     void deleteUSER_LIKE(int userId,Set<Integer> set) ;
 
     /**
      * 更新缓存中点赞数量的操作
-     * @param modleId
-     * @param great
+     * @param modleId 总缓存中改变点赞数量的模板id
+     * @param great 点赞数量的改变量
      */
     void updateMODLE_LIKE(int modleId,int great);
 
     /**
      * 根据模板id来返回模板的点赞数量
-     * @param modleId
-     * @return
+     * @param modleId 获取点赞数量的模板
+     * @return 返回点赞数
      */
     int getLikeNumsByModleId(int modleId);
+
+    /**
+     * 查询用户对模板的点赞情况
+     * @param userId 查询userId 对某个模板的点赞情况
+     * @param modleId 相关的模板id
+     * @return 点赞过返回true,否则返回false
+     */
+    boolean ifUserLike(int userId,int modleId);
 
     /**
      * 初始化总缓存

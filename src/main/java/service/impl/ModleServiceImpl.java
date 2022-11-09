@@ -454,6 +454,7 @@ public class ModleServiceImpl implements ModleService {
             int modleLabel = Integer.parseInt(modleLabelStr);
             //封装查询数据
             Modle modle = new Modle();
+            modle.setCommon(1);
             modle.setModleLabel(modleLabel);
             modle.setPageIndex(pageIndex);
 
@@ -515,11 +516,13 @@ public class ModleServiceImpl implements ModleService {
 
                     //下面解决点赞问题
                     //先判断用户对该帖子的点赞情况
-                    boolean b = likesDao.selectifUserLike(community.getUserId(), community.getModleId());
+                    boolean b = likesService.ifUserLike(community.getUserId(), community.getModleId());
                     community.setLikeStatus(b);
                     //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
                     int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
                     community.setLikeNum(totalLike);
+                    //这玩意没用
+                    community.setGreat(0);
 
 
                 }
