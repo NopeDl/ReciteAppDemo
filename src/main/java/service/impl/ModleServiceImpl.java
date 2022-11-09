@@ -5,7 +5,6 @@ import dao.impl.*;
 import enums.Difficulty;
 import pojo.po.db.*;
 import pojo.vo.Community;
-import service.LikesService;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
@@ -459,14 +458,14 @@ public class ModleServiceImpl implements ModleService {
 
             //获得查询信息
 
-            //返回一个Community类型（包含modle里面的所有属性）
+            //返回一个Community类型（包含modle里面的 所有属性）
             List<Community> modleList = modleDao.selectModlesByTag(modle);
             InputStream input;
             if (modleList.size() > 0) {
-                for (int i = 0; i < modleList.size(); i++) {
+                for (Community community : modleList) {
                     //根据路径读取文件内容
                     //获取改模板的路径；根据路径读取文件内容
-                    String modlePath = modleList.get(i).getModlePath();
+                    String modlePath = community.getModlePath();
                     try {
                         input = new FileInputStream(modlePath);
                     } catch (FileNotFoundException e) {
@@ -475,22 +474,22 @@ public class ModleServiceImpl implements ModleService {
                     //读取文本
                     FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                     String content = txtFileHandler.parseContent();
-                    modleList.get(i).setContent(content);
-                    modleList.get(i).setModlePath("");
+                    community.setContent(content);
+                    community.setModlePath("");
 
-                    User user = userDao.selectNameImgById(modleList.get(i));
-                    if(user!=null){
+                    User user = userDao.selectNameImgById(community);
+                    if (user != null) {
                         //传进来昵称和头像
-                        modleList.get(i).setNickName(user.getNickName());
+                        community.setNickName(user.getNickName());
                         //获取用户头像的显示地址
                         String imagepath = user.getImage();
 
                         //从我开始
-                        if ("".equals(imagepath)) {
+                        if ("".equals(imagepath) || imagepath == null) {
                             //说明此时头像为默认头像，不需要重新读取
                             //将响应的数据封装到message里
                             user.setBase64("");
-                            modleList.get(i).setBase64("");
+                            community.setBase64("");
                         } else {
 //                            //说明头像已经改变过了，需要重新读取
                             try {
@@ -502,22 +501,25 @@ public class ModleServiceImpl implements ModleService {
                             //读取文本,这里表现为读取头像的base64路径
                             FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
                             String base64 = imgHandler.parseContent();
-                            modleList.get(i).setBase64(base64);
+                            community.setBase64(base64);
                         }
 
 
                     }
 
+
+            //从我结束
                     //不回显给前端路径
-                    modleList.get(i).setModlePath(null);
+                community.setModlePath(null);
 
                     //下面解决点赞问题
                     //先判断用户对该帖子的点赞情况
-                    boolean b = likesDao.selectifUserLike(modleList.get(i).getUserId(), modleList.get(i).getModleId());
-                    modleList.get(i).setLikeStatus(b);
+                    boolean b = likesDao.selectifUserLike(community.getUserId(), community.getModleId());
+                    community.setLikeStatus(b);
                     //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
-                    int totalLike = likesService.getLikeNumsByModleId(modleList.get(i).getModleId());
-                    modleList.get(i).setLikeNum(totalLike);
+                    int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
+                    community.setLikeNum(totalLike);
+
 
                 }
 

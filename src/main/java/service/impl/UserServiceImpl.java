@@ -1,7 +1,6 @@
 package service.impl;
 
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dao.*;
 import dao.impl.*;
 import enums.MsgInf;
@@ -10,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import pojo.po.db.DailyStudy;
-import pojo.po.db.Review;
 import pojo.po.db.User;
 import pojo.vo.Message;
 import service.UserService;
@@ -19,15 +17,14 @@ import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
 
 import java.io.*;
-import java.net.URLDecoder;
-import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * @author yeyeye and isDucka
+ */
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao = new UserDaoImpl();
-
-    private final ModleDao modleDao = new ModleDaoImpl();
     private final DateDao dateDao = new DateDaoImpl();
     private final AccountDao accountDao = new AccountDaoImpl();
     private final ReviewDao reviewDao=new ReviewDaoImpl();
@@ -35,8 +32,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 退出登录
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message quit(HttpServletRequest request) {
@@ -49,8 +46,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 注册用户
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message createUser(HttpServletRequest request) {
@@ -98,10 +95,12 @@ public class UserServiceImpl implements UserService {
             }
             //读取文本,这里表现为读取头像的base64路径
             FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
-            String base64 = imgHandler.parseContent();
-//            FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
-//            String base64 = txtFileHandler.parseContent();//读取出来base64
-            user.setBase64(base64);
+            if (imgHandler != null) {
+                String base64 = imgHandler.parseContent();
+                user.setBase64(base64);
+            }else {
+                user.setBase64("");
+            }
             user.setImage(null);
         }
         //将响应的数据封装到message里
@@ -114,8 +113,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 通过用户id来改个人信息
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message ReMsgById(HttpServletRequest request) {
@@ -178,8 +177,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 检查昵称是否可用
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message checkNickNameExists(HttpServletRequest request) {
@@ -201,8 +200,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取积分榜前十
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message rankingList(HttpServletRequest request) {
@@ -220,8 +219,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取用户排位和信息
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message userRanking(HttpServletRequest request) {
@@ -232,7 +231,7 @@ public class UserServiceImpl implements UserService {
         //查询用户信息
         User user = userDao.selectUserById(userId);
         //封装数据
-        Map<String, Object> res = new HashMap<>();
+        Map<String, Object> res = new HashMap<>(2);
         res.put("userRanking", userRanking);
         user.setImage(null);
         res.put("user", user);
@@ -291,16 +290,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String WriteImageAsTxt(String base64, int useId) {
-        String filePath = Resources.getResource("static/imgPath/" + System.currentTimeMillis() + String.valueOf(useId) + ".txt");
+        String filePath = Resources.getResource("static/imgPath/" + System.currentTimeMillis() + useId + ".txt");
         System.out.println(filePath);
         try {
             File file = new File(filePath);
             if (!file.exists()) {
-                file.createNewFile();
+                boolean res = file.createNewFile();
+                System.out.println("创建文件" + res + ": " + filePath);
             }
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", null);
-            String imagePath = txtHandler.saveFile(filePath, base64);
-            return imagePath;
+            if (txtHandler != null){
+                return txtHandler.saveFile(filePath, base64);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -321,11 +322,14 @@ public class UserServiceImpl implements UserService {
             int userId = Integer.parseInt(request.getParameter("userId"));
             Part image = request.getPart("image");
             FileHandler imgFileHandler = FileHandlerFactory.getHandler("img", image.getInputStream());
-            String filePath = Resources.getResource("static/images/") + System.currentTimeMillis() + image.getSubmittedFileName();
+            String filePath = Resources.getResource("static/images/") + System.currentTimeMillis() + image.getSubmittedFileName() + ".jpg";
             //获取ReciteMemory/.......
             //拼接图像路径
-            imgFileHandler.saveFile(filePath, null);
-            int i = userDao.updateImageByUserID(userId, filePath);
+            int i = 0;
+            if (imgFileHandler != null){
+                imgFileHandler.saveFile(filePath, null);
+                i = userDao.updateImageByUserID(userId, filePath);
+            }
             if (i > 0) {
                 msg.addData("uploadSuccess", true);
             } else {
@@ -345,25 +349,20 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message saveDailyData(HttpServletRequest request) {
-//        String sn = request.getParameter("studyNums");
         String st = request.getParameter("studyTime");
 
         int userId = Integer.parseInt(request.getParameter("userId"));
         //处理null
-//        int studyNums = (sn != null ? Integer.parseInt(sn) : 0);
         int studyTime = (st != null ? Integer.parseInt(st) : 0);
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
         int i;
         if (dailyStudy == null) {
             //如果用户当天没有学习记录
             //则创建一个
-//            i = userDao.insertDailyStudyData(userId, studyNums, studyTime, 0);
             i = userDao.insertDailyStudyData(userId, 0, studyTime, 0);
         } else {
             //有则更新数据
-//            studyNums = Math.max(studyNums,dailyStudy.getStudyNums());
             studyTime = Math.max(studyTime,dailyStudy.getStudyTime());
-//            i = userDao.updateDailyStudyByIdAndTime(userId, studyNums, studyTime, dailyStudy.getReviewNums());
             i = userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums(), studyTime, dailyStudy.getReviewNums());
         }
         Message msg;
@@ -385,22 +384,21 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message getUserDailyStudyData(HttpServletRequest request) {
-        Message msg;
+
         int userId = Integer.parseInt(request.getParameter("userId"));
         DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-
+        Message msg;
         if (dailyStudy != null) {
             int totalReviewNums=0;
             //再获取该用户总的复习篇数
             //循环八次
-            for (int i = 1; i <=8 ; i++) {
+            for (int i = 1; i <= 8 ; i++) {
                 ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
+
                 //分别传userId，周期，显示需要的天数
                 totalReviewNums += reviewDao.getTotalReviewNums(userId, i, reviewPeriod.getDate());
-
             }
             dailyStudy.setTotalReviewNums(totalReviewNums);
-
             msg = new Message("获取成功");
             msg.addData("getSuccess", true);
             msg.addData("studyData", dailyStudy);

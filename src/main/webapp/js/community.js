@@ -53,7 +53,7 @@ function communityTP() {
                 ajax(`http://8.134.104.234:8080/ReciteMemory/modle/Collection?userId=${curr.userId}&modleId=${all('.community_ul .modleId')[i].innerHTML}&mStatus=1`, 'get', '', (str) => {
                     let newstr = JSON.parse(str).msg;
                     console.log(newstr);
-                    newTP(all('.community_ul .title')[i].innerHTML, all('.community_ul .info')[i].innerHTML, all('.community_ul .modleId')[i].innerHTML, all('.community_ul .label')[i].querySelectorAll('span')[1].innerHTML, false);
+                    newTP(all('.community_ul .title')[i].innerHTML, all('.community_ul .info')[i].innerHTML, all('.community_ul .modleId')[i].innerHTML, all('.community_ul .label')[i].querySelectorAll('span')[1].innerHTML, 1,'未学习',false);
                     //刷新仓库
                     resetbase();
                 }, true);
@@ -94,7 +94,14 @@ function communityTP() {
             }
             $('.viewTemplate footer').style.display = 'block';
             if (x.parentNode.querySelector('.idname1').innerHTML == curr.userInfo.nickName) {
-                $('.viewTemplate footer').style.display = 'none';
+                // $('.viewTemplate footer').style.display = 'none';
+                $('.viewTemplate footer .dainzan .iconfont').classList.add('icon-a-shanchulajitong');
+                $('.viewTemplate footer .dainzan .iconfont').classList.remove('icon-shoucang');
+                $('.vt_text').innerHTML = '删除';
+            }else{
+                $('.viewTemplate footer .dainzan .iconfont').classList.remove('icon-a-shanchulajitong');
+                $('.viewTemplate footer .dainzan .iconfont').classList.add('icon-shoucang');
+                $('.vt_text').innerHTML = '收藏';
             }
             $('.viewTemplate').classList.remove('scroll_top');
             $('.viewTemplate footer').classList.remove('scroll_top');
@@ -203,12 +210,14 @@ function xrcomTP() {
                 console.log(comarr, commonArr);
                 if (comarr.length != 0) {
                     for (let x of comarr) {
-                        commonArr[0].push(x);
+                        if(x.userId == 50)
+                            commonArr[0].push(x);
                     }
                 }
             }
             communityTP();
             $('.community header .label li')[0].onclick();
+            $('.com_loading').style.display = 'none';
         }, true);
     }
 }
@@ -296,7 +305,7 @@ Array.from($('.community header .label li')).forEach((x, i) => {
                 let name_flag = true;
                 if (k.nickName == curr.userInfo.nickName)
                     name_flag = false;
-                let newcont = k.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                let newcont = k.content.replace(/<空格>/g, '&nbsp;');
 
                 comTP(k.modleTitle, newcont, k.modleId, k.modleLabel, k.base64,k.nickName, name_flag);
             }
@@ -306,7 +315,7 @@ Array.from($('.community header .label li')).forEach((x, i) => {
                 let name_flag = true;
                 if (k.nickName == curr.userInfo.nickName)
                     name_flag = false;
-                let newcont = k.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                let newcont = k.content.replace(/<空格>/g, '&nbsp;');
                 comTP(k.modleTitle, newcont, k.modleId, k.modleLabel, k.base64,k.nickName, name_flag);
             }
         }

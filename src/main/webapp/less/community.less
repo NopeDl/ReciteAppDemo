@@ -118,7 +118,18 @@
 
         .zhanwei{
             width: 100%;
-            height: (100/@vw);
+            height: (105/@vw);
+        }
+
+        .com_loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: (200 / @vw);
+            height: (200 / @vw);
+            background: url(../images/加载.gif) no-repeat;
+            background-size: cover;
         }
         
 
@@ -132,6 +143,10 @@
             height:calc(100vh - 17vw);
             border-radius: (10/@vw);
             overflow: scroll;
+
+            &::-webkit-scrollbar{
+                display: none;
+            }
             li{
                 display: block;
                 padding: 0 (10/@vw);
@@ -200,6 +215,12 @@
                                 font-size: (14 / @vw);
                                 line-height: (25/@vw);
                                 height: (52 / @vw);
+                            }
+
+                            .highlight {
+                                display: inline;
+                                // background: #fdbe3b;
+                                color: #000;
                             }
                         }
                         

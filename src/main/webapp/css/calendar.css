@@ -71,7 +71,7 @@ body {
 }
 .calendar_page {
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   background-color: #f4f4f4;
   transition: all 0.3s ease-in-out;
@@ -95,6 +95,7 @@ body {
   background-color: #aea0d5;
 }
 .calendar_page .calendar {
+  z-index: 100;
   margin-top: 7.59493671vw;
   height: max-content;
   width: 100vw;
@@ -138,6 +139,8 @@ body {
   padding: 2.53164557vw;
   box-shadow: 0.25316456vw 0.50632911vw 1.26582278vw 0.50632911vw rgba(159, 157, 157, 0.381);
   border-radius: 1%;
+  transition: all 0.3s;
+  min-height: 75.94936709vw;
 }
 .calendar_page .calendar .calendar_body .calendar_week_day {
   font-size: 4.05063291vw;
@@ -157,6 +160,7 @@ body {
   grid-template-columns: repeat(7, 1fr);
   gap: 0.50632911vw;
   color: #151426;
+  transition: all 0.6s;
 }
 .calendar_page .calendar .calendar_body .calendar_days div {
   width: 10.12658228vw;
@@ -266,46 +270,26 @@ body {
   background-color: #e1d5ed;
   border: 0;
 }
+.calendar_page .calendar .calendar_footer .dailySignature {
+  position: relative;
+  margin-top: 5vh;
+  padding: 5.06329114vw 2.53164557vw;
+  border-radius: 2.53164557vw;
+  background-color: #fff;
+  box-shadow: 0.25316456vw 0.25316456vw 1.51898734vw 0.25316456vw rgba(121, 121, 121, 0.163);
+}
 .calendar_page .calendar .calendar_footer .title {
-  font-size: 5.56962025vw;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
+  color: #000;
+  font-size: 5.06329114vw;
+  width: 27.84810127vw;
+  padding: 1.26582278vw;
+  text-align: center;
+  border-radius: 2.53164557vw;
 }
 .calendar_page .calendar .calendar_footer .record_box {
-  margin-top: 2.53164557vw;
-  padding: 3.79746835vw;
-  width: 100%;
-  border-radius: 5%;
-}
-.calendar_page .calendar .calendar_footer .record_box .box {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.calendar_page .calendar .calendar_footer .record_box .box .com {
-  width: 45%;
-  height: 20.25316456vw;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 5%;
-}
-.calendar_page .calendar .calendar_footer .record_box .box .com .com_title {
-  line-height: 10.12658228vw;
-  font-size: 4.05063291vw;
-}
-.calendar_page .calendar .calendar_footer .record_box .box .com .data {
-  font-size: 5.06329114vw;
-}
-.calendar_page .calendar .calendar_footer .record_box .box .time .icon-shijian {
-  font-size: 5.06329114vw;
-  color: #e9c614;
-  font-weight: 700;
-}
-.calendar_page .calendar .calendar_footer .record_box .box .page .icon-tongji1 {
-  font-size: 5.06329114vw;
-  color: #e9c614;
+  margin-top: 5.06329114vw;
+  padding: 1.26582278vw 3.79746835vw;
+  border-left: 2px solid rgba(0, 0, 0, 0.319);
 }
 .calendar_page .month_list {
   font-size: 4.05063291vw;

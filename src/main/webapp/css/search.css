@@ -66,77 +66,81 @@ a {
   font-style: normal;
   font-display: block;
 }
-body {
-  height: 100%;
-  background: linear-gradient(to right, #d9d0e6 50%, #f6f6f6 50%) fixed;
-}
-header {
+.search_page header {
   z-index: 1000;
   position: fixed;
-  left: 0;
   top: 0;
   transition: left 0.2s;
   width: 100vw;
   height: 15.46666667vw;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 4vw;
+  justify-content: space-between;
+  padding: 0 8vw 0 2.66666667vw;
 }
-header .header_search {
+.search_page header .header_left {
+  width: 8vw;
+  height: 8vw;
+  line-height: 8vw;
+  text-align: center;
+}
+.search_page header .header_left .icon {
+  font-weight: 700;
+  font-size: 4vw;
+}
+.search_page header .header_search {
   display: flex;
   align-items: center;
   padding: 0 2.66666667vw;
-  width: 58.66666667vw;
+  width: 74.66666667vw;
   height: 8vw;
   border-radius: 4vw;
   background-color: #ecedef;
 }
-header .header_search input {
+.search_page header .header_search input {
   padding: 0 1.33333333vw;
-  width: 53.33333333vw;
+  width: 62.66666667vw;
   height: 8vw;
   border-radius: 4vw;
   background-color: #ecedef;
+  font-size: 4vw;
   border: 0;
 }
-header .header_search button {
+.search_page header .header_search button {
   width: 8vw;
   height: 8vw;
   border-radius: 50%;
   border: none;
   background-color: transparent;
 }
-header .header_search button .icon {
+.search_page header .header_search button .icon {
   font-size: 5.33333333vw;
 }
-.container {
+.search_page .container {
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  margin-bottom: 18.66666667vw;
   position: relative;
   width: 100vw;
   margin-top: 15.46666667vw;
 }
-.container .collection_base,
-.container .my_base {
+.search_page .container .search_lis {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   transition: all 0.01s;
-}
-.container .collection_base ul,
-.container .my_base ul {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.container .collection_base .baseLis_fadeIn,
-.container .my_base .baseLis_fadeIn {
-  margin-top: 3vw;
+.search_page .container .search_lis .baseLis_fadeIn {
+  margin-top: 4.5vw;
   opacity: 1;
 }
-.container .collection_base .baseLis_del,
-.container .my_base .baseLis_del {
+.search_page .container .search_lis .baseLis_del {
   animation: baseLis_del 0.5s forwards;
 }
 @keyframes baseLis_del {
@@ -153,63 +157,61 @@ header .header_search button .icon {
     display: none;
   }
 }
-.container .collection_base li,
-.container .my_base li {
+.search_page .container .search_lis li {
   overflow: hidden;
   position: relative;
-  margin-top: 10vw;
-  width: 97.33333333vw;
+  margin-top: 5vw;
+  width: 93.33333333vw;
   height: 26.66666667vw;
   border-radius: 2.66666667vw;
-  box-shadow: 0.8vw 0.8vw 1.33333333vw rgba(0, 0, 0, 0.381);
+  box-shadow: 0.26666667vw 0.26666667vw 1.6vw rgba(0, 0, 0, 0.227);
   transition: all 0.5s ease-in-out;
   opacity: 0;
   transition-delay: 0.3s;
 }
-.container .collection_base li .tp_inner,
-.container .my_base li .tp_inner {
+.search_page .container .search_lis li .tp_inner {
   position: absolute;
   left: 0;
   background-color: #fff;
-  width: 140vw;
+  width: 93.33333333vw;
   height: 100%;
   padding-left: 4vw;
-  display: flex;
-  align-items: center;
   transition: all 0.3s ease-in-out;
 }
-.container .collection_base li .tp_inner .common,
-.container .my_base li .tp_inner .common,
-.container .collection_base li .tp_inner .modleId,
-.container .my_base li .tp_inner .modleId {
+.search_page .container .search_lis li .tp_inner .common,
+.search_page .container .search_lis li .tp_inner .modleId {
   display: none;
 }
-.container .collection_base li .content,
-.container .my_base li .content {
-  width: 64vw;
+.search_page .container .search_lis li .content {
+  margin-top: 4vw;
 }
-.container .collection_base li .content h3,
-.container .my_base li .content h3 {
-  width: 48vw;
-  margin-bottom: 5.33333333vw;
+.search_page .container .search_lis li .content h3 {
+  width: 82.66666667vw;
   font-size: 5.33333333vw;
 }
-.container .collection_base li .content .info,
-.container .my_base li .content .info {
+.search_page .container .search_lis li .content h3 span {
+  border-radius: 1.33333333vw;
+  background-color: #ffc561;
+}
+.search_page .container .search_lis li .bottom_box {
+  width: 85.33333333vw;
+  margin-top: 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search_page .container .search_lis li .bottom_box .info {
   font-size: 3.73333333vw;
   width: 58.66666667vw;
   height: 4.8vw;
 }
-.container .collection_base li .tip,
-.container .my_base li .tip {
-  width: 26.66666667vw;
+.search_page .container .search_lis li .bottom_box .highlight {
+  display: inline;
 }
-.container .collection_base li .tip .date,
-.container .my_base li .tip .date {
+.search_page .container .search_lis li .tip .date {
   display: none;
 }
-.container .collection_base li .tip .label,
-.container .my_base li .tip .label {
+.search_page .container .search_lis li .tip .label {
   width: auto;
   border-radius: 5.33333333vw;
   line-height: 6.66666667vw;
@@ -218,65 +220,30 @@ header .header_search button .icon {
   font-size: 5.33333333vw;
   background-color: #ab97c974;
 }
-.container .collection_base li .tip .label span,
-.container .my_base li .tip .label span {
+.search_page .container .search_lis li .tip .label span {
   color: #323232;
   font-size: 3.73333333vw;
 }
-.container .collection_base li .tip .label .icon-shuqianguanli,
-.container .my_base li .tip .label .icon-shuqianguanli {
+.search_page .container .search_lis li .tip .label .icon-shuqianguanli {
   font-size: 3.73333333vw;
 }
-.container .collection_base li .template_btn,
-.container .my_base li .template_btn {
-  margin-left: 2.66666667vw;
-  width: 43.2vw;
-  height: 100%;
-  display: flex;
-}
-.container .collection_base li .template_btn .tp_btn,
-.container .my_base li .template_btn .tp_btn {
-  width: 21.6vw;
-  height: 100%;
-  font-size: 5.86666667vw;
-  text-align: center;
-  line-height: 26.66666667vw;
-}
-.container .collection_base li .template_btn .del,
-.container .my_base li .template_btn .del {
-  background-color: #fc5b5bcf;
-}
-.container .collection_base li .template_btn .edit,
-.container .my_base li .template_btn .edit {
-  background-color: #a89cd4;
-}
-.container .collection_base .base_none_1,
-.container .my_base .base_none_1,
-.container .collection_base .base_none_2,
-.container .my_base .base_none_2 {
-  display: none;
-  width: 100%;
-  margin-top: calc(100vh - (400 / 3.75vw));
-  height: 106.66666667vw;
-  background-image: url(../images/空/空空如也.png);
-  background-size: cover;
-}
-.container .collection_base .base_none_2,
-.container .my_base .base_none_2 {
-  background-image: url(../images/空/收藏夹空空如也.png);
-}
-.container .base_bottom {
+.search_page .container .base_bottom {
   height: 21.33333333vw;
   width: 100%;
 }
-.container .collection_base {
-  transform: scale(0);
-  clip-path: circle(7.06666667vw at 90vw -10vw);
-  transition: all 0.5s;
+.search_page .container .empty {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
-.container .collection_base li {
-  transition: all 0.3s ease-in-out;
+.search_page .container .empty img {
+  width: 53.33333333vw;
 }
-.container .clip_path_change {
-  clip-path: circle(100%);
+.search_page .container .empty p {
+  margin-top: -2.66666667vw;
+  width: 66.66666667vw;
+  text-align: center;
+  color: #3232324c;
 }

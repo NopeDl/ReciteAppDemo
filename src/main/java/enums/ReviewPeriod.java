@@ -62,7 +62,7 @@ public enum ReviewPeriod {
             case 6:return ReviewPeriod.SIXTH;
             case 7:return ReviewPeriod.SEVENTH;
             case 8:return ReviewPeriod.EIGHTH;
+            default:return null;
         }
-        return null;
     }
 }

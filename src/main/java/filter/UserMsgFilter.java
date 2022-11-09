@@ -10,8 +10,17 @@ import tools.utils.ResponseUtil;
 
 import java.io.IOException;
 
-//拦截用户未登录非法请求
-@WebFilter({"/user.do/UserMsg", "/user.do/ReMessage", "/user.do/ChangePswd", "/upload/*","/user.do/clockIn","/user.do/getClockInRecord"})
+/**
+ * 拦截用户未登录非法请求
+ * @author y and i
+ */
+@WebFilter({
+"/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD","/user.do/",
+"/inf.get/studyData",
+"/modle/MakeModle","/modle/deleteModle","/modle/UserMemory","/modle/Collection","/modle/UpdateModleStatus",
+"/upload/uploadImg",
+"/review/JoinThePlane","/review/RemoveFromPlan","/review/GetPeriodModle","/review/FinishOnceReview"
+})
 public class UserMsgFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -20,7 +29,8 @@ public class UserMsgFilter extends HttpFilter {
 //        通过session域中是否存在userid判断是否登录
 //        Integer userId = (Integer) request.getSession().getAttribute("userId");
 
-        String userId = request.getParameter("userId");//临时解决？（但session失效暂时没有想到什么好办法）
+        //临时解决？（但session失效暂时没有想到什么好办法）
+        String userId = request.getParameter("userId");
         if (userId == null){
             Message msg = new Message("需要登录才能访问");
             msg.addData("uri", "login.html");

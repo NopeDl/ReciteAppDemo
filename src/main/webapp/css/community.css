@@ -157,7 +157,17 @@ a {
 }
 .community main .zhanwei {
   width: 100%;
-  height: 26.66666667vw;
+  height: 28vw;
+}
+.community main .com_loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 53.33333333vw;
+  height: 53.33333333vw;
+  background: url(../images/加载.gif) no-repeat;
+  background-size: cover;
 }
 .community main .commutity_box {
   width: 100%;
@@ -168,6 +178,9 @@ a {
   height: calc(100vh - 17vw);
   border-radius: 2.66666667vw;
   overflow: scroll;
+}
+.community main .community_ul::-webkit-scrollbar {
+  display: none;
 }
 .community main .community_ul li {
   display: block;
@@ -226,6 +239,10 @@ a {
   font-size: 3.73333333vw;
   line-height: 6.66666667vw;
   height: 13.86666667vw;
+}
+.community main .community_ul li .color .content .info_box .highlight {
+  display: inline;
+  color: #000;
 }
 .community main .community_ul .click {
   position: relative;

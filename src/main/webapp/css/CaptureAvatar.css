@@ -90,10 +90,12 @@ a {
   left: 50%;
   top: 50%;
   width: auto;
-  height: 63.29113924vw;
-  margin-top: -31.64556962vw;
-  margin-left: -31.64556962vw;
+  height: auto;
+  transform: translate(-50%, -50%);
   z-index: 1;
+}
+.CaptureBox .canvas_img_ani {
+  transition: all 0.3s;
 }
 .CaptureBox .canvas_bg {
   background-color: rgba(0, 0, 0, 0.6);
@@ -105,8 +107,7 @@ a {
   top: 50%;
   width: 63.29113924vw;
   height: 63.29113924vw;
-  margin-top: -31.64556962vw;
-  margin-left: -31.64556962vw;
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 .CaptureBox .canvas_div {

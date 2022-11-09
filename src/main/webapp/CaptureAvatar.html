@@ -10,19 +10,27 @@
 </head>
 
 <body>
-    <div class="CaptureBox">
-        <!-- 底层-存放需要截取而显示的照片 -->
-        <img id="canvas_img" src="./images/bcg1.png" class="canvas_img">
-        <!-- 截取的蒙版和截取区域 -->
-        <div class="canvas_bg"></div>
-        <canvas id="canvas" class="canvas"></canvas>
-        <div id="canvas_div" class="canvas_div"></div>
-        <div class="canvas_btn">
-            <a href="javascript:void(0);" class="canvas_cancel" onclick="">取消</a>
-            <a href=" javascript:void(0); " class="canvas_ok " onclick="save_img() ">确定</a>
+    <div class="CaptureAvatar_page">
+        <div id="haha" style="display: block;"><input id="npt" type="file"></div>
+        <div class="CaptureBox" id="CaptureBox" style="display: none;">
+            <!-- 底层-存放需要截取而显示的照片 -->
+            <img id="canvas_img" src="" class="canvas_img">
+            <!-- 截取的蒙版和截取区域 -->
+            <div class="canvas_bg"></div>
+            <canvas id="canvas" class="canvas"></canvas>
+            <div id="canvas_div" class="canvas_div"></div>
+            <div class="canvas_btn">
+                <a href="javascript:void(0);" class="canvas_cancel" onclick="">取消</a>
+                <a href=" javascript:void(0); " class="canvas_ok " onclick="save_img() ">确定</a>
+            </div>
+        </div>
+        <div id="later_box" style="display: none;">
+            裁剪后：<img id="later" src="" alt="">
         </div>
     </div>
+    
 </body>
+<script src="./js/base.js"></script>
 <script src="./js/CaptureAvatar.js"></script>
 
 </html>

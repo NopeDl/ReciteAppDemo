@@ -116,7 +116,7 @@ public class PkRoom {
         //获取两人挖空数的最小值
         //保存该房间挖空数
         this.blankNum = Math.min(p1BlankNum, p2BlankNum);
-        if (this.blankNum <= 0){
+        if (this.blankNum <= 0) {
             blankNum = 1;
         }
         System.out.println("房间：" + this + " 挖空数为：" + this.blankNum);
@@ -175,18 +175,18 @@ public class PkRoom {
                 //计算扣的血
                 hp -= Math.round(100.0 / this.blankNum);
                 //设置血量
-                if (hp < 0){
+                if (hp < 0) {
                     hp = 0;
                 }
                 setHp(enemy, hp);
             }
             //检查双方输赢状态
-//            boolean isContinue = true;
-//            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
-//                //有一边没血了
-//                //结束比赛
-//                isContinue = false;
-//            }
+            boolean isContinue = true;
+            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
+                //有一边没血了
+                //结束比赛
+                isContinue = false;
+            }
             //将双方血量响应回去
             SocketMessage msg = new SocketMessage();
             List<UserHp> hpLists = new ArrayList<>();
@@ -194,10 +194,10 @@ public class PkRoom {
             hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
             msg.addData("hpInf", hpLists);
             roomBroadcast(msg);
-//            if (!isContinue) {
-//                //比赛结束
-//                this.end();
-//            }
+            if (!isContinue) {
+                //比赛结束
+                this.end();
+            }
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);
         }
@@ -269,10 +269,10 @@ public class PkRoom {
     private void roomBroadcast(SocketMessage msg) {
         //给房间内两位玩家发送结果
         try {
-            if (player01.getSession().isOpen()){
+            if (player01.getSession().isOpen()) {
                 ResponseUtil.send(player01.getSession(), msg);
             }
-            if (player02.getSession().isOpen()){
+            if (player02.getSession().isOpen()) {
                 ResponseUtil.send(player02.getSession(), msg);
             }
         } catch (IOException e) {
@@ -290,13 +290,13 @@ public class PkRoom {
         if (player01Hp < player02Hp) {
             //玩家2赢
             winnerId = player02.getMatchInf().getUserId();
-            updateRank(winnerId,true);
-            updateRank(player01.getMatchInf().getUserId(),false);
+            updateRank(winnerId, true);
+            updateRank(player01.getMatchInf().getUserId(), false);
         } else if (player02Hp < player01Hp) {
             //玩家1赢
             winnerId = player01.getMatchInf().getUserId();
-            updateRank(winnerId,true);
-            updateRank(player02.getMatchInf().getUserId(),false);
+            updateRank(winnerId, true);
+            updateRank(player02.getMatchInf().getUserId(), false);
         } else {
             //平局
             winnerId = -1;
@@ -374,11 +374,11 @@ public class PkRoom {
             //增加星星数量和积分数量
             //星星数量 = 初始星星数 + 获胜获得星星数 + 积分额外星星数
             totalStars = userStars + stars;
-        } else if (userStars - stars >= 0){
+        } else if (userStars - stars >= 0) {
             //失败了扣星星
             //如果还有星星可以扣
             totalStars = userStars - stars;
-        }else {
+        } else {
             System.out.println("没有星星扣了");
         }
         //更新用户星星和积分

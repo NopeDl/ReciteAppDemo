@@ -1,9 +1,7 @@
 package service.impl;
 
 import dao.AccountDao;
-import dao.UserDao;
 import dao.impl.AccountDaoImpl;
-import dao.impl.UserDaoImpl;
 import enums.MsgInf;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +11,6 @@ import service.AccountService;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = new AccountDaoImpl();
-    private final UserDao userDao = new UserDaoImpl();
 
     /**
      * 根据手机号和密码验证账户
@@ -50,21 +47,20 @@ public class AccountServiceImpl implements AccountService {
     /**
      * 根据手机号获取id
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Integer getIdByNumber(HttpServletRequest request) {
         String number = request.getParameter("phone");
-        Integer userId = accountDao.selectIdByNumber(number);
-        return userId;
+        return accountDao.selectIdByNumber(number);
     }
 
     /**
      * 检测手机号是否存在
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message checkNumberExists(HttpServletRequest request) {

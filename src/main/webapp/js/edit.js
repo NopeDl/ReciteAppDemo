@@ -1,22 +1,36 @@
-function reset() {
-    for (let x of btns) {
+function editReset() {
+    for (let x of all('.learn_page .highlight')) {
+        x.setAttribute('contenteditable', false)
+        x.className = 'highlight';
+        x.onclick = null;
+        x.style.userSelect = '';
+    }
+    for (let x of $('.learn_page footer li')) {
         x.classList.remove('choice');
     }
-    $('.text_page').classList.remove('canwrite')
-    // $('.text_page').setAttribute('contenteditable', false);
-    $('.text_page').classList.remove('del');
+    $('.learn_page .text_box').setAttribute('contenteditable', false);
+    $('.learn_page .text_box').classList.remove('del');
+    $('.learn_page .title').classList.remove('canwrite');
     flag = false;
     flag1 = false;
-    $('.edit_page .header_right .name')[3].innerHTML = '保存';
+    learn_flag_1 = true;
+    learn_flag_2 = true;
 }
-let btns = $('.edit_page .header_right li');
+
+//点击自定义
+$('.zidingyi').onclick = () => {
+    learnReset();
+    $('.learn_page .footer_1').style.display = 'none';
+    $('.learn_page .footer_2').style.display = 'block';
+    
+}
+
 //点击编辑
-btns[0].onclick = () => {
-    console.log(title);
-    reset();
-    // $('.text_page').setAttribute('contenteditable', true);
-    $('.text_page').classList.add('canwrite')
-    btns[0].classList.add('choice');
+$('.bianji').onclick = () => {
+    editReset();
+    $('.learn_page .text_box').setAttribute('contenteditable', true);
+    $('.bianji').classList.add('choice');
+    $('.learn_page .title').classList.add('canwrite');
 }
 
 //防止对已选中的文本进行多次挖空
@@ -27,14 +41,22 @@ let flag1 = true;
 let arr = [];
 
 //点击挖空进入挖空模式
-btns[1].onclick = () => {
-    reset();
-    btns[1].classList.add('choice');
+$('.wakong').onclick = () => {
+    editReset()
+    $('.wakong').classList.add('choice');
     flag = true;
     //当长按屏幕触屏结束时，选中文本 
-    $('.text_page').onmouseup = (e) => {
+    $('.learn_page .text_box').ontouchstart = () => {
+        $('.learn_page .text_box').style.userSelect = '';
+    }
+    $('.learn_page .text_box').onmousedown = () => {
+        $('.learn_page .text_box').style.userSelect = '';
+    }
+    $('.learn_page .text_box').ontouchend = wakong;
+    $('.learn_page .text_box').onmouseup = wakong;
+    function wakong() {
         //判断当前是否为挖空模式
-        if (btns[1].classList.contains('choice')) {
+        if ($('.wakong').classList.contains('choice')) {
             flag = true;
         } else {
             flag = false;
@@ -54,10 +76,11 @@ btns[1].onclick = () => {
             newNode.setAttribute('id', 'merge');
             newNode.innerHTML = range.toString();
             //如果选中范围在div里面直接终止点击事件
-            if (txt.anchorNode.parentNode === txt.focusNode.parentNode && txt.anchorNode.parentNode.className != 'text_page' && txt.focusNode.parentNode.className != 'text_page') {
+            if (txt.anchorNode.parentNode === txt.focusNode.parentNode && txt.anchorNode.parentNode.className != 'text_box' && txt.focusNode.parentNode.className != 'text_box') {
+                CancelHollowing(txt.anchorNode.parentNode, false);
                 return;
             }
-            if (txt.anchorNode.parentNode.className == 'text_box' || txt.focusNode.parentNode.className == 'text_box') {
+            if (txt.anchorNode.parentNode.className == 'container' || txt.focusNode.parentNode.className == 'container') {
                 return;
             }
             //循环存储之前被选中的节点
@@ -89,7 +112,7 @@ btns[1].onclick = () => {
                         div[0].innerHTML += div[i].innerHTML;
                     }
                     arr.remove(div[i]);
-                    $('.text_page').removeChild(div[i]);
+                    $('.learn_page .text_box').removeChild(div[i]);
                 }
                 // 移除id
                 div[0].removeAttribute('id');
@@ -97,48 +120,70 @@ btns[1].onclick = () => {
                 div.removeAttribute('id');
             }
             flag = false;
+
+            // 将原数组清空，重新将选中节点添加进数组中
+            arr = [];
+            //清除空标签
+            for(let x of all('.learn_page .highlight')){
+                if(x.innerHTML == '')
+                $('.learn_page .text_box').removeChild(x);
+            }
+            let len = all('.learn_page .highlight').length;
+            for (let i = 0; i < len; i++) {
+                let x = all('.learn_page .highlight')[i];
+                //清除高亮标签后面的空文本
+                function clean() {
+                    if (x.nextSibling.textContent == '') {
+                        $('.learn_page .text_box').removeChild(x.nextSibling);
+                    }
+                }
+                clean();
+                //如果两个标签相邻时合并
+                if (x.nextSibling.className == 'highlight') {
+                    x.innerHTML += all('.learn_page .highlight')[i + 1].innerHTML;
+                    len--;
+                    $('.learn_page .text_box').removeChild(all('.learn_page .highlight')[i + 1]);
+                    clean();
+                    console.log(all('.learn_page .highlight')[i + 1],x.nextSibling);
+                    //如果合并后下一个标签还是相邻，就把标签合并
+                    if(x.nextSibling.className == 'highlight'){
+                        
+                        x.innerHTML += all('.learn_page .highlight')[i + 1].innerHTML;
+                        len--;
+                        $('.learn_page .text_box').removeChild(all('.learn_page .highlight')[i + 1]);
+                    }
+                        
+                    arr.push(x);
+                } else {
+                    arr.push(x);
+                }
+
+            }
+
         }
-        // 将原数组清空，重新将选中节点添加进数组中
-        arr = [];
-        for (let y of all('.text_page .highlight')) {
-            arr.push(y);
-        }
+        //取消文本选择
+        // $('.learn_page .text_box').style.userSelect = 'none';
     }
 }
-
-//点击进入选择模式
-btns[2].onclick = () => {
-    reset();
-    // 当页面有可选择的节点时
-    if (document.querySelector('.text_page .highlight')) {
-        btns[2].classList.add('choice');
-        $('.text_page').classList.add('del');
-        flag1 = true;
-        for (let x of all('.text_page .highlight')) {
-            x.addEventListener('click', (e) => {
-                if (flag1)
-                    CancelHollowing(e.target, false);
-            });
-        }
-    }
-
-}
-
+let mid = null;
 //点击保存
-btns[3].onclick = () => {
-    let title1 = $('.edit_page .title_name').value;
-    let info1 = $('.edit_page .text_page').innerHTML;
-    let label1 = $('.edit_page .label_cont').innerHTML;
-    let mid = null;
+$('.learn_page .finish').onclick = () => {
+
+    let title1 = $('.learn_page .title').innerHTML;
+    let info1 = $('.learn_page .text_box').innerHTML;
+    let label1 = $('.learn_page .label').innerHTML;
+    
     //标题和文本内容不能为空
-    if (title1 == '' || info1 == '') {
-        $('.edit_page .popup_box').innerHTML = '标题和文本内容不能为空';
-        $('.edit_page .popup').style.display = 'block';
-        return;
-    }
+    // if (title1 == '' || info1 == '') {
+    //     $('.learn_page .popup_box').innerHTML = '标题和文本内容不能为空';
+    //     $('.learn_page .popup').style.display = 'block';
+    //     return;
+    // }
 
 
-    reset();
+    editReset();
+    $('.learn_page .footer_1').style.display = 'block';
+    $('.learn_page .footer_2').style.display = 'none';
     //如果是新建模板
     if (newTPFlag) {
         mid = all('.my_base li')[0].querySelector('.modleId').innerHTML;
@@ -146,22 +191,22 @@ btns[3].onclick = () => {
         mid = modleId.innerHTML;
     }
     let fal = true;
+
     // 标题一致就取消保存并提醒
-    Array.from(all('.my_base .title')).forEach((x,i) => {
-        if (x.innerHTML == title1 && mid != all('.my_base li')[i].querySelector('.modleId').innerHTML) {
-            $('.edit_page .popup_box').innerHTML = '标题不能与记忆库的模板重复';
-            $('.edit_page .popup').style.display = 'block';
-            fal = false;
-            return;
-        }
-    })
+    // Array.from(all('.my_base .title')).forEach((x,i) => {
+    //     if (x.innerHTML == title1 && mid != all('.my_base li')[i].querySelector('.modleId').innerHTML) {
+    //         $('.edit_page .popup_box').innerHTML = '标题不能与记忆库的模板重复';
+    //         $('.edit_page .popup').style.display = 'block';
+    //         fal = false;
+    //         return;
+    //     }
+    // })
 
     if(fal){
         if(mStatus == '0'){
             if (newTPFlag) {
                 all('.my_base li')[0].querySelector('.title').innerHTML = title1;
                 all('.my_base li')[0].querySelector('.info').innerHTML = info1;
-                console.log(all('.my_base li')[0]);
                 all('.my_base li')[0].querySelector('.label span')[1].innerHTML = label1;
             } else {
                 title.innerHTML = title1;
@@ -170,8 +215,8 @@ btns[3].onclick = () => {
             }
         }
         let poststr = '';
-        let newinfo = info1.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g,'<缩进>');
-
+        let newinfo = info1.replace(/&nbsp;/g,'<空格>');
+        console.log(newinfo);
         if(mStatus == 1){
             poststr = `context=${newinfo}&userId=${curr.userId}&modleTitle=${title1}&overWrite=0&modleLabel=${labelId1(label1)}&modleId=${mid}`
         }else{
@@ -183,16 +228,14 @@ btns[3].onclick = () => {
             if(mStatus == 1){
                 let modle = newstr.data.modle;
                 newTPFlag = true;
-                newTP(title1,info1,modle.modleId,label1,0,true);
+                newTP(title1,info1,modle.modleId,label1,0,'未学习',true);
                 mStatus = 0;
                 $('.footer_nav li')[0].onclick();
             }
             xrcomTP();
         }, true);
-        btns[3].classList.add('choice');
-        $('.edit_page .header_right .name')[3].innerHTML = '已保存';
     }
-    
+
 }
 
 //点击关闭弹窗
@@ -207,36 +250,64 @@ function CancelHollowing(e, n) {
     //获取当前选中的文本对象
     let txt = window.getSelection();
     let range = txt.getRangeAt(0);
+    
     //将选中区域改成节点的文本内容
-    range.selectNodeContents(e);
-    //将选中节点从数组中删除
-    arr.remove(e);
-    //将选中节点的文本内容克隆一份
-    let str = range.cloneContents();
-    //将选中节点区域扩大到整个节点
-    range.selectNode(e);
-    //将选中节点删除
+    // range.selectNodeContents(e);
+    // //将选中节点从数组中删除
+    // arr.remove(e);
+    // //将选中节点的文本内容克隆一份
+    let nonestr = document.createTextNode('');
+    let text = document.createTextNode(range.toString());
+    // //将选中节点区域扩大到整个节点
+    // range.selectNode(e);
+    // //将选中节点删除
     txt.deleteFromDocument();
-    //在原来的位置重新将文本插入
-    range.insertNode(str);
+    // //在原来的位置重新将文本插入
+    range.insertNode(nonestr);
+    let textArr = e.childNodes;
+    
+    //在原标签前面插入新节点
+    function newNode(i) {
+        let newNode = document.createElement("div");
+        newNode.setAttribute('class', 'highlight');
+        newNode.innerHTML = textArr[i].textContent;
+        $('.learn_page .text_box').insertBefore(newNode,e);
+    }
+
+    if(textArr[0].textContent == ''){
+        $('.learn_page .text_box').insertBefore(text,e);
+        newNode(2);
+        $('.learn_page .text_box').removeChild(e);
+    }else{
+        newNode(0);
+        $('.learn_page .text_box').insertBefore(text,e);
+        if(textArr[1].textContent == '' && textArr[2].textContent != ''){
+            newNode(2);
+        }
+        $('.learn_page .text_box').removeChild(e);
+    }
+    
+    
+    //取消文本选择
+    $('.learn_page .text_box').style.userSelect = 'none';
 }
 
 //点击返回记忆库
 $('.edit_page .header_left').onclick = () => {
     $('.edit_page').style.left = '100%'
-    reset();
+    learnReset()
 }
 
 let label_flag1 = true;
 //点击出现下拉列表
 $('.edit_page .label').onclick = () => {
-    if(label_flag1){
+    if (label_flag1) {
         $('.edit_page .label_menu').style.transform = 'scale(1)';
         label_flag1 = false;
-    }else{
+    } else {
         $('.edit_page .label_menu').style.transform = 'scale(0)';
         label_flag1 = true;
-    }  
+    }
 }
 
 //事件委托，为li绑定事件

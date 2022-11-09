@@ -3,28 +3,33 @@ let newtitle = null;
 let newcontext = null;
 let newlabel = null;
 var newTPFlag = false;
-
+let pk = [];
 //获取用户模板
-// ajax(`http://8.134.104.234:8080/ReciteMemory/modle/UserMemory?userId=${curr.userId}`, 'get', '', (str) => {
-//     // console.log(str)
-//     let newstr = JSON.parse(str).msg;
-//     console.log(newstr)
-//     if (newstr.data.userModle) {
-//         let tparr = newstr.data.userModle;
-//         for (let x of tparr) {
-//             console.log(x);
-//             let newcon = x.content.replace(/<缩进>/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/<\/p>/g, '').replace(/<p>/g, '');
-//             if (x.MStatus == '0')
-//                 newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common, true);
-//             else
-//                 newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common, false);
-//         }
-//         $('.footer_nav li')[0].onclick();
-//     } else {
-//         //刷新仓库
-//         $('.footer_nav li')[0].onclick();
-//     }
-// }, true);
+ajax(`http://8.134.104.234:8080/ReciteMemory/modle/UserMemory?userId=${curr.userId}`, 'get', '', (str) => {
+    let newstr = JSON.parse(str).msg;
+    if (newstr.data.userModle) {
+        let tparr = newstr.data.userModle;
+        let fxnum = 0;
+        for (let x of tparr) {
+            let newcon = x.content.replace(/<空格>/g, '&nbsp;').replace(/<\/p>/g, '').replace(/<p>/g, '');
+            if (x.MStatus == '0')
+                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common, x.studyStatus, true);
+            else
+                newTP(x.modleTitle, newcon, x.modleId, labelId2(x.modleLabel), x.common, x.studyStatus, false);
+
+            if (x.studyStatus == '复习中') {
+                fxnum++;
+                console.log(x, x.studyStatus);
+            }
+
+        }
+        $('.numOfArticles').innerHTML = `${fxnum} 篇`;
+        $('.footer_nav li')[0].onclick();
+    } else {
+        //刷新仓库
+        $('.footer_nav li')[0].onclick();
+    }
+}, true);
 //获取用户信息
 ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/UserMsg?userId=${curr.userId}`, 'get', '', (str) => {
     let newstr = JSON.parse(str).msg;
@@ -36,6 +41,8 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/UserMsg?userId=${curr.userI
     for (let x of $('.idname'))
         x.innerHTML = curr.userInfo.nickName;
     $('.personal_box .phone').innerHTML = curr.phone;
+
+    rlRendering()
     if (curr.userInfo.base64 == '') {
         return;
     } else {
@@ -44,13 +51,37 @@ ajax(`http://8.134.104.234:8080/ReciteMemory/user.do/UserMsg?userId=${curr.userI
             x.src = curr.userInfo.base64;
         }
     }
+}, true)
 
+//获取用户学习信息
+var Alltime = 0;
+var studyNums = 0;
+getStoreDSSD()
+function getStoreDSSD() {
+    ajax(`http://8.134.104.234:8080/ReciteMemory/inf.get/studyData?userId=${curr.userId}`, 'get', '', (str) => {
+        let newstr = JSON.parse(str).msg;
+        console.log(newstr);
+        if(newstr.content == "获取失败"){
+            $('.plan_box .record_box .cur_data')[0].innerHTML = 0;
+            $('.plan_box .record_box .cur_data')[1].innerHTML = 0;
+            $('.today_review .cur').innerHTML = 0;
+        }else{
+            let studyData = newstr.data.studyData;
+            $('.plan_box .record_box .cur_data')[0].innerHTML = studyData.studyTime;
+            $('.plan_box .record_box .cur_data')[1].innerHTML = studyData.studyNums;
+            $('.today_review .cur').innerHTML = studyData.reviewNums;
+            Alltime = studyData.studyTime;
+            studyNums = studyData.studyNums;
+        }
+        
 
-})
+    }, true)
+}
 
 
 //上传文件
-$('.Making_page .header_left input').onchange = function(e) {
+$('.Making_page .header_left input').onchange = function (e) {
+    console.log(e.target.files);
     let file = e.target.files[0];
     if (e.target.files.length != 0) {
         $('.Making_page .loading').style.display = 'block';
@@ -63,6 +94,7 @@ $('.Making_page .header_left input').onchange = function(e) {
             //将文件内容渲染到页面
             $('.Making_page .title input').value = file.name;
             $('.Making_page .text_box').innerHTML = newcon;
+            e.target.value = '';
         }, false)
     }
 }
@@ -71,7 +103,7 @@ $('.Making_page .header_left input').onchange = function(e) {
 $('.Making_page .header_right').onclick = () => {
     //标题和文本内容不能为空
     if ($('.Making_page .title input').value == '' || $('.Making_page .text_box').innerHTML == '') {
-        $('.Making_page .popup2 .popup_box').innerHTML = '标题和文本内容不能为空';
+        $('.Making_page .popup2 .popup_box').innerHTML = '内容不能为空';
         $('.Making_page .popup2').style.display = 'block';
         return;
     }
@@ -86,7 +118,7 @@ $('.Making_page .header_right').onclick = () => {
     // 标题一致就取消保存并提醒
     for (let x of all('.my_base .title')) {
         if (x.innerHTML == $('.Making_page .title input').value) {
-            $('.Making_page .popup2 .popup_box').innerHTML = '标题不能与记忆库的模板重复';
+            $('.Making_page .popup2 .popup_box').innerHTML = '标题不能重复';
             $('.Making_page .popup2').style.display = 'block';
             return;
         }
@@ -105,45 +137,48 @@ $('.Making_page .popup2 .popup_box').onclick = (e) => e.stopPropagation();
 
 //点击保存文件
 $('.Making_page .popup_box button')[0].onclick = () => {
-        // 如果标题和内容不为空
-        if (newtitle != '' && newcontext != '') {
-            //创建模板
-            let newcon = newcontext.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g, '<缩进>');
-            let contect = encodeURI(newcon);
-            let poststr = `context=${contect}&userId=${curr.userId}&modleTitle=${newtitle}&overWrite=0&modleLabel=${labelId1(newlabel)}`
-            ajax(`http://8.134.104.234:8080/ReciteMemory/modle/MakeModle`, 'post', poststr, (str) => {
-                let newstr = JSON.parse(str).msg;
-                let modle = newstr.data.modle;
-                newTP(newtitle, newcontext, modle.modleId, newlabel, 0, true);
-                //刷新仓库
-                $('.footer_nav li')[0].onclick();
-                MakingTP();
-            }, true);
-        }
-        // 隐藏弹窗
-        $('.Making_page .popup').style.display = 'none';
+    // 如果标题和内容不为空
+    if (newtitle != '' && newcontext != '') {
+        //创建模板
+        let newcon = newcontext.replace(/&nbsp;/g, '<空格>');
+        let contect = encodeURI(newcon);
+        let poststr = `context=${contect}&userId=${curr.userId}&modleTitle=${newtitle}&overWrite=0&modleLabel=${labelId1(newlabel)}`
+        ajax(`http://8.134.104.234:8080/ReciteMemory/modle/MakeModle`, 'post', poststr, (str) => {
+            let newstr = JSON.parse(str).msg;
+            let modle = newstr.data.modle;
+            console.log(newstr)
+            newTP(newtitle, newcontext, modle.modleId, newlabel, 0, '未学习', true);
+            //刷新仓库
+            $('.footer_nav li')[0].onclick();
+            MakingTP();
+        }, true);
     }
-    //点击进入编辑页面
+    // 隐藏弹窗
+    $('.Making_page .popup').style.display = 'none';
+}
+//点击进入编辑页面
 $('.Making_page .popup_box button')[1].onclick = () => {
     // 如果标题和内容不为空
     if (newtitle != '' && newcontext != '') {
         //创建模板
-        let newcon = newcontext.replace(/&nbsp;&nbsp;&nbsp;&nbsp;/g, '<缩进>').replace(/<div>/g, '').replace(/<\/div>/g, '');
+        let newcon = newcontext.replace(/&nbsp;/g, '<空格>').replace(/<div>/g, '').replace(/<\/div>/g, '');
         let poststr = `context=${newcon}&userId=${curr.userId}&modleTitle=${newtitle}&overWrite=0&modleLabel=${labelId1(newlabel)}`
         ajax(`http://8.134.104.234:8080/ReciteMemory/modle/MakeModle`, 'post', poststr, (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr);
             let modle = newstr.data.modle;
             newTPFlag = true;
-            newTP(newtitle, newcon, modle.modleId, newlabel, 0, true);
+            newTP(newtitle, newcon, modle.modleId, newlabel, 0, '未学习', true);
             //刷新仓库
             $('.footer_nav li')[0].onclick();
-            $('.edit_page .title_name').value = newtitle;
-            $('.edit_page .text_page').innerHTML = newcontext;
-            $('.edit_page .label_cont').innerHTML = newlabel;
-            $('.edit_page').style.left = '0';
+            $('.learn_page .title').innerHTML = newtitle;
+            $('.learn_page .text_box').innerHTML = newcontext;
+            $('.learn_page .label').innerHTML = newlabel;
+            $('.learn_page').style.left = '0';
+            $('.learn_page header').style.left = '0';
+            $('.learn_page header').style.opacity = '1';
             MakingTP();
-        }, true);
+        }, true)
     }
     $('.Making_page .popup').style.display = 'none';
 }
