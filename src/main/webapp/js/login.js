@@ -220,7 +220,7 @@ $('.login button').onclick = (e) => {
             a.push(x.value);
         }
 
-        ajax('http://8.134.104.234:8080/ReciteMemory/user.do/Login', 'post', `phone=${a[0]}&password=${a[1]}`, (str) => {
+        ajax('http://127.0.0.1:8080/ReciteMemory/user.do/Login', 'post', `phone=${a[0]}&password=${a[1]}`, (str) => {
             let newstr = JSON.parse(str).msg;
             console.log(newstr);
             //登录成功

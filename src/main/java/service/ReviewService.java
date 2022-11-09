@@ -3,6 +3,9 @@ package service;
 import jakarta.servlet.http.HttpServletRequest;
 import pojo.vo.Message;
 
+/**
+ * @author ducka
+ */
 public interface ReviewService {
 
     /**

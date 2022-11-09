@@ -1,5 +1,7 @@
 package service.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import dao.AccountDao;
 import dao.impl.AccountDaoImpl;
 import enums.MsgInf;
@@ -8,6 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import pojo.po.db.Account;
 import pojo.vo.Message;
 import service.AccountService;
+
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = new AccountDaoImpl();
@@ -32,8 +37,12 @@ public class AccountServiceImpl implements AccountService {
                 msg = new Message("登陆成功");
                 msg.addData("isSuccess", true);
                 //将userid发送给前端储存
-                msg.addData("userId", account.getUserId());
-
+//                msg.addData("userId", account.getUserId());
+                //发送token
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_WEEK,7);
+                String tocken = JWT.create().withHeader(new HashMap<>()).withClaim("userId",account.getUserId()).withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256("!34ADAS"));
+                msg.addData("token",tocken);
 //                登录成功后再session中设置用户id
                 request.getSession().setAttribute("userId", account.getUserId());
             }

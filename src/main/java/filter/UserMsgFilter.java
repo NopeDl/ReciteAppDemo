@@ -11,11 +11,11 @@ import tools.utils.ResponseUtil;
 import java.io.IOException;
 
 /**
- * 拦截用户未登录非法请求
+ * 拦截需要UserId但又没有的非法请求
  * @author y and i
  */
 @WebFilter({
-"/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD","/user.do/",
+"/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD",
 "/inf.get/studyData",
 "/modle/MakeModle","/modle/deleteModle","/modle/UserMemory","/modle/Collection","/modle/UpdateModleStatus",
 "/upload/uploadImg",

@@ -1,42 +1,19 @@
 package tools.utils;
 
-import dao.ModleDao;
 import dao.impl.ModleDaoImpl;
 import enums.Difficulty;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class StringUtil {
-    /**
-     * 获取子串个数
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    public static int subStrCount(String s1, String s2) {
-        int index, count = 0;
-        if (!s1.contains(s2)) {
-            return 0;
-        }
-        index = s1.indexOf(s2);
-        while (index != -1) {
-            count++;
-            index = s1.indexOf(s2, index + 1);
-        }
-        return count;
-    }
-
     /**
      * 获取uri
      *
@@ -50,26 +27,11 @@ public class StringUtil {
     /**
      * 获取临时URL
      *
-     * @param fileName
-     * @return
+     * @param fileName 文件名
+     * @return 临时URL
      */
     public static String getTempUrl(String fileName) {
         return (StringUtil.class.getClassLoader().getResource("/").getPath() + fileName + ".pdf").substring(1);
-    }
-
-    /**
-     * 段落处理
-     *
-     * @param content 内容
-     * @return 处理好段落的内容
-     */
-    public static String handleParagraph(String content) {
-        //将换行转换为<p>标签
-        //将开头首句添加<p>
-        content = content.replaceAll("\\r\\n", "</p><p>");
-        content = "<p>" + content;
-        content = content + "</p>";
-        return content;
     }
 
     /**
@@ -107,9 +69,9 @@ public class StringUtil {
     /**
      * 已知模板数量直接挖
      *
-     * @param modleId
-     * @param blankNum
-     * @return
+     * @param modleId 模板ID
+     * @param blankNum 空数
+     * @return 已经挖好空的模板
      */
     public static String autoDig(int modleId, int blankNum) {
         //查询模板地址
