@@ -27,13 +27,10 @@ public class CheckLoginFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         //获取token
-//        String token = request.getHeader("Authorization");
-//        String token = request.getParameter("userId");
-
         String token = JwtUtil.getToken(request);
         boolean verifySuccess = false;
         if (token != null && !"".equals(token)){
-            //验证是否有tocken
+            //验证是否有token
             DecodedJWT verify = JwtUtil.verify(token);
             Claim userId = verify.getClaim("userId");
             if (userId != null){
