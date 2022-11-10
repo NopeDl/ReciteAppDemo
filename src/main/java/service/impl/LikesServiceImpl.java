@@ -114,7 +114,7 @@ public class LikesServiceImpl implements LikesService {
                 set.add(modleId);
                 Cache.CACHE_USER_DISLIKE.put(userId,set);
             }
-            System.out.println(Cache.CACHE_USER_DISLIKE);
+//            System.out.println(Cache.CACHE_USER_DISLIKE);
         }
 
 //        System.out.println("取消点赞成功");
@@ -200,7 +200,7 @@ public class LikesServiceImpl implements LikesService {
         for (int modleId:set){
              modleDao.updateLikeNum(modleId, Cache.CACHE_MODLE_LIKE.get(modleId));
 
-            System.out.println(Cache.CACHE_MODLE_LIKE.get(modleId));
+//            System.out.println(Cache.CACHE_MODLE_LIKE.get(modleId));
              updateMODLE_LIKE(modleId,Cache.CACHE_MODLE_LIKE.get(modleId));
              Cache.CACHE_MODLE_LIKE.remove(modleId);
         }
@@ -273,9 +273,9 @@ public class LikesServiceImpl implements LikesService {
         int totalLike=0;
         if(Cache.MODLE_LIKE.containsKey(modleId)){
             totalLike+=Cache.MODLE_LIKE.get(modleId);
-            if(Cache.CACHE_MODLE_LIKE.containsKey(modleId)){
-                totalLike+=Cache.CACHE_MODLE_LIKE.get(modleId);
-            }
+        }
+        if(Cache.CACHE_MODLE_LIKE.containsKey(modleId)){
+            totalLike+=Cache.CACHE_MODLE_LIKE.get(modleId);
         }
         return totalLike;
     }
