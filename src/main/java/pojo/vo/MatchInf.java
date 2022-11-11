@@ -2,6 +2,7 @@ package pojo.vo;
 
 import enums.Difficulty;
 import org.apache.xmlbeans.impl.util.Diff;
+import tools.utils.JwtUtil;
 
 import java.util.Objects;
 
@@ -34,6 +35,8 @@ public class MatchInf {
      * 模板内容
      */
     private String content;
+
+    private String token;
 
     @Override
     public boolean equals(Object o) {
@@ -96,4 +99,12 @@ public class MatchInf {
         this.modleId = modleId;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        this.userId = JwtUtil.verify(token).getClaim("userId").asInt();
+    }
 }

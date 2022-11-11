@@ -116,12 +116,12 @@ public class PkUser {
         //封装该比赛用户信息
         this.matchInf = new MatchInf();
         String token = JwtUtil.getToken(userId);
-        if (token == null){
+        if (token == null) {
             session.getBasicRemote().sendText("请先登录");
             session.close();
             return;
         }
-        matchInf.setUserId(JwtUtil.verify(token).getClaim("userId").asInt());
+        matchInf.setToken(token);
         matchInf.setModleId(Integer.parseInt(modleId));
         matchInf.setDifficulty(Difficulty.getRatio(difficulty));
         //注册监听器
@@ -165,7 +165,7 @@ public class PkUser {
                 this.session.close();
             }
         } else {
-            if (StatusPool.MATCHING_POOL.contains(this)){
+            if (StatusPool.MATCHING_POOL.contains(this)) {
                 //说明已经开始匹配了需要取消匹配
                 this.statusPool.enterCancelMatchingList(this);
                 this.statusPool.quitMatchingPool(this);
