@@ -286,24 +286,38 @@ public class PkRoom {
     private SocketMessage getWinner() {
         double player01Hp = getHp(player01);
         double player02Hp = getHp(player02);
-        int winnerId;
-        if (player01Hp < player02Hp) {
-            //玩家2赢
-            winnerId = player02.getMatchInf().getUserId();
-            updateRank(winnerId, true);
-            updateRank(player01.getMatchInf().getUserId(), false);
-        } else if (player02Hp < player01Hp) {
-            //玩家1赢
-            winnerId = player01.getMatchInf().getUserId();
-            updateRank(winnerId, true);
-            updateRank(player02.getMatchInf().getUserId(), false);
-        } else {
-            //平局
-            winnerId = -1;
+        PkUser winner;
+        PkUser loser;
+        if (player01.isAlive() && player02.isAlive()){
+            //如果两位玩家都没有退
+            if (player01Hp < player02Hp) {
+                //玩家2赢
+                winner = player02;
+                loser = player01;
+            } else if (player02Hp < player01Hp) {
+                //玩家1赢
+                winner = player01;
+                loser = player02;
+            } else {
+                //平局
+                winner = loser = null;
+            }
+        } else if (player01.isAlive() || player02.isAlive()) {
+            //有一位玩家没退
+                //没退的始终获胜
+            winner = (player01.isAlive() ? player01 : player02);
+            loser = (!player01.isAlive() ? player01 : player02);
+        }else {
+            //全退了
+                //平局
+            winner = loser = null;
         }
+        updateRank(winner.getMatchInf().getUserId(),true);
+        updateRank(loser.getMatchInf().getUserId(),false);
+
         SocketMessage msg = new SocketMessage();
         //封装赢者数据
-        msg.addData("winnerId", winnerId);
+        msg.addData("winnerId", winner.getMatchInf().getToken());
         //封装双方战绩
         List<AnswersRecord> answersRecordList = new ArrayList<>();
         answersRecordList.add(answersRecords.get(player01));

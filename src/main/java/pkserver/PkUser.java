@@ -93,6 +93,9 @@ public class PkUser {
                 msg = this.pkRoom.againDig(this);
                 ResponseUtil.send(this.session, msg);
             }
+        } else if("plzEndThisFKGame".equals(operate)){
+            //收到前端结束请求
+            this.pkRoom.end();
         } else {
             msg = new SocketMessage(SocketMsgInf.OPERATE_NOTFOUND);
             ResponseUtil.send(this.session, msg);
@@ -290,6 +293,10 @@ public class PkUser {
         }
         //说明匹配失败了
         return new SocketMessage(SocketMsgInf.MATCH_FAILED);
+    }
+
+    public boolean isAlive(){
+        return this.session.isOpen();
     }
 
     public PkRoom getPkRoom() {

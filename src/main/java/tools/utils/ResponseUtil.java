@@ -34,8 +34,10 @@ public class ResponseUtil {
      * @throws IOException 异常
      */
     public static void send(Session session, SocketMessage message) throws IOException{
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("socketMsg",message);
-        session.getBasicRemote().sendText(jsonObject.toJSONString());
+        if (session.isOpen()){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("socketMsg",message);
+            session.getBasicRemote().sendText(jsonObject.toJSONString());
+        }
     }
 }

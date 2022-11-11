@@ -114,4 +114,11 @@ public class TestDocFileHandler {
     }
 
 
+    @Test
+    public void test1(){
+        String s = (String)null;
+        System.out.println(s);
+    }
+
+
 }
