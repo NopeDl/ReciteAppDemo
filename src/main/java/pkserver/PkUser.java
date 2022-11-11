@@ -161,7 +161,9 @@ public class PkUser {
                 StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
             } else {
                 //向对手发送自己已经退出的消息
-                ResponseUtil.send(enemyUser.getSession(), new SocketMessage(SocketMsgInf.ENEMY_EXIT));
+                SocketMessage msg = new SocketMessage(SocketMsgInf.ENEMY_EXIT);
+                msg.addData("runId",this.matchInf.getToken());
+                ResponseUtil.send(enemyUser.getSession(), msg);
                 this.session.close();
             }
         } else {
