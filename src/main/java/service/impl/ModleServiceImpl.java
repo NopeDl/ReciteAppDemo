@@ -28,11 +28,11 @@ public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
 
     private final UMRDao umrDao = new UMRDaoImpl();
-    private final LabelDao labelDao=new LabelDaoImp();
-    private final UserDao userDao=new UserDaoImpl();
-    private final ReviewDao reviewDao=new ReviewDaoImpl();
-    private final LikesDao likesDao=new LikesDaoImp();
-    private final LikesService likesService=new LikesServiceImpl();
+    private final LabelDao labelDao = new LabelDaoImp();
+    private final UserDao userDao = new UserDaoImpl();
+    private final ReviewDao reviewDao = new ReviewDaoImpl();
+    private final LikesDao likesDao = new LikesDaoImp();
+    private final LikesService likesService = new LikesServiceImpl();
 //    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
 //
@@ -74,18 +74,18 @@ public class ModleServiceImpl implements ModleService {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         //收藏状态，1为收藏，否则为取消收藏
         int mStatus = Integer.parseInt(request.getParameter("mStatus"));
-        Umr umr=new Umr();
+        Umr umr = new Umr();
         umr.setUserId(userId);
         umr.setModleId(modleId);
         umr.setMStatus(mStatus);
 
         //先去modle表里找用户收藏的是不是自己的模板
         int integer1 = modleDao.selectIfContain(umr);
-        if(integer1>0){
+        if (integer1 > 0) {
             //说明是用户自己的模板,用户不能操作自己的模板
-            message=new Message("该操作违法！");
+            message = new Message("该操作违法！");
             return message;
-        }else {
+        } else {
 
 
             //先查看下该模板是否已被该用户所收藏了
@@ -141,7 +141,6 @@ public class ModleServiceImpl implements ModleService {
 //        return message;
         return message;
     }
-
 
 
     /**
@@ -212,7 +211,7 @@ public class ModleServiceImpl implements ModleService {
         modle.setModleTitle(modleTitle);
         //设置模板标签
         modle.setModleLabel(Integer.parseInt(modleLabel));
-       //设置模板的学习状态
+        //设置模板的学习状态
 
 //        modle.setStudyStatus("未学习");
 
@@ -230,10 +229,10 @@ public class ModleServiceImpl implements ModleService {
             //标题分为两种情况，一种是改了名字的，一种是没改的
             //查找要覆盖的模板的标题
             String s = modleDao.selectTitleByModleId(modle);
-            if(modleTitle.equals(s)){
+            if (modleTitle.equals(s)) {
                 //说明此时没有改名字
                 modle.setModlePath(modleLabel);
-            }else {
+            } else {
 
                 int sum = modleDao.selectNumByTitle(modle);
 
@@ -249,7 +248,7 @@ public class ModleServiceImpl implements ModleService {
             //更改模板的标签
 
             boolean b1 = modleDao.changeModleTag(modle);
-            if (b&&b1) {
+            if (b && b1) {
 
                 //结束覆盖过程
                 message = new Message("成功覆盖原模板");
@@ -304,6 +303,7 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 删除模板
+     *
      * @param request
      * @return
      */
@@ -315,17 +315,17 @@ public class ModleServiceImpl implements ModleService {
         int userId = (Integer) request.getAttribute("userId");
         String path = modleDao.selectPathByModleId(modleId);
         //先查询该模板是否存在计划表中
-        Review review=new Review();
+        Review review = new Review();
         review.setModleId(modleId);
         review.setUserId(userId);
         boolean b = reviewDao.selectModle(review);
 
-        if(b){
+        if (b) {
             //，如果存在，从计划表中删除
             reviewDao.removeModle(review);
         }
         int deleteModle = modleDao.deleteModle(modleId);
-        if(deleteModle>0){
+        if (deleteModle > 0) {
             File file = new File(path);
             boolean deleteFile = file.delete();
             msg = new Message("删除成功");
@@ -418,6 +418,7 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 修改模板内容,根据传进来的modleId查找modlePath，从而修改文本
+     *
      * @param context 内容
      * @param modleId 模板ID
      * @return 返回
@@ -451,7 +452,7 @@ public class ModleServiceImpl implements ModleService {
         String pageIndexStr = request.getParameter("pageIndex");
         String modleLabelStr = request.getParameter("modleLabel");
 
-        Message msg=null;
+        Message msg = null;
         if (pageIndexStr != null && modleLabelStr != null) {
             //获取分页起始处和模板分类标签
             int pageIndex = Integer.parseInt(pageIndexStr);
@@ -505,7 +506,7 @@ public class ModleServiceImpl implements ModleService {
                                 e.printStackTrace();
                             }
                             //读取文本,这里表现为读取头像的base64路径
-                            FileHandler imgHandler = FileHandlerFactory.getHandler("img",input);
+                            FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
                             String base64 = imgHandler.parseContent();
                             community.setBase64(base64);
                         }
@@ -514,13 +515,13 @@ public class ModleServiceImpl implements ModleService {
                     }
 
 
-            //从我结束
+                    //从我结束
                     //不回显给前端路径
-                community.setModlePath(null);
+                    community.setModlePath(null);
 
                     //下面解决点赞问题
                     //先判断用户对该帖子的点赞情况
-                    int userId= (int) request.getAttribute("userId");
+                    int userId = (int) request.getAttribute("userId");
                     boolean b = likesService.ifUserLike(userId, community.getModleId());
                     community.setLikeStatus(b);
                     //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
@@ -676,7 +677,7 @@ public class ModleServiceImpl implements ModleService {
             String content = StringUtil.autoDig(modleId, difficulty);
 
             msg = new Message("挖空成功");
-            msg.addData("content",content);
+            msg.addData("content", content);
         } else {
             msg = new Message("难度或模板id不能为空");
         }
@@ -745,7 +746,7 @@ public class ModleServiceImpl implements ModleService {
 
     @Override
     public Message updateModleStatus(HttpServletRequest request) {
-        Message message=null;
+        Message message = null;
         //更新模板的学习状态需要根据userId和modleId在umr表中进行修改
 //        int userId = Integer.parseInt(request.getParameter("userId"));
         int userId = (Integer) request.getAttribute("userId");
@@ -755,17 +756,17 @@ public class ModleServiceImpl implements ModleService {
 //        Modle modle=new Modle();
 //        modle.setModleId(modleId);
 //        modle.setStudyStatus(studyStatus);
-        Umr umr=new Umr();
+        Umr umr = new Umr();
         umr.setUserId(userId);
         umr.setModleId(modleId);
         umr.setStudyStatus(studyStatus);
 
         int update = modleDao.updateStudyStatus(umr);
-        if(update>0){
+        if (update > 0) {
             //更新成功
-            message=new Message("学习状态更新成功");
-        }else {
-            message=new Message("更新失败，请先完成模板学习");
+            message = new Message("学习状态更新成功");
+        } else {
+            message = new Message("更新失败，请先完成模板学习");
         }
         return message;
     }

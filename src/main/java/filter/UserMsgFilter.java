@@ -31,7 +31,7 @@ public class UserMsgFilter extends HttpFilter {
 
         //临时解决？（但session失效暂时没有想到什么好办法）
 //        String userId = request.getParameter("userId");
-        String userId = (String) request.getAttribute("userId");
+        Integer userId = (Integer) request.getAttribute("userId");
         if (userId == null){
             Message msg = new Message("需要登录才能访问");
             msg.addData("uri", "login.html");

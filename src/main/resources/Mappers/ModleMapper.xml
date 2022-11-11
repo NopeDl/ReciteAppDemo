@@ -33,7 +33,7 @@
 
     <!-- 获取标签下所有模板 -->
     <select id="selectModlesByTag" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
-        select * from modle where modleLabel = #{modleLabel} and common=#{common} order by great desc limit #{pageIndex},20
+        select * from modle where modleLabel = #{modleLabel} and common=#{common} order by great desc limit #{pageIndex},5
     </select>>
 
     <!--selectModleByModleId-->
