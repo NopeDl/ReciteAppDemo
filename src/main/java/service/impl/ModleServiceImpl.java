@@ -450,6 +450,7 @@ public class ModleServiceImpl implements ModleService {
     public Message getModlesByTag(HttpServletRequest request) {
         String pageIndexStr = request.getParameter("pageIndex");
         String modleLabelStr = request.getParameter("modleLabel");
+
         Message msg=null;
         if (pageIndexStr != null && modleLabelStr != null) {
             //获取分页起始处和模板分类标签
@@ -519,7 +520,8 @@ public class ModleServiceImpl implements ModleService {
 
                     //下面解决点赞问题
                     //先判断用户对该帖子的点赞情况
-                    boolean b = likesService.ifUserLike(community.getUserId(), community.getModleId());
+                    int userId= (int) request.getAttribute("userId");
+                    boolean b = likesService.ifUserLike(userId, community.getModleId());
                     community.setLikeStatus(b);
                     //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
                     int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
