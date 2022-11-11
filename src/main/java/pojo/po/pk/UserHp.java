@@ -6,22 +6,26 @@ package pojo.po.pk;
  * @Date 2022/10/21 1:13
  */
 public class UserHp {
-    private int userId;
+    /**
+     * 实际上为Token
+     */
+    private String userId;
     private double hp;
+
 
     public UserHp() {
     }
 
-    public UserHp(int userId, double hp) {
+    public UserHp(String userId, double hp) {
         this.userId = userId;
         this.hp = hp;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

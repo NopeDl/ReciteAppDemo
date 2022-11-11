@@ -190,8 +190,8 @@ public class PkRoom {
             //将双方血量响应回去
             SocketMessage msg = new SocketMessage();
             List<UserHp> hpLists = new ArrayList<>();
-            hpLists.add(new UserHp(this.player01.getMatchInf().getUserId(), getHp(this.player01)));
-            hpLists.add(new UserHp(this.player02.getMatchInf().getUserId(), getHp(this.player02)));
+            hpLists.add(new UserHp(this.player01.getMatchInf().getToken(), getHp(this.player01)));
+            hpLists.add(new UserHp(this.player02.getMatchInf().getToken(), getHp(this.player02)));
             msg.addData("hpInf", hpLists);
             roomBroadcast(msg);
             if (!isContinue) {
