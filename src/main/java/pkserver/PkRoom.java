@@ -50,10 +50,10 @@ public class PkRoom {
      */
     private final Map<PkUser, Double> hpMap = new HashMap<>();
 
-    /**
-     * 记录双方答题结果
-     */
-    private final Map<PkUser, AnswersRecord> answersRecords = new HashMap<>();
+//    /**
+//     * 记录双方答题结果
+//     */
+//    private final Map<PkUser, AnswersRecord> answersRecords = new HashMap<>();
     /**
      * 挖空数
      */
@@ -63,6 +63,11 @@ public class PkRoom {
      * 时长限制
      */
     private long timeLimits;
+
+    /**
+     * 即将关闭
+     */
+    boolean willClose = false;
 
     /**
      * 房间对外响应消息封装
@@ -142,9 +147,9 @@ public class PkRoom {
         AnswersRecord answersRecord02 = new AnswersRecord();
         //设置ID
         answersRecord02.setUserId(getPlayer02().getMatchInf().getUserId());
-        //添加进总记录集合
-        answersRecords.put(this.player01, answersRecord01);
-        answersRecords.put(this.player02, answersRecord02);
+//        //添加进总记录集合
+//        answersRecords.put(this.player01, answersRecord01);
+//        answersRecords.put(this.player02, answersRecord02);
         //输出日志
         System.out.println(p1Inf.getUserId() + " and " + p2Inf.getUserId() + "create pk room");
     }
@@ -161,12 +166,12 @@ public class PkRoom {
             //处理Json数据
             //获取答案对错
             //{"answerName":"1111","answerValue":true}
-            String answerName = (String) jsonObject.get("answerName");
+//            String answerName = (String) jsonObject.get("answerName");
             boolean isRight = (Boolean) jsonObject.get("answerValue");
             //封装答案信息
-            AnswerStatus answerStatus = new AnswerStatus(answerName, isRight);
-            //保存
-            saveRecord(curUser, answerStatus);
+//            AnswerStatus answerStatus = new AnswerStatus(answerName, isRight);
+//            //保存
+//            saveRecord(curUser, answerStatus);
             //如果是对的则需要扣对手的血量
             if (isRight) {
                 PkUser enemy = getEnemy(curUser);
@@ -239,26 +244,32 @@ public class PkRoom {
         roomBroadcast(result);
         //结束游戏,并关闭房间
         try {
-            player01.getSession().close();
-            player02.getSession().close();
+            if (player01.isAlive()) {
+                this.player01.getStatusPool().quitMatchedPool(player01);
+                player01.getSession().close();
+            }
+            if (player02.isAlive()) {
+                this.player01.getStatusPool().quitMatchedPool(player02);
+                player02.getSession().close();
+            }
             //移除池中相关信息
             StatusPool.PK_ROOM_LIST.remove(this);
-            StatusPool.MATCHED_POOL.remove(player01);
-            StatusPool.MATCHED_POOL.remove(player02);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * 保存用户答案记录
-     *
-     * @param player       用户
-     * @param answerStatus 封装的答案信息
-     */
-    private void saveRecord(PkUser player, AnswerStatus answerStatus) {
-        answersRecords.get(player).getAnswersRecord().add(answerStatus);
-    }
+//    /**
+//     * 保存用户答案记录
+//     *
+//     * @param player       用户
+//     * @param answerStatus 封装的答案信息
+//     */
+//    private void saveRecord(PkUser player, AnswerStatus answerStatus) {
+//        AnswersRecord answersRecord = answersRecords.get(player);
+//        List<AnswerStatus> list = answersRecord.getAnswersRecord();
+//        list.add(answerStatus);
+//    }
 
 
     /**
@@ -284,11 +295,11 @@ public class PkRoom {
      * 获取赢家
      */
     private SocketMessage getWinner() {
-        double player01Hp = getHp(player01);
-        double player02Hp = getHp(player02);
         PkUser winner;
         PkUser loser;
-        if (player01.isAlive() && player02.isAlive()){
+        if (player01.isAlive() && player02.isAlive()) {
+            double player01Hp = getHp(player01);
+            double player02Hp = getHp(player02);
             //如果两位玩家都没有退
             if (player01Hp < player02Hp) {
                 //玩家2赢
@@ -304,25 +315,28 @@ public class PkRoom {
             }
         } else if (player01.isAlive() || player02.isAlive()) {
             //有一位玩家没退
-                //没退的始终获胜
+            //没退的始终获胜
             winner = (player01.isAlive() ? player01 : player02);
             loser = (!player01.isAlive() ? player01 : player02);
-        }else {
+        } else {
             //全退了
-                //平局
+            //平局
             winner = loser = null;
         }
-        updateRank(winner.getMatchInf().getUserId(),true);
-        updateRank(loser.getMatchInf().getUserId(),false);
+        if (winner != null && loser != null) {
+            updateRank(winner.getMatchInf().getUserId(), true);
+            updateRank(loser.getMatchInf().getUserId(), false);
+        }
 
         SocketMessage msg = new SocketMessage();
         //封装赢者数据
-        msg.addData("winnerId", winner.getMatchInf().getToken());
-        //封装双方战绩
-        List<AnswersRecord> answersRecordList = new ArrayList<>();
-        answersRecordList.add(answersRecords.get(player01));
-        answersRecordList.add(answersRecords.get(player02));
-        msg.addData("records", answersRecordList);
+        msg.addData("winnerId", (winner == null ? "-1" : winner.getMatchInf().getToken()));
+//        //封装双方战绩
+//        List<AnswersRecord> answersRecordList = new ArrayList<>();
+//        answersRecordList.add(answersRecords.get(player01));
+//        answersRecordList.add(answersRecords.get(player02));
+//        msg.addData("records", answersRecordList);
+        this.willClose = true;
         return msg;
     }
 
@@ -366,16 +380,16 @@ public class PkRoom {
         int userPoints = user.getPoints();
         Difficulty difficulty = this.player01.getMatchInf().getDifficulty();
         //根据难度获取不同的积分加成
-        Integer points;
+        Integer basicPoints;
         if (difficulty == Difficulty.EASY) {
-            points = rankInfos.get("easyPoint");
+            basicPoints = rankInfos.get("easyPoint");
         } else if (difficulty == Difficulty.NORMAL) {
-            points = rankInfos.get("normalPoint");
+            basicPoints = rankInfos.get("normalPoint");
         } else {
-            points = rankInfos.get("difficultPoint");
+            basicPoints = rankInfos.get("difficultPoint");
         }
         //计算总积分积分
-        int totalPoints = userPoints + points;
+        int totalPoints = userPoints + basicPoints + (isWin ? 1 : 0) * 2;
         //计算根据积分需要额外增加的星星数量
         Integer maxPoints = rankInfos.get("maxPoints");
         int extraStars = totalPoints / maxPoints;

@@ -163,10 +163,13 @@ public class PkUser {
                 //说明两个人都退了，房间内没有参赛人员
                 StatusPool.PK_ROOM_LIST.remove(this.pkRoom);
             } else {
-                //向对手发送自己已经退出的消息
-                SocketMessage msg = new SocketMessage(SocketMsgInf.ENEMY_EXIT);
-                msg.addData("runId",this.matchInf.getToken());
-                ResponseUtil.send(enemyUser.getSession(), msg);
+                if (!this.pkRoom.willClose){
+                    //向对手发送自己已经退出的消息
+                        //并且还在游戏中
+                    SocketMessage msg = new SocketMessage(SocketMsgInf.ENEMY_EXIT);
+                    msg.addData("runId",this.matchInf.getToken());
+                    ResponseUtil.send(enemyUser.getSession(), msg);
+                }
                 this.session.close();
             }
         } else {
