@@ -44,7 +44,7 @@
 
     <!--selectModleByModleId-->
     <select id="selectModleByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
-        select modleId,modleTitle,modlePath,userId,modleLabel from modle where modleId=#{modleId}
+        select * from modle where modleId=#{modleId}
     </select>
 
 
@@ -62,7 +62,7 @@
 
     <!--    selectPathByModleId-->
     <select id="selectPathByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">
-        select modlePath from modle where modleId=#{modleId}
+        select modlePath from modle where modleId = #{modleId}
     </select>
 
 

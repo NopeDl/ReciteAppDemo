@@ -26,7 +26,9 @@ public class UMRDaoImpl implements UMRDao {
      * @return
      */
     @Override
-    public List<Umr> selectModleByUserId(Umr umr) {
+    public List<Umr> selectModleByUserId(int userId) {
+        Umr umr = new Umr();
+        umr.setUserId(userId);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("UmrMapper.selectModleByUserId", umr);
         sqlSession.close();

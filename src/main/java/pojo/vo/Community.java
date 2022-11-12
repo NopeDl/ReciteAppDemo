@@ -1,5 +1,7 @@
 package pojo.vo;
 
+import pojo.po.db.Modle;
+
 import java.time.LocalDate;
 
 /**
@@ -26,16 +28,35 @@ public class Community {
 
     private String studyStatus;
 
-    //这个参数没什么用
+    /**
+     * 这个参数没什么用
+     */
     private int great;
-    //判断用户是否点赞过改条帖子
+    /**
+     * 判断用户是否点赞过改条帖子
+     */
     private boolean likeStatus;
 
-    //该帖子获赞数量
+    /**
+     * 该帖子获赞数量
+     */
     private int likeNum;
 
 
     public Community() {
+    }
+
+    public Community(Modle modle){
+        this.modleTitle = modle.getModleTitle();
+        this.modleId = modle.getModleId();
+        this.modleLabel = modle.getModleLabel();
+        this.modlePath = modle.getModlePath();
+        this.common = modle.getCommon();
+        this.content = modle.getContent();
+        this.userId = modle.getUserId();
+        this.great = modle.getGreat();
+        this.createTime = modle.getCreateTime();
+        this.studyStatus = modle.getStudyStatus();
     }
 
 

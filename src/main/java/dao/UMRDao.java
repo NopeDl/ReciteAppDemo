@@ -8,10 +8,10 @@ import java.util.List;
 public interface UMRDao {
     /**
      * 根据umr里面的userId的来查找所对应的modleid
-     * @param umr
+     * @param userId 用户ID
      * @return
      */
-    List<Umr> selectModleByUserId(Umr umr);
+    List<Umr> selectModleByUserId(int userId);
 
     /**
      * 根据传进来的modle里面的属性modleId来查找相对应的信息

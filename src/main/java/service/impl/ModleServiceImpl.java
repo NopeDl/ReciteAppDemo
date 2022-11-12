@@ -465,9 +465,36 @@ public class ModleServiceImpl implements ModleService {
             modle.setPageIndex(pageIndex * 5);
 
             //获得查询信息
-
+            List<Community> modleList;
+            if (modleLabel != 0) {
+                //不查询官方模板
+                modleList = modleDao.selectModlesByTag(modle);
+            } else {
+                //查询官方模板
+                    //即 查询YY号的模板
+                modleList = new ArrayList<>();
+                int userId = ((int) request.getAttribute("userId"));
+                List<Umr> umrs = umrDao.selectModleByUserId(userId);
+                if (umrs != null){
+                    umrs.forEach((umr) -> {
+                        //将umr转化成modle
+                        int modleId = umr.getModleId();
+                        Modle modle1 = modleDao.selectModleByModleId(modleId);
+                        modle1.setmStatus(umr.getMStatus());
+                        modle1.setStudyStatus(umr.getStudyStatus());
+                        //将modle转化为community
+                        Community community = new Community(modle1);
+                        //查询点赞状态
+                        boolean b = likesService.ifUserLike(userId, community.getModleId());
+                        community.setLikeStatus(b);
+                        //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
+                        int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
+                        community.setLikeNum(totalLike);
+                        modleList.add(community);
+                    });
+                }
+            }
             //返回一个Community类型（包含modle里面的 所有属性）
-            List<Community> modleList = modleDao.selectModlesByTag(modle);
             InputStream input;
             if (modleList.size() > 0) {
                 for (Community community : modleList) {
@@ -511,8 +538,6 @@ public class ModleServiceImpl implements ModleService {
                             String base64 = imgHandler.parseContent();
                             community.setBase64(base64);
                         }
-
-
                     }
 
 
@@ -538,16 +563,16 @@ public class ModleServiceImpl implements ModleService {
 //                System.out.println(modleList.get(0));
                 //封装响应信息
                 msg = new Message("获取成功");
-                msg.addData("selectSuccess",true);
+                msg.addData("selectSuccess", true);
                 msg.addData("modleList", modleList);
-                if (modleList.size() < 5){
-                    msg.addData("indexEnd",false);
+                if (modleList.size() < 5) {
+                    msg.addData("indexEnd", false);
                 }
 //
             } else {
                 //没有获取到参数
                 msg = new Message("无模板");
-                msg.addData("selectSuccess",false);
+                msg.addData("selectSuccess", false);
             }
         }
         return msg;
@@ -563,7 +588,7 @@ public class ModleServiceImpl implements ModleService {
         Umr umr = new Umr();
         umr.setUserId(userId);
 
-        List<Umr> umrs = umrDao.selectModleByUserId(umr);
+        List<Umr> umrs = umrDao.selectModleByUserId(userId);
         if (umrs == null) {
             //说明该用户的记忆库啥也没有
             message = new Message();
@@ -780,7 +805,7 @@ public class ModleServiceImpl implements ModleService {
                 community.setModlePath(null);
                 //转化头像
                 User user = userDao.selectNameImgById(community);
-                if (user != null){
+                if (user != null) {
                     community.setNickName(user.getNickName());
                     String image = user.getImage();
                     if (image != null && !"".equals(image)) {
@@ -788,9 +813,9 @@ public class ModleServiceImpl implements ModleService {
                             //有头像
                             InputStream input = new FileInputStream(image);
                             FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
-                            if(imgHandler != null){
+                            if (imgHandler != null) {
                                 community.setBase64(imgHandler.parseContent());
-                            }else {
+                            } else {
                                 community.setBase64("");
                             }
                             input.close();
@@ -801,7 +826,7 @@ public class ModleServiceImpl implements ModleService {
                         //没头像
                         community.setBase64("");
                     }
-                }else {
+                } else {
                     community.setNickName("error user");
                     community.setBase64("");
                 }
