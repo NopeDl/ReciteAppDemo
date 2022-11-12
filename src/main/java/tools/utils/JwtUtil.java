@@ -6,12 +6,21 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Calendar;
+import java.util.HashMap;
+
 /**
  * @author yeyeye
  * @Date 2022/11/10 21:47
  */
 public class JwtUtil {
     private static final JWTVerifier JWT_VERIFIER = JWT.require(Algorithm.HMAC256("!34ADAS")).build();
+
+    public static String getInstance(int userId){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_WEEK,7);
+        return JWT.create().withHeader(new HashMap<>()).withClaim("userId",userId).withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256("!34ADAS"));
+    }
 
     /**
      * 验证token

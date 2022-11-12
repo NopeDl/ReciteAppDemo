@@ -378,7 +378,7 @@ public class PkRoom {
 
         //首先处理积分
         int userPoints = user.getPoints();
-        Difficulty difficulty = this.player01.getMatchInf().getDifficulty();
+        Difficulty difficulty = this.player01.getMatchInf().getDifficulty();//easy
         //根据难度获取不同的积分加成
         Integer basicPoints;
         if (difficulty == Difficulty.EASY) {
@@ -389,7 +389,7 @@ public class PkRoom {
             basicPoints = rankInfos.get("difficultPoint");
         }
         //计算总积分积分
-        int totalPoints = userPoints + basicPoints + (isWin ? 1 : 0) * 2;
+        int totalPoints = (userPoints + basicPoints) * ((isWin ? 1 : 0) * 2);
         //计算根据积分需要额外增加的星星数量
         Integer maxPoints = rankInfos.get("maxPoints");
         int extraStars = totalPoints / maxPoints;

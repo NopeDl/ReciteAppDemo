@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import pojo.po.db.Account;
 import pojo.vo.Message;
 import service.AccountService;
+import tools.utils.JwtUtil;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,11 +41,9 @@ public class AccountServiceImpl implements AccountService {
                 //将userid发送给前端储存
 //                msg.addData("userId", account.getUserId());
                 //发送token
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DAY_OF_WEEK,7);
-                String tocken = JWT.create().withHeader(new HashMap<>()).withClaim("userId",account.getUserId()).withExpiresAt(calendar.getTime()).sign(Algorithm.HMAC256("!34ADAS"));
-                msg.addData("token",tocken);
-                Cookie cookie = new Cookie("token",tocken);
+                String token = JwtUtil.getInstance(account.getUserId());
+                msg.addData("token", token);
+                Cookie cookie = new Cookie("token", token);
                 response.addCookie(cookie);
 //                登录成功后再session中设置用户id
 //                request.getSession().setAttribute("userId", account.getUserId());

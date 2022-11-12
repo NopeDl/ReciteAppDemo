@@ -264,17 +264,17 @@ public class PkUser {
                 if (!"".equals(path) && path != null) {
                     InputStream touxianginput = new FileInputStream(path);
                     FileHandler fileHandler = FileHandlerFactory.getHandler("img", touxianginput);
-                    if (fileHandler == null) {
-                        throw new IOException("解析头像失败");
+                    if (fileHandler != null) {
+                        String base64pic = fileHandler.parseContent();
+                        user.setBase64(base64pic);
+                    }else {
+                        user.setBase64("");
                     }
-                    String base64pic = fileHandler.parseContent();
-                    user.setBase64(base64pic);
                     touxianginput.close();
                 } else {
                     user.setBase64("");
                 }
                 //将用户加入房间
-
                 PkRoom.joinRoom(this);
                 System.out.println(this + " join " + this.pkRoom + " room");
                 //真的匹配成功了！

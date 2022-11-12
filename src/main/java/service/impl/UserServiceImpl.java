@@ -1,6 +1,7 @@
 package service.impl;
 
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dao.*;
 import dao.impl.*;
 import enums.MsgInf;
@@ -15,6 +16,7 @@ import service.UserService;
 import tools.easydao.utils.Resources;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
+import tools.utils.JwtUtil;
 
 import java.io.*;
 import java.util.*;
@@ -37,7 +39,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Message quit(HttpServletRequest request) {
-        request.getSession().removeAttribute("userId");
         Message message = new Message("退出成功");
         message.addData("quitSuccess", true);
         return message;
@@ -62,7 +63,8 @@ public class UserServiceImpl implements UserService {
             message = new Message(MsgInf.OK);
             message.addData("isSuccess", true);
             //将id发送给前端
-            message.addData("userId", userId);
+            String token = JwtUtil.getInstance(userId);
+            message.addData("userId", token);
         } else {
             message = new Message("用户创建失败");
             message.addData("isSuccess", false);
