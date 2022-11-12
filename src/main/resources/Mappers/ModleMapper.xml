@@ -32,9 +32,15 @@
     </select>
 
     <!-- 获取标签下所有模板 -->
-    <select id="selectModlesByTag" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
-        select * from modle where modleLabel = #{modleLabel} and common=#{common} order by great desc limit #{pageIndex},5
+    <select id="selectModlesByTag"  resultType="pojo.vo.Community">
+        select * from modle where modleLabel=#{modleLabel} and common=#{common} order by great desc limit #{pageIndex},5
     </select>>
+
+    <!-- 下拉随机获取模板 -->
+    <select id="selectRandomModles" resultType="pojo.vo.Community">
+        select * from modle where modleLabel=#{modleLabel} and common = 1 order by rand() desc limit 5
+    </select>
+
 
     <!--selectModleByModleId-->
     <select id="selectModleByModleId" parameterType="pojo.po.db.Modle" resultType="pojo.po.db.Modle">

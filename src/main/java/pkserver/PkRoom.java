@@ -164,44 +164,42 @@ public class PkRoom {
         JSONObject jsonObject = JSONObject.parseObject(json);
         if (jsonObject != null) {
             //处理Json数据
-            //获取答案对错
             //{"answerName":"1111","answerValue":true}
-//            String answerName = (String) jsonObject.get("answerName");
-            boolean isRight = (Boolean) jsonObject.get("answerValue");
-            //封装答案信息
-//            AnswerStatus answerStatus = new AnswerStatus(answerName, isRight);
-//            //保存
-//            saveRecord(curUser, answerStatus);
-            //如果是对的则需要扣对手的血量
-            if (isRight) {
-                PkUser enemy = getEnemy(curUser);
-                //获取敌人当前血量
-                double hp = getHp(enemy);
-                //计算扣的血
-                hp -= Math.round(100.0 / this.blankNum);
-                //设置血量
-                if (hp < 0) {
-                    hp = 0;
+            if (player01.isAlive() && player02.isAlive()) {
+                //如果是正常对局，两人都没有退出，就响应血量
+                boolean isRight = (Boolean) jsonObject.get("answerValue");
+                if (isRight) {
+                    //如果是对的则需要扣对手的血量
+                    PkUser enemy = getEnemy(curUser);
+                    //获取敌人当前血量
+                    double hp = getHp(enemy);
+                    //计算扣的血
+                    hp -= Math.round(100.0 / this.blankNum);
+                    //设置血量
+                    if (hp < 0) {
+                        hp = 0;
+                    }
+                    setHp(enemy, hp);
                 }
-                setHp(enemy, hp);
-            }
-            //检查双方输赢状态
-            boolean isContinue = true;
-            if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
-                //有一边没血了
-                //结束比赛
-                isContinue = false;
-            }
-            //将双方血量响应回去
-            SocketMessage msg = new SocketMessage();
-            List<UserHp> hpLists = new ArrayList<>();
-            hpLists.add(new UserHp(this.player01.getMatchInf().getToken(), getHp(this.player01)));
-            hpLists.add(new UserHp(this.player02.getMatchInf().getToken(), getHp(this.player02)));
-            msg.addData("hpInf", hpLists);
-            roomBroadcast(msg);
-            if (!isContinue) {
-                //比赛结束
-                this.end();
+                //检查双方输赢状态
+                boolean isContinue = true;
+                if (getHp(curUser) <= 0 || getHp(getEnemy(curUser)) <= 0) {
+                    //有一边没血了
+                    //并且比赛是正常进行的，没有一方退出游戏
+                    //结束比赛
+                    isContinue = false;
+                }
+                //将双方血量响应回去
+                SocketMessage msg = new SocketMessage();
+                List<UserHp> hpLists = new ArrayList<>();
+                hpLists.add(new UserHp(this.player01.getMatchInf().getToken(), getHp(this.player01)));
+                hpLists.add(new UserHp(this.player02.getMatchInf().getToken(), getHp(this.player02)));
+                msg.addData("hpInf", hpLists);
+                roomBroadcast(msg);
+                if (!isContinue) {
+                    //比赛结束
+                    this.end();
+                }
             }
         } else {
             this.responseMessage = new SocketMessage(SocketMsgInf.JSON_ERROR);
@@ -344,7 +342,7 @@ public class PkRoom {
      * 获取段位信息
      * 只会读取所以使用普通HashMap即可
      */
-    private static final Map<String, Integer> rankInfos = new HashMap<>();
+    private static final Map<String, Integer> RANK_INFOS = new HashMap<>();
 
     static {
         InputStream input = Resources.getResourceAsStream("rankInfos.properties");
@@ -356,11 +354,11 @@ public class PkRoom {
             String normalPoint = (String) properties.get("normalPoint");
             String difficultPoint = (String) properties.get("difficultPoint");
             String maxPoints = (String) properties.get("maxPoints");
-            rankInfos.put("stars", Integer.parseInt(stars));
-            rankInfos.put("easyPoint", Integer.parseInt(easyPoint));
-            rankInfos.put("normalPoint", Integer.parseInt(normalPoint));
-            rankInfos.put("difficultPoint", Integer.parseInt(difficultPoint));
-            rankInfos.put("maxPoints", Integer.parseInt(maxPoints));
+            RANK_INFOS.put("stars", Integer.parseInt(stars));
+            RANK_INFOS.put("easyPoint", Integer.parseInt(easyPoint));
+            RANK_INFOS.put("normalPoint", Integer.parseInt(normalPoint));
+            RANK_INFOS.put("difficultPoint", Integer.parseInt(difficultPoint));
+            RANK_INFOS.put("maxPoints", Integer.parseInt(maxPoints));
         } catch (IOException e) {
             throw new RuntimeException("读取段位配置信息失败");
         }
@@ -374,7 +372,7 @@ public class PkRoom {
     private void updateRank(int userId, boolean isWin) {
         User user = userDao.selectUserById(userId);
         int userStars = user.getStars();
-        Integer stars = rankInfos.get("stars");
+        Integer stars = RANK_INFOS.get("stars");
 
         //首先处理积分
         int userPoints = user.getPoints();
@@ -382,16 +380,16 @@ public class PkRoom {
         //根据难度获取不同的积分加成
         Integer basicPoints;
         if (difficulty == Difficulty.EASY) {
-            basicPoints = rankInfos.get("easyPoint");
+            basicPoints = RANK_INFOS.get("easyPoint");
         } else if (difficulty == Difficulty.NORMAL) {
-            basicPoints = rankInfos.get("normalPoint");
+            basicPoints = RANK_INFOS.get("normalPoint");
         } else {
-            basicPoints = rankInfos.get("difficultPoint");
+            basicPoints = RANK_INFOS.get("difficultPoint");
         }
         //计算总积分积分
         int totalPoints = (userPoints + basicPoints) * ((isWin ? 1 : 0) * 2);
         //计算根据积分需要额外增加的星星数量
-        Integer maxPoints = rankInfos.get("maxPoints");
+        Integer maxPoints = RANK_INFOS.get("maxPoints");
         int extraStars = totalPoints / maxPoints;
         totalPoints -= extraStars * maxPoints;
         //计算当前可用星星数量

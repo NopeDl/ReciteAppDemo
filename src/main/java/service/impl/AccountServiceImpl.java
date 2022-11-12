@@ -1,7 +1,5 @@
 package service.impl;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import dao.AccountDao;
 import dao.impl.AccountDaoImpl;
 import enums.MsgInf;
@@ -13,9 +11,9 @@ import pojo.vo.Message;
 import service.AccountService;
 import tools.utils.JwtUtil;
 
-import java.util.Calendar;
-import java.util.HashMap;
-
+/**
+ * @author yeyeye
+ */
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = new AccountDaoImpl();
 

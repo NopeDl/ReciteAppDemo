@@ -52,14 +52,15 @@ public interface ModleService {
 
     /**
      * 更改原模版路径里面的内容
-     *
-     * @return
+     * @param modleId modleId
+     * @param context context
+     * @return ret
      */
     boolean replaceContext(String context, int modleId);
 
     /**
      * 解析pdf内容
-     *
+     * @param request req
      * @return 返回pdf中内容
      */
     Message parseFile(HttpServletRequest request);
@@ -67,55 +68,51 @@ public interface ModleService {
     /**
      * 获取标签下所有模板
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message getModlesByTag(HttpServletRequest request);
-
-//
-//    /**
-//     * 给模板打赏
-//     *
-//     * @param request
-//     * @return
-//     */
-//    Message reward(HttpServletRequest request);
-
 
     /**
      * 查询用户的记忆库
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message getUserMemory(HttpServletRequest request);
 
     /**
      * 获取所有标签信息
      *
-     * @return
+     * @return ret
      */
     Message getLabels();
 
     /**
      * 自动挖空
-     * @return
+     * @return ret
      */
     Message autoDig(HttpServletRequest request);
 
 
     /**
      * 将模板上传至社区
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message toCommunity(HttpServletRequest request);
 
     /**
      * 更改学习计划
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     Message updateModleStatus(HttpServletRequest request);
 
+    /**
+     *  下拉获取随机模板
+     * @param request req
+     * @return 随机模板
+     */
+    Message getRandomModles(HttpServletRequest request);
 }

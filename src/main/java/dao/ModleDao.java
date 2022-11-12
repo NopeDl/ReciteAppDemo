@@ -182,4 +182,11 @@ public interface ModleDao {
      * @return
      */
     int updateLikeNum(int modleId,int great);
+
+    /**
+     * 获取随机模板
+     * @param modleLabel 模板标签
+     * @return 随机模板
+     */
+    List<Community> selectRandomModles(int modleLabel);
 }

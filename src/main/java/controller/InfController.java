@@ -41,6 +41,8 @@ public class InfController extends HttpServlet {
         } else if ("getModlesByTag".equals(uri)) {
             //获取标签下所有模板
             msg = modleService.getModlesByTag(request);
+        } else if ("getRandomModles".equals(uri)) {
+            msg = modleService.getRandomModles(request);
         } else if ("labels".equals(uri)) {
             //获取所有标签信息
             msg = modleService.getLabels();

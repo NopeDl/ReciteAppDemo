@@ -489,4 +489,28 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         return update;
     }
+
+    /**
+     * 获取随机模板
+     * @param modleLabel 模板标签
+     * @return 随机模板
+     */
+    @Override
+    public List<Community> selectRandomModles(int modleLabel) {
+        Modle modle = new Modle();
+        modle.setModleLabel(modleLabel);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectRandomModles", modle);
+        sqlSession.close();
+        if(objects.size() <= 0){
+            return null;
+        }else{
+            List<Community> modleList = new ArrayList<>();
+            for (Object o : objects) {
+                modleList.add((Community) o);
+            }
+            return modleList;
+        }
+
+    }
 }

@@ -23,6 +23,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
@@ -461,7 +462,7 @@ public class ModleServiceImpl implements ModleService {
             Modle modle = new Modle();
             modle.setCommon(1);
             modle.setModleLabel(modleLabel);
-            modle.setPageIndex(pageIndex);
+            modle.setPageIndex(pageIndex * 5);
 
             //获得查询信息
 
@@ -537,50 +538,20 @@ public class ModleServiceImpl implements ModleService {
 //                System.out.println(modleList.get(0));
                 //封装响应信息
                 msg = new Message("获取成功");
+                msg.addData("selectSuccess",true);
                 msg.addData("modleList", modleList);
+                if (modleList.size() < 5){
+                    msg.addData("indexEnd",false);
+                }
 //
             } else {
                 //没有获取到参数
-                msg = new Message("参数获取失败");
+                msg = new Message("无模板");
+                msg.addData("selectSuccess",false);
             }
         }
         return msg;
     }
-
-//    /**
-//     *
-//     * 给模板打赏
-//     *
-//     * @param request 请求
-//     * @return 响应
-//     */
-//    @Override
-//    public Message reward(HttpServletRequest request) {
-//        String coinsStr = request.getParameter("coins");
-//        String modleIdStr = request.getParameter("modleId");
-//        Message msg;
-//        if (coinsStr != null && modleIdStr != null) {
-//            int coins = Integer.parseInt(coinsStr);
-//            int modleId = Integer.parseInt(modleIdStr);
-//            //封装修改数据
-//            Modle modle = new Modle();
-//            modle.setModleId(modleId);
-//            modle.setCoins(coins);
-//            //执行修改
-//            int success = modleDao.updateModleCoins(modle);
-//            if (success > 0) {
-//                msg = new Message("打赏成功");
-//                msg.addData("rewardSuccess", true);
-//            } else {
-//                msg = new Message("打赏失败");
-//                msg.addData("rewardSuccess", false);
-//            }
-//        } else {
-//            msg = new Message("操作失败,参数不能为空");
-//            msg.addData("rewardSuccess", false);
-//        }
-//        return msg;
-//    }
 
     @Override
     public Message getUserMemory(HttpServletRequest request) {
@@ -769,5 +740,77 @@ public class ModleServiceImpl implements ModleService {
             message = new Message("更新失败，请先完成模板学习");
         }
         return message;
+    }
+
+    /**
+     * 随机获取模板
+     *
+     * @param request req
+     * @return
+     */
+    @Override
+    public Message getRandomModles(HttpServletRequest request) {
+        int modleLabel = Integer.parseInt(request.getParameter("modleLabel"));
+        List<Community> modleList = modleDao.selectRandomModles(modleLabel);
+
+        Message msg;
+        if (modleList == null) {
+            msg = new Message("无模板");
+            msg.addData("selectSuccess", false);
+        } else {
+            modleList.forEach((community) -> {
+                //转化文本
+                String modlePath = community.getModlePath();
+                if (modlePath != null && !"".equals(modlePath)) {
+                    try {
+                        InputStream input = new FileInputStream(modlePath);
+                        FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
+                        if (txtHandler != null) {
+                            community.setContent(txtHandler.parseContent());
+                        } else {
+                            community.setContent("");
+                        }
+                        input.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    community.setContent("");
+                }
+                community.setModlePath(null);
+                //转化头像
+                User user = userDao.selectNameImgById(community);
+                if (user != null){
+                    community.setNickName(user.getNickName());
+                    String image = user.getImage();
+                    if (image != null && !"".equals(image)) {
+                        try {
+                            //有头像
+                            InputStream input = new FileInputStream(image);
+                            FileHandler imgHandler = FileHandlerFactory.getHandler("img", input);
+                            if(imgHandler != null){
+                                community.setBase64(imgHandler.parseContent());
+                            }else {
+                                community.setBase64("");
+                            }
+                            input.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        //没头像
+                        community.setBase64("");
+                    }
+                }else {
+                    community.setNickName("error user");
+                    community.setBase64("");
+                }
+
+            });
+            msg = new Message("获取成功");
+            msg.addData("selectSuccess", true);
+            msg.addData("modle", modleList);
+        }
+        return msg;
     }
 }

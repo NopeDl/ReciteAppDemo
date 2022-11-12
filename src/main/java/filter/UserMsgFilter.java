@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @WebFilter({
 "/user.do/UserMsg", "/user.do/ReMessage","/user.do/userRanking","/user.do/clockIn","/user.do/getClockInRecord","/user.do/storeDSSD",
-"/inf.get/studyData",
+"/inf.get/studyData","/inf.get/getRandomModles","/inf.get/getModlesByTag",
 "/modle/MakeModle","/modle/deleteModle","/modle/UserMemory","/modle/Collection","/modle/UpdateModleStatus",
 "/upload/uploadImg",
 "/review/JoinThePlane","/review/RemoveFromPlan","/review/GetPeriodModle","/review/FinishOnceReview"
