@@ -226,6 +226,7 @@ public class LikesServiceImpl implements LikesService {
         }else{
             Cache.USER_LIKE.put(userId,set);
         }
+
     }
 
     /**
@@ -286,16 +287,16 @@ public class LikesServiceImpl implements LikesService {
     @Override
     public void initCaChe() {
         List<Likes> likes = likesDao.selectLikes();
-
+        System.out.println(likes);
         for(Likes temp:likes) {
             int userId = temp.getUserId();
             int modleId = temp.getModleId();
-            if (!Cache.CACHE_USER_LIKE.containsKey(userId)){
+            if (!Cache.USER_LIKE.containsKey(userId)){
                 HashSet<Integer> modleSet = new HashSet<>();
                 modleSet.add(modleId);
-                Cache.CACHE_USER_LIKE.put(userId,modleSet);
+                Cache.USER_LIKE.put(userId,modleSet);
             }else {
-                Set<Integer> modleSet = Cache.CACHE_USER_LIKE.get(userId);
+                Set<Integer> modleSet = Cache.USER_LIKE.get(userId);
                 modleSet.add(modleId);
                 Cache.USER_LIKE.put(userId,modleSet);
             }
@@ -310,6 +311,7 @@ public class LikesServiceImpl implements LikesService {
             }
         }
 
+
     }
 
     @Override
@@ -322,10 +324,14 @@ public class LikesServiceImpl implements LikesService {
                 //说明在暂时缓存里有，那就一定是点赞过的
                 isLike=true;
             }
-        }else if(Cache.USER_LIKE.containsKey(userId)&&
-        !Cache.CACHE_USER_DISLIKE.containsKey(userId)){
+        }else if(Cache.USER_LIKE.containsKey(userId)){
             if(Cache.USER_LIKE.get(userId).contains(modleId)){
-                isLike=true;
+                if(!Cache.CACHE_USER_DISLIKE.containsKey(userId)){
+                    isLike=true;
+                }else{
+                    boolean contains = !Cache.CACHE_USER_DISLIKE.get(userId).contains(modleId);
+                    isLike=true;
+                }
             }
         }
         return isLike;

@@ -806,6 +806,15 @@ public class ModleServiceImpl implements ModleService {
                     community.setBase64("");
                 }
 
+                //下面解决点赞问题
+                //先判断用户对该帖子的点赞情况
+                int userId = (int) request.getAttribute("userId");
+                boolean b = likesService.ifUserLike(userId, community.getModleId());
+                community.setLikeStatus(b);
+                //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
+                int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
+                community.setLikeNum(totalLike);
+
             });
             msg = new Message("获取成功");
             msg.addData("selectSuccess", true);

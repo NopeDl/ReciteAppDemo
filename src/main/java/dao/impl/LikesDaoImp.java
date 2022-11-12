@@ -52,6 +52,7 @@ public class LikesDaoImp implements LikesDao {
         }else{
             sqlSession.rollBack();
         }
+        sqlSession.close();
         return insert;
     }
 
@@ -72,6 +73,7 @@ public class LikesDaoImp implements LikesDao {
         }else{
             sqlSession.rollBack();
         }
+        sqlSession.close();
         return delete;
     }
 
