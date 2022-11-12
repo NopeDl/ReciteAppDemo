@@ -1,5 +1,10 @@
 <!DOCTYPE mapper>
 <mapper namespace="ModleMapper">
+    <!-- 查询用户所有已经上传的模板 -->
+    <selectModleByUserId id="selectModleByUserId" resultType="pojo.vo.Community">
+        select * from modle where userId = #{userId} and common = 1 order by great desc limit #{pageIndex},5
+    </selectModleByUserId>
+
     <!--  -->
     <select id="selectCount" parameterType="string" resultType="pojo.po.db.Count">
         select count(userId) as number  from modle

@@ -23,7 +23,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
@@ -34,7 +33,6 @@ public class ModleServiceImpl implements ModleService {
     private final ReviewDao reviewDao = new ReviewDaoImpl();
     private final LikesDao likesDao = new LikesDaoImp();
     private final LikesService likesService = new LikesServiceImpl();
-//    private final FileHandlerFactory fileHandlerFactory = new FileHandlerFactory();
 
 //
 //    /**
@@ -355,13 +353,14 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 根据获取的模板id,来读取txt文本
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message reTxt(HttpServletRequest request) {
         Message message;
-        String modleId = request.getParameter("modleId");//获取模板id
+        //获取模板id
+        String modleId = request.getParameter("modleId");
         //获取模板路径
         String modlePath = modleDao.selectPathByModleId(Integer.parseInt(modleId));
         Modle modle = modleDao.selectPathTitlAndTag(Integer.parseInt(modleId));
@@ -374,19 +373,23 @@ public class ModleServiceImpl implements ModleService {
             //解析文件内容
             String context = txtHandler.parseContent();
             ShowModle showModle = new ShowModle();
-            showModle.setContext(context);//存模板内容
-            showModle.setTitle(modle.getModleTitle());//存模板标题
+            //存模板内容
+            showModle.setContext(context);
+            //存模板标题
+            showModle.setTitle(modle.getModleTitle());
 
             //查找模板的标签名字,并且封装
             int modleLabel = modle.getModleLabel();
-            showModle.setLabelValue(modleLabel);//将模板标签编号存进去
+            //将模板标签编号存进去
+            showModle.setLabelValue(modleLabel);
 
             //将模板标签名字存进去
             String lableName = labelDao.selectLableName(modleLabel);
             showModle.setLabelName(lableName);
 
             message = new Message("读取模板内容成功");
-            message.addData("modleContext", showModle);//返回响应数据，模板内容
+            //返回响应数据，模板内容
+            message.addData("modleContext", showModle);
         } catch (FileNotFoundException e) {
             message = new Message(MsgInf.SERVER_ERROR);
         }
@@ -396,9 +399,9 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 将String类型的字符串存为txt文本，并且返回文件的地址
      *
-     * @param context
-     * @param modleTitle
-     * @return
+     * @param context 文本
+     * @param modleTitle 模板标题
+     * @return 文件路径
      */
     @Override
     public String WriteAsTxt(String context, String modleTitle) {
@@ -471,32 +474,13 @@ public class ModleServiceImpl implements ModleService {
                 modleList = modleDao.selectModlesByTag(modle);
             } else {
                 //查询官方模板
-                    //即 查询YY号的模板
-                modleList = new ArrayList<>();
+                //即 查询YY号的模板
                 int userId = ((int) request.getAttribute("userId"));
-                List<Umr> umrs = umrDao.selectModleByUserId(userId);
-                if (umrs != null){
-                    umrs.forEach((umr) -> {
-                        //将umr转化成modle
-                        int modleId = umr.getModleId();
-                        Modle modle1 = modleDao.selectModleByModleId(modleId);
-                        modle1.setmStatus(umr.getMStatus());
-                        modle1.setStudyStatus(umr.getStudyStatus());
-                        //将modle转化为community
-                        Community community = new Community(modle1);
-                        //查询点赞状态
-                        boolean b = likesService.ifUserLike(userId, community.getModleId());
-                        community.setLikeStatus(b);
-                        //查询帖子的点赞数量，这里查到的不是数据库表的，应该还有缓存的
-                        int totalLike = likesService.getLikeNumsByModleId(community.getModleId());
-                        community.setLikeNum(totalLike);
-                        modleList.add(community);
-                    });
-                }
+                modleList = modleDao.selectModleByUserId(userId);
             }
             //返回一个Community类型（包含modle里面的 所有属性）
             InputStream input;
-            if (modleList.size() > 0) {
+            if (modleList != null && modleList.size() > 0) {
                 for (Community community : modleList) {
                     //根据路径读取文件内容
                     //获取改模板的路径；根据路径读取文件内容
@@ -555,8 +539,6 @@ public class ModleServiceImpl implements ModleService {
                     community.setLikeNum(totalLike);
                     //这玩意没用
                     community.setGreat(0);
-
-
                 }
 
 
@@ -771,12 +753,20 @@ public class ModleServiceImpl implements ModleService {
      * 随机获取模板
      *
      * @param request req
-     * @return
+     * @return 随机模板
      */
     @Override
     public Message getRandomModles(HttpServletRequest request) {
         int modleLabel = Integer.parseInt(request.getParameter("modleLabel"));
-        List<Community> modleList = modleDao.selectRandomModles(modleLabel);
+        List<Community> modleList;
+        if (modleLabel != 0) {
+            //不是官方模板
+            modleList = modleDao.selectRandomModles(modleLabel);
+        } else {
+            //是官方模板
+            int userId = (int)request.getAttribute("userId");
+            modleList = modleDao.selectModleByUserId(userId);
+        }
 
         Message msg;
         if (modleList == null) {

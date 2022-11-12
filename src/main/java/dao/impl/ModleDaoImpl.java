@@ -513,4 +513,27 @@ public class ModleDaoImpl implements ModleDao {
         }
 
     }
+
+    /**
+     * 查询用户所有已上传模板
+     * @param userId 用户ID
+     * @return 模板
+     */
+    @Override
+    public List<Community> selectModleByUserId(int userId) {
+        Modle modle = new Modle();
+        modle.setUserId(userId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectModleByUserId", modle);
+        sqlSession.close();
+        if (objects.size() <= 0){
+            return null;
+        }else {
+            List<Community> list = new ArrayList<>();
+            objects.forEach((o)->{
+                list.add((Community) o);
+            });
+            return list;
+        }
+    }
 }

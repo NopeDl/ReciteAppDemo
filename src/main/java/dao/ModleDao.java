@@ -189,4 +189,11 @@ public interface ModleDao {
      * @return 随机模板
      */
     List<Community> selectRandomModles(int modleLabel);
+
+    /**
+     * 查询用户所有已上传模板
+     * @param userId 用户ID
+     * @return 模板
+     */
+    List<Community> selectModleByUserId(int userId);
 }
