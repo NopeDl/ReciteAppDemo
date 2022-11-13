@@ -145,8 +145,8 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 解析文件
      *
-     * @param request
-     * @return
+     * @param request req
+     * @return ret
      */
     @Override
     public Message parseFile(HttpServletRequest request) {
@@ -174,7 +174,8 @@ public class ModleServiceImpl implements ModleService {
             }
 
         } catch (IOException | ServletException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            msg = new Message("文件上传失败");
         }
         return msg;
     }
