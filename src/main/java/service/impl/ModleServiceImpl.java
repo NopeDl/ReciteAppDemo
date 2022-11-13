@@ -475,7 +475,7 @@ public class ModleServiceImpl implements ModleService {
             } else {
                 //查询官方模板
                 //即 查询YY号的模板
-                int userId = ((int) request.getAttribute("userId"));
+                int userId = 50;
                 modleList = modleDao.selectModleByUserId(userId);
             }
             //返回一个Community类型（包含modle里面的 所有属性）
@@ -764,7 +764,7 @@ public class ModleServiceImpl implements ModleService {
             modleList = modleDao.selectRandomModles(modleLabel);
         } else {
             //是官方模板
-            int userId = (int)request.getAttribute("userId");
+            int userId = 50;
             modleList = modleDao.selectModleByUserId(userId);
         }
 

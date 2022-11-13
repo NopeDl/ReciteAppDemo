@@ -43,11 +43,11 @@ public class AEncodingFilter extends HttpFilter {
         }else {
             response.setContentType("text/html;charset=utf-8");
         }
-        //解决跨域访问
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "*");
-        response.setHeader("Access-Control-Allow-Headers","Content-Type,Authorization,X-Requested-With");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        //解决跨域访问
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Methods", "*");
+//        response.setHeader("Access-Control-Allow-Headers","Content-Type,Authorization,X-Requested-With");
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
         chain.doFilter(request, response);
     }
 }

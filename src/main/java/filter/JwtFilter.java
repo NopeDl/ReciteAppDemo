@@ -5,6 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,14 +22,14 @@ public class JwtFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         //获取token
-        String token = JwtUtil.getToken(request);
-        if (token != null && !"".equals(token)){
+        String token = request.getHeader("Authorization");
+        if (token != null && !"".equals(token)) {
             DecodedJWT verify = JwtUtil.verify(token);
             Claim userId = verify.getClaim("userId");
-            if (userId != null){
-                request.setAttribute("userId",userId.asInt());
+            if (userId != null) {
+                request.setAttribute("userId", userId.asInt());
             }
         }
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 }
