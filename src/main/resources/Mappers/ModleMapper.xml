@@ -1,10 +1,5 @@
 <!DOCTYPE mapper>
 <mapper namespace="ModleMapper">
-    <!-- 查询用户所有已经上传的模板 -->
-    <selectModleByUserId id="selectModleByUserId" resultType="pojo.vo.Community">
-        select * from modle where userId = #{userId} and common = 1 order by great desc limit #{pageIndex},5
-    </selectModleByUserId>
-
     <!--  -->
     <select id="selectCount" parameterType="string" resultType="pojo.po.db.Count">
         select count(userId) as number  from modle
@@ -41,9 +36,19 @@
         select * from modle where modleLabel=#{modleLabel} and common=#{common} order by great desc limit #{pageIndex},5
     </select>>
 
+    <!-- 查询用户所有已经上传的模板 -->
+    <selectModleByUserId id="selectModleByUserId" resultType="pojo.vo.Community">
+        select * from modle where userId = #{userId} and common = 1 order by great desc limit #{pageIndex},5
+    </selectModleByUserId>
+
     <!-- 下拉随机获取模板 -->
     <select id="selectRandomModles" resultType="pojo.vo.Community">
         select * from modle where modleLabel=#{modleLabel} and common = 1 order by rand() desc limit 5
+    </select>
+
+    <!-- 下拉随机获取用户模板 -->
+    <select id="selectRandomModlesByUserId" resultType="pojo.vo.Community">
+        select * from modle where userId=#{userId} and common = 1 order by rand() desc limit 5
     </select>
 
 

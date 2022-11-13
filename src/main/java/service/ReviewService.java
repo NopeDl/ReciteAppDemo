@@ -10,6 +10,7 @@ public interface ReviewService {
 
     /**
      * 将某个模板加入学习计划
+     *
      * @param request req
      * @return ret
      */
@@ -17,6 +18,7 @@ public interface ReviewService {
 
     /**
      * 将模板移除个人计划
+     *
      * @param request req
      * @return ret
      */
@@ -24,6 +26,7 @@ public interface ReviewService {
 
     /**
      * 根据周期获取模板
+     *
      * @param request req
      * @return ret
      */
@@ -31,6 +34,7 @@ public interface ReviewService {
 
     /**
      * 将学习完的模板更新周期
+     *
      * @param request req
      * @return ret
      */
@@ -43,5 +47,13 @@ public interface ReviewService {
 //     */
 //    Message getReviewPlan(HttpServletRequest request);
 
+
+    /**
+     * 获取正确率
+     *
+     * @param request req
+     * @return 正确率
+     */
+    Message getAccuracy(HttpServletRequest request);
 
 }

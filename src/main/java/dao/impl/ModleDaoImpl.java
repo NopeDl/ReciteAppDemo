@@ -38,13 +38,13 @@ public class ModleDaoImpl implements ModleDao {
 
     @Override
     public boolean updateReviewId(Review review) {
-        boolean flag=false;
-        SqlSession sqlSession=sqlSessionFactory.openSession();
+        boolean flag = false;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
         int update = sqlSession.update("ModleMapper.updateReviewId", review);
-        if(update>0){
-            flag=true;
+        if (update > 0) {
+            flag = true;
             sqlSession.commit();
-        }else{
+        } else {
             sqlSession.rollBack();
         }
 
@@ -55,41 +55,41 @@ public class ModleDaoImpl implements ModleDao {
     /**
      * 收藏前先查看用户要收藏的模板是不是自己模板
      * 在modle表查询
+     *
      * @param umr
      * @return
      */
     @Override
     public Integer selectIfContain(Umr umr) {
-        SqlSession sqlSession=sqlSessionFactory.openSession();
-        List<Object> userId = sqlSession.selectList("ModleMapper.selectIfContain",umr);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> userId = sqlSession.selectList("ModleMapper.selectIfContain", umr);
         sqlSession.close();
-        if(userId.size()==0){
+        if (userId.size() == 0) {
             //说明此时不属于该用户
             return 0;
-        }else{
+        } else {
             //说明此时属于用户自己的模板
             return (((Count) userId.get(0)).getNumber()).intValue();
         }
     }
 
 
-
-
     /**
      * 获取某个模板的标题是叫什么
+     *
      * @param modle
      * @return
      */
     @Override
     public String selectTitleByModleId(Modle modle) {
-        SqlSession sqlSession=sqlSessionFactory.openSession();
-        String userTitle=null;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        String userTitle = null;
         List<Object> objects = sqlSession.selectList("ModleMapper.selectTitleByModleId", modle);
-       sqlSession.close();
-        if(objects.size()==0){
+        sqlSession.close();
+        if (objects.size() == 0) {
             //说明没有叫这个标题的模板
-        }else{
-             userTitle= ((Modle)objects.get(0)).getModleTitle();
+        } else {
+            userTitle = ((Modle) objects.get(0)).getModleTitle();
         }
         return userTitle;
 
@@ -122,6 +122,7 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 更新模板的学习状态
+     *
      * @param umr
      * @return
      */
@@ -129,9 +130,9 @@ public class ModleDaoImpl implements ModleDao {
     public int updateStudyStatus(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int update = sqlSession.insert("UmrMapper.updateStudyStatus", umr);
-        if(update>0){
+        if (update > 0) {
             sqlSession.commit();
-        }else{
+        } else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -140,19 +141,20 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 用户收藏别人的模板
+     *
      * @return
      */
     @Override
-    public int collectModleById(int userId,int modleId,int mStatus) {
+    public int collectModleById(int userId, int modleId, int mStatus) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Umr umr = new Umr();
         umr.setUserId(userId);
         umr.setModleId(modleId);//将数据封装为一个umr对象
         umr.setMStatus(mStatus);
         int update = sqlSession.insert("UmrMapper.collectModleById", umr);
-        if(update>0){
+        if (update > 0) {
             sqlSession.commit();
-        }else{
+        } else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -279,7 +281,7 @@ public class ModleDaoImpl implements ModleDao {
         List<Object> resultList = sqlSession.selectList("ModleMapper.selectModleById", modle);
         sqlSession.close();
         if (resultList.size() > 0) {
-            System.out.println((Modle)resultList.get(0));
+            System.out.println((Modle) resultList.get(0));
             return (Modle) resultList.get(0);
         } else {
             return null;
@@ -334,9 +336,9 @@ public class ModleDaoImpl implements ModleDao {
             //有路径
 //            modlePath = ((Modle)objects.get(0)).getModlePath();
             //返回路径，标题，标签，封装成modle
-           modle1 = (Modle) objects.get(0);
-        }else{
-            modle1=null;
+            modle1 = (Modle) objects.get(0);
+        } else {
+            modle1 = null;
         }
         return modle1;
     }
@@ -381,12 +383,12 @@ public class ModleDaoImpl implements ModleDao {
     public boolean changeModleTag(Modle modle) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int update = sqlSession.update("ModleMapper.changeModleTag", modle);
-        boolean flag=false;
-        if(update>0){
-            flag=true;
+        boolean flag = false;
+        if (update > 0) {
+            flag = true;
             sqlSession.commit();
-        }else{
-           sqlSession.rollBack();
+        } else {
+            sqlSession.rollBack();
         }
         sqlSession.close();
 //        System.out.println("flag="+flag);
@@ -405,7 +407,7 @@ public class ModleDaoImpl implements ModleDao {
         sqlSession.close();
         if (objects.size() != 0) {
             //有路径
-            modlePath = ((Modle)objects.get(0)).getModlePath();
+            modlePath = ((Modle) objects.get(0)).getModlePath();
 
         }
         return modlePath;
@@ -413,6 +415,7 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 删除模板
+     *
      * @param modleId 需要删除的模板ID
      * @return 操作结果
      */
@@ -422,9 +425,9 @@ public class ModleDaoImpl implements ModleDao {
         modle.setModleId(modleId);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int delete = sqlSession.delete("ModleMapper.deleteModleByModleId", modle);
-        if (delete>0){
+        if (delete > 0) {
             sqlSession.commit();
-        }else {
+        } else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -433,20 +436,21 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 上传模板
+     *
      * @param modleId 需要操作的模板ID
-     * @param common 0为不发布，1为发布
+     * @param common  0为不发布，1为发布
      * @return 更改结果
      */
     @Override
-    public int updateModleCommon(int modleId,int common) {
+    public int updateModleCommon(int modleId, int common) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Modle modle = new Modle();
         modle.setModleId(modleId);
         modle.setCommon(common);
         int update = sqlSession.update("ModleMapper.updateModleCommon", modle);
-        if(update>0){
+        if (update > 0) {
             sqlSession.commit();
-        }else {
+        } else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -455,15 +459,16 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 根据模板id和用户id查询模板的情况，重点包括模板的学习状态
+     *
      * @param umr
      * @return
      */
     @Override
     public Umr selectModleByIds(Umr umr) {
-        SqlSession sqlSession=sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("UmrMapper.selectModleByIds", umr);
         sqlSession.close();
-        if(objects.size()>0){
+        if (objects.size() > 0) {
             return (Umr) objects.get(0);
         }
         return null;
@@ -471,19 +476,20 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 更新模板的点赞数量
+     *
      * @param modleId
      * @return
      */
     @Override
-    public int updateLikeNum(int modleId,int great) {
-        SqlSession sqlSession=sqlSessionFactory.openSession();
-        Modle modle=new Modle();
+    public int updateLikeNum(int modleId, int great) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Modle modle = new Modle();
         modle.setModleId(modleId);
         modle.setGreat(great);
         int update = sqlSession.update("ModleMapper.UpdateLikeNum", modle);
-        if(update>0){
+        if (update > 0) {
             sqlSession.commit();
-        }else{
+        } else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -492,6 +498,7 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 获取随机模板
+     *
      * @param modleLabel 模板标签
      * @return 随机模板
      */
@@ -502,9 +509,9 @@ public class ModleDaoImpl implements ModleDao {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectRandomModles", modle);
         sqlSession.close();
-        if(objects.size() <= 0){
+        if (objects.size() <= 0) {
             return null;
-        }else{
+        } else {
             List<Community> modleList = new ArrayList<>();
             for (Object o : objects) {
                 modleList.add((Community) o);
@@ -516,21 +523,41 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 查询用户所有已上传模板
+     *
      * @param userId 用户ID
      * @return 模板
      */
     @Override
-    public List<Community> selectModleByUserId(int userId) {
+    public List<Community> selectModleByUserId(int userId, int pageIndex) {
         Modle modle = new Modle();
         modle.setUserId(userId);
+        modle.setPageIndex(pageIndex);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectModleByUserId", modle);
         sqlSession.close();
-        if (objects.size() <= 0){
+        if (objects.size() <= 0) {
             return null;
-        }else {
+        } else {
             List<Community> list = new ArrayList<>();
-            objects.forEach((o)->{
+            objects.forEach((o) -> {
+                list.add((Community) o);
+            });
+            return list;
+        }
+    }
+
+    @Override
+    public List<Community> selectRandomModlesByUserId(int userId) {
+        Modle modle = new Modle();
+        modle.setUserId(userId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectRandomModlesByUserId", modle);
+        sqlSession.close();
+        if (objects.size() <= 0) {
+            return null;
+        } else {
+            List<Community> list = new ArrayList<>();
+            objects.forEach((o) -> {
                 list.add((Community) o);
             });
             return list;

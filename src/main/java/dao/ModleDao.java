@@ -193,7 +193,15 @@ public interface ModleDao {
     /**
      * 查询用户所有已上传模板
      * @param userId 用户ID
+     * @param pageIndex 查询分页
      * @return 模板
      */
-    List<Community> selectModleByUserId(int userId);
+    List<Community> selectModleByUserId(int userId,int pageIndex);
+
+    /**
+     * 获取随机用户上传模板
+     * @param userId 用户I
+     * @return 随机模板
+     */
+    List<Community> selectRandomModlesByUserId(int userId);
 }

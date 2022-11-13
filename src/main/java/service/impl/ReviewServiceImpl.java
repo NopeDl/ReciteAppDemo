@@ -1,6 +1,7 @@
 package service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import dao.ModleDao;
 import dao.ReviewDao;
 import dao.UserDao;
@@ -18,6 +19,7 @@ import pojo.vo.Message;
 import service.ReviewService;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
+import tools.utils.StringUtil;
 
 import javax.activation.DataSource;
 import java.io.FileInputStream;
@@ -29,7 +31,7 @@ import java.util.*;
 public class ReviewServiceImpl implements ReviewService {
     private final ModleDao modleDao = new ModleDaoImpl();
     private final ReviewDao reviewDao = new ReviewDaoImpl();
-    private final UserDao userDao=new UserDaoImpl();
+    private final UserDao userDao = new UserDaoImpl();
 
     /**
      * 用户将某个模板加入学习计划
@@ -71,13 +73,13 @@ public class ReviewServiceImpl implements ReviewService {
                     //学习中————>复习中，dailyStudy表中的studyNums要加1；
                     //先查询是否有该条记录
                     DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-                    if(dailyStudy!=null){
+                    if (dailyStudy != null) {
                         //说明有该数据，只需要进行更新
-                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,
-                                dailyStudy.getStudyTime(),dailyStudy.getReviewNums());
-                    }else{
+                        userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums() + 1,
+                                dailyStudy.getStudyTime(), dailyStudy.getReviewNums());
+                    } else {
                         //说明没有数据，要执行插入语句
-                        userDao.insertDailyStudyData(userId,1,0,0);
+                        userDao.insertDailyStudyData(userId, 1, 0, 0);
                     }
 
                     if (insert > 0) {
@@ -162,7 +164,7 @@ public class ReviewServiceImpl implements ReviewService {
             ReviewPeriod reviewPeriod = ReviewPeriod.getReviewPeriod(i);
             review.setDays(reviewPeriod.getDate());
             List<Community> communities = reviewDao.selectModleByPeriod(review);
-      if (communities.size() > 0) {
+            if (communities.size() > 0) {
 
                 for (int j = 0; j < communities.size(); j++) {
                     String modlePath = communities.get(j).getModlePath();
@@ -223,47 +225,66 @@ public class ReviewServiceImpl implements ReviewService {
                 umr.setUserId(userId);
                 umr.setModleId(result.getModleId());
                 int update = modleDao.updateStudyStatus(umr);
-                if(update>0){
+                if (update > 0) {
                     DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-                    if(dailyStudy!=null){
+                    if (dailyStudy != null) {
                         //说明已有改数据，只需要进行更新
-                        userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,dailyStudy.getStudyTime(),
-                                dailyStudy.getReviewNums()+1);
-                    }else{
+                        userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums() + 1, dailyStudy.getStudyTime(),
+                                dailyStudy.getReviewNums() + 1);
+                    } else {
                         //创建并更新
-                        userDao.insertDailyStudyData(userId,1,0,1);
+                        userDao.insertDailyStudyData(userId, 1, 0, 1);
                     }
 
 
-                    message=new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
-                    message.addData("todayFinish",1);
+                    message = new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
+                    message.addData("todayFinish", 1);
                 }
             }
-        }else{
+        } else {
             //继续周期性学习，周期+1，日期重置
             review.setReTime(LocalDate.now());
             System.out.println(LocalDate.now());
             int i = reviewDao.updatePeriodAndDate(review);
-            if(i>0){
+            if (i > 0) {
                 //复习完毕，今日复习篇数同步更新
                 DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
-                if(dailyStudy!=null){
+                if (dailyStudy != null) {
                     //说明已有改数据，只需要进行更新
-                    userDao.updateDailyStudyByIdAndTime(userId,dailyStudy.getStudyNums()+1,dailyStudy.getStudyTime(),
-                            dailyStudy.getReviewNums()+1);
-                }else{
+                    userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums() + 1, dailyStudy.getStudyTime(),
+                            dailyStudy.getReviewNums() + 1);
+                } else {
                     //创建并更新
-                    userDao.insertDailyStudyData(userId,0,0,1);
+                    userDao.insertDailyStudyData(userId, 0, 0, 1);
                 }
                 //更新周期和时间成功
-                message=new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
-                message.addData("todayFinish",1);
+                message = new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
+                message.addData("todayFinish", 1);
             }
         }
         return message;
     }
 
 
-
-
+    /**
+     * 获取准确率
+     *
+     * @param request req
+     * @return 准确率
+     */
+    @Override
+    public Message getAccuracy(HttpServletRequest request) {
+        String json = request.getParameter("matchStr");
+        Message msg;
+        if (JSONObject.isValid(json)) {
+            String acc = StringUtil.stringMatch(JSONObject.parseObject(json));
+            msg = new Message("计算成功");
+            msg.addData("calcSuccess", true);
+            msg.addData("accuracy", acc);
+        } else {
+            msg = new Message("请重新验证Json格式");
+            msg.addData("calcSuccess", true);
+        }
+        return msg;
+    }
 }

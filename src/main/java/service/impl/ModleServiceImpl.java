@@ -162,7 +162,8 @@ public class ModleServiceImpl implements ModleService {
                 fileType = fileType.substring(fileType.indexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
-                System.out.println(context);
+                //读取文件内自定义挖空并挖掉
+
                 //将换行转换为前端html换行标签
                 context = context.replaceAll("\\r\\n", "<\\br>");
 
@@ -399,7 +400,7 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 将String类型的字符串存为txt文本，并且返回文件的地址
      *
-     * @param context 文本
+     * @param context    文本
      * @param modleTitle 模板标题
      * @return 文件路径
      */
@@ -459,13 +460,13 @@ public class ModleServiceImpl implements ModleService {
         Message msg = null;
         if (pageIndexStr != null && modleLabelStr != null) {
             //获取分页起始处和模板分类标签
-            int pageIndex = Integer.parseInt(pageIndexStr);
+            int pageIndex = Integer.parseInt(pageIndexStr) * 5;
             int modleLabel = Integer.parseInt(modleLabelStr);
             //封装查询数据
             Modle modle = new Modle();
             modle.setCommon(1);
             modle.setModleLabel(modleLabel);
-            modle.setPageIndex(pageIndex * 5);
+            modle.setPageIndex(pageIndex);
 
             //获得查询信息
             List<Community> modleList;
@@ -476,7 +477,7 @@ public class ModleServiceImpl implements ModleService {
                 //查询官方模板
                 //即 查询YY号的模板
                 int userId = 50;
-                modleList = modleDao.selectModleByUserId(userId);
+                modleList = modleDao.selectModleByUserId(userId, pageIndex);
             }
             //返回一个Community类型（包含modle里面的 所有属性）
             InputStream input;
@@ -765,7 +766,7 @@ public class ModleServiceImpl implements ModleService {
         } else {
             //是官方模板
             int userId = 50;
-            modleList = modleDao.selectModleByUserId(userId);
+            modleList = modleDao.selectRandomModlesByUserId(userId);
         }
 
         Message msg;

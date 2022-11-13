@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import pojo.vo.Message;
 import service.AccountService;
 import service.ModleService;
+import service.ReviewService;
 import service.UserService;
 import service.impl.AccountServiceImpl;
 import service.impl.ModleServiceImpl;
+import service.impl.ReviewServiceImpl;
 import service.impl.UserServiceImpl;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
@@ -26,6 +28,8 @@ public class InfController extends HttpServlet {
     private final UserService userService = new UserServiceImpl();
     private final AccountService accountService = new AccountServiceImpl();
     private final ModleService modleService = new ModleServiceImpl();
+
+    private final ReviewService reviewService = new ReviewServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -52,6 +56,8 @@ public class InfController extends HttpServlet {
         } else if ("studyData".equals(uri)) {
             //获取用户日常学习信息： 学习篇数和学习时长
             msg = userService.getUserDailyStudyData(request);
+        } else if ("getAccuracy".equals(uri)) {
+            msg = reviewService.getAccuracy(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

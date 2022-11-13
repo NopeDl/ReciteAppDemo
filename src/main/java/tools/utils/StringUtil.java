@@ -1,5 +1,6 @@
 package tools.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import dao.impl.ModleDaoImpl;
 import enums.Difficulty;
 import tools.handlers.FileHandler;
@@ -9,9 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StringUtil {
     /**
@@ -22,16 +22,6 @@ public class StringUtil {
      */
     public static String parseUri(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
-    }
-
-    /**
-     * 获取临时URL
-     *
-     * @param fileName 文件名
-     * @return 临时URL
-     */
-    public static String getTempUrl(String fileName) {
-        return (StringUtil.class.getClassLoader().getResource("/").getPath() + fileName + ".pdf").substring(1);
     }
 
     /**
@@ -69,7 +59,7 @@ public class StringUtil {
     /**
      * 已知模板数量直接挖
      *
-     * @param modleId 模板ID
+     * @param modleId  模板ID
      * @param blankNum 空数
      * @return 已经挖好空的模板
      */
@@ -167,4 +157,80 @@ public class StringUtil {
         }
         return result.toString().replaceAll("\\n", "<br>");
     }
+
+
+    /**
+     * 解析文件中的自定义括号
+     *
+     * @param content 需要挖空的内容
+     * @return 挖好空的内容
+     */
+    public static String parseQuote(String content) {
+
+        return null;
+    }
+
+    /**
+     * 答案相似度匹配
+     *
+     * @param json json
+     * @return 匹配度
+     */
+    public static String stringMatch(JSONObject json) {
+        if (json != null) {
+            Map<String, String> strMap = new HashMap<>();
+            //将参考答案和输入数据放入集合中
+            json.forEach((key, value) -> {
+                strMap.put(key, (String) value);
+            });
+            //计算所有空最短编辑距离和
+            AtomicInteger simRatio = new AtomicInteger(0);
+            strMap.forEach((ref, ans) -> {
+                //计算参考答案和回答的最短编辑距离
+                double minDis = calDistance(ref, ans);
+                double rate = (ref.length() - minDis) / ref.length();
+                simRatio.getAndAdd(new Long(Math.round(rate * 100)).intValue());
+            });
+            //相似度
+            int r = simRatio.get() / strMap.size();
+            if (r > 0) {
+                return r + "%";
+            }
+        }
+        return "0%";
+    }
+
+    /**
+     * 计算最短编辑距离
+     *
+     * @param str1 串1
+     * @param str2 串2
+     * @return 距离
+     */
+    public static int calDistance(String str1, String str2) {
+        int len1 = str1.length();
+        int len2 = str2.length();
+        //创建dp数组
+        int[][] dp = new int[len1 + 1][len2 + 1];
+        //初始化数组
+        for (int i = 0; i <= len2; i++) {
+            dp[0][i] = i;
+        }
+        for (int i = 0; i <= len1; i++) {
+            dp[i][0] = i;
+        }
+        //开始计算
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                    //如果最后一个字符相等
+                    dp[i][j] = Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1] - 1) + 1;
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+
 }
