@@ -159,16 +159,18 @@ public class ModleServiceImpl implements ModleService {
                 String fileType = upLoadFile.getSubmittedFileName();
                 InputStream input = upLoadFile.getInputStream();
                 //根据文件类型获得文件处理器
-                fileType = fileType.substring(fileType.indexOf(".") + 1);
+                fileType = fileType.substring(fileType.lastIndexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
-                //读取文件内自定义挖空并挖掉
+                if (context != null){
+                    //将换行转换为前端html换行标签
+                    context = context.replaceAll("\\r\\n", "<\\br>");
 
-                //将换行转换为前端html换行标签
-                context = context.replaceAll("\\r\\n", "<\\br>");
-
-                msg = new Message("文件解析成功");
-                msg.addData("context", context);
+                    msg = new Message("文件解析成功");
+                    msg.addData("context", context);
+                }else {
+                    msg = new Message("文件解析失败");
+                }
             } else {
                 msg = new Message("文件上传失败");
             }

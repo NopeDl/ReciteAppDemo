@@ -1,6 +1,7 @@
 package controller;
 
 import enums.MsgInf;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import service.LikesService;
 import service.ModleService;
 import service.impl.LikesServiceImpl;
 import service.impl.ModleServiceImpl;
+import tools.utils.Cache;
 import tools.utils.ResponseUtil;
 import tools.utils.StringUtil;
 
@@ -23,6 +25,24 @@ import java.io.IOException;
 public class ModleController extends HttpServlet {
     private final ModleService modleService = new ModleServiceImpl();
     private final LikesService likesService = new LikesServiceImpl();
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        //定时将点赞数量存到数据库里
+        //服务器开启前应该先查找对应的数据放到总缓存
+        try {
+            likesService.initCaChe();
+            Cache.tiemrTask();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        //关服务器前关闭缓存并且将缓存内数据存入数据库
+        likesService.closeCache();
+    }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,6 +73,7 @@ public class ModleController extends HttpServlet {
             //更新模板的学习状态，只包括：未学习-->学习中 ,已学习-->学习中
             msg = modleService.updateModleStatus(request);
         } else if ("LikeOrDisLike".equals(requestURI)) {
+            //点赞
             msg = likesService.likeOrDisLike(request);
         } else {
             msg = new Message(MsgInf.NOT_FOUND);

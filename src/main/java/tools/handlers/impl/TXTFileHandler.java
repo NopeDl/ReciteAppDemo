@@ -12,12 +12,12 @@ public class TXTFileHandler extends BaseFileHandler {
     }
 
     @Override
-    public String parseContent() {
+    public String parseContent(){
         return this.parseContent(getInput());
     }
 
     @Override
-    public String parseContent(InputStream input) {
+    public String parseContent(InputStream input){
         BufferedReader br = null;
         StringBuilder sb = null;
         String temp = "";

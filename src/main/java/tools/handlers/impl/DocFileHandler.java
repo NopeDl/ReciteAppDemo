@@ -15,12 +15,12 @@ import java.util.List;
  * @Date 2022/10/19 1:46
  */
 public class DocFileHandler extends BaseFileHandler {
-    public DocFileHandler(InputStream input,FileType fileType) {
-        super(input,fileType);
+    public DocFileHandler(InputStream input, FileType fileType) {
+        super(input, fileType);
     }
 
     @Override
-    public String parseContent() {
+    public String parseContent(){
         FileType fileType = getFileType();
         String content;
         if (FileType.DOCX.equals(fileType)) {
