@@ -21,15 +21,21 @@ public class ReviewDaoImpl implements ReviewDao {
     }
 
 
-    /**
-     * 插入复习计划表
-     * @param umr
+    /***
+     *  插入复习计划表
+     * @param userId 用户id
+     * @param modleId 要加入复习计划的模板id
+     * @param reviewRecordPath 存储学习记录的文件路径
      * @return
      */
     @Override
-    public int joinIntoPlan(Umr umr) {
+    public int joinIntoPlan(int userId, int modleId ,String reviewRecordPath) {
+        Review review=new Review();
+        review.setModleId(modleId);
+        review.setUserId(userId);
+        review.setReviewRecordPath(reviewRecordPath);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int insert = sqlSession.insert("ReviewMapper.joinIntoPlan", umr);
+        int insert = sqlSession.insert("ReviewMapper.joinIntoPlan", review);
         if(insert>0){
             sqlSession.commit();
         }else{
@@ -186,5 +192,46 @@ public class ReviewDaoImpl implements ReviewDao {
             return number;
         }
         return number;
+    }
+
+    /**
+     * 根据模板id 和用户id 查询到复习板块的学习记录
+     * @param modleId 模板id
+     * @param userId 用户id
+     * @return 返回学习记录文件的路径
+     */
+    @Override
+    public String selectReviewRecordPath(int modleId, int userId) {
+        Review review=new Review();
+        review.setModleId(modleId);
+        review.setUserId(userId);
+        String reviewRecordPath="";
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ReviewMapper.selectReviewRecordPath", review);
+        if(objects.size()>0){
+            reviewRecordPath = ((Review) objects.get(0)).getReviewRecordPath();
+        }
+        return reviewRecordPath;
+    }
+
+    /**
+     * 返回与modleId有关的review关系
+     * @param modleId 模板id
+     * @return 返回Review类型的list
+     */
+    @Override
+    public List<Review> selectReviewByModleId(int modleId) {
+        Review review=new Review();
+        review.setModleId(modleId);
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Review> reviewslist=new ArrayList<>();
+        List<Object> objects = sqlSession.selectList("ReviewMapper.selectReviewByModleId", review);
+        sqlSession.close();
+        if(objects.size()>0){
+            for (Object object:objects) {
+                reviewslist.add((Review)object);
+            }
+        }
+        return reviewslist;
     }
 }

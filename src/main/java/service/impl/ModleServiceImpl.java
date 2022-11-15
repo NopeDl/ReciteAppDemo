@@ -6,6 +6,7 @@ import enums.Difficulty;
 import pojo.po.db.*;
 import pojo.vo.Community;
 import service.LikesService;
+import tools.easydao.core.SqlSession;
 import tools.easydao.utils.Resources;
 import enums.MsgInf;
 import tools.handlers.FileHandler;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class ModleServiceImpl implements ModleService {
     private final ModleDao modleDao = new ModleDaoImpl();
@@ -68,9 +70,14 @@ public class ModleServiceImpl implements ModleService {
                     message = new Message("收藏失败，该模板已被收藏");
                 } else {
                     //此时如果不收藏，那就是取消收藏
+                    //获取存储学习记录的路径
+                    String recordPath = umrDao.selectRecordPath(modleId, userId);
                     int i = umrDao.deleteUMRByModleId(umr);
                     if (i > 0) {
                         //取消收藏成功
+                        //要把收藏到的模板的学习记录删除
+                        File file=new File(recordPath);
+                        file.delete();
                         message = new Message("取消收藏成功");
                     } else {
                         message = new Message("取消收藏失败");
@@ -79,6 +86,10 @@ public class ModleServiceImpl implements ModleService {
 
                 //未收藏过
             } else {
+               //获取文章标题
+                String  modleTitle= modleDao.selectTitleByModleId(modleId);
+                String recordPath=writeAsTxt("",modleTitle);
+                umr.setRecordPath(recordPath);
                 //用户想要收藏
                 if (mStatus == 1) {
                     //说明此时用户想要收藏
@@ -200,7 +211,7 @@ public class ModleServiceImpl implements ModleService {
             //这时候只需要将原模板里面的东西替换成context就行
             //标题分为两种情况，一种是改了名字的，一种是没改的
             //查找要覆盖的模板的标题
-            String s = modleDao.selectTitleByModleId(modle);
+            String s = modleDao.selectTitleByModleId(modleId);
             if (modleTitle.equals(s)) {
                 //说明此时没有改名字
                 modle.setModlePath(modleLabel);
@@ -215,7 +226,8 @@ public class ModleServiceImpl implements ModleService {
 
             }
             //根据modleId查路径
-            boolean b = replaceContext(context, modleId);
+            String modlePath = modleDao.selectPathByModleId(modleId);
+            boolean b = replaceContext(context, modlePath);
             //这个时候得更新模板标签和标题
             //更改模板的标签
 
@@ -241,7 +253,7 @@ public class ModleServiceImpl implements ModleService {
                 message = new Message("模板标题不能重复 ");
             } else {
                 //将模板内容存为txt文本,返回模板路径，封装在modle对象里
-                String modlePath = WriteAsTxt(context, modleTitle);
+                String modlePath = writeAsTxt(context, modleTitle);
                 modle.setModlePath(modlePath);
                 modle.setModleLabel(Integer.parseInt(modleLabel));
                 //保存进数据库
@@ -253,6 +265,10 @@ public class ModleServiceImpl implements ModleService {
                 Umr umr = new Umr();
                 umr.setUserId(userId);
                 umr.setModleId(modleId);
+
+                //存储已填过的空，生成新的文件
+                String recordPath=writeAsTxt("",modleTitle);
+                umr.setRecordPath(recordPath);
                 //自己创建是0，收藏是1
                 umr.setMStatus(0);
                 int i = umrDao.insertUMR(umr);
@@ -287,18 +303,40 @@ public class ModleServiceImpl implements ModleService {
         int userId = (Integer) request.getAttribute("userId");
         String path = modleDao.selectPathByModleId(modleId);
         //先查询该模板是否存在计划表中
-        Review review = new Review();
-        review.setModleId(modleId);
-        review.setUserId(userId);
-        boolean b = reviewDao.selectModle(review);
+//        Review review = new Review();
+//        review.setModleId(modleId);
+//        review.setUserId(userId);
+//        boolean b = reviewDao.selectModle(review);
+//
+//        if (b) {
+//            //，如果存在，从计划表中删除
+//            reviewDao.removeModle(review);
+//        }
+        File file=null;
+        //查询计划表中与moleId相关的模板
+        List<Review> reviews = reviewDao.selectReviewByModleId(modleId);
+        if(reviews.size()>0){
+            //删除复习计划表里相关的学习计划的文件
+            for(Review review:reviews){
+                file=new File(review.getReviewRecordPath());
+                System.out.println(review.getReviewRecordPath());
+                file.delete();
+            }
+        }
 
-        if (b) {
-            //，如果存在，从计划表中删除
-            reviewDao.removeModle(review);
+        //查询与modleId有关的umr管旭
+        List<Umr> list = umrDao.selectUmrByModleId(modleId);
+        if(list.size()>0){
+            //查到所有收藏的modleId，有关的学习记录和和记录都删了
+            for (Umr umr:list) {
+                file=new File(umr.getRecordPath());
+                file.delete();
+
+            }
         }
         int deleteModle = modleDao.deleteModle(modleId);
         if (deleteModle > 0) {
-            File file = new File(path);
+           file = new File(path);
             boolean deleteFile = file.delete();
             msg = new Message("删除成功");
             msg.addData("deleteSuccess", true);
@@ -360,6 +398,18 @@ public class ModleServiceImpl implements ModleService {
             String lableName = labelDao.selectLableName(modleLabel);
             showModle.setLabelName(lableName);
 
+            //查找用户该模板是否有学习记录
+            int userId=(int)request.getAttribute("userId");
+            //查找用户的复习文件
+            String recordPath = umrDao.selectRecordPath(Integer.parseInt(modleId), userId);
+            File file=new File(recordPath);
+            //根据文件的长短来判断文件是否有保存学习的记录
+            if(file.length()>0){
+                showModle.setHaveStudyRecord(true);
+            }else{
+                showModle.setHaveStudyRecord(false);
+            }
+
             message = new Message("读取模板内容成功");
             //返回响应数据，模板内容
             message.addData("modleContext", showModle);
@@ -377,7 +427,7 @@ public class ModleServiceImpl implements ModleService {
      * @return 文件路径
      */
     @Override
-    public String WriteAsTxt(String context, String modleTitle) {
+    public String writeAsTxt(String context, String modleTitle) {
         String filePath = Resources.getResource("static/modles/" + System.currentTimeMillis() + modleTitle + ".txt");
         try {
             File file = new File(filePath);
@@ -397,15 +447,15 @@ public class ModleServiceImpl implements ModleService {
      * 修改模板内容,根据传进来的modleId查找modlePath，从而修改文本
      *
      * @param context 内容
-     * @param modleId 模板ID
+     * @param path 文件路径
      * @return 返回
      */
     @Override
-    public boolean replaceContext(String context, int modleId) {
-        String modlePath = modleDao.selectPathByModleId(modleId);
+    public boolean replaceContext(String context,String path) {
+
         //覆盖成功返回true，失败返回false
         try {
-            PrintWriter printWriter = new PrintWriter(modlePath);
+            PrintWriter printWriter = new PrintWriter(path);
             printWriter.write(context);
             printWriter.flush();
             printWriter.close();
@@ -557,6 +607,9 @@ public class ModleServiceImpl implements ModleService {
             int modleIdTemp;
             //查询用临时modle对象
             Modle tempMod = new Modle();
+            List<Boolean> haveRecord=new ArrayList<>();
+            List<Boolean> haveReviewRecord=new ArrayList<>();
+
             for (Umr value : umrs) {
                 modleIdTemp = value.getModleId();
                 tempMod.setModleId(modleIdTemp);
@@ -568,14 +621,22 @@ public class ModleServiceImpl implements ModleService {
                 //下面内容考虑下封装
                 String modlePath = modle.getModlePath();
                 InputStream input;
+                File file=null;
                 try {
                     input = new FileInputStream(modlePath);
+
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
                 //读取文本
                 FileHandler txtFileHandler = FileHandlerFactory.getHandler("txt", input);
                 String content = txtFileHandler.parseContent();
+                //判断学习记录的情况
+                String recordPath = umrDao.selectRecordPath(modle.getModleId(), modle.getUserId());
+                String reviewRecordPath = reviewDao.selectReviewRecordPath(modle.getModleId(), modle.getUserId());
+                haveRecord.add(judgeIfRecord(recordPath));
+                haveReviewRecord.add(judgeIfRecord(reviewRecordPath));
+
                 modle.setContent(content);
                 modle.setModlePath(null);
                 //放modle和状态
@@ -583,6 +644,10 @@ public class ModleServiceImpl implements ModleService {
             }
             message = new Message();
             message.addData("userModle", modles);
+            //是否有学习记录
+            message.addData("haveRecord",haveRecord);
+            //复习计划的是否有学习记录
+            message.addData("haveReviewRecord",haveReviewRecord);
 
         }
         return message;
@@ -693,7 +758,13 @@ public class ModleServiceImpl implements ModleService {
         int update = modleDao.updateStudyStatus(umr);
         if (update > 0) {
             //更新成功
-            message = new Message("学习状态更新成功");
+            //更新后要把文件里的记录删除
+            String recordPath = umrDao.selectRecordPath(modleId, userId);
+            boolean b = replaceContext("", recordPath);
+            if(b){
+                message = new Message("学习状态更新成功");
+            }
+
         } else {
             message = new Message("更新失败，请先完成模板学习");
         }
@@ -787,6 +858,88 @@ public class ModleServiceImpl implements ModleService {
             msg.addData("modle", modleList);
         }
         return msg;
+    }
+
+    /**
+     * 用来保存学习中填的空
+     * @param request 用来获取所需要的信息
+     * @return 返回Message
+     */
+    @Override
+    public Message saveRecord(HttpServletRequest request) {
+        Message message=null;
+        int modleId=Integer.parseInt(request.getParameter("modleId"));
+        int userId = (Integer) request.getAttribute("userId");
+        //填空情况
+        String[] blanks = request.getParameterValues("blanks");
+
+        //获取复习的文件的路径
+        String recordPath = umrDao.selectRecordPath(modleId, userId);
+        //把填空从数组中读出来
+        String context = "";
+        for (int i = 0; i < blanks.length; i++) {
+           if(i==0){
+               context=blanks[0];
+           }else{
+               context+=";"+blanks[i];
+           }
+        }
+        boolean b = replaceContext(context, recordPath);
+        if(b){
+            message=new Message("保存成功！");
+        }else{
+            message=new Message("保存失败");
+        }
+        return message;
+    }
+
+
+    /**
+     * 获取学习记录
+     * @param request 用来获取模板id
+     * @return 返回message对象
+     */
+    @Override
+    public Message showRecord(HttpServletRequest request) {
+        Message message=null;
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        int userId=(int)request.getAttribute("userId");
+        String recordPath = umrDao.selectRecordPath(modleId, userId);
+        //读取文件里面的数据
+        //获取文件位置
+        String context=null;
+        try {
+            InputStream input = new FileInputStream(recordPath);
+            //获取模板文件处理器
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
+            //解析文件内容
+            context = txtHandler.parseContent();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //处理从文件出来的context最后面是回车"\n"
+        context=context.substring(0, context.lastIndexOf("\n"));
+        String[] split = context.split(";");
+        message=new Message("成功获取上一次的学习记录");
+        message.addData("record",split);
+        return message;
+    }
+
+    /**
+     * 判断是否有学习记录
+     * @param path 路径
+     * @return 有返回true,否则false
+     */
+    @Override
+    public boolean judgeIfRecord(String path) {
+        if(!path.equals("")) {
+            File file = new File(path);
+            if (file.length() > 0) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
     /**

@@ -41,6 +41,12 @@ public class ReviewController extends HttpServlet {
 //            msg=reviewService.getReviewPlan(request);
 //        } else if("GetReviewNums".equals(requestURI)){
 ////            msg=reviewService.getReviewNums(request);
+        }else if("SaveReviewRecord".equals(requestURI)){
+            //保存学习计划里面的学习记录
+            msg=reviewService.saveReviewRecord(request);
+        }else if("GetReviewRecord".equals(requestURI)){
+            //获取学习记录
+            msg=reviewService.showReviewRecord(request);
         }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }

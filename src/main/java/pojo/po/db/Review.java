@@ -19,6 +19,8 @@ public class Review {
     //用户id
     private int userId;
 
+    private String reviewRecordPath;
+
 
     public Review() {
     }
@@ -70,14 +72,23 @@ public class Review {
         this.userId = userId;
     }
 
+    public String getReviewRecordPath() {
+        return reviewRecordPath;
+    }
+
+    public void setReviewRecordPath(String reviewRecordPath) {
+        this.reviewRecordPath = reviewRecordPath;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
-                ", modleId=" + modleId +
+                "modleId=" + modleId +
                 ", reTime=" + reTime +
                 ", period=" + period +
                 ", days=" + days +
                 ", userId=" + userId +
+                ", reviewRecordPath='" + reviewRecordPath + '\'' +
                 '}';
     }
 }

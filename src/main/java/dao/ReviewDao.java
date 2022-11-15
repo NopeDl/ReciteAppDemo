@@ -11,10 +11,12 @@ import java.util.List;
 public interface ReviewDao {
     /**
      * 将要复习的模板写进review表中
-     * @param umr
-     * @return
+     * @param userId 用户的id
+     * @param modleId 模板id
+     * @param reviewRecordPath 学习记录存储的路径
+     * @return 返回int
      */
-    int joinIntoPlan(Umr umr);
+    int joinIntoPlan(int userId, int modleId ,String reviewRecordPath);
 
 
     /**
@@ -84,4 +86,19 @@ public interface ReviewDao {
      * @return
      */
     int  getTotalReviewNums(int userId, int period, int days);
+
+    /**
+     * 获取复习复习模板的学习记录
+     * @param modleId 模板id
+     * @param userId 用户id
+     * @return 返回文件的路径
+     */
+    String selectReviewRecordPath(int modleId,int userId);
+
+    /**
+     * 查找与modleId相关的复习列表
+     * @param modleId 模板id
+     * @return 返回Review类型的lsit
+     */
+    List<Review> selectReviewByModleId(int modleId);
 }

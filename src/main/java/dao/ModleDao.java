@@ -1,5 +1,6 @@
 package dao;
 
+import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.db.Label;
 import pojo.po.db.Modle;
 import pojo.po.db.Review;
@@ -141,10 +142,10 @@ public interface ModleDao {
 
     /**
      * 根据模板id查询标题
-     * @param modle
-     * @return
+     * @param modleId 模板id
+     * @return  返回模板标题
      */
-    String selectTitleByModleId(Modle modle);
+    String selectTitleByModleId(int modleId);
 
     /**
      * 更改某个模板的标签

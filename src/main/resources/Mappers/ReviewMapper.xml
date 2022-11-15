@@ -4,8 +4,8 @@
 <!--   <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">-->
 <!--       insert into review(modleId) values(#{modleId})-->
 <!--   </insert>-->
-    <insert id="joinIntoPlan" parameterType="pojo.po.db.Umr">
-        insert into review(modleId,userId) values(#{modleId},#{userId})
+    <insert id="joinIntoPlan" parameterType="pojo.po.db.Review">
+        insert into review(modleId,userId,reviewRecordPath) values(#{modleId},#{userId},#{reviewRecordPath})
     </insert>
 
     <!--移除模板-->
@@ -49,6 +49,14 @@
 
     <select id="getTotalReviewNums" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Count">
         select count(*) as number  from review where userId=#{userId} and period=#{period} and (DATEDIFF(CURRENT_DATE,reTime))>=#{days}
+    </select>
+
+    <select id="selectReviewRecordPath" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
+        select reviewRecordPath from review where userId=#{userId} and modleId=#{modleId}
+    </select>
+
+    <select id="selectReviewByModleId" parameterType="pojo.po.db.Review" resultType="pojo.po.db.Review">
+        select * from review  where modleId=#{modleId}
     </select>
 
 </mapper>

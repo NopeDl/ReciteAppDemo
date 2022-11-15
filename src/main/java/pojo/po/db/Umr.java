@@ -4,9 +4,10 @@ public class Umr {
     private int userId;
     private int modleId;
     private int  mStatus;
+
     //学习状态
     private String studyStatus;
-
+    private String recordPath;
 
     public Umr() {
     }
@@ -45,6 +46,22 @@ public class Umr {
     }
 
 
+    public int getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(int mStatus) {
+        this.mStatus = mStatus;
+    }
+
+    public String getRecordPath() {
+        return recordPath;
+    }
+
+    public void setRecordPath(String recordPath) {
+        this.recordPath = recordPath;
+    }
+
     @Override
     public String toString() {
         return "Umr{" +
@@ -52,6 +69,7 @@ public class Umr {
                 ", modleId=" + modleId +
                 ", mStatus=" + mStatus +
                 ", studyStatus='" + studyStatus + '\'' +
+                ", recordPath='" + recordPath + '\'' +
                 '}';
     }
 }

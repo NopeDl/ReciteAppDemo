@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.ModleDao;
+import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.db.*;
 import pojo.vo.Community;
 import tools.easydao.core.SqlSession;
@@ -76,13 +77,16 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 获取某个模板的标题是叫什么
+     * @param modleId
      *
      * @param modle
      * @return
      */
     @Override
-    public String selectTitleByModleId(Modle modle) {
+    public String selectTitleByModleId(int modleId) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        Modle modle=new Modle();
+        modle.setModleId(modleId);
         String userTitle = null;
         List<Object> objects = sqlSession.selectList("ModleMapper.selectTitleByModleId", modle);
         sqlSession.close();
@@ -122,7 +126,6 @@ public class ModleDaoImpl implements ModleDao {
 
     /**
      * 更新模板的学习状态
-     *
      * @param umr
      * @return
      */
@@ -130,9 +133,9 @@ public class ModleDaoImpl implements ModleDao {
     public int updateStudyStatus(Umr umr) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int update = sqlSession.insert("UmrMapper.updateStudyStatus", umr);
-        if (update > 0) {
+        if(update>0){
             sqlSession.commit();
-        } else {
+        }else{
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -425,9 +428,9 @@ public class ModleDaoImpl implements ModleDao {
         modle.setModleId(modleId);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int delete = sqlSession.delete("ModleMapper.deleteModleByModleId", modle);
-        if (delete > 0) {
+        if (delete>0){
             sqlSession.commit();
-        } else {
+        }else {
             sqlSession.rollBack();
         }
         sqlSession.close();
@@ -509,9 +512,9 @@ public class ModleDaoImpl implements ModleDao {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectRandomModles", modle);
         sqlSession.close();
-        if (objects.size() <= 0) {
+        if(objects.size() <= 0){
             return null;
-        } else {
+        }else{
             List<Community> modleList = new ArrayList<>();
             for (Object o : objects) {
                 modleList.add((Community) o);

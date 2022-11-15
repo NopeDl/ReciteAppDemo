@@ -54,9 +54,12 @@ public class ModleController extends HttpServlet {
         } else if ("deleteModle".equals(requestURI)) {
             //删除模板
             msg = modleService.deleteModle(request);
-        } else if ("Study".equals(requestURI)) {
-            //显示模板
-            msg = modleService.reTxt(request);
+//        } else if ("Study".equals(requestURI)) {
+//            //显示模板
+//            msg = modleService.reTxt(request);
+//        } else if ("reward".equals(requestURI)) {
+//            //打赏
+//            msg = modleService.reward(request);
         } else if ("toCommunity".equals(requestURI)) {
             //将模板添加至社区
             msg = modleService.toCommunity(request);
@@ -71,11 +74,17 @@ public class ModleController extends HttpServlet {
             msg = modleService.collectModle(request);
         } else if ("UpdateModleStatus".equals(requestURI)) {
             //更新模板的学习状态，只包括：未学习-->学习中 ,已学习-->学习中
-            msg = modleService.updateModleStatus(request);
-        } else if ("LikeOrDisLike".equals(requestURI)) {
+            msg=modleService.updateModleStatus(request);
+        }else if("LikeOrDisLike".equals(requestURI)){
             //点赞
             msg = likesService.likeOrDisLike(request);
-        } else {
+        }else if("SaveStudyRecord".equals(requestURI)){
+            //保存学习记录
+            msg = modleService.saveRecord(request);
+        }else if("GetStudyRecord".equals(requestURI)){
+            //获取学习记录
+            msg=modleService.showRecord(request);
+        }else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

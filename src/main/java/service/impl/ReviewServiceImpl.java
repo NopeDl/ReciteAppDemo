@@ -2,6 +2,7 @@ package service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.druid.support.opds.udf.SqlCodeStat;
 import dao.ModleDao;
 import dao.ReviewDao;
 import dao.UserDao;
@@ -16,12 +17,15 @@ import pojo.po.db.Review;
 import pojo.po.db.Umr;
 import pojo.vo.Community;
 import pojo.vo.Message;
+import service.ModleService;
 import service.ReviewService;
+import tools.easydao.core.SqlSession;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
 import tools.utils.StringUtil;
 
 import javax.activation.DataSource;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -32,7 +36,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ModleDao modleDao = new ModleDaoImpl();
     private final ReviewDao reviewDao = new ReviewDaoImpl();
     private final UserDao userDao = new UserDaoImpl();
-
+    private final ModleService modleService=new ModleServiceImpl();
     /**
      * 用户将某个模板加入学习计划
      * 需要传进userId和modleId，更改模板的学习状态,存进review表中
@@ -53,7 +57,6 @@ public class ReviewServiceImpl implements ReviewService {
         umr.setModleId(modleId);
         umr.setUserId(userId);
 
-
         //查询要添加进review表中的模板在umr表中的状态，包括学习状态
         Umr resultUmr = modleDao.selectModleByIds(umr);
         if (resultUmr != null) {
@@ -69,7 +72,9 @@ public class ReviewServiceImpl implements ReviewService {
                 int i = modleDao.updateStudyStatus(resultUmr);
                 if (i > 0) {
                     //将模板插入review中
-                    int insert = reviewDao.joinIntoPlan(resultUmr);
+                    String title = modleDao.selectTitleByModleId(modleId);
+                    String reviewRecordPath = modleService.writeAsTxt("", title);
+                    int insert = reviewDao.joinIntoPlan(userId,modleId,reviewRecordPath);
                     //学习中————>复习中，dailyStudy表中的studyNums要加1；
                     //先查询是否有该条记录
                     DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
@@ -110,6 +115,8 @@ public class ReviewServiceImpl implements ReviewService {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
 //        int reviewId= Integer.parseInt(request.getParameter("reviewId"));
         String studyStatus = request.getParameter("studyStatus");
+        //移除前先把复习计划下存储学习记录的文件删掉
+         deleteRecordPath(modleId, userId);
 
         //先从计划表中移除
         Review review = new Review();
@@ -236,9 +243,13 @@ public class ReviewServiceImpl implements ReviewService {
                         userDao.insertDailyStudyData(userId, 1, 0, 1);
                     }
 
+                    //将学习记录的文件删除
+                    Boolean deleteRecordPath = deleteRecordPath(modleId, userId);
+                    if(deleteRecordPath){
+                        message=new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
+                        message.addData("todayFinish",1);
+                    }
 
-                    message = new Message("恭喜你，已经牢牢掌握了这个模板内容啦!");
-                    message.addData("todayFinish", 1);
                 }
             }
         } else {
@@ -258,13 +269,81 @@ public class ReviewServiceImpl implements ReviewService {
                     userDao.insertDailyStudyData(userId, 0, 0, 1);
                 }
                 //更新周期和时间成功
-                message = new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
-                message.addData("todayFinish", 1);
+                //将学习记录清空
+                String reviewRecordPath = reviewDao.selectReviewRecordPath(modleId, userId);
+                boolean b = modleService.replaceContext("", reviewRecordPath);
+                if(b){
+                    message = new Message("恭喜你完成这个周期的复习啦，下个周期见吧");
+                    message.addData("todayFinish", 1);
+                }
+
             }
         }
         return message;
     }
 
+    /***
+     * 将复习模板的学习记录保存
+     * @param request 获取信息的request
+     * @return 返回message
+     */
+    @Override
+    public Message saveReviewRecord(HttpServletRequest request) {
+        Message message=null;
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        int userId = (int) request.getAttribute("userId");
+        String[] blanks = request.getParameterValues("blanks");
+        String context=null;
+        for (int i = 0; i < blanks.length; i++) {
+            if(i==0){
+                context=blanks[i];
+            }else{
+                context+=";"+blanks[i];
+            }
+        }
+        String recordPath = reviewDao.selectReviewRecordPath(modleId, userId);
+        boolean b = modleService.replaceContext(context, recordPath);
+        if(b){
+            //替换成功
+            message=new Message("成功保存学习记录");
+        }else{
+            message=new Message("保存失败");
+
+        }
+        return message;
+    }
+
+    /**
+     * 获取复习板块的学习记录
+     * @param request 获取信息的request
+     * @return 返回message
+     */
+    @Override
+    public Message showReviewRecord(HttpServletRequest request) {
+        int modleId = Integer.parseInt(request.getParameter("modleId"));
+        int userId = (int) request.getAttribute("userId");
+
+        //获取学习记录文件的路径
+        String reviewRecordPath = reviewDao.selectReviewRecordPath(modleId, userId);
+        //获取文件位置
+        String context=null;
+        try {
+            InputStream input = new FileInputStream(reviewRecordPath);
+            //获取模板文件处理器
+            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
+            //解析文件内容
+            context = txtHandler.parseContent();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        context=context.substring(0, context.lastIndexOf("\n"));
+        String[] split = context.split(";");
+        Message message=new Message("成功获取学习记录");
+        message.addData("reviewRecord",split);
+        return message;
+
+    }
 
     /**
      * 获取准确率
@@ -287,4 +366,22 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return msg;
     }
+    /**
+     * 将存储复习板块的学习记录文件删除
+     * @param modleId 模板id
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public Boolean deleteRecordPath(int modleId, int userId) {
+        String reviewRecordPath = reviewDao.selectReviewRecordPath(modleId, userId);
+        File file=new File(reviewRecordPath);
+        boolean delete = file.delete();
+        if(delete){
+            return true;
+        }
+        return  false;
+    }
+
+
 }

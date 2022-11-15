@@ -119,4 +119,46 @@ public class UMRDaoImpl implements UMRDao {
             return (((Count) userId.get(0)).getNumber()).intValue();
         }
     }
+
+    /**
+     * 获取学习记录的文件路径
+     * @param modleId 要保存学习记录的模板id
+     * @param userId 用户的id
+     * @return 返回保存的文件路径
+     */
+    @Override
+    public String selectRecordPath(int modleId,int userId) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        Umr umr=new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);
+        String recordPath="";
+        List<Object> objects = sqlSession.selectList("UmrMapper.selectRecordPath", umr);
+        sqlSession.close();
+        if(objects.size()>0){
+            //说明查得到数据
+            recordPath=((Umr)objects.get(0)).getRecordPath();
+        }
+        return recordPath;
+    }
+
+    /**
+     * 查询所有与modleId有关的umr关系
+     * @param modleId 相关的模板id
+     * @return 返回list集合的umr对象
+     */
+    @Override
+    public List<Umr> selectUmrByModleId(int modleId) {
+        Umr umr=new Umr();
+        umr.setModleId(modleId);
+        List<Umr> umrList = new ArrayList<>();
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("UmrMapper.selectUmrByModleId", umr);
+        if(objects.size()>0){
+            for (Object object : objects) {
+                umrList.add((Umr) object);
+            }
+        }
+        return umrList;
+    }
 }

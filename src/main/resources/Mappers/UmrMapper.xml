@@ -7,7 +7,7 @@
     </select>
 
     <insert id="insertUMR" parameterType="pojo.po.db.Umr">
-        insert into umr (userId,modleId,mStatus) values (#{userId},#{modleId},#{mStatus})
+        insert into umr (userId,modleId,mStatus,recordPath) values (#{userId},#{modleId},#{mStatus},#{recordPath})
     </insert>
 
     <delete id="deleteUMRByModleId" parameterType="pojo.po.db.Umr">
@@ -36,4 +36,14 @@
     <update id="updateStudyStatus" parameterType="pojo.po.db.Umr">
         update umr set studyStatus=#{studyStatus} where modleId=#{modleId} and userId=#{userId}
     </update>
+
+    <!--    getRecordPath 获取学习记录的文件路径-->
+    <select id="selectRecordPath" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Umr">
+        select recordPath from umr where modleId=#{modleId} and userId=#{userId}
+    </select>
+
+    <select id="selectUmrByModleId" parameterType="pojo.po.db.Umr" resultType="pojo.po.db.Umr">
+        select * from umr where modleId=#{modleId}
+    </select>
+
 </mapper>

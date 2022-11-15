@@ -54,16 +54,16 @@ public interface ModleService {
      * @param modleTitle
      * @return
      */
-    String WriteAsTxt(String context, String modleTitle);
+    String writeAsTxt(String context, String modleTitle);
 
 
     /**
      * 更改原模版路径里面的内容
-     * @param modleId modleId
+     * @param path 文件路径
      * @param context context
      * @return ret
      */
-    boolean replaceContext(String context, int modleId);
+    boolean replaceContext(String context, String path);
 
     /**
      * 解析pdf内容
@@ -122,4 +122,27 @@ public interface ModleService {
      * @return 随机模板
      */
     Message getRandomModles(HttpServletRequest request);
+
+
+    /**
+     * 保存学习记录
+     * @param request 用来获取所需要的信息
+     * @return 返回Message封装的信息
+     */
+    Message saveRecord(HttpServletRequest request);
+
+
+    /**
+     * 获取上一次的学习记录
+     * @param request 用来获取模板id
+     * @return
+     */
+    Message showRecord(HttpServletRequest request);
+
+    /**
+     * 判断是否学习
+     * @param path 路径
+     * @return 有返回true,否则返回false
+     */
+    boolean judgeIfRecord(String path);
 }

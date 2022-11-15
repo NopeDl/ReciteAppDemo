@@ -2,6 +2,7 @@ package dao;
 
 import pojo.po.db.Modle;
 import pojo.po.db.Umr;
+import tools.easydao.core.SqlSession;
 
 import java.util.List;
 
@@ -40,4 +41,21 @@ public interface UMRDao {
      * @return r
      */
     Integer slelectIfCollect(Umr umr);
+
+
+    /**
+     * 获取学习记录的文件路径
+     * @param modleId 模板路径
+     * @param userId 要保存学习记录的userId
+     * @return
+     */
+    String selectRecordPath(int modleId,int userId);
+
+    /**
+     *查询所有与modleId 有关的umr关系
+     * @param modleId
+     * @return
+     */
+    List<Umr> selectUmrByModleId(int modleId);
+
 }

@@ -22,6 +22,11 @@ public class ShowModle {
      */
     private String title;
 
+    /**
+     * 是否有学习记录
+     */
+    private boolean haveStudyRecord;
+
     public ShowModle() {
     }
 
@@ -64,5 +69,24 @@ public class ShowModle {
 
     public void setLabelValue(int labelValue) {
         this.labelValue = labelValue;
+    }
+
+    public boolean isHaveStudyRecord() {
+        return haveStudyRecord;
+    }
+
+    public void setHaveStudyRecord(boolean haveStudyRecord) {
+        this.haveStudyRecord = haveStudyRecord;
+    }
+
+    @Override
+    public String toString() {
+        return "ShowModle{" +
+                "context='" + context + '\'' +
+                ", labelName='" + labelName + '\'' +
+                ", labelValue=" + labelValue +
+                ", title='" + title + '\'' +
+                ", haveStudyRecord=" + haveStudyRecord +
+                '}';
     }
 }
