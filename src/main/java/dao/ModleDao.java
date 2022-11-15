@@ -204,4 +204,11 @@ public interface ModleDao {
      * @return 随机模板
      */
     List<Community> selectRandomModlesByUserId(int userId);
+
+    /**
+     * 查询热门模板
+     * @param pageIndex 分页下标
+     * @return 返回值
+     */
+    List<Community> selectHotModles(int pageIndex);
 }

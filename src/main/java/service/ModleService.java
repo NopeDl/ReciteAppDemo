@@ -9,6 +9,13 @@ import java.io.InputStream;
 
 public interface ModleService {
     /**
+     * 获取热门模板
+     * @param request 请求
+     * @return 热门模板
+     */
+    Message getHotModle(HttpServletRequest request);
+
+    /**
      * 收藏模板
      * @param request
      * @return

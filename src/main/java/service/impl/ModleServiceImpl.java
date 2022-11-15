@@ -841,4 +841,28 @@ public class ModleServiceImpl implements ModleService {
         }
         return msg;
     }
+
+    /**
+     * 获取热门模板
+     * @param request 请求
+     * @return 热门模板
+     */
+    @Override
+    public Message getHotModle(HttpServletRequest request) {
+        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
+        List<Community> list = modleDao.selectHotModles(pageIndex);
+        Message msg;
+        if (list != null){
+            msg = new Message("获取成功");
+            msg.addData("selectSuccess",true);
+            msg.addData("modles",list);
+            if (list.size() < 5){
+                msg.addData("indexEnd",false);
+            }
+        }else {
+            msg = new Message("获取失败");
+            msg.addData("selectSuccess",false);
+        }
+        return null;
+    }
 }

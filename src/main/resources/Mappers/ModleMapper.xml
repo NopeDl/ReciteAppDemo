@@ -41,6 +41,11 @@
         select * from modle where userId = #{userId} and common = 1 order by great desc limit #{pageIndex},5
     </selectModleByUserId>
 
+    <!-- 查询所有热门模板 -->
+    <selectModleByUserId id="selectHotModle" resultType="pojo.vo.Community">
+        select * from modle where common = 1 order by great desc limit #{pageIndex},5
+    </selectModleByUserId>
+
     <!-- 下拉随机获取模板 -->
     <select id="selectRandomModles" resultType="pojo.vo.Community">
         select * from modle where modleLabel=#{modleLabel} and common = 1 order by rand() desc limit 5

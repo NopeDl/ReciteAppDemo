@@ -563,4 +563,21 @@ public class ModleDaoImpl implements ModleDao {
             return list;
         }
     }
+
+    @Override
+    public List<Community> selectHotModles(int pageIndex) {
+        Modle modle = new Modle();
+        modle.setPageIndex(pageIndex);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectHotModle", modle);
+        sqlSession.close();
+        if (objects.size() > 0){
+            List<Community> list = new ArrayList<>();
+            objects.forEach((o) -> {
+                list.add((Community) o);
+            });
+            return list;
+        }
+        return null;
+    }
 }
