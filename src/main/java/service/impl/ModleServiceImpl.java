@@ -31,44 +31,12 @@ public class ModleServiceImpl implements ModleService {
     private final LabelDao labelDao = new LabelDaoImp();
     private final UserDao userDao = new UserDaoImpl();
     private final ReviewDao reviewDao = new ReviewDaoImpl();
-    private final LikesDao likesDao = new LikesDaoImp();
     private final LikesService likesService = new LikesServiceImpl();
-
-//
-//    /**
-//     * 取消用户收藏的模板
-//     * @return
-//     */
-//    @Override
-//    public Message cancelModleCollect(HttpServletRequest request) {
-//        Message message;
-//        int userId = Integer.parseInt(request.getParameter("userId"));
-//        int modleId = Integer.parseInt(request.getParameter("modleId"));
-////        int mStatus=Integer.parseInt(request.getParameter("mStatus"));
-//        int mStatus = Integer.parseInt(request.getParameter("mStatus"));
-//
-//        if(1==mStatus){
-//            message = new Message("取消失败");
-//        }
-//        else {
-//            int i = modleDao.collectModleById(userId, modleId, mStatus);
-//            if (i > 0) {
-//                //说明此时成功
-//                message = new Message("取消收藏成功");
-//            } else {
-//                message = new Message("取消失败");
-//            }
-//        }
-//        return message;
-//
-//    }
-
 
     @Override
     public Message collectModle(HttpServletRequest request) {
         Message message;
         //用户收藏非自己的模板
-//        int userId = Integer.parseInt(request.getParameter("userId"));
         int userId = (Integer) request.getAttribute("userId");
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         //收藏状态，1为收藏，否则为取消收藏
@@ -89,7 +57,6 @@ public class ModleServiceImpl implements ModleService {
 
             //先查看下该模板是否已被该用户所收藏了
             //是为umr有该条表，说明此时已经收藏成功
-//        boolean b = umrDao.slelectIfCollect(umr);
             int integer = umrDao.slelectIfCollect(umr);
 
             //大于0为有这条记录
@@ -162,13 +129,13 @@ public class ModleServiceImpl implements ModleService {
                 fileType = fileType.substring(fileType.lastIndexOf(".") + 1);
                 FileHandler handler = FileHandlerFactory.getHandler(fileType, input);
                 String context = handler.parseContent();
-                if (context != null){
+                if (context != null) {
                     //将换行转换为前端html换行标签
                     context = context.replaceAll("\\r\\n", "<\\br>");
 
                     msg = new Message("文件解析成功");
                     msg.addData("context", context);
-                }else {
+                } else {
                     msg = new Message("文件解析失败");
                 }
             } else {
@@ -190,12 +157,14 @@ public class ModleServiceImpl implements ModleService {
      * 如果是1则说明覆盖模板，那么获取模板id,这时候只需要替换原模板路径的txt文本内容就好
      * 否则还应该比对改作者的模板名称是否有和此次想同的，没有则创建成功，否则创建失败，
      *
+     *
+     *          逻辑解释：先获取三种方式创建模板都应该有的东西context，userId，modleTitle，overWrite（只有选择已有模板创作才能选1或0，否则都应该是0）
+     *          如果是1则说明覆盖模板，那么获取模板id,这时候只需要替换原模板路径的txt文本内容就好
+     *          否则还应该比对改作者的模板名称是否有和此次想同的，没有则创建成功，否则创建失败，
      * @param request 请求
      * @return 响应数据封装
      */
-    //逻辑解释：先获取三种方式创建模板都应该有的东西context，userId，modleTitle，overWrite（只有选择已有模板创作才能选1或0，否则都应该是0）
-    //如果是1则说明覆盖模板，那么获取模板id,这时候只需要替换原模板路径的txt文本内容就好
-    //否则还应该比对改作者的模板名称是否有和此次想同的，没有则创建成功，否则创建失败，
+
     @Override
     public Message createModle(HttpServletRequest request) {
         Message message;
@@ -642,8 +611,8 @@ public class ModleServiceImpl implements ModleService {
     /**
      * 系统自动挖空
      *
-     * @param request
-     * @return
+     * @param request 请求
+     * @return 返回值
      */
     @Override
     public Message autoDig(HttpServletRequest request) {
@@ -664,28 +633,6 @@ public class ModleServiceImpl implements ModleService {
             msg = new Message("难度或模板id不能为空");
         }
         return msg;
-    }
-
-
-    /**
-     * 计算每个空需要多少字
-     *
-     * @param totalChar
-     * @param count
-     * @return
-     */
-    private ArrayList<Integer> getCharNums(int totalChar, int count) {
-        ArrayList<Integer> list = new ArrayList<>();
-        int min = count - 1;
-        Random random = new Random();
-        for (int i = 0; i < count - 1; i++) {
-            int num = random.nextInt(totalChar - min) + 1;
-            list.add(num);
-            totalChar -= num;
-            min--;
-        }
-        list.add(totalChar);
-        return list;
     }
 
     /**
@@ -844,6 +791,7 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 获取热门模板
+     *
      * @param request 请求
      * @return 热门模板
      */
@@ -852,17 +800,17 @@ public class ModleServiceImpl implements ModleService {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         List<Community> list = modleDao.selectHotModles(pageIndex);
         Message msg;
-        if (list != null){
+        if (list != null) {
             msg = new Message("获取成功");
-            msg.addData("selectSuccess",true);
-            msg.addData("modles",list);
-            if (list.size() < 5){
-                msg.addData("indexEnd",false);
+            msg.addData("selectSuccess", true);
+            msg.addData("modles", list);
+            if (list.size() < 5) {
+                msg.addData("indexEnd", false);
             }
-        }else {
-            msg = new Message("获取失败");
-            msg.addData("selectSuccess",false);
+        } else {
+            msg = new Message("无模板");
+            msg.addData("selectSuccess", false);
         }
-        return null;
+        return msg;
     }
 }
