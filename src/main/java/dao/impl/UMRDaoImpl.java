@@ -22,7 +22,7 @@ public class UMRDaoImpl implements UMRDao {
     /**
      * 根据umr里面的userI的来查找所对应的modleid
      *
-     * @param umr
+     * @param userId
      * @return
      */
     @Override

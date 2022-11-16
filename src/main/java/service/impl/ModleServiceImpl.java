@@ -1,5 +1,7 @@
 package service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import dao.*;
 import dao.impl.*;
 import enums.Difficulty;
@@ -453,7 +455,6 @@ public class ModleServiceImpl implements ModleService {
      */
     @Override
     public boolean replaceContext(String context, String path) {
-
         //覆盖成功返回true，失败返回false
         try {
             PrintWriter printWriter = new PrintWriter(path);
@@ -462,9 +463,9 @@ public class ModleServiceImpl implements ModleService {
             printWriter.close();
             return true;
         } catch (FileNotFoundException e) {
+            System.out.println("replaceContext:" + path);
             e.printStackTrace();
         }
-
         return false;
 
     }
@@ -883,7 +884,19 @@ public class ModleServiceImpl implements ModleService {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int userId = (Integer) request.getAttribute("userId");
         //填空情况
-        String[] blanks = request.getParameterValues("blanks");
+        String[] blanks;
+        //换成json
+        String blanksJson = request.getParameter("blanks");
+        if (JSONObject.isValid(blanksJson)) {
+            //解析json
+            JSONObject jsonObject = JSONObject.parseObject(blanksJson);
+            List<String> arr = (List<String>) jsonObject.get("arr");
+            blanks = new String[arr.size()];
+            arr.toArray(blanks);
+        }else {
+            return new Message("Json格式错误");
+        }
+
 
         //获取复习的文件的路径
         String recordPath = umrDao.selectRecordPath(modleId, userId);
@@ -927,7 +940,8 @@ public class ModleServiceImpl implements ModleService {
             FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
             //解析文件内容
             context = txtHandler.parseContent();
-        } catch (FileNotFoundException e) {
+            input.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         //处理从文件出来的context最后面是回车"\n"
