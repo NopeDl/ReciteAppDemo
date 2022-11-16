@@ -240,7 +240,7 @@ public class ReviewServiceImpl implements ReviewService {
                                 dailyStudy.getReviewNums() + 1);
                     } else {
                         //创建并更新
-                        userDao.insertDailyStudyData(userId, 1, 0, 1);
+                        userDao.insertDailyStudyData(userId, 1,0, 1);
                     }
 
                     //将学习记录的文件删除
@@ -266,7 +266,7 @@ public class ReviewServiceImpl implements ReviewService {
                             dailyStudy.getReviewNums() + 1);
                 } else {
                     //创建并更新
-                    userDao.insertDailyStudyData(userId, 0, 0, 1);
+                    userDao.insertDailyStudyData(userId, 1, 0, 1);
                 }
                 //更新周期和时间成功
                 //将学习记录清空

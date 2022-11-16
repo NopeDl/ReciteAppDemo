@@ -613,8 +613,8 @@ public class ModleServiceImpl implements ModleService {
             int modleIdTemp;
             //查询用临时modle对象
             Modle tempMod = new Modle();
-            List<Boolean> haveRecord = new ArrayList<>();
-            List<Boolean> haveReviewRecord = new ArrayList<>();
+            Map<Integer,Boolean> haveRecord = new HashMap();
+            Map<Integer,Boolean> haveReviewRecord = new HashMap();
 
             for (Umr value : umrs) {
                 modleIdTemp = value.getModleId();
@@ -640,8 +640,8 @@ public class ModleServiceImpl implements ModleService {
                 //判断学习记录的情况
                 String recordPath = umrDao.selectRecordPath(modle.getModleId(), modle.getUserId());
                 String reviewRecordPath = reviewDao.selectReviewRecordPath(modle.getModleId(), modle.getUserId());
-                haveRecord.add(judgeIfRecord(recordPath));
-                haveReviewRecord.add(judgeIfRecord(reviewRecordPath));
+                haveRecord.put(modle.getModleId(),judgeIfRecord(recordPath));
+                haveReviewRecord.put(modle.getModleId(),judgeIfRecord(reviewRecordPath));
 
                 modle.setContent(content);
                 modle.setModlePath(null);
@@ -651,9 +651,12 @@ public class ModleServiceImpl implements ModleService {
             message = new Message();
             message.addData("userModle", modles);
             //是否有学习记录
-            message.addData("haveRecord", haveRecord);
+
+            String json1=JSON.toJSONString(haveRecord);
+            message.addData("haveRecord", json1);
             //复习计划的是否有学习记录
-            message.addData("haveReviewRecord", haveReviewRecord);
+            String json2=JSON.toJSONString(haveReviewRecord);
+            message.addData("haveReviewRecord", json2);
 
         }
         return message;
@@ -891,6 +894,9 @@ public class ModleServiceImpl implements ModleService {
         String[] blanks;
         //换成json
         String blanksJson = request.getParameter("blanks");
+
+        System.out.println(blanksJson);
+
         if (JSONObject.isValid(blanksJson)) {
             //解析json
             JSONObject jsonObject = JSONObject.parseObject(blanksJson);
