@@ -965,7 +965,7 @@ public class ModleServiceImpl implements ModleService {
     @Override
     public Message getHotModle(HttpServletRequest request) {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
-        List<Community> list = modleDao.selectHotModles(pageIndex);
+        List<Community> list = modleDao.selectHotModles(pageIndex * 5);
         Message msg;
         if (list != null) {
             list.forEach((community) -> {
