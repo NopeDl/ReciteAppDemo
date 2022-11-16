@@ -609,8 +609,8 @@ public class ModleServiceImpl implements ModleService {
             int modleIdTemp;
             //查询用临时modle对象
             Modle tempMod = new Modle();
-            Map<Integer,Boolean> haveRecord = new HashMap();
-            Map<Integer,Boolean> haveReviewRecord = new HashMap();
+            Map<String,Boolean> haveRecord = new HashMap();
+            Map<String,Boolean> haveReviewRecord = new HashMap();
 
             for (Umr value : umrs) {
                 modleIdTemp = value.getModleId();
@@ -636,8 +636,8 @@ public class ModleServiceImpl implements ModleService {
                 //判断学习记录的情况
                 String recordPath = umrDao.selectRecordPath(modle.getModleId(), modle.getUserId());
                 String reviewRecordPath = reviewDao.selectReviewRecordPath(modle.getModleId(), modle.getUserId());
-                haveRecord.put(modle.getModleId(),judgeIfRecord(recordPath));
-                haveReviewRecord.put(modle.getModleId(),judgeIfRecord(reviewRecordPath));
+                haveRecord.put(""+(modle.getModleId()),judgeIfRecord(recordPath));
+                haveReviewRecord.put(""+(modle.getModleId()),judgeIfRecord(reviewRecordPath));
 
                 modle.setContent(content);
                 modle.setModlePath(null);
@@ -648,11 +648,12 @@ public class ModleServiceImpl implements ModleService {
             message.addData("userModle", modles);
             //是否有学习记录
 
-            String json1=JSON.toJSONString(haveRecord);
-            message.addData("haveRecord", json1);
+//            JSONObject json =new JSONObject(haveReviewRecord);
+//            JSONObject jsonObject = JSONObject.fromObject(haveReviewRecord);
+            message.addData("haveRecord", haveRecord);
             //复习计划的是否有学习记录
-            String json2=JSON.toJSONString(haveReviewRecord);
-            message.addData("haveReviewRecord", json2);
+//            String json2=JSON.toJSONString(haveReviewRecord);
+            message.addData("haveReviewRecord", haveReviewRecord);
 
         }
         return message;
