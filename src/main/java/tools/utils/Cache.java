@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -20,12 +21,12 @@ public class Cache {
     /**
      * 存放上一次更新前查出来的userId对modleId 的关系
      */
-    public static Map<Integer, Set<Integer>> USER_LIKE = new HashMap<>();
+    public static Map<Integer, Set<Integer>> USER_LIKE = new ConcurrentHashMap<>();
 
     /**
      * 存放上一次更新前查出来的某个模板的点赞数量
      */
-    public static Map<Integer, Integer> MODLE_LIKE = new HashMap<>();
+    public static Map<Integer, Integer> MODLE_LIKE = new ConcurrentHashMap<>();
 
 
     //存放缓存的userId对modleId 的关系  map里面的map<> integer存放点赞的模板id,Boolean表示点赞
@@ -34,17 +35,17 @@ public class Cache {
     /**
      * 存放点赞的关系表
      */
-    public static Map<Integer, Set<Integer>> CACHE_USER_LIKE = new HashMap<>();
+    public static Map<Integer, Set<Integer>> CACHE_USER_LIKE = new ConcurrentHashMap<>();
 
     /**
      * 存放不喜欢的关系表
      */
-    public static Map<Integer, Set<Integer>> CACHE_USER_DISLIKE = new HashMap<>();
+    public static Map<Integer, Set<Integer>> CACHE_USER_DISLIKE = new ConcurrentHashMap<>();
 
     /**
      * 存放缓存的某个模板的点赞数量
      */
-    public static Map<Integer, Integer> CACHE_MODLE_LIKE = new HashMap<>();
+    public static Map<Integer, Integer> CACHE_MODLE_LIKE = new ConcurrentHashMap<>();
 
 
     public static LikesService likesService = new LikesServiceImpl();
@@ -75,9 +76,11 @@ public class Cache {
      * 关闭缓存
      */
     public static void closeCache() {
+        System.out.println("开启关闭缓存方法");
         if (!scheduler.isShutdown()) {
             likesService.updateLikes();
             scheduler.shutdown();
+            System.out.println("已关闭缓存");
         }
     }
 
