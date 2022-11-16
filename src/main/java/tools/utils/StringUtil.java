@@ -178,9 +178,9 @@ public class StringUtil {
             if (end == -1){
                 break;
             }
-            sb.replace(begin,begin+1,"<highLight>");
-            end += "<highLight>".length();
-            sb.replace(end-1,end,"</highLight>");
+            sb.replace(begin,begin+1,"<div class='highlight'>");
+            end += "<div class='highlight'>".length();
+            sb.replace(end-1,end,"</div>");
         }
         return sb.toString();
     }
