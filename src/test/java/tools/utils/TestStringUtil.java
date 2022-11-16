@@ -34,4 +34,10 @@ public class TestStringUtil {
         arr.toArray(s);
         System.out.println(s[0]);
     }
+
+    @Test
+    public void testParseQuote(){
+        String content = "你好，我是你爸爸爸爸呢，啊实{打实{大大}{速度}{快吗临}时队列看见了可拉伸{的}";
+        System.out.println(StringUtil.parseQuote(content));
+    }
 }

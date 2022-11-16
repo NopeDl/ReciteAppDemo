@@ -132,6 +132,7 @@ public class ModleServiceImpl implements ModleService {
     public Message parseFile(HttpServletRequest request) {
         Message msg;
         try {
+            boolean kuohao = Boolean.parseBoolean(request.getParameter("kuohao"));
             //获取上传的文件
             Part upLoadFile = request.getPart("upLoadFile");
             //获取输入流
@@ -147,6 +148,9 @@ public class ModleServiceImpl implements ModleService {
                     context = context.replaceAll("\\r\\n", "<\\br>");
 
                     msg = new Message("文件解析成功");
+                    if (kuohao){
+                        context = StringUtil.parseQuote(context);
+                    }
                     msg.addData("context", context);
                 } else {
                     msg = new Message("文件解析失败");

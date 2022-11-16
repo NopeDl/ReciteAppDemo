@@ -3,6 +3,7 @@ package tools.utils;
 import com.alibaba.fastjson.JSONObject;
 import dao.impl.ModleDaoImpl;
 import enums.Difficulty;
+import org.apache.commons.math3.util.Pair;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
 
@@ -13,6 +14,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author yeyeye
+ */
 public class StringUtil {
     /**
      * 获取uri
@@ -166,8 +170,19 @@ public class StringUtil {
      * @return 挖好空的内容
      */
     public static String parseQuote(String content) {
-
-        return null;
+        StringBuilder sb = new StringBuilder(content);
+        int begin = 0;
+        int end = 0;
+        while ((begin = sb.indexOf("{", end)) != -1) {
+            end = sb.indexOf("}",begin);
+            if (end == -1){
+                break;
+            }
+            sb.replace(begin,begin+1,"<highLight>");
+            end += "<highLight>".length();
+            sb.replace(end-1,end,"</highLight>");
+        }
+        return sb.toString();
     }
 
     /**
