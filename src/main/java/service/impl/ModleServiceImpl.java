@@ -1018,7 +1018,7 @@ public class ModleServiceImpl implements ModleService {
             });
             msg = new Message("获取成功");
             msg.addData("selectSuccess", true);
-            msg.addData("modles", list);
+            msg.addData("modleList", list);
             if (list.size() < 5) {
                 msg.addData("indexEnd", false);
             }
