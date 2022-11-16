@@ -105,6 +105,7 @@ public interface UserDao {
      * @param userId 用户ID
      * @param studyNums 学习篇数
      * @param studyTimes 学习时长
+     * @param reviewNums 复习篇数
      * @return 返回插入条数
      */
     int insertDailyStudyData(int userId,int studyNums,int studyTimes,int reviewNums);
