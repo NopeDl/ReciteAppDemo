@@ -762,6 +762,16 @@ public class ModleServiceImpl implements ModleService {
             String recordPath = umrDao.selectRecordPath(modleId, userId);
             boolean b = replaceContext("", recordPath);
             if(b){
+                //学习状态改变后，学习篇数+1
+                DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
+                if (dailyStudy != null) {
+                    //说明已有改数据，只需要进行更新
+                    userDao.updateDailyStudyByIdAndTime(userId, dailyStudy.getStudyNums() + 1, dailyStudy.getStudyTime(),
+                            dailyStudy.getReviewNums());
+                } else {
+                    //创建并更新
+                    userDao.insertDailyStudyData(userId, 1, 0, 0);
+                }
                 message = new Message("学习状态更新成功");
             }
 
