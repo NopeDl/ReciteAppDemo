@@ -198,6 +198,20 @@ public class StringUtil {
         if (json != null) {
             //获取每个空的正确率
             List<String> list = stringMatch(json);
+            //计算平均相似度
+            return avgStringMatch(list);
+        }
+        return "0";
+    }
+
+    /**
+     * 答案相似度匹配
+     *
+     * @param list 所有空的匹配度
+     * @return 匹配度
+     */
+    public static String avgStringMatch(List<String> list) {
+        if (list != null) {
             //将正确率加在一起
             AtomicInteger sum = new AtomicInteger(0);
             list.forEach((str)->{
@@ -206,10 +220,10 @@ public class StringUtil {
             //计算平均相似度
             int r = sum.get() / list.size();
             if (r > 0) {
-                return r + "%";
+                return r + "";
             }
         }
-        return "0%";
+        return "0";
     }
 
     /**
