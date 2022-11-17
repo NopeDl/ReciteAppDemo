@@ -54,12 +54,6 @@ public class ModleController extends HttpServlet {
         } else if ("deleteModle".equals(requestURI)) {
             //删除模板
             msg = modleService.deleteModle(request);
-//        } else if ("Study".equals(requestURI)) {
-//            //显示模板
-//            msg = modleService.reTxt(request);
-//        } else if ("reward".equals(requestURI)) {
-//            //打赏
-//            msg = modleService.reward(request);
         } else if ("toCommunity".equals(requestURI)) {
             //将模板添加至社区
             msg = modleService.toCommunity(request);

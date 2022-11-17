@@ -3,6 +3,7 @@ package tools.utils;
 import com.alibaba.fastjson.JSONObject;
 import dao.impl.ModleDaoImpl;
 import enums.Difficulty;
+import jdk.nashorn.internal.scripts.JO;
 import org.apache.commons.math3.util.Pair;
 import tools.handlers.FileHandler;
 import tools.handlers.FileHandlerFactory;
@@ -193,7 +194,29 @@ public class StringUtil {
      * @param json json
      * @return 匹配度
      */
-    public static String stringMatch(JSONObject json) {
+    public static String avgStringMatch(JSONObject json) {
+        if (json != null) {
+            //获取每个空的正确率
+            List<String> list = stringMatch(json);
+            //将正确率加在一起
+            AtomicInteger sum = new AtomicInteger(0);
+            list.forEach((str)->{
+                sum.getAndAdd(Integer.parseInt(str));
+            });
+            //计算平均相似度
+            int r = sum.get() / list.size();
+            if (r > 0) {
+                return r + "%";
+            }
+        }
+        return "0%";
+    }
+
+    /**
+     * 答案相似度匹配
+     * @return 相似度数组
+     */
+    public static List<String> stringMatch(JSONObject json){
         if (json != null) {
             Map<String, String> strMap = new HashMap<>();
             //将参考答案和输入数据放入集合中
@@ -201,21 +224,21 @@ public class StringUtil {
                 strMap.put(key, (String) value);
             });
             //计算所有空最短编辑距离和
-            AtomicInteger simRatio = new AtomicInteger(0);
+            List<String> res = new ArrayList<>();
             strMap.forEach((ref, ans) -> {
                 //计算参考答案和回答的最短编辑距离
                 double minDis = calDistance(ref, ans);
                 double rate = (ref.length() - minDis) / ref.length();
-                simRatio.getAndAdd(new Long(Math.round(rate * 100)).intValue());
+                //记录每个空的正确率
+                res.add(Math.round(rate * 100) + "");
             });
-            //相似度
-            int r = simRatio.get() / strMap.size();
-            if (r > 0) {
-                return r + "%";
-            }
+            //返回正确率数组
+            return res;
         }
-        return "0%";
+        return null;
     }
+
+
 
     /**
      * 计算最短编辑距离

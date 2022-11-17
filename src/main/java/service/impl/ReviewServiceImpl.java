@@ -387,7 +387,7 @@ public class ReviewServiceImpl implements ReviewService {
         String json = request.getParameter("matchStr");
         Message msg;
         if (JSONObject.isValid(json)) {
-            String acc = StringUtil.stringMatch(JSONObject.parseObject(json));
+            List<String> acc = StringUtil.stringMatch(JSONObject.parseObject(json));
             msg = new Message("计算成功");
             msg.addData("calcSuccess", true);
             msg.addData("accuracy", acc);
