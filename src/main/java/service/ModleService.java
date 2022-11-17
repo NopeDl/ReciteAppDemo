@@ -1,5 +1,6 @@
 package service;
 
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -145,4 +146,12 @@ public interface ModleService {
      * @return 有返回true,否则返回false
      */
     boolean judgeIfRecord(String path);
+
+
+    /**
+     * 判断是否有学习记录
+     * @param request 获取传入的modleId
+     * @return 返回message类
+     */
+    Message judgeStudyRecord(HttpServletRequest request);
 }

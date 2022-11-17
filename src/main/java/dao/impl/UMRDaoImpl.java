@@ -65,12 +65,20 @@ public class UMRDaoImpl implements UMRDao {
     }
 
     /**
-     * 保存umr关系
-     * @param umr
-     * @return
+     *
+     * @param userId 用户id
+     * @param modleId 模板id
+     * @param mStatus 收藏状态
+     * @param recordPath 存储学习记录的路径
+     * @return 插入成功返回1，
      */
     @Override
-    public int insertUMR(Umr umr) {
+    public int insertUMR(int userId,int modleId,int mStatus,String recordPath) {
+        Umr umr=new Umr();
+        umr.setUserId(userId);
+        umr.setModleId(modleId);
+        umr.setMStatus(mStatus);
+        umr.setRecordPath(recordPath);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         int insert = sqlSession.insert("UmrMapper.insertUMR", umr);
         if (insert > 0){

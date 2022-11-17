@@ -23,10 +23,13 @@ public interface UMRDao {
 
     /**
      * 保存umr关系
-     * @param umr
-     * @return
+     * @param userId 用户id
+     * @param modleId 模板id
+     * @param mStatus 收藏状态
+     * @param recordPath 存储学习记录的路径
+     * @return 插入成功返回1
      */
-    int insertUMR(Umr umr);
+    int insertUMR(int userId,int modleId,int mStatus,String recordPath);
 
     /**
      * 删除umr关系

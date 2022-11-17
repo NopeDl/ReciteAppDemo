@@ -293,21 +293,34 @@ public class ReviewServiceImpl implements ReviewService {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int userId = (int) request.getAttribute("userId");
         String[] blanks = request.getParameterValues("blanks");
-        String context=null;
-        for (int i = 0; i < blanks.length; i++) {
-            if(i==0){
-                context=blanks[i];
-            }else{
-                context+=";"+blanks[i];
+
+        //是否保存当前学习记录，1为是，0为否
+        int ifSave = Integer.parseInt(request.getParameter("ifSave"));
+        //保存
+        if(1==ifSave){
+            String context=null;
+            for (int i = 0; i < blanks.length; i++) {
+                if(i==0){
+                    context=blanks[i];
+                }else{
+                    context+=";"+blanks[i];
+                }
             }
-        }
-        String recordPath = reviewDao.selectReviewRecordPath(modleId, userId);
-        boolean b = modleService.replaceContext(context, recordPath);
-        if(b){
-            //替换成功
-            message=new Message("成功保存学习记录");
+            String recordPath = reviewDao.selectReviewRecordPath(modleId, userId);
+            boolean b = modleService.replaceContext(context, recordPath);
+            if(b){
+                //替换成功
+                message=new Message("成功保存学习记录");
+                message.addData("save",true);
+            }else{
+                message=new Message("保存失败");
+                message.addData("save",false);
+
+            }
         }else{
-            message=new Message("保存失败");
+            //不保存本地记录
+            message=new Message("取消保存成功");
+            message.addData("doNOtSave",true);
 
         }
         return message;
@@ -322,25 +335,43 @@ public class ReviewServiceImpl implements ReviewService {
     public Message showReviewRecord(HttpServletRequest request) {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int userId = (int) request.getAttribute("userId");
-
+        Message message=null;
         //获取学习记录文件的路径
         String reviewRecordPath = reviewDao.selectReviewRecordPath(modleId, userId);
-        //获取文件位置
-        String context=null;
-        try {
-            InputStream input = new FileInputStream(reviewRecordPath);
-            //获取模板文件处理器
-            FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
-            //解析文件内容
-            context = txtHandler.parseContent();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        File file=new File(reviewRecordPath);
+        if(file.length()>0){
+
+            //这里为有学习记录
+            //看看用户是否要重投开始学习，1为是，0为否
+            int restart = Integer.parseInt(request.getParameter("restart"));
+            if(0==restart) {
+                //获取文件位置
+                String context = null;
+                try {
+                    InputStream input = new FileInputStream(reviewRecordPath);
+                    //获取模板文件处理器
+                    FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
+                    //解析文件内容
+                    context = txtHandler.parseContent();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                context = context.substring(0, context.lastIndexOf("\n"));
+                String[] split = context.split(";");
+                message = new Message("成功获取学习记录");
+                message.addData("reviewRecord", split);
+            }else{
+                //重头开始
+                modleService.replaceContext("",reviewRecordPath);
+                message=new Message("重新开始学习");
+                message.addData("restart",true);
+            }
+        }else{
+            message=new Message("暂时没有记录哦");
+            message.addData("reviewRecord",false);
         }
 
-        context=context.substring(0, context.lastIndexOf("\n"));
-        String[] split = context.split(";");
-        Message message=new Message("成功获取学习记录");
-        message.addData("reviewRecord",split);
         return message;
 
     }
