@@ -37,7 +37,7 @@ public class TestStringUtil {
 
     @Test
     public void testParseQuote(){
-        String content = "你好，我是你爸爸爸爸呢，啊实{打实{大大}{速度}{快吗临}时队列看见了可拉伸{的}";
+        String content = "{你好，我{}是你abadssadaba呢，啊实{打实{大asdsadads大}{速度}{快吗临}时队列看见了可拉伸{的}sadsadasds{a}dsadasd}";
         System.out.println(StringUtil.parseQuote(content));
     }
 }

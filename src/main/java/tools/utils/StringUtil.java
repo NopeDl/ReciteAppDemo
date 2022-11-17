@@ -174,13 +174,15 @@ public class StringUtil {
         int begin = 0;
         int end = 0;
         while ((begin = sb.indexOf("{", end)) != -1) {
-            end = sb.indexOf("}",begin);
-            if (end == -1){
+            end = sb.indexOf("}", begin);
+            if (end == -1) {
                 break;
             }
-            sb.replace(begin,begin+1,"<div class='highlight'>");
-            end += "<div class='highlight'>".length();
-            sb.replace(end-1,end,"</div>");
+            if (begin + 1 != end) {
+                sb.replace(begin, begin + 1, "<div class='highlight'>");
+                end += "<div class='highlight'>".length();
+                sb.replace(end - 1, end, "</div>");
+            }
         }
         return sb.toString();
     }
