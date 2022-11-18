@@ -292,13 +292,30 @@ public class ReviewServiceImpl implements ReviewService {
         Message message=null;
         int modleId = Integer.parseInt(request.getParameter("modleId"));
         int userId = (int) request.getAttribute("userId");
-        String[] blanks = request.getParameterValues("blanks");
+//        String[] blanks = request.getParameterValues("blanks");
 
         //是否保存当前学习记录，1为是，0为否
         int ifSave = Integer.parseInt(request.getParameter("ifSave"));
         //保存
         if(1==ifSave){
-            String context=null;
+//填空情况
+            String[] blanks;
+            //换成json
+            String blanksJson = request.getParameter("blanks");
+
+            System.out.println(blanksJson);
+
+            if (JSONObject.isValid(blanksJson)) {
+                //解析json
+                JSONObject jsonObject = JSONObject.parseObject(blanksJson);
+                List<String> arr = (List<String>) jsonObject.get("arr");
+                blanks = new String[arr.size()];
+                arr.toArray(blanks);
+            }else {
+                return new Message("Json格式错误");
+            }
+
+            String context="";
             for (int i = 0; i < blanks.length; i++) {
                 if(i==0){
                     context=blanks[i];
