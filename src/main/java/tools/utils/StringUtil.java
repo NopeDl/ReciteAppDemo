@@ -235,7 +235,7 @@ public class StringUtil {
             Map<String, String> strMap = new HashMap<>();
             //将参考答案和输入数据放入集合中
             json.forEach((key, value) -> {
-                strMap.put(key, (String) value);
+                strMap.put(key.trim(), ((String) value).trim());
             });
             //计算所有空最短编辑距离和
             List<String> res = new ArrayList<>();

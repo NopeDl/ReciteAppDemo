@@ -20,7 +20,7 @@ public class TestStringUtil {
 
     @Test
     public void testStringMatch(){
-        String json = "{'horse':'horse','horse1':'horse','horse2':'horse'}";
+        String json = "{\"许\":\"123213\",\"会认为，\":\"213213\",\"组数据\":\"21312hahha\",\"受启\":\"\",\"据科学\":\"hha爱睡觉的\",\"”不停\":\"哗啦啦\",\"可以\":\"\",\"点一滴水的浪费都是不应该的。\":\" \",\"结果。所以不\":\"\",\"些水资源\":\"\"}";
         System.out.println(StringUtil.stringMatch(JSONObject.parseObject(json)));
     }
 
