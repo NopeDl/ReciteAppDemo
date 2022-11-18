@@ -244,7 +244,11 @@ public class StringUtil {
                 double minDis = calDistance(ref, ans);
                 double rate = (ref.length() - minDis) / ref.length();
                 //记录每个空的正确率
-                res.add(Math.round(rate * 100) + "");
+                long r = Math.round(rate * 100);
+                if (r < 0) {
+                    r = 0;
+                }
+                res.add(r + "");
             });
             //返回正确率数组
             return res;
