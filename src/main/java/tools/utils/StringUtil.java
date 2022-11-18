@@ -241,8 +241,11 @@ public class StringUtil {
             List<String> res = new ArrayList<>();
             strMap.forEach((ref, ans) -> {
                 //计算参考答案和回答的最短编辑距离
-                double minDis = calDistance(ref, ans);
-                double rate = (ref.length() - minDis) / ref.length();
+                double rate = 0;
+                if (ans != null && !"".equals(ans)) {
+                    double minDis = calDistance(ref, ans);
+                    rate = (ref.length() - minDis) / ref.length();
+                }
                 //记录每个空的正确率
                 long r = Math.round(rate * 100);
                 if (r < 0) {
