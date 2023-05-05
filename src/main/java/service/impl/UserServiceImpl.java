@@ -301,6 +301,9 @@ public class UserServiceImpl implements UserService {
         System.out.println(filePath);
         try {
             File file = new File(filePath);
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             if (!file.exists()) {
                 boolean res = file.createNewFile();
                 System.out.println("创建文件" + res + ": " + filePath);
