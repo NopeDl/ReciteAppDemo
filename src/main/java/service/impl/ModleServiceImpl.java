@@ -1156,11 +1156,33 @@ public class ModleServiceImpl implements ModleService {
                 int userId = (int) request.getAttribute("userId");
                 list = modleDao.selectUserModleByTitle(modleTitle, userId);
             }
+
+
             //查不到资料
             if(list==null){
                 message=new Message("查找模板失败");
                 message.addData("searchModle",false);
             }else {
+                list.forEach((community) -> {
+                            //转化文本
+                            String modlePath = community.getModlePath();
+                            if (modlePath != null && !"".equals(modlePath)) {
+                                try {
+                                    InputStream input = new FileInputStream(modlePath);
+                                    FileHandler txtHandler = FileHandlerFactory.getHandler("txt", input);
+                                    if (txtHandler != null) {
+                                        community.setContent(txtHandler.parseContent());
+                                    } else {
+                                        community.setContent("");
+                                    }
+                                    input.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                community.setContent("");
+                            }
+                        });
                 message=new Message("查找模板");
                 message.addData("searchModle",true);
                 message.addData("modleList",list);
