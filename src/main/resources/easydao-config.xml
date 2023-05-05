@@ -8,7 +8,7 @@
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://110.41.21.66:3306/recitedb"/>
                 <property name="username" value="yeyeye"/>
-                <property name="password" value="XLxgz0902."/>
+                <property name="password" value="root"/>
             </dataSource>
         </environment>
     </environments>
