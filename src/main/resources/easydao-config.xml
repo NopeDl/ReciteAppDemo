@@ -6,9 +6,9 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/recitedb"/>
-                <property name="username" value="root"/>
-                <property name="password" value="030429"/>
+                <property name="url" value="jdbc:mysql://110.41.21.66:3306/recitedb"/>
+                <property name="username" value="yeyeye"/>
+                <property name="password" value="XLxgz0902."/>
             </dataSource>
         </environment>
     </environments>

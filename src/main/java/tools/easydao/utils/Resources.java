@@ -22,7 +22,7 @@ public class Resources {
         String streamPath = Resources.class.getResource("/").getPath().substring(1) + path;
         FileInputStream input;
         try {
-            input = new FileInputStream(streamPath);
+            input = new FileInputStream("/" + streamPath);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

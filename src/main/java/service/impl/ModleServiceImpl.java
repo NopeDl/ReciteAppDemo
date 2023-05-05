@@ -95,7 +95,7 @@ public class ModleServiceImpl implements ModleService {
                 //用户想要收藏
                 if (mStatus == 1) {
                     //说明此时用户想要收藏
-                    int i = umrDao.insertUMR(userId,modleId,mStatus,recordPath);
+                    int i = umrDao.insertUMR(userId, modleId, mStatus, recordPath);
                     if (i > 0) {
                         //说明收藏成功
                         message = new Message("收藏成功");
@@ -148,7 +148,7 @@ public class ModleServiceImpl implements ModleService {
                     context = context.replaceAll("\\r\\n", "<\\br>");
 
                     msg = new Message("文件解析成功");
-                    if (kuohao){
+                    if (kuohao) {
                         context = StringUtil.parseQuote(context);
                     }
                     msg.addData("context", context);
@@ -278,7 +278,7 @@ public class ModleServiceImpl implements ModleService {
                 umr.setRecordPath(recordPath);
                 //自己创建是0，收藏是1
                 umr.setMStatus(0);
-                int i = umrDao.insertUMR(userId,modleId,0,recordPath);
+                int i = umrDao.insertUMR(userId, modleId, 0, recordPath);
                 //可能存在并发问题，需要事务
                 if (result > 0 && i > 0) {
 
@@ -438,6 +438,9 @@ public class ModleServiceImpl implements ModleService {
         String filePath = Resources.getResource("static/modles/" + System.currentTimeMillis() + modleTitle + ".txt");
         try {
             File file = new File(filePath);
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -771,7 +774,7 @@ public class ModleServiceImpl implements ModleService {
             //更新后要把文件里的记录删除
             String recordPath = umrDao.selectRecordPath(modleId, userId);
             boolean b = replaceContext("", recordPath);
-            if(b){
+            if (b) {
                 //学习状态改变后，学习篇数+1
                 DailyStudy dailyStudy = userDao.selectDailyStudyDataByUserId(userId);
                 if (dailyStudy != null) {
@@ -894,7 +897,7 @@ public class ModleServiceImpl implements ModleService {
         //保存返回1，不保存返沪0
         int ifSave = Integer.parseInt(request.getParameter("ifSave"));
         //保存的情况
-        if(1==ifSave){
+        if (1 == ifSave) {
             //填空情况
             String[] blanks;
             //换成json
@@ -908,7 +911,7 @@ public class ModleServiceImpl implements ModleService {
                 List<String> arr = (List<String>) jsonObject.get("arr");
                 blanks = new String[arr.size()];
                 arr.toArray(blanks);
-            }else {
+            } else {
                 return new Message("Json格式错误");
             }
 
@@ -927,15 +930,15 @@ public class ModleServiceImpl implements ModleService {
             boolean b = replaceContext(context, recordPath);
             if (b) {
                 message = new Message("保存成功！");
-                message.addData("save",true);
+                message.addData("save", true);
             } else {
                 message = new Message("保存失败");
-                message.addData("save",false);
+                message.addData("save", false);
             }
-        }else{
+        } else {
             //以下是不保存的情况
-            message=new Message("取消保存成功");
-            message.addData("doNotSave",true);
+            message = new Message("取消保存成功");
+            message.addData("doNotSave", true);
         }
 
         return message;
@@ -956,12 +959,12 @@ public class ModleServiceImpl implements ModleService {
         String recordPath = umrDao.selectRecordPath(modleId, userId);
         //读取文件里面的数据
         //获取文件位置
-        File file=new File(recordPath);
-        if(file.length()>0){
+        File file = new File(recordPath);
+        if (file.length() > 0) {
             //这里为有学习记录
             //看看用户是否要重投开始学习，1为是，0为否
             int restart = Integer.parseInt(request.getParameter("restart"));
-            if(0==restart){
+            if (0 == restart) {
                 //要继续上一次的学习
                 String context = null;
                 try {
@@ -979,17 +982,17 @@ public class ModleServiceImpl implements ModleService {
                 String[] split = context.split(";");
                 message = new Message("成功获取上一次的学习记录");
                 message.addData("record", split);
-            }else{
+            } else {
                 //重头开始
-                replaceContext("",recordPath);
-                message=new Message("重新开始学习");
-                message.addData("restart",true);
+                replaceContext("", recordPath);
+                message = new Message("重新开始学习");
+                message.addData("restart", true);
             }
 
 
-        }else{
-            message=new Message("暂时没有记录哦");
-            message.addData("record",false);
+        } else {
+            message = new Message("暂时没有记录哦");
+            message.addData("record", false);
         }
         return message;
     }
@@ -1097,34 +1100,35 @@ public class ModleServiceImpl implements ModleService {
 
     /**
      * 判断该模板是否有学习记录
+     *
      * @param request 获取传入的modleId
      * @return 返回message
      */
     @Override
     public Message judgeStudyRecord(HttpServletRequest request) {
         int modleId = Integer.parseInt(request.getParameter("modleId"));
-        int userId= (int) request.getAttribute("userId");
+        int userId = (int) request.getAttribute("userId");
         //是否是复习阶段学习记录，1为是，0为非复习状态下的学习记录
-        String path="";
-        Message message=null;
+        String path = "";
+        Message message = null;
         int ifReviewRecord = Integer.parseInt(request.getParameter("ifReviewRecord"));
-        if(ifReviewRecord==1){
+        if (ifReviewRecord == 1) {
             //复习阶段的学习记录
-             path = reviewDao.selectReviewRecordPath(modleId, userId);
-        }else{
+            path = reviewDao.selectReviewRecordPath(modleId, userId);
+        } else {
             //非复习状态下的学习记录
-             path = umrDao.selectRecordPath(modleId, userId);
+            path = umrDao.selectRecordPath(modleId, userId);
         }
 
-        File file=new File(path);
-        if(file.length()>0){
+        File file = new File(path);
+        if (file.length() > 0) {
             //说明有学习记录
-            message=new Message("有学习记录");
-            message.addData("haveRecord",true);
-        }else{
+            message = new Message("有学习记录");
+            message.addData("haveRecord", true);
+        } else {
             //说明没有学习记录
-            message=new Message("没有学习记录");
-            message.addData("haveRecord",false);
+            message = new Message("没有学习记录");
+            message.addData("haveRecord", false);
         }
         return message;
     }

@@ -12,7 +12,6 @@ import java.io.IOException;
 /**
  * @author ?
  */
-@WebFilter("*")
 public class AEncodingFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
