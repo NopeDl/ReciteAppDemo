@@ -81,7 +81,10 @@ public class ModleController extends HttpServlet {
         }else if("JudgeStudyRecord".equals(requestURI)){
             //判断谋个用户某个模板的学习记录情况，这里将复习的学习记录判断也写在这了
             msg = modleService.judgeStudyRecord(request);
-        }else {
+        }else if("SearchModel".equals(requestURI)){
+            //通过搜索栏标题查找相对应的模板
+            msg=modleService.searchModelByTitle(request);
+        } else {
             msg = new Message(MsgInf.NOT_FOUND);
         }
         ResponseUtil.send(response, msg);

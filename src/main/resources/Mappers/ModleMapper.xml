@@ -111,4 +111,14 @@
     <update id="UpdateLikeNum">
         update modle set great=great+(#{great}) where modleId=#{modleId}
     </update>
+
+
+    <!--selectModleByTitle-->
+    <select id="selectCommonModleByTitle" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
+        select * from modle where  common=1 and modleTitle like #{modleTitle}
+    </select>
+
+    <select id="selectUserModleByTitle" parameterType="pojo.po.db.Modle" resultType="pojo.vo.Community">
+        select * from modle where  modleTitle like #{modleTitle} and userId=#{userId}
+    </select>
 </mapper>

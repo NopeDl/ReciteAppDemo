@@ -154,4 +154,13 @@ public interface ModleService {
      * @return 返回message类
      */
     Message judgeStudyRecord(HttpServletRequest request);
+
+    /**
+     * 通过标题搜索模板
+     * @param request 获取传入模板的标题
+     * @return 返回message类
+     */
+    Message searchModelByTitle(HttpServletRequest request);
+
+
 }

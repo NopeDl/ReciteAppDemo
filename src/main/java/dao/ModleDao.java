@@ -212,4 +212,15 @@ public interface ModleDao {
      * @return 返回值
      */
     List<Community> selectHotModles(int pageIndex);
+
+
+    /**
+     * 通过标题查找模板
+     * @param modleTitle
+     * @return
+     */
+    List<Community> selectCommonModleByTitle(String modleTitle);
+
+    List<Community> selectUserModleByTitle(String modleTitle,Integer userId);
+
 }

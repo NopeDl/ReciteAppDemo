@@ -1,5 +1,6 @@
 package dao.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import dao.ModleDao;
 import jakarta.servlet.http.HttpServletRequest;
 import pojo.po.db.*;
@@ -78,8 +79,6 @@ public class ModleDaoImpl implements ModleDao {
     /**
      * 获取某个模板的标题是叫什么
      * @param modleId
-     *
-     * @param modle
      * @return
      */
     @Override
@@ -573,6 +572,44 @@ public class ModleDaoImpl implements ModleDao {
         modle.setPageIndex(pageIndex);
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Object> objects = sqlSession.selectList("ModleMapper.selectHotModle", modle);
+        sqlSession.close();
+        if (objects.size() > 0){
+            List<Community> list = new ArrayList<>();
+            objects.forEach((o) -> {
+                list.add((Community) o);
+            });
+            return list;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Community> selectCommonModleByTitle(String modleTitle){
+        Modle modle=new Modle();
+        modle.setModleTitle("%"+modleTitle+"%");
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectCommonModleByTitle", modle);
+        sqlSession.close();
+        if (objects.size() > 0){
+            List<Community> list = new ArrayList<>();
+            objects.forEach((o) -> {
+                list.add((Community) o);
+            });
+            return list;
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public List<Community> selectUserModleByTitle(String modleTitle, Integer userId){
+        Modle modle=new Modle();
+        modle.setModleTitle("%"+modleTitle+"%");
+        modle.setUserId(userId);
+        System.out.println("用户id"+userId);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Object> objects = sqlSession.selectList("ModleMapper.selectUserModleByTitle", modle);
         sqlSession.close();
         if (objects.size() > 0){
             List<Community> list = new ArrayList<>();

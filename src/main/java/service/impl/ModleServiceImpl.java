@@ -1132,4 +1132,42 @@ public class ModleServiceImpl implements ModleService {
         }
         return message;
     }
+
+    /**
+     * 通过标题搜索模板
+     * @param request 获取传入模板的标题
+     * @return 返回message类
+     */
+    @Override
+    public Message searchModelByTitle(HttpServletRequest request) {
+        String modleTitle = request.getParameter("modleTitle");
+        Message message=null;
+        if(modleTitle==null){
+            message=new Message("查找不到相对应的模板，请换一个搜索词吧~");
+            message.addData("searchResult",false);
+        }else{
+            //去dao层查找
+            List<Community> list=null;
+            if("1".equals(request.getParameter("common"))){
+                //说明查找的是社区的模板
+                list = modleDao.selectCommonModleByTitle(modleTitle);
+            }else{
+                //找的是记忆库的模板
+                int userId = (int) request.getAttribute("userId");
+                list = modleDao.selectUserModleByTitle(modleTitle, userId);
+            }
+            //查不到资料
+            if(list==null){
+                message=new Message("查找模板失败");
+                message.addData("searchModle",false);
+            }else {
+                message=new Message("查找模板");
+                message.addData("searchModle",true);
+                message.addData("modleList",list);
+            }
+            return message;
+        }
+        return null;
+    }
+
 }
